@@ -1,0 +1,1 @@
+Os scripts aqui devem ser utilizados para processos de criação de tabelas no ambiente do datalake, respeitando os padrões vigentes de localização. 

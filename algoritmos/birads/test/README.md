@@ -1,0 +1,1 @@
+Os arquivos dentro deste repositório foram criados com intuito de aplicar rotinas de testes simples para validações pré-produção. Muito do que deve ser feito aqui é, principalmente, para fomentar dados que devem estar em apresentações ou itens relacionados. 

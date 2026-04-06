@@ -1,0 +1,1 @@
+Os scripts nessa pasta devem ser utilizados para gerar as tabelas que são utilizadas no decorrer do processo, sendo tabela de treinamento, entrada de dados do modelo ou motor de regras e principalmente a tabela que deve ser usada nos processos de monitoramento. 

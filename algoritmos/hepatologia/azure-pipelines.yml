@@ -1,0 +1,50 @@
+trigger:
+- hml
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: "DatabricksIA"
+
+strategy:
+  matrix:
+    Python312:
+      python.version: '3.12'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
+
+- task: PipAuthenticate@1
+  displayName: 'Pip Authenticate'
+  inputs:
+    artifactFeeds: 'IA/mlopslib'
+    onlyAddExtraIndex: true
+  
+- script: |
+    pip install rdmlops --index-url=$(PIP_EXTRA_INDEX_URL)
+  displayName: 'Install Lib RedeDor MLOps'
+  
+- script: |
+    pip freeze
+  displayName: 'Run Deployment'
+  
+- script: |
+    rdmlops repo --reponame=$(Build.Repository.Name) update --branch=$(Build.SourceBranchName)
+  env:
+    DATABRICKS_HOST: $(DATABRICKS_HOST)
+    DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+  displayName: 'Entregando conteúdo'
+
+
+# - script: |
+#     python deploy/deploy.py  --branch_name $(Build.SourceBranchName) --repo_name $(Build.Repository.Name) --pr_branch $(System.PullRequest.SourceBranch)
+#   env:
+#     DATABRICKS_HOST: $(DATABRICKS_HOST)
+#     DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+#   displayName: 'Run integration test on Databricks'
+

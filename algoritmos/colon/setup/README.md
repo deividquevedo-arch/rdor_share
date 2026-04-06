@@ -1,0 +1,1 @@
+Aqui será armazenados todos os codigos regerentes as configurações de setup

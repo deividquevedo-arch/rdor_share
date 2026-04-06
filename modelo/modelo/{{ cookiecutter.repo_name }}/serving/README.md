@@ -1,0 +1,1 @@
+Os scripts desta pasta devem ser usados para capturar os dados de uma tabela de entrada e salvar seu respectivo resultado na tabela destino que será usada pelo cliente final. 

@@ -1,0 +1,7 @@
+{
+    "author_email": "Seu email corporativo",
+    "author_name": "Seu nome",
+    "description": "Descreva brevemente o projeto",
+    "project_name": "Nome do projeto",
+    "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}"
+}
