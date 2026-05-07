@@ -1,0 +1,80 @@
+matrix_spec:
+  version: 1
+  baseline_scenario_id: baseline
+  strategy_catalog:
+    S3_proximity:
+      summary: "Ajuste finding_organ_max_chars."
+      knobs:
+        - nlp.finding_organ_max_chars
+    S4_negation:
+      summary: "Ajuste de negacao (janela/lista)."
+      knobs:
+        - nlp.negation_window
+        - nlp.negation_phrases
+    S5_embeddings:
+      summary: "Embeddings (modo, limiar, banda)."
+      knobs:
+        - nlp.embeddings.use_embeddings
+        - nlp.embeddings.decision_mode
+        - nlp.embeddings.similarity_threshold
+        - nlp.embeddings.ambiguity_band
+    S12b_llm_router:
+      summary: "LLM seletivo na banda de incerteza."
+      knobs:
+        - nlp.llm_router.enabled
+        - nlp.llm_router.mode
+        - nlp.llm_router.uncertainty_band
+        - nlp.llm_router.prompt_user_template
+  promotion:
+    active_profile: fn_priority
+    fn_priority:
+      fp_ratio_max: 2.0
+      require_match_rate_gte_baseline: true
+      require_fn_lt_baseline: true
+
+scenarios:
+  - id: baseline
+    description: "Referencia da especialidade sem patch."
+    strategies: []
+    config_patch: {}
+
+  - id: S5_hybrid_calibrated
+    description: "Embeddings em modo hybrid + calibrated_hybrid."
+    strategies: [S5_embeddings]
+    config_patch:
+      nlp:
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_calibrated_llm_pilot
+    description: "Piloto LLM seletivo sobre cenario S5."
+    strategies: [S5_embeddings, S12b_llm_router]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: true
+          mode: llm
+          uncertainty_band: [0.35, 0.65]
+          max_input_chars: 8000
+          timeout_s: 45
+          provider: openai_compatible
+          base_url: "https://api.openai.com/v1"
+          model: "gpt-4o-mini"
+          api_key_env: OPENAI_API_KEY
+          temperature: 0
+          json_response_format: true
+          specialty_context: "Preencher com contexto clínico da especialidade."
+          prompt_user_template: |
+            Contexto:
+            {specialty_context}
+            Especialidade (id): {specialty_id}
+            Excerto:
+            {text}
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true

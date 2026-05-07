@@ -1,0 +1,82 @@
+---
+description: Diretrizes do Motor NLP Clinico -- 3 libs, config YAML, clean arch, RPI, SDD, anti-vibe-coding
+alwaysApply: true
+---
+
+# Motor NLP Clinico -- Regras para o Agent
+
+## Metodologia (obrigatoria)
+
+- **RPI:** Research (ler legado, entender) -> Plan (SPEC do modulo) -> Implement (codar com teste)
+- **SPEC antes de codigo:** definir input, output, edge cases, o que NAO faz. So entao implementar
+- **Progressive disclosure:** refatorar em camadas (extrair -> tipar -> refinar -> otimizar). Cada camada e um PR
+- **Anti-vibe-coding:** toda decisao explicita. Sem copia cega de notebook. Sem "depois melhoro"
+- **Code review estrutural:** acoplamento, coesao, simplicidade, contrato, nomeacao, paridade com legado, YAGNI
+- Ref: `docs/motor-nlp/diretriz-tech-lead-refatoracao-v0.md`
+
+## Arquitetura
+
+- O sistema e composto por 3 libs independentes: `nlp_engine`, `data_manage`, `monitoring`
+- Nenhuma lib importa outra. Comunicacao por dict/DataFrame
+- Notebooks Databricks sao Composition Root (~50 linhas): leem YAML, extraem secoes, injetam dict em cada lib
+- Serving layer (Excel/SharePoint/API) permanece inalterado
+
+## Escopo e backlog
+
+- **So implementar** trabalho que esteja em **historias/tasks acordadas** com o time (ids **Sxx** / **Txx.y** ou equivalente no task board).
+- **Fonte canonica:** `docs/motor-nlp/anexo03-historias-e-tasks-v0.md`, `docs/motor-nlp/05-roadmap-entregas-sprint-v0.md`, e o que estiver fechado para a **sprint corrente**.
+- **Nao criar** tasks intermediarias, refactors ou melhorias que nao constem desse alinhamento (YAGNI ao nivel de backlog).
+- **MLOps / infra** (CI/CD, clusters, feeds de artefactos, politicas de deploy): **fora de escopo de implementacao** ate decisao explicita do time; no maximo **sugestao embasada** em documento ou decisao registada no repo, se for pedido.
+
+### Entregas (ligacao ao board)
+
+- Antes de codar: **confirmar e citar** qual **Sxx / Txx.y** (ou id do board) esta em causa.
+- Se o pedido **nao** corresponder a nenhuma task mapeada: **parar** e propor alinhar backlog / quebrar em tasks no anexo ou board; **nao** avancar com escopo implicito.
+- Em commits ou descricao de PR, **referenciar** o id da task/historia sempre que possivel.
+
+## Antes de codar
+
+- Nao implemente sem entender o contexto. Leia as diretrizes em `docs/motor-nlp/diretriz-*.md`
+- Siga RPI: primeiro Research (ler o notebook legado), depois Plan (SPEC), depois Implement
+- Modulos **compartilhados** entre especialidades: Research com **inventario multi-notebook** e SPEC consolidado — ver secao Research em `docs/motor-nlp/diretriz-tech-lead-refatoracao-v0.md`
+- Identifique qual lib sera modificada. Se impacta mais de uma, revise a separacao
+- Confirme que a variacao entre especialidades vem do YAML, nao do codigo
+- Se extraiu funcao de notebook, garanta paridade (output identico ao original)
+
+## Regras de codigo
+
+- Funcoes < 30 linhas. Nomes descritivos. Type hints em funcoes publicas
+- Zero hardcode clinico (keywords, thresholds, orgaos). Tudo no YAML
+- Sem comentarios obvios. Comentarios so para intencao nao-evidente
+- Feature flags via config dict para comportamento condicional
+- Backward compatibility obrigatoria (semver)
+- Sem PHI (dados de paciente) em testes, logs ou repositorio
+- Sem `eval()`, `exec()`, imports mortos ou `nltk.download('all')`
+
+## Testes
+
+- pytest com frases sinteticas (sem PHI)
+- Cenarios: input valido, invalido, com negacao, sem negacao, YAML valido/invalido
+- 1 arquivo de teste por modulo de negocio
+
+## Config YAML
+
+- Duas camadas: `shared/organs.yaml` (universo de orgaos) + `{specialty}/config.yaml` (por lib)
+- Libs recebem dict, nao leem arquivo. Notebook extrai e injeta
+- `config_version` e `engine_version` obrigatorios em todo output
+
+## Contrato de dados
+
+- Entrada: `id_exame`, `exm_laudo_texto`, `exm_mod`, `exm_tipo`, `dt_exame`
+- Saida: `fl_relevante`, `confidence_score` (0.0-1.0), `config_version`, `engine_version`, `specialty_id`
+
+## Documentacao de referencia
+
+- `docs/motor-nlp/diretriz-tech-lead-refatoracao-v0.md` -- RPI, SDD, progressive disclosure, code review
+- `docs/motor-nlp/diretriz-arquitetura-pre-codigo-v0.md` -- protocolo pre-codigo
+- `docs/motor-nlp/diretriz-desenvolvimento-libs-v0.md` -- padroes das 3 libs
+- `docs/motor-nlp/diretriz-config-e-governanca-v0.md` -- YAML + governanca clinica
+- `docs/motor-nlp/checklists/checklist-implementacao-motor-nlp-fase1-v0.md` -- checklist Fase 1
+- `docs/motor-nlp/anexo02-arquitetura-motor-nlp-v0.md` -- arquitetura detalhada
+- `docs/motor-nlp/anexo03-historias-e-tasks-v0.md` -- stories e tasks
+- `docs/motor-nlp/05-roadmap-entregas-sprint-v0.md` -- roadmap por sprint

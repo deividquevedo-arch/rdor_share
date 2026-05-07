@@ -1,0 +1,164 @@
+# Matriz de exploração assertiva (sem treino supervisionado).
+# Cada cenário aplica config_patch com deep-merge sobre o YAML base da especialidade.
+# S1/S2: reservados no catálogo; execução v1 é só knobs YAML (S3–S7 + pares ≤2 eixos).
+
+matrix_spec:
+  version: 1
+  baseline_scenario_id: baseline
+  strategy_catalog:
+    S1_uncertainty_second_pass:
+      summary: "Segunda passagem quando sinais de incerteza (ex.: divergência regra vs semântica, negações)."
+      yaml_knobs: []
+      status: reserved_engine
+      note: "Fora da matriz YAML-only v1; requer feature flag e lógica no motor."
+    S2_cascade_rules:
+      summary: "Segunda passagem com regras/contexto mais estritos (sem LLM)."
+      yaml_knobs: []
+      status: reserved_engine
+      note: "Fora da matriz YAML-only v1."
+    S3_proximity:
+      summary: "Proximidade órgão–achado."
+      yaml_knob: nlp.finding_organ_max_chars
+      suggested_levels: [180, 220, 260]
+    S4_negation:
+      summary: "Janela de negação."
+      yaml_knob: nlp.negation_window
+      suggested_levels: [5, 7, 9]
+    S5_embeddings:
+      summary: "Modo decisão embeddings + limiares."
+      yaml_knobs:
+        - nlp.embeddings.use_embeddings
+        - nlp.embeddings.decision_mode
+        - nlp.embeddings.similarity_threshold
+        - nlp.embeddings.ambiguity_band
+        - nlp.feature_flags.calibrated_hybrid
+    S6_segmentation:
+      summary: "Segmentação do texto (auto vs documento completo vs âncoras)."
+      yaml_knob: nlp.segmentation.mode
+      suggested_levels: [auto, full_doc, anchors_only]
+    S7_score_density:
+      summary: "Política de bins vs densidade no score."
+      yaml_knob: nlp.score_policy_version
+      suggested_levels: [v1_bins_legacy, v2_density]
+  combinations_policy:
+    max_knobs_simultaneous: 2
+    note: "Cenários nomeados S3_S4_* ou S5_S6_* respeitam no máximo dois eixos distintos."
+  promotion:
+    # fp_ceiling: match_rate >= baseline e FP <= baseline (comportamento original).
+    # fn_priority: melhoria real vs baseline = FN < baseline_FN com MR >= baseline_MR e FP <= baseline_FP * fp_ratio_max
+    #   (prioridade clínica: reduzir S perdidos; FP pode subir até ao orçamento — filtro humano downstream).
+    active_profile: fp_ceiling
+    fp_ceiling:
+      description: "MR >= baseline e FP <= baseline_FP"
+    fn_priority:
+      description: "Min FN entre candidatos com MR >= baseline, FN < baseline_FN, FP <= baseline_FP * ratio"
+      fp_ratio_max: 2.0
+      require_match_rate_gte_baseline: true
+      require_fn_lt_baseline: true
+    primary_metric: match_rate
+    fp_key: legacy_N_motor_S
+    fn_key: legacy_S_motor_N
+    rules:
+      - "fp_ceiling: match_rate >= baseline_match_rate (empate aceite se FP melhorar)"
+      - "fp_ceiling: fp_count <= baseline_fp_count"
+      - "fn_priority: ver bloco fn_priority (orçamento FP + FN estritamente menor)"
+    mcnemar:
+      baseline_role: audit_a
+      scenario_role: audit_b
+      significant_0_05: chi2 >= 3.841
+
+scenarios:
+  - id: baseline
+    description: "YAML base hepatologia (referência de bancada)."
+    strategies: []
+    config_patch: {}
+
+  - id: S3_chars_180
+    description: "S3 proximidade 180 chars."
+    strategies: [S3]
+    config_patch:
+      nlp:
+        finding_organ_max_chars: 180
+
+  - id: S3_chars_260
+    description: "S3 proximidade 260 chars."
+    strategies: [S3]
+    config_patch:
+      nlp:
+        finding_organ_max_chars: 260
+
+  - id: S4_neg_5
+    description: "S4 negação janela 5."
+    strategies: [S4]
+    config_patch:
+      nlp:
+        negation_window: 5
+
+  - id: S4_neg_9
+    description: "S4 negação janela 9."
+    strategies: [S4]
+    config_patch:
+      nlp:
+        negation_window: 9
+
+  - id: S5_hybrid_calibrated
+    description: "S5 hybrid + embeddings ligados + calibração leve (sem router LLM)."
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_fallback_embeddings
+    description: "S5 fallback semântico + embeddings ligados."
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: fallback
+
+  - id: S6_full_doc
+    description: "S6 segmentação documento completo."
+    strategies: [S6]
+    config_patch:
+      nlp:
+        segmentation:
+          mode: full_doc
+
+  - id: S7_v2_density
+    description: "S7 score_policy v2_density."
+    strategies: [S7]
+    config_patch:
+      nlp:
+        score_policy_version: v2_density
+
+  - id: S3_180_S4_9
+    description: "Par S3+S4 (≤2 knobs)."
+    strategies: [S3, S4]
+    config_patch:
+      nlp:
+        finding_organ_max_chars: 180
+        negation_window: 9
+
+  - id: S5_hybrid_S6_full
+    description: "Par S5+S6."
+    strategies: [S5, S6]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+        segmentation:
+          mode: full_doc

@@ -1,0 +1,103 @@
+specialty_id: pulmao
+config_version: 0.1.1-piloto
+
+nlp:
+  shared_organs_path: ../shared/organs.yaml
+  target_organs:
+    - pulmao
+
+  segmentation:
+    mode: auto
+    force_full_doc_for: []
+
+  findings:
+    nodulo:
+      - nodulo
+      - nódulo
+      - micronodulo
+      - micronódulo
+      - nodular
+    consolidacao:
+      - consolidacao
+      - consolidação
+      - opacidade consolidativa
+    vidro_fosco:
+      - vidro fosco
+      - opacidades em vidro fosco
+    derrame_pleural:
+      - derrame pleural
+      - reacao pleural
+      - reação pleural
+    enfisema:
+      - enfisema
+      - enfisema centrolobular
+      - enfisema parasseptal
+    atelectasia:
+      - atelectasia
+      - atelectasias
+      - banda opaca
+    opacidade_extras:
+      - opacidade irregular
+      - opacidade nodular
+      - opacidade mista
+      - opacidade linear
+    nodulo_misto:
+      - nodo subsolido
+      - nodulo subsolido
+      - nódulo subsólido
+      - micronodulacao
+      - micronodulação
+    torax_generico:
+      - arvore em brotamento
+      - arvore brônquica
+      - espiculado
+      - espiculada
+
+  findings_regex:
+    nodulo:
+      - "\\bn[oó]dulo[s]?\\b"
+      - "\\bmicron[oó]dulo[s]?\\b"
+    consolidacao:
+      - "\\bconsolida(c|ç)[aã]o(?:es)?\\b"
+    vidro_fosco:
+      - "\\bvidro\\s*-?\\s*fosco\\b"
+      - "\\bground\\s*glass\\b"
+    derrame_pleural:
+      - "\\bderrame\\s+pleural\\b"
+    subsolido:
+      - "\\b(subs[óo]lido|subs[óo]lida|subs[óo]lidos|subs[óo]lidas)\\b"
+    opacidade_extras:
+      - "\\bopacidad(es)?\\s+(em\\s+)?(vidro\\s*fosco|irregular|nodular|mista|linear|difusa)\\b"
+    densidade:
+      - "\\b(re)?densidad(es)?\\s+de?\\s+partes?\\s+moles?\\b"
+    espiculado:
+      - "\\bespiculad[ao]s?\\b"
+    brotamento:
+      - "(?:á|a)rvore\\s+em\\s+brotamento"
+    atelectasia:
+      - "\\batelectas?ias?\\b"
+
+  negation_phrases:
+    - sem
+    - nao ha
+    - não há
+    - ausencia de
+    - ausência de
+    - nao se observam
+    - não se observam
+    - nao identificamos
+    - não identificamos
+    - livre de
+  negation_window: 7
+
+  finding_organ_max_chars: 220
+  score_policy_version: v1_bins_legacy
+  use_spacy_matcher: true
+
+  text_pipeline:
+    trailing_line_patterns:
+      - "(?i)^\\s*este\\s+laudo\\s+pode\\s+nao\\s+estar\\s+completo.*webris.*$"
+      - "(?i)^\\s*este\\s+laudo\\s+pode\\s+n[aã]o\\s+estar\\s+completo.*webris.*$"
+
+data: {}
+monitoring: {}

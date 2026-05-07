@@ -1,0 +1,201 @@
+specialty_id: hepatologia
+config_version: 0.1.9-diamond-pack2b-antifp-v1-pr2-reverted-pr1-only
+nlp:
+  shared_organs_path: ../shared/organs.yaml
+  target_organs:
+  - figado
+  - vesicula_biliar
+  - vias_biliares
+  organs:
+    figado:
+      regex:
+      - \bhepat\w*
+    vesicula_biliar:
+      seeds:
+      - vesicula biliar
+      - vesícula biliar
+      - vesicula
+      - vesícula
+      - colecisto
+    vias_biliares:
+      seeds:
+      - vias biliares
+      - via biliar
+      - coledoco
+      - colédoco
+      - hepatocoledoco
+  segmentation:
+    mode: auto
+    force_full_doc_for: []
+  findings:
+    lesao_focal:
+    - nodulo
+    - nódulo
+    - nodulos
+    - nódulos
+    - lesao focal
+    - lesoes focais
+    - nodulo hepatico
+    - nódulo hepatico
+    - nodulo hipervascular
+    - lirads 4
+    - lirads 5
+    esteatose:
+    - esteatose hepatica
+    - esteatose hepática
+    - infiltracao gordurosa hepatica
+    - infiltração gordurosa hepática
+    - degeneracao gordurosa figado
+    - degeneração gordurosa figado
+    - aumento difuso ecogenicidade hepatica
+    - aumento da ecogenicidade hepatica
+    - aumento ecogenicidade hepatica
+    - atenua feixe acustico posterior
+    - atenuacao feixe acustico posterior
+    colecao_hepatica:
+    - colecao hepatica
+    - coleção hepática
+    - abscesso hepatico
+    - abscesso hepático
+    - infarto figado
+    - necrose hemorragica
+    - necrose hemorrágica
+    hepatomegalia:
+    - hepatomegalia
+    - figado difusamente aumentado
+    - hipertrofia lobo caudado
+    dilatacao_biliar:
+    - dilatacao das vias biliares
+    - dilatação das vias biliares
+    - coledocolitíase
+    - coledocolitiase
+    - ectasia de vias biliares
+    - dilatacao via biliar intra-hepatica
+    - dilatacao via biliar extra-hepatica
+    - ectasia vias biliares intra-hepaticas
+    - ectasia vias biliares extra-hepaticas
+    - hepatocoledoco dilatado
+    - dilatacao vias-biliares
+    - dilatação vias-biliares
+    cisto:
+    - cisto hepatico
+    - cistos hepaticos
+    - cistos no figado
+    colangite:
+    - colangite
+    hepatopatia:
+    - hepatopatia cronica
+    - hepatopatia crônica
+    - sinais hepatopatia cronica
+    - sinais hepatopatia crônica
+    - doenca hepatica cronica
+    - doença hepática crônica
+    - cirrose hepatica
+    - cirrose hepática
+    - cirrose
+    - doenca hepatica cronica
+    - doença hepática crônica
+    - hepatite
+    - hipertensao portal
+    - hipertensão portal
+    - encefalopatia hepatica
+    - encefalopatia hepática
+    - esclerose hepatica
+    - esclerose hepática
+    - insuficiencia hepatica
+    - insuficiência hepática
+    - insuficiencia hepatica alcoolica
+    - insuficiência hepática alcoólica
+    - doenca alcoolica figado
+    - doença alcoólica figado
+    - figado gorduroso alcoolico
+    - figado gorduroso alcoólico
+    - congestao passiva cronica figado
+    - congestão passiva crônica figado
+    - varizes esofagianas
+    - varizes gastricas
+    - varizes gástricas
+    - cavernoma porta
+    - circulacao colateral
+    - circulação colateral
+    - trombose veia porta
+    - veia porta dilatada
+    - baco aumentado
+    - sindrome obstrucao sinusoidal hepatica
+    - síndrome obstrução sinusoidal hepática
+    colelitíase:
+    - colelitiase
+    - colelitíase
+    - colecistolitiase
+    - colecistolitíase
+    - microlitiase biliar
+    - lama biliar
+    - barro biliar
+    - colecistopatia calculosa
+    - colecistopatia calculosa sem sinais inflamatorios
+    - vesicula preenchida por calculos
+    - vesicula preenchida multiplos calculos
+    - colecistopatia calculosa sem sinais inflamatorios agudos
+    - colelitiases
+    - microlitiase
+    - microlitiases
+    - multiplos calculos
+    - múltiplos cálculos
+  findings_regex:
+    lesao_focal:
+    - \b(n[oó]dulo|les[aã]o)\b[^.]{0,40}\bhep[áa]t
+    - \bhep[áa]m|figad[oa]\b[^.]{0,30}\b(n[oó]dulo|les[aã]o|massa)
+    - \bf[íi]gad[oa]\b[^.]{0,40}\bn[óo]dulo\b
+    - \blirads\s*[45]\b
+    esteatose:
+    - esteatose\s+hep[áa]t|grau\s+de\s+esteatose
+    - \bpar[êe]nquima\s+hep[áa]tico\b[^.]{0,40}\besteatose\b
+    - ecogenicidade\s+hep[áa]tica[^.]{0,35}(aumentad|difus)
+    - (atenua[cç][aã]o|atenua)\s+do?\s+feixe\s+ac[uú]stico\s+posterior
+    colelitíase:
+    - cole(cisto)?liti[íi]ase
+    - lama\s+biliar|barro\s+biliar
+    - ves[ií]cula\s+biliar[^.]{0,45}calcul
+    dilatacao_biliar:
+    - (dilata[cç][aã]o|ectasia)\s+das?\s+vias?\s+biliares
+    - dilatacao\s+vias[-\s]biliares
+    - dilata[cç][aã]o\s+vias[-\s]biliares
+    - hepatocoledoco[^.]{0,25}(dilat|ectasi)
+    - coledoco[^.]{0,25}(dilat|ectasi)
+  negation_phrases:
+  - sem
+  - nao ha
+  - não há
+  - ausencia de
+  - ausência de
+  - nao se observam
+  - não se observam
+  - nao identificamos
+  - não identificamos
+  - livre de
+  negation_window: 5
+  finding_organ_max_chars: 220
+  score_policy_version: v1_bins_legacy
+  use_spacy_matcher: true
+  embeddings:
+    use_embeddings: false
+    decision_mode: fallback
+    embedding_backend: auto
+    embedding_model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    similarity_threshold: 0.78
+    ambiguity_band:
+    - 0.3
+    - 0.7
+    hybrid_weight_rule: 0.7
+    hybrid_weight_semantic: 0.3
+    similarity_threshold_by_model:
+      pucpr/biobertpt-all:
+        similarity_threshold: 0.88
+        ambiguity_band:
+        - 0.35
+        - 0.65
+  text_pipeline:
+    trailing_line_patterns:
+    - (?i)^\s*este\s+laudo\s+pode\s+nao\s+estar\s+completo.*webris.*$
+data: {}
+monitoring: {}

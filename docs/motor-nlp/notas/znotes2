@@ -1,0 +1,196 @@
+plataforma-nlp/
+│
+├── shared/
+│   └── organs.yaml                     # universo de orgaos (runtime)
+│
+├── especialidades/
+│   ├── _template/                      # molde para nova especialidade
+│   │   ├── config.yaml
+│   │   └── ntb_motor.py
+│   │
+│   ├── hepatologia/
+│   │   ├── config.yaml
+│   │   └── ntb_motor.py
+│   │
+│   ├── biliar/
+│   │   ├── config.yaml
+│   │   └── ntb_motor.py
+│   │
+│   ├── colon/
+│   ├── dii/
+│   ├── birads/
+│   ├── pulmao/
+│   ├── neuroimunologia/
+│   ├── reumatologia/
+│   └── rim/                            # caso especial*
+│
+                                                ├── tests/
+                                                │   └── integration/
+                                                │       ├── test_hepatologia.py
+                                                │       ├── test_biliar.py
+                                                │       └── conftest.py                 # fixtures compartilhados
+│
+                                                ├── deploy/
+                                                │   ├── azure-pipelines.yml
+                                                │   └── integration/                    # build-time YAMLs (MLOps)
+                                                │       ├── hepatologia.yaml
+                                                │       └── ...
+│
+├── requirements.txt                    # versoes das 3 libs pinadas
+└── README.md
+
+
+
+
+dados_cientistas
+dados_cientistas_ia
+dados_cientistas_iniciantes
+dados_engenheiros
+
+
+Acesso_Ciencia_Dados_N1
+Acesso_Ciencia_Dados_N2
+
+
+
+
+
+1 Passo
+
+Para evoluir para o código precisamos antes de qualquer linha de código ter clareza sobre:
+
+Problemas que o serão resolvidos
+temos mapeados os usuários e suas expectativas
+Foram estabelecidas restrições técnicas e de negócio que impactam o projeto
+
+Necessitamos ter clareza sobre o contexto, para garantir que todas as decições seguintes não sejam arbitrárias e arriscadas
+
+precisamos estabelecer os fundamentos que guiarão o sistema
+determinar quais partes precisam ser escaláveis, 
+identificar onde a performace é critica
+definir os pontos que exigem consistência rigorosa
+
+
+
+
+
+
+Atue como um arquiteto de software sênior, extremamente criterioso, antes de escrever qualquer linha de código.
+
+Sua missão NÃO é começar implementando imediatamente. Sua missão é primeiro estruturar o raciocínio de arquitetura do sistema e só depois propor a implementação.
+
+Siga obrigatoriamente estes 4 passos:
+
+1) DEFINIR O CENÁRIO DO SISTEMA
+Antes de qualquer decisão técnica:
+- Identifique com clareza quais problemas o software precisa resolver.
+- Mapeie quem são os usuários envolvidos e quais são suas expectativas.
+- Levante as restrições técnicas, operacionais e de negócio que impactam o projeto.
+- Explique o contexto de forma objetiva antes de sugerir qualquer solução.
+
+Importante:
+Sem entender o contexto, qualquer decisão posterior será arbitrária, frágil e arriscada.
+
+2) ESTABELECER OS FUNDAMENTOS QUE GUIARÃO A ARQUITETURA
+Defina os pilares que servirão de base para todas as decisões:
+- Quais partes do sistema precisam ser escaláveis?
+- Onde a performance é crítica?
+- Quais pontos exigem consistência rigorosa?
+- Quais atributos de qualidade são prioritários (ex: manutenção, confiabilidade, observabilidade, segurança, simplicidade, flexibilidade)?
+
+Importante:
+Esses fundamentos devem servir como critério para validar todas as decisões de arquitetura.
+
+3) ORGANIZAR OS COMPONENTES DO SISTEMA E SUA COMUNICAÇÃO
+Estruture o sistema antes de codificar:
+- Defina os principais módulos/componentes.
+- Estabeleça responsabilidades claras para cada módulo.
+- Mapeie o fluxo de informações entre os componentes.
+- Crie fronteiras bem definidas entre áreas para reduzir acoplamento e dependências desnecessárias.
+- Aponte riscos arquiteturais, gargalos e pontos de atenção.
+
+Importante:
+Arquitetura não é apenas código. Arquitetura é o raciocínio sobre como o sistema funciona, evolui e se sustenta ao longo do tempo.
+
+4) REVISAR O DESENHO ANTES DE IMPLEMENTAR
+Antes de abrir o editor para codar:
+- Verifique se algum módulo está com responsabilidade excessiva.
+- Confirme se não existem dependências desnecessárias.
+- Garanta que a solução proposta realmente atende ao contexto e aos pilares definidos.
+- Aponte simplificações possíveis.
+- Destaque trade-offs de cada decisão importante.
+
+Importante:
+Essa revisão deve evitar retrabalho, improviso e decisões precipitadas.
+
+FORMA DE RESPOSTA OBRIGATÓRIA
+Estruture sua resposta sempre nesta ordem:
+
+1. Contexto do problema
+2. Problemas que o sistema resolve
+3. Usuários e expectativas
+4. Restrições técnicas e de negócio
+5. Pilares arquiteturais
+6. Proposta de componentes/módulos
+7. Fluxo de comunicação entre os componentes
+8. Riscos, gargalos e trade-offs
+9. Revisão crítica da arquitetura
+10. Só então: sugestão de implementação
+
+REGRAS IMPORTANTES
+- Não comece escrevendo código sem passar pelos passos acima.
+- Se faltarem informações, faça perguntas antes de propor arquitetura.
+- Prefira clareza, separação de responsabilidades e redução de acoplamento.
+- Evite decisões improvisadas.
+- Sempre justifique as decisões arquiteturais com base no contexto.
+- Pense primeiro na manutenção, evolução e crescimento do software.
+- Caso proponha código, ele deve ser consequência direta da arquitetura definida, nunca o ponto de partida.
+
+Objetivo final:
+Construir uma solução robusta, clara, sustentável, escalável quando necessário e alinhada ao contexto real do sistema.
+
+
+
+
+
+
+
+
+vamos pausar por hoje
+
+escreva um .md simples e objetivo listando o que foi feito hoje, avanço nas tasks, definições, decições, etc.
+
+liste os proximos passos, pendencias, e quick restart para retomarmos o fluxo amanhã pela manhã
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Progressive disclosure (respostas em camadas, sem excesso inicial)
+- Spec Driven Development (defina SPEC antes de codar)
+- RPI: Research → Plan → Implement
+
+
+
+
+
+Eduardo Caminha Nunes

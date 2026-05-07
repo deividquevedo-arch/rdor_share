@@ -1,0 +1,38 @@
+specialty_id: "colon"
+config_version: "1.0.0"
+
+nlp:
+  shared_organs_path: "../../shared/organs.yaml"
+  target_organs: ["colon", "reto"]
+  negation_window: 7
+  findings:
+    lesao: ["lesao", "nodulo", "polipo", "massa"]
+  threshold: 0.5
+  text_pipeline:
+    trailing_line_patterns:
+      - "(?i)^\\s*medico\\s+responsavel\\s*$"
+
+data:
+  io_schema_version: "clinical_nlp_io_v1"
+  sources:
+    exame: "{catalog}.gold_corporativo_ia.corporativo.tb_gold_mov_exame"
+    paciente: "{catalog}.gold_corporativo_ia.corporativo.tb_gold_mov_paciente"
+  staging_entrada: "{catalog}.ia.tb_diamond_mod_colon_entrada"
+  output_saida: "{catalog}.ia.tb_diamond_mod_colon_saida"
+  materialize_entrada: true
+  motor_input_mode: "from_staging_entrada"
+  filters:
+    modality:
+      exclude: ["COL"]
+  column_map:
+    id_exame: id_exame
+    id_paciente: id_paciente
+    id_unidade: id_unidade
+    exm_laudo_texto: exm_laudo_texto
+    exm_mod: exm_mod
+    exm_tipo: exm_tipo
+    dt_exame: dt_exame
+
+monitoring:
+  metrics_table: "{catalog}.ia.tb_diamond_mod_metricas_qualidade"
+  alert_threshold_relevance_drop: 0.15

@@ -1,0 +1,20 @@
+# Fixture sintetica para testes: formato parecido com o que o notebook injetaria
+# (secao nlp + header_aliases). Sem PHI. A lib nao le este arquivo — so pytest.
+#
+# config_version: uso futuro / paridade com YAML de especialidade
+
+config_version: "0.0.1-test"
+
+nlp:
+  negation:
+    tokens:
+      - nao
+      - sem
+      - ausencia de
+    window_tokens: 7
+  header_aliases:
+    figado:
+      - figado
+      - fígado
+    vias_biliares:
+      - vias biliares

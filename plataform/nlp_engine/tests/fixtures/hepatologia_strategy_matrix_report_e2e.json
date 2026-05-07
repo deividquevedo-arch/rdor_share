@@ -1,0 +1,455 @@
+{
+  "matrix_spec": {
+    "version": 1,
+    "baseline_scenario_id": "baseline",
+    "strategy_catalog": {
+      "S1_uncertainty_second_pass": {
+        "summary": "Segunda passagem quando sinais de incerteza (ex.: divergência regra vs semântica, negações).",
+        "yaml_knobs": [],
+        "status": "reserved_engine",
+        "note": "Fora da matriz YAML-only v1; requer feature flag e lógica no motor."
+      },
+      "S2_cascade_rules": {
+        "summary": "Segunda passagem com regras/contexto mais estritos (sem LLM).",
+        "yaml_knobs": [],
+        "status": "reserved_engine",
+        "note": "Fora da matriz YAML-only v1."
+      },
+      "S3_proximity": {
+        "summary": "Proximidade órgão–achado.",
+        "yaml_knob": "nlp.finding_organ_max_chars",
+        "suggested_levels": [
+          180,
+          220,
+          260
+        ]
+      },
+      "S4_negation": {
+        "summary": "Janela de negação.",
+        "yaml_knob": "nlp.negation_window",
+        "suggested_levels": [
+          5,
+          7,
+          9
+        ]
+      },
+      "S5_embeddings": {
+        "summary": "Modo decisão embeddings + limiares.",
+        "yaml_knobs": [
+          "nlp.embeddings.use_embeddings",
+          "nlp.embeddings.decision_mode",
+          "nlp.embeddings.similarity_threshold",
+          "nlp.embeddings.ambiguity_band",
+          "nlp.feature_flags.calibrated_hybrid"
+        ]
+      },
+      "S6_segmentation": {
+        "summary": "Segmentação do texto (auto vs documento completo vs âncoras).",
+        "yaml_knob": "nlp.segmentation.mode",
+        "suggested_levels": [
+          "auto",
+          "full_doc",
+          "anchors_only"
+        ]
+      },
+      "S7_score_density": {
+        "summary": "Política de bins vs densidade no score.",
+        "yaml_knob": "nlp.score_policy_version",
+        "suggested_levels": [
+          "v1_bins_legacy",
+          "v2_density"
+        ]
+      }
+    },
+    "combinations_policy": {
+      "max_knobs_simultaneous": 2,
+      "note": "Cenários nomeados S3_S4_* ou S5_S6_* respeitam no máximo dois eixos distintos."
+    },
+    "promotion": {
+      "primary_metric": "match_rate",
+      "fp_key": "legacy_N_motor_S",
+      "fn_key": "legacy_S_motor_N",
+      "rules": [
+        "match_rate >= baseline_match_rate (empate aceite se FP melhorar)",
+        "fp_count <= baseline_fp_count (teto FP; não aumentar alarmes falsos vs baseline)"
+      ],
+      "mcnemar": {
+        "baseline_role": "audit_a",
+        "scenario_role": "audit_b",
+        "significant_0_05": "chi2 >= 3.841"
+      }
+    }
+  },
+  "inputs": {
+    "input_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\tests\\fixtures\\hepatologia_e2e_input.csv",
+    "legacy_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\tests\\fixtures\\hepatologia_e2e_expected.csv",
+    "base_config_yaml": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\configs\\hepatologia\\config.yaml",
+    "scenarios_yaml": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\configs\\hepatologia\\scenarios\\strategy_matrix.yaml",
+    "max_rows": 100
+  },
+  "scenarios": [
+    {
+      "scenario_id": "baseline",
+      "description": "YAML base hepatologia (referência de bancada).",
+      "strategies": [],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\baseline_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\baseline_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S3_chars_180",
+      "description": "S3 proximidade 180 chars.",
+      "strategies": [
+        "S3"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_chars_180_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_chars_180_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S3_chars_260",
+      "description": "S3 proximidade 260 chars.",
+      "strategies": [
+        "S3"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_chars_260_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_chars_260_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S4_neg_5",
+      "description": "S4 negação janela 5.",
+      "strategies": [
+        "S4"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S4_neg_5_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S4_neg_5_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S4_neg_9",
+      "description": "S4 negação janela 9.",
+      "strategies": [
+        "S4"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S4_neg_9_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S4_neg_9_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S5_hybrid_calibrated",
+      "description": "S5 hybrid + embeddings ligados + calibração leve (sem router LLM).",
+      "strategies": [
+        "S5"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_hybrid_calibrated_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_hybrid_calibrated_compare.json",
+      "match_rate": 1.0,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 3,
+          "legacy_S_motor_N": 0,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S5_fallback_embeddings",
+      "description": "S5 fallback semântico + embeddings ligados.",
+      "strategies": [
+        "S5"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_fallback_embeddings_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_fallback_embeddings_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S6_full_doc",
+      "description": "S6 segmentação documento completo.",
+      "strategies": [
+        "S6"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S6_full_doc_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S6_full_doc_compare.json",
+      "match_rate": 0.6,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 1,
+          "legacy_S_motor_N": 2,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S7_v2_density",
+      "description": "S7 score_policy v2_density.",
+      "strategies": [
+        "S7"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S7_v2_density_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S7_v2_density_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S3_180_S4_9",
+      "description": "Par S3+S4 (≤2 knobs).",
+      "strategies": [
+        "S3",
+        "S4"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_180_S4_9_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S3_180_S4_9_compare.json",
+      "match_rate": 0.8,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 2,
+          "legacy_S_motor_N": 1,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    },
+    {
+      "scenario_id": "S5_hybrid_S6_full",
+      "description": "Par S5+S6.",
+      "strategies": [
+        "S5",
+        "S6"
+      ],
+      "audit_csv": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_hybrid_S6_full_audit.csv",
+      "compare_json": "C:\\Users\\deivid.quevedo_a3dat\\Desktop\\Rede D'Or\\Projects\\plataform\\nlp_engine\\_local_samples\\exports\\hepatologia_strategy_matrix_e2e\\S5_hybrid_S6_full_compare.json",
+      "match_rate": 1.0,
+      "match_rate_ci95_bootstrap": {
+        "lo": 0.0,
+        "hi": 0.0,
+        "n_boot": 80
+      },
+      "n_joined": 5,
+      "compare": {
+        "status": "ok",
+        "confusion_matrix_legacy_vs_motor": {
+          "legacy_S_motor_S": 3,
+          "legacy_S_motor_N": 0,
+          "legacy_N_motor_S": 0,
+          "legacy_N_motor_N": 2
+        }
+      }
+    }
+  ],
+  "paired_vs_baseline": {
+    "S3_chars_180": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S3_chars_260": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S4_neg_5": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S4_neg_9": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S5_hybrid_calibrated": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S5_fallback_embeddings": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S6_full_doc": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S7_v2_density": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S3_180_S4_9": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    },
+    "S5_hybrid_S6_full": {
+      "mcnemar_vs_baseline": {
+        "a_only": 0,
+        "b_only": 0,
+        "chi2": 0.0,
+        "significant_0_05": false
+      }
+    }
+  },
+  "winner_under_promotion_rules": {
+    "scenario_id": "S5_hybrid_calibrated",
+    "match_rate": 1.0,
+    "fp": 0,
+    "fn": 0
+  }
+}

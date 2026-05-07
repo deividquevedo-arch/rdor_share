@@ -1,0 +1,74 @@
+organs:
+  pulmao:
+    seeds:
+      - pulmao
+      - pulmão
+      - pulmoes
+      - pulmões
+      - parenquima pulmonar
+      - parênquima pulmonar
+      - lobo pulmonar
+      - lobo superior direito
+      - lobo superior esquerdo
+      - lobo inferior direito
+      - lobo inferior esquerdo
+      - lobo superior
+      - lobo inferior
+      - apices
+      - ápices
+      - apice pulmonar
+      - cupula
+      - cúpula
+      - cissura
+      - cissura pleural
+      - hilo
+      - hilo pulmonar
+      - arvore bronquica
+      - árvore brônquica
+      - arvore brônquica
+      - bronquica
+      - brônquica
+      - segmento basal
+      - segmento apical
+      - campos pulmonares
+      - bases pulmonares
+  torax:
+    seeds:
+      - torax
+      - tórax
+      - hemitorax
+      - hemitórax
+  pleura:
+    seeds:
+      - pleura
+      - pleural
+  figado:
+    seeds:
+      - figado
+      - fígado
+      - hepatico
+      - hepático
+      - parênquima hepatico
+      - parenquima hepatico
+      - parenquima hepático
+      - segmento hepatico
+      - segmento hepático
+
+header_aliases:
+  pulmao:
+    - pulmao
+    - pulmão
+    - pulmoes
+    - pulmões
+  torax:
+    - torax
+    - tórax
+    - toracico
+    - torácico
+    - toracica
+    - torácica
+  figado:
+    - figado
+    - fígado
+    - hepatico
+    - hepático

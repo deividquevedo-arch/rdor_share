@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nlp-engine"
+version = "0.1.0"
+description = "Motor NLP clinico: TextPipeline, engine rule-based, config (dict-in), scoring."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Proprietary" }
+dependencies = [
+    "ftfy>=6.0",
+    "striprtf>=0.0.26",
+    "html2text>=2020.1.16",
+    "lxml>=5.0",
+]
+
+[project.optional-dependencies]
+pandoc = ["pypandoc>=1.13"]
+# Ancoras (Doc) e testes de ancoragem; tambem incluido em ``dev`` para o venv de desenvolvimento fechar com a CI.
+spacy = ["spacy>=3.7.0,<4"]
+dev = [
+    "pytest>=8.0",
+    "pyyaml>=6.0",
+    "ruff>=0.4",
+    "spacy>=3.7.0,<4",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nlp_engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

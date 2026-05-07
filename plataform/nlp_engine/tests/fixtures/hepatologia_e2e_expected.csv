@@ -1,0 +1,6 @@
+id_exame;id_pct;expected_encaminhamento;expected_fl_relevante;legacy_class;legacy_frase_selec
+H-E2E-001;P-E2E-001;S;1;SYN;fixture-e2e-001
+H-E2E-002;P-E2E-002;N;0;SYN;fixture-e2e-002
+H-E2E-003;P-E2E-003;N;0;SYN;fixture-e2e-003
+H-E2E-004;P-E2E-004;S;1;SYN;fixture-e2e-004
+H-E2E-005;P-E2E-005;S;1;SYN;fixture-e2e-005

@@ -1,0 +1,6 @@
+id_exame;id_pct;exm_an;exm_mod;exm_tipo;dt_exame;exm_laudo_texto
+H-E2E-001;P-E2E-001;A1;CT;abdome;2026-01-01;Fígado com nódulo hipodense de 15 mm no segmento VI.
+H-E2E-002;P-E2E-002;A2;CT;abdome;2026-01-02;Fígado homogeneo, sem nódulos ou lesoes focais.
+H-E2E-003;P-E2E-003;A3;CT;abdome;2026-01-03;Rins e bexiga sem alteracoes. Pelve livre.
+H-E2E-004;P-E2E-004;A4;CT;abdome;2026-01-04;Parênquima hepatico com esteatose leve.
+H-E2E-005;P-E2E-005;A5;CT;abdome;2026-01-05;Colangite com dilatacao das vias biliares intra-hepaticas.

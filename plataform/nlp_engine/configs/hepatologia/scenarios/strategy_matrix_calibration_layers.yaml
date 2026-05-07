@@ -1,0 +1,213 @@
+# Submatriz: calibração em camadas (plan: match >= 0,80).
+# Correr com --scenarios-yaml e --only-scenarios para reduzir tempo.
+# Base: deep-merge sobre configs/hepatologia/config.yaml (baseline = patch vazio).
+
+matrix_spec:
+  version: 1
+  baseline_scenario_id: baseline
+  strategy_catalog:
+    L1_threshold_sweep:
+      summary: "Camada 1: grelha similarity_threshold sobre S5 hybrid + calibrated_hybrid"
+    L2_fallback_band:
+      summary: "Camada 2: decision_mode fallback + ambiguity_band e/ou limiar"
+    L3_structural_pair:
+      summary: "Camada 3: campeão L1 (provisão sim085) + um knob S3 ou S4 — retunar ID após evidência L1"
+    L4_llm_pilot:
+      summary: "Piloto: mesmo S5 hybrid calibrado + llm_router mode llm (endpoint/chave fora do repo)"
+  promotion:
+    active_profile: fp_ceiling
+    fn_priority:
+      fp_ratio_max: 2.0
+      require_match_rate_gte_baseline: true
+      require_fn_lt_baseline: true
+
+scenarios:
+  - id: baseline
+    description: "Referência YAML produção (sem patch)."
+    strategies: []
+    config_patch: {}
+
+  - id: S5_hybrid_calibrated
+    description: "Referência S5 (igual matriz principal)."
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_calibrated_llm_pilot
+    description: "Piloto LLM: OpenAI gpt-4o-mini + hybrid calibrado (key em OPENAI_API_KEY; pip install -e .[llm])."
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: true
+          mode: llm
+          uncertainty_band: [0.35, 0.65]
+          max_input_chars: 8000
+          timeout_s: 45
+          provider: openai_compatible
+          base_url: "https://api.openai.com/v1"
+          model: "gpt-4o-mini"
+          api_key_env: OPENAI_API_KEY
+          temperature: 0
+          json_response_format: true
+          specialty_context: |
+            Decidir relevância para encaminhamento a partir do excerto: relevante=true apenas com achado
+            clinicamente relevante para triagem; anatomia normal, ausência de alterações significativas ou
+            negação clara de patologia alvo → relevante=false. Em dúvida real, tender a relevante=false.
+          prompt_user_template: |
+            Contexto (sem identificadores de paciente):
+            {specialty_context}
+            Especialidade (id): {specialty_id}
+            Excerto do laudo:
+            {text}
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Camada 1: grelha limiar semântico (hybrid) ---
+  - id: S5_hybrid_sim082
+    description: "L1: hybrid + similarity_threshold 0.82"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.82
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_sim085
+    description: "L1: hybrid + similarity_threshold 0.85"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.85
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_sim088
+    description: "L1: hybrid + similarity_threshold 0.88"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.88
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_sim090
+    description: "L1: hybrid + similarity_threshold 0.90"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.90
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Camada 2: fallback + banda / limiar ---
+  - id: S5_fallback_calibrated
+    description: "L2: fallback + calibrated + banda default config base"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: fallback
+          ambiguity_band:
+            - 0.3
+            - 0.7
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_fallback_band_narrow
+    description: "L2: fallback + banda mais estreita"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: fallback
+          ambiguity_band:
+            - 0.35
+            - 0.65
+          similarity_threshold: 0.85
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_fallback_sim085
+    description: "L2: fallback + similarity 0.85 + banda default"
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: fallback
+          similarity_threshold: 0.85
+          ambiguity_band:
+            - 0.3
+            - 0.7
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Camada 3: um knob estrutural sobre candidato L1 (sim085 — ajustar após L1) ---
+  - id: S5_hybrid_sim085_S3_260
+    description: "L3: L1 sim085 + proximidade 260 chars"
+    strategies: [S5, S3]
+    config_patch:
+      nlp:
+        finding_organ_max_chars: 260
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.85
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: S5_hybrid_sim085_S4_7
+    description: "L3: L1 sim085 + negation_window 7 (baseline org)"
+    strategies: [S5, S4]
+    config_patch:
+      nlp:
+        negation_window: 7
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.85
+        feature_flags:
+          calibrated_hybrid: true

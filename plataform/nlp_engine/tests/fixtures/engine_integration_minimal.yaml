@@ -1,0 +1,14 @@
+# Fixture sintetica para teste de integracao S02 (sem PHI). Merge com shared opcional.
+specialty_id: test_integration
+config_version: 0.0.1-integ
+nlp:
+  findings:
+    achado: ["lesao", "nodulo"]
+  target_organs: ["figado"]
+  organs:
+    figado:
+      seeds: ["figado"]
+  header_aliases:
+    figado: ["figado"]
+  negation_phrases: ["sem"]
+  negation_window: 7
