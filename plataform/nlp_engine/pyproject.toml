@@ -18,8 +18,10 @@ dependencies = [
 
 [project.optional-dependencies]
 pandoc = ["pypandoc>=1.13"]
+llm = ["httpx>=0.27"]
 # Ancoras (Doc) e testes de ancoragem; tambem incluido em ``dev`` para o venv de desenvolvimento fechar com a CI.
 spacy = ["spacy>=3.7.0,<4"]
+embeddings = ["sentence-transformers>=3.0"]
 dev = [
     "pytest>=8.0",
     "pyyaml>=6.0",

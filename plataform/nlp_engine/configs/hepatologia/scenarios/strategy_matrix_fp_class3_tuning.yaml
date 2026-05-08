@@ -1,0 +1,216 @@
+# Matriz opcional — protocolo tuning FP / classe 3 (um eixo por cenário).
+# Deep-merge sobre configs/hepatologia/config.yaml (igual às outras matrizes).
+#
+# Uso (smoke 500): --max-rows 500 --only-scenarios baseline,fp3_f1_semantic_thr080
+# Uso (full 2000): --max-rows 2000 --only-scenarios baseline,S5_hybrid_calibrated,fp3_f1_semantic_thr080
+#
+# Comparar sempre com S5_hybrid_calibrated da matriz principal ou com o cenário ref_* abaixo.
+
+matrix_spec:
+  version: 1
+  baseline_scenario_id: baseline
+  strategy_catalog:
+    FP3_F1_semantic:
+      summary: "Fase 1: apenas similarity_threshold (menos FP semânticos)."
+    FP3_F2_rules:
+      summary: "Fase 2: apenas proximidade órgão–achado OU negação (um cenário por vez)."
+    FP3_F3_llm_band:
+      summary: "Fase 3: apenas uncertainty_band do llm_router (piloto)."
+    FP3_F4_regex:
+      summary: "Fase 4: apenas negative_context_patterns (modo llm no cenário)."
+    FP3_F5_combo:
+      summary: "Fase 5: combinação F3+F4 (banda narrow + padrões negativos)."
+  promotion:
+    active_profile: fn_priority
+    fn_priority:
+      fp_ratio_max: 2.0
+      require_match_rate_gte_baseline: true
+      require_fn_lt_baseline: true
+
+scenarios:
+  - id: baseline
+    description: "Referência YAML produção (sem patch)."
+    strategies: []
+    config_patch: {}
+
+  # Referência alinhada à matriz principal (para comparar deltas sem abrir outro YAML).
+  - id: S5_hybrid_calibrated
+    description: "Referência S5 hybrid + calibrated (igual strategy_matrix_calibration_layers)."
+    strategies: [S5]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Fase 1: um knob semântico por cenário (subir limiar = mais estrito, tende a reduzir FP). ---
+  - id: fp3_f1_semantic_thr080
+    description: "F1 único eixo: similarity_threshold 0.80 (base prod 0.78)."
+    strategies: [FP3_F1_semantic]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.80
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: fp3_f1_semantic_thr082
+    description: "F1 único eixo: similarity_threshold 0.82."
+    strategies: [FP3_F1_semantic]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+          similarity_threshold: 0.82
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Fase 2: um sub-eixo por cenário (não combinar com F1 na mesma iter). ---
+  - id: fp3_f2_proximity_200
+    description: "F2 único eixo: finding_organ_max_chars 200 (prod 220)."
+    strategies: [FP3_F2_rules]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        finding_organ_max_chars: 200
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  - id: fp3_f2_negwindow_7
+    description: "F2 único eixo: negation_window 7 (prod 5)."
+    strategies: [FP3_F2_rules]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: false
+        negation_window: 7
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Fase 3: banda LLM mais estreita (menos chamadas em ruído; revisar llm_called_rate). ---
+  - id: fp3_f3_llm_band_narrow
+    description: "F3 único eixo: uncertainty_band [0.38, 0.62] no piloto LLM."
+    strategies: [FP3_F3_llm_band]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: true
+          mode: llm
+          uncertainty_band: [0.38, 0.62]
+          max_input_chars: 8000
+          timeout_s: 45
+          provider: openai_compatible
+          base_url: "https://api.openai.com/v1"
+          model: "gpt-4o-mini"
+          api_key_env: OPENAI_API_KEY
+          temperature: 0
+          json_response_format: true
+          specialty_context: |
+            Decidir relevância para encaminhamento a partir do excerto: relevante=true apenas com achado
+            clinicamente relevante para triagem; anatomia normal, ausência de alterações significativas ou
+            negação clara de patologia alvo → relevante=false. Em dúvida real, tender a relevante=false.
+          prompt_user_template: |
+            Contexto (sem identificadores de paciente):
+            {specialty_context}
+            Especialidade (id): {specialty_id}
+            Excerto do laudo:
+            {text}
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Fase 4: padrões de bloqueio adicionais (ajustar lista com curadoria clínica por especialidade). ---
+  - id: fp3_f4_llm_neg_patterns
+    description: "F4 único eixo: negative_context_patterns extra no piloto (rever regex antes de promover)."
+    strategies: [FP3_F4_regex]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: true
+          mode: llm
+          uncertainty_band: [0.35, 0.65]
+          max_input_chars: 8000
+          timeout_s: 45
+          provider: openai_compatible
+          base_url: "https://api.openai.com/v1"
+          model: "gpt-4o-mini"
+          api_key_env: OPENAI_API_KEY
+          temperature: 0
+          json_response_format: true
+          negative_context_patterns:
+            - '(?i)sem\s+c[aá]lculos'
+            - '(?i)aus[êe]ncia\s+de\s+c[aá]lculos'
+            - '(?i)parenquima\s+hep[aá]tico\s+homog[eê]neo'
+          specialty_context: |
+            Decidir relevância para encaminhamento a partir do excerto: relevante=true apenas com achado
+            clinicamente relevante para triagem; anatomia normal, ausência de alterações significativas ou
+            negação clara de patologia alvo → relevante=false. Em dúvida real, tender a relevante=false.
+          prompt_user_template: |
+            Contexto (sem identificadores de paciente):
+            {specialty_context}
+            Especialidade (id): {specialty_id}
+            Excerto do laudo:
+            {text}
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
+
+  # --- Fase 5: combinação das melhores abordagens observadas (F3 + F4). ---
+  - id: fp3_f5_llm_band_narrow_neg_patterns
+    description: "F5 combinado: uncertainty_band [0.38,0.62] + negative_context_patterns extra."
+    strategies: [FP3_F5_combo]
+    config_patch:
+      nlp:
+        llm_router:
+          enabled: true
+          mode: llm
+          uncertainty_band: [0.38, 0.62]
+          max_input_chars: 8000
+          timeout_s: 45
+          provider: openai_compatible
+          base_url: "https://api.openai.com/v1"
+          model: "gpt-4o-mini"
+          api_key_env: OPENAI_API_KEY
+          temperature: 0
+          json_response_format: true
+          negative_context_patterns:
+            - '(?i)sem\s+c[aá]lculos'
+            - '(?i)aus[êe]ncia\s+de\s+c[aá]lculos'
+            - '(?i)parenquima\s+hep[aá]tico\s+homog[eê]neo'
+          specialty_context: |
+            Decidir relevância para encaminhamento a partir do excerto: relevante=true apenas com achado
+            clinicamente relevante para triagem; anatomia normal, ausência de alterações significativas ou
+            negação clara de patologia alvo → relevante=false. Em dúvida real, tender a relevante=false.
+          prompt_user_template: |
+            Contexto (sem identificadores de paciente):
+            {specialty_context}
+            Especialidade (id): {specialty_id}
+            Excerto do laudo:
+            {text}
+        embeddings:
+          use_embeddings: true
+          decision_mode: hybrid
+        feature_flags:
+          calibrated_hybrid: true
