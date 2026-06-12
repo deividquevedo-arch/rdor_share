@@ -27,14 +27,14 @@
 > Criar os 3 repos independentes, configurar CI minimo e publicar primeiro wheel de cada lib.
 
 
-| Task  | Descricao                                                                                              | Est. |
-| ----- | ------------------------------------------------------------------------------------------------------ | ---- |
-| T00.1 | Criar repo `nlp_engine` + estrutura de pacote Python + CI minimo (lint)                                |      |
-| T00.2 | Criar repo `data_manage` + estrutura de pacote Python + CI minimo (lint)                               |      |
-| T00.3 | Criar repo `monitoring` + estrutura de pacote Python + CI minimo (lint)                                |      |
-| T00.4 | Criar repo `plataforma-nlp` com estrutura: `shared/`, `especialidades/_template/`, `tests/`, `deploy/` |      |
-| T00.5 | Configurar publicacao de wheel no feed interno para as 3 libs                                          |      |
-| T00.6 | Publicar primeiro wheel (v0.1.0) de cada lib com modulo vazio + testes placeholder                     |      |
+| Task  | Descricao                                                                                              | Est. | Status |
+| ----- | ------------------------------------------------------------------------------------------------------ | ---- | ------ |
+| T00.1 | Criar repo `nlp_engine` + estrutura de pacote Python + CI minimo (lint)                                |      | Pendente |
+| T00.2 | Criar repo `data_manage` + estrutura de pacote Python + CI minimo (lint)                               |      | Pendente |
+| T00.3 | Criar repo `monitoring` + estrutura de pacote Python + CI minimo (lint)                                |      | Pendente |
+| T00.4 | Criar repo `plataforma-nlp` com estrutura: `shared/`, `especialidades/_template/`, `tests/`, `deploy/` |      | Pendente |
+| T00.5 | Configurar publicacao de wheel no feed interno para as 3 libs                                          |      | Pendente |
+| T00.6 | Publicar primeiro wheel (v0.1.0) de cada lib com modulo vazio + testes placeholder                     |      | Pendente |
 
 
 **Est. total:** 
@@ -49,14 +49,14 @@
 > Extrair e unificar a logica de preparacao de texto dos algoritmos existentes (Grupo 1b como base).
 
 
-| Task  | Descricao                                                                                             | Est. |
-| ----- | ----------------------------------------------------------------------------------------------------- | ---- |
-| T01.1 | Extrair `to_plain()` do Grupo 1b: deteccao RTF/HTML/plain, pypandoc fallback, ftfy, normalizacao NFKC |      |
-| T01.2 | Extrair segmentacao por secao/orgao (headers, ancoras)                                                |      |
-| T01.3 | Extrair deteccao de negacao avancada (23 expressoes, janela 7 tokens, multi-token)                    |      |
-| T01.4 | Extrair remocao de boilerplate (rodapes OCR, assinaturas)                                             |      |
-| T01.5 | Testes unitarios com laudos sinteticos (sem PHI): plain, RTF, HTML, com/sem negacao                   |      |
-| T01.6 | SPEC + decisao: segmentacao T01.2 no caminho do `ClinicalNlpEngine` vs pre-processamento apenas no Composition Root (notebook) |      |
+| Task  | Descricao                                                                                             | Est. | Status |
+| ----- | ----------------------------------------------------------------------------------------------------- | ---- | ------ |
+| T01.1 | Extrair `to_plain()` do Grupo 1b: deteccao RTF/HTML/plain, pypandoc fallback, ftfy, normalizacao NFKC |      | Concluido |
+| T01.2 | Extrair segmentacao por secao/orgao (headers, ancoras)                                                |      | Concluido |
+| T01.3 | Extrair deteccao de negacao avancada (23 expressoes, janela 7 tokens, multi-token)                    |      | Concluido |
+| T01.4 | Extrair remocao de boilerplate (rodapes OCR, assinaturas)                                             |      | Concluido |
+| T01.5 | Testes unitarios com laudos sinteticos (sem PHI): plain, RTF, HTML, com/sem negacao                   |      | Concluido |
+| T01.6 | SPEC + decisao: segmentacao T01.2 no caminho do `ClinicalNlpEngine` vs pre-processamento apenas no Composition Root (notebook) |      | Concluido |
 
 
 **Est. total:** 
@@ -73,14 +73,14 @@
 > Implementar a interface do motor e a primeira implementacao (rule-based com spaCy Matcher + regex).
 
 
-| Task  | Descricao                                                                                             | Est. |
-| ----- | ----------------------------------------------------------------------------------------------------- | ---- |
-| T02.1 | Definir interface `ClinicalNlpEngine` (metodo `process()`, input/output tipados)                      |      |
-| T02.2 | Extrair `RuleBasedEngine` do Grupo 1b: spaCy Matcher + regex accent-tolerant + filtros de proximidade |      |
-| T02.3 | Implementar `scoring.py`: score continuo 0.0-1.0 baseado em match count, negacao, proximidade         |      |
-| T02.4a | Invariantes de saida em `nlp_engine` (`output_invariants.validate_engine_output_row`) + testes (`test_output_invariants.py`) |      |
-| T02.4b | Schema/contrato completo e `quality_guard` na lib **`monitoring`** (sem import cruzado); dono **EngML / monitoring** — ver `notas/t02-4-quality-guard-monitoring-v0.md` |      |
-| T02.5 | Testes unitarios do engine com configs de exemplo                                                     |      |
+| Task  | Descricao                                                                                             | Est. | Status |
+| ----- | ----------------------------------------------------------------------------------------------------- | ---- | ------ |
+| T02.1 | Definir interface `ClinicalNlpEngine` (metodo `process()`, input/output tipados)                      |      | Concluido |
+| T02.2 | Extrair `RuleBasedEngine` do Grupo 1b: spaCy Matcher + regex accent-tolerant + filtros de proximidade |      | Concluido |
+| T02.3 | Implementar `scoring.py`: score continuo 0.0-1.0 baseado em match count, negacao, proximidade         |      | Concluido |
+| T02.4a | Invariantes de saida em `nlp_engine` (`output_invariants.validate_engine_output_row`) + testes (`test_output_invariants.py`) |      | Concluido |
+| T02.4b | Schema/contrato completo e `quality_guard` na lib **`monitoring`** (sem import cruzado); dono **EngML / monitoring** — ver `notas/t02-4-quality-guard-monitoring-v0.md` |      | Parcial |
+| T02.5 | Testes unitarios do engine com configs de exemplo                                                     |      | Concluido |
 
 
 **Est. total:** 
@@ -99,15 +99,15 @@
 > Mover CONFIG clinico de dentro dos notebooks para YAML versionado.
 
 
-| Task  | Descricao                                                                                       | Est. |
-| ----- | ----------------------------------------------------------------------------------------------- | ---- |
-| T03.1 | Definir schema YAML (estrutura, campos obrigatorios, validacao)                                 |      |
-| T03.2 | Implementar `config_loader.py`: load + validate + merge de defaults                             |      |
-| T03.3 | Extrair CONFIG do notebook hepato atual para `configs/hepatologia.yaml`                         |      |
-| T03.4 | Testes: YAML valido, YAML invalido (campo faltante, tipo errado), merge de defaults             |      |
-| T03.5 | Criar `shared/organs.yaml` com universo de orgaos extraido do Grupo 1b                          |      |
-| T03.6 | Implementar merge automatico no config_loader do `nlp_engine`: shared organs + specialty config |      |
-| T03.7 | Definir schema YAML canonico para Fase 1 (sem campos de encoder/head)                           |      |
+| Task  | Descricao                                                                                       | Est. | Status |
+| ----- | ----------------------------------------------------------------------------------------------- | ---- | ------ |
+| T03.1 | Definir schema YAML (estrutura, campos obrigatorios, validacao)                                 |      | Concluido |
+| T03.2 | Implementar `config_loader.py`: load + validate + merge de defaults                             |      | Concluido |
+| T03.3 | Extrair CONFIG do notebook hepato atual para `configs/hepatologia.yaml`                         |      | Concluido |
+| T03.4 | Testes: YAML valido, YAML invalido (campo faltante, tipo errado), merge de defaults             |      | Concluido |
+| T03.5 | Criar `shared/organs.yaml` com universo de orgaos extraido do Grupo 1b                          |      | Concluido |
+| T03.6 | Implementar merge automatico no config_loader do `nlp_engine`: shared organs + specialty config |      | Concluido |
+| T03.7 | Definir schema YAML canonico para Fase 1 (sem campos de encoder/head)                           |      | Parcial |
 
 
 **Est. total:** 
@@ -122,12 +122,12 @@
 > Criar camada de observabilidade no motor.
 
 
-| Task  | Descricao                                                                                            | Est. |
-| ----- | ---------------------------------------------------------------------------------------------------- | ---- |
-| T04.1 | Implementar registro de metadados: `specialty_id`, `config_version`, `engine_version`, `dt_execucao` |      |
-| T04.2 | Implementar `confidence_score` continuo (0.0-1.0) no output                                          |      |
-| T04.3 | Implementar calculo de metricas (precision/recall/F1) quando amostra gold fornecida                  |      |
-| T04.4 | Definir schema + gravacao da tabela `ia.tb_diamond_mod_metricas_qualidade`                           |      |
+| Task  | Descricao                                                                                            | Est. | Status |
+| ----- | ---------------------------------------------------------------------------------------------------- | ---- | ------ |
+| T04.1 | Implementar registro de metadados: `specialty_id`, `config_version`, `engine_version`, `dt_execucao` |      | Concluido |
+| T04.2 | Implementar `confidence_score` continuo (0.0-1.0) no output                                          |      | Concluido |
+| T04.3 | Implementar calculo de metricas (precision/recall/F1) quando amostra gold fornecida                  |      | Parcial |
+| T04.4 | Definir schema + gravacao da tabela `ia.tb_diamond_mod_metricas_qualidade`                           |      | Pendente |
 
 
 **Est. total:** 
@@ -140,11 +140,11 @@
 > Criar notebook Databricks minimo que consome a lib.
 
 
-| Task  | Descricao                                                                                              | Est. |
-| ----- | ------------------------------------------------------------------------------------------------------ | ---- |
-| T05.1 | Criar notebook template `ntb_ia_motor.py` (~50 linhas): widgets, load config, call engine, write Delta |      |
-| T05.2 | Instanciar para hepatologia + testar end-to-end em dev                                                 |      |
-| T05.3 | Documentar: como rodar, como alterar config, como adicionar especialidade                              |      |
+| Task  | Descricao                                                                                              | Est. | Status |
+| ----- | ------------------------------------------------------------------------------------------------------ | ---- | ------ |
+| T05.1 | Criar notebook template `ntb_ia_motor.py` (~50 linhas): widgets, load config, call engine, write Delta |      | Pendente |
+| T05.2 | Instanciar para hepatologia + testar end-to-end em dev                                                 |      | Pendente |
+| T05.3 | Documentar: como rodar, como alterar config, como adicionar especialidade                              |      | Parcial |
 
 
 **Est. total:** 
@@ -157,12 +157,12 @@
 > Comparar output do motor novo vs pipeline atual.
 
 
-| Task  | Descricao                                                                | Est. |
-| ----- | ------------------------------------------------------------------------ | ---- |
-| T06.1 | Selecionar amostra de laudos hepato ja processados pelo pipeline atual   |      |
-| T06.2 | Processar mesma amostra com motor novo + comparar output por output      |      |
-| T06.3 | Categorizar divergencias: melhoria recall, melhoria precision, regressao |      |
-| T06.4 | Gerar relatorio de validacao com metricas                                |      |
+| Task  | Descricao                                                                | Est. | Status |
+| ----- | ------------------------------------------------------------------------ | ---- | ------ |
+| T06.1 | Selecionar amostra de laudos hepato ja processados pelo pipeline atual   |      | Concluido |
+| T06.2 | Processar mesma amostra com motor novo + comparar output por output      |      | Concluido |
+| T06.3 | Categorizar divergencias: melhoria recall, melhoria precision, regressao |      | Concluido |
+| T06.4 | Gerar relatorio de validacao com metricas                                |      | Concluido |
 
 
 **Est. total:** 
@@ -174,12 +174,12 @@
 
 > Mesmo rigor do S06 para especialidades **Grupo 1b** (rule-based evoluido + embeddings no legado): evidencia de paridade ou melhoria **sem regressao**, com classificacao de divergencias.
 
-| Task  | Descricao                                                                | Est. |
-| ----- | ------------------------------------------------------------------------ | ---- |
-| T06.5 | Selecionar amostra com baseline ou gold do pipeline 1b (ex.: colon)       |      |
-| T06.6 | Processar com motor novo + YAML flatten + comparar `exm_laudo_resultado` / `fl_relevante` / `confidence_score` |      |
-| T06.7 | Categorizar divergencias: melhoria recall, melhoria precision, regressao, gap de escopo (ex.: embeddings **S09**) |      |
-| T06.8 | Registar metricas ou taxa de concordancia no mesmo modelo do relatorio S06 |      |
+| Task  | Descricao                                                                | Est. | Status |
+| ----- | ------------------------------------------------------------------------ | ---- | ------ |
+| T06.5 | Selecionar amostra com baseline ou gold do pipeline 1b (ex.: colon)       |      | Parcial |
+| T06.6 | Processar com motor novo + YAML flatten + comparar `exm_laudo_resultado` / `fl_relevante` / `confidence_score` |      | Parcial |
+| T06.7 | Categorizar divergencias: melhoria recall, melhoria precision, regressao, gap de escopo (ex.: embeddings **S09**) |      | Parcial |
+| T06.8 | Registar metricas ou taxa de concordancia no mesmo modelo do relatorio S06 |      | Parcial |
 
 
 **Est. total:** 
@@ -192,10 +192,10 @@
 > Catalogar todos os dados disponiveis para Fase 3. Roda em paralelo.
 
 
-| Task  | Descricao                                                                                  | Est. |
-| ----- | ------------------------------------------------------------------------------------------ | ---- |
-| T07.1 | Levantar volumes por tipo (nao-rotulados, outputs atuais, gold standard) por especialidade |      |
-| T07.2 | Documentar inventario: volume, formato, localizacao, nivel de validacao                    |      |
+| Task  | Descricao                                                                                  | Est. | Status |
+| ----- | ------------------------------------------------------------------------------------------ | ---- | ------ |
+| T07.1 | Levantar volumes por tipo (nao-rotulados, outputs atuais, gold standard) por especialidade |      | Concluido |
+| T07.2 | Documentar inventario: volume, formato, localizacao, nivel de validacao                    |      | Concluido |
 
 
 **Est. total:** 
@@ -208,9 +208,9 @@
 > Estabelecer fluxo de aprovacao de mudanca clinica. Roda em paralelo.
 
 
-| Task  | Descricao                                                                         | Est. |
-| ----- | --------------------------------------------------------------------------------- | ---- |
-| T08.1 | Documentar fluxo (DS propoe PR YAML -> medico valida -> Git tag) + template de PR |      |
+| Task  | Descricao                                                                         | Est. | Status |
+| ----- | --------------------------------------------------------------------------------- | ---- | ------ |
+| T08.1 | Documentar fluxo (DS propoe PR YAML -> medico valida -> Git tag) + template de PR |      | Parcial |
 
 
 **Est. total:** 
@@ -243,6 +243,13 @@
 
 ## FASE 2 -- NLP avancado com embeddings (Sprint 3)
 
+### Diretriz de prioridade operacional (curto prazo)
+
+- Objetivo primario da fase: motor funcional, pareavel ao legado e com ganho mensuravel por especialidade.
+- Ordem recomendada para destravar produtizacao: S09 + S10 (capacidade do motor), S11 + S12 (estabilizacao e baseline), S12b (LLM fallback seletivo e controlado).
+- Pipeline obrigatorio em toda iteracao: `build -> audit -> compare`.
+- Dependencias de treino pesado (CPT / fine-tuning de encoder) nao bloqueiam evolucao da Fase 2.
+
 ### DoReady / CA / DoD da Fase 2 (S09-S12)
 
 **Definition of Ready (DoR) — obrigatorio antes de iniciar qualquer historia da Fase 2**
@@ -256,7 +263,9 @@
 **Acceptance Criteria (CA) transversal — Fase 2**
 
 - Todo incremento da Fase 2 e ativado por configuracao (feature flag), com fallback para comportamento Fase 1.
-- Cada historia entrega evidencia mensuravel de impacto (delta de metricas vs baseline).
+- Cada historia entrega evidencia mensuravel de impacto (delta de metricas vs baseline), incluindo F-beta(2) quando aplicavel.
+- Em comparacoes pareadas, aplicar McNemar e reportar decisao estatistica junto com o efeito pratico.
+- Reportar IC95% das metricas-chave para evitar decisao por variacao amostral.
 - Nenhuma regressao nao documentada: toda queda relevante de metrica exige justificativa e decisao.
 - Pipeline de validacao obrigatorio em cada iteracao: `build -> audit -> compare`.
 
@@ -272,12 +281,12 @@
 > Extrair SentenceTransformer do Grupo 1b e encapsular como componente opcional.
 
 
-| Task  | Descricao                                                          | Est. |
-| ----- | ------------------------------------------------------------------ | ---- |
-| T09.1 | Extrair logica de embeddings do Grupo 1b para `semantic_expand.py` |      |
-| T09.2 | Integrar no engine via flag YAML (`use_embeddings: true`)          |      |
-| T09.3 | Calibrar thresholds de similaridade por especialidade              |      |
-| T09.4 | Testes: com/sem embeddings, thresholds, edge cases                 |      |
+| Task  | Descricao                                                          | Est. | Status |
+| ----- | ------------------------------------------------------------------ | ---- | ------ |
+| T09.1 | Extrair logica de embeddings do Grupo 1b para `semantic_expand.py` |      | Pendente |
+| T09.2 | Integrar no engine via flag YAML (`use_embeddings: true`)          |      | Pendente |
+| T09.3 | Calibrar thresholds de similaridade por especialidade              |      | Pendente |
+| T09.4 | Testes: com/sem embeddings, thresholds, edge cases                 |      | Pendente |
 
 
 **Est. total:** 
@@ -304,10 +313,10 @@
 > Criar YAMLs para demais especialidades a partir do template hepato.
 
 
-| Task  | Descricao                                                                               | Est. |
-| ----- | --------------------------------------------------------------------------------------- | ---- |
-| T10.1 | Criar YAMLs: biliar, neuroimunologia, reumatologia, colon (extrair do notebook de cada) |      |
-| T10.2 | Validar motor com cada config: output vs pipeline atual da especialidade                |      |
+| Task  | Descricao                                                                               | Est. | Status |
+| ----- | --------------------------------------------------------------------------------------- | ---- | ------ |
+| T10.1 | Criar YAMLs: biliar, neuroimunologia, reumatologia, colon (extrair do notebook de cada) |      | Parcial |
+| T10.2 | Validar motor com cada config: output vs pipeline atual da especialidade                |      | Pendente |
 
 
 **Est. total:** 
@@ -331,10 +340,10 @@
 > Configurar lint + testes como gate no CI.
 
 
-| Task  | Descricao                                                   | Est. |
-| ----- | ----------------------------------------------------------- | ---- |
-| T11.1 | Completar gaps de testes (fixtures multi-especialidade)     |      |
-| T11.2 | Configurar CI: lint (ruff) + pytest como gate antes de sync |      |
+| Task  | Descricao                                                   | Est. | Status |
+| ----- | ----------------------------------------------------------- | ---- | ------ |
+| T11.1 | Completar gaps de testes (fixtures multi-especialidade)     |      | Parcial |
+| T11.2 | Configurar CI: lint (ruff) + pytest como gate antes de sync |      | Parcial |
 
 
 **Est. total:** 
@@ -358,10 +367,10 @@
 > Calcular metricas de referencia para cada especialidade.
 
 
-| Task  | Descricao                                                            | Est. |
-| ----- | -------------------------------------------------------------------- | ---- |
-| T12.1 | Rodar motor em amostra de cada especialidade ativa                   |      |
-| T12.2 | Calcular metricas (precision, recall, F1, concordancia) + documentar |      |
+| Task  | Descricao                                                            | Est. | Status |
+| ----- | -------------------------------------------------------------------- | ---- | ------ |
+| T12.1 | Rodar motor em amostra de cada especialidade ativa                   |      | Parcial |
+| T12.2 | Calcular metricas (precision, recall, F1, concordancia) + documentar |      | Parcial |
 
 
 **Est. total:** 
@@ -380,6 +389,36 @@
 
 ---
 
+### S12b -- LLM fallback seletivo (piloto controlado)
+
+> Aplicar LLM apenas em casos ambiguos/baixa confianca, com governanca e fallback seguro.
+
+
+| Task   | Descricao                                                                                           | Est. | Status |
+| ------ | --------------------------------------------------------------------------------------------------- | ---- | ------ |
+| T12b.1 | Definir gatilhos de acionamento (faixa de score, conflito de regras, baixa evidencia textual)      |      | Pendente |
+| T12b.2 | Integrar fallback via flag YAML (`use_llm_fallback: true`) com retorno estruturado                 |      | Pendente |
+| T12b.3 | Garantir anonimização, trilha de auditoria (`prompt_version`, `model_version`, `decision_source`) |      | Pendente |
+| T12b.4 | Avaliar custo/latencia e impacto em F-beta(2)/recall sem regressao global                          |      | Pendente |
+
+
+**Est. total:** 
+**AC:** Fallback LLM melhora casos inconclusivos sem piorar baseline global e com rastreabilidade completa.
+
+**DoReady (S12b):**
+
+- Baseline rule-based congelado para a especialidade piloto.
+- Politica de privacidade/anonimizacao aprovada para uso do LLM.
+- Orcamento de custo e SLO de latencia definidos.
+
+**DoD (S12b):**
+
+- Fallback LLM ativavel por config e desligavel sem impacto no fluxo principal.
+- Output estruturado e auditavel com campos minimos de rastreabilidade.
+- Relatorio de impacto com decisao explicita (`aceite`, `ajuste`, `rollback`).
+
+---
+
 ### Resumo Fase 2
 
 
@@ -389,39 +428,51 @@
 | S10 Multi-config      |      | Paralelo a S09                       |
 | S11 CI gates          |      | Apos S09/S10                         |
 | S12 Baseline metricas |      | Paralelo a S11                       |
+| S12b LLM fallback     |      | Apos baseline minimo da especialidade |
 | **Total efetivo**     | **** |                                      |
-| **Com paralelismo**   | **** | S09+S10 paralelos; S11+S12 paralelos |
+| **Com paralelismo**   | **** | S09+S10 paralelos; S11+S12 paralelos; S12b por piloto |
 
 
 ---
 
 ## FASE 3 -- Encoder compartilhado (Sprints 4-5) -- objetivo de evolucao
 
-> Condicional a validacao das Fases 1-2 e disponibilidade de GPU.
+> Condicional a validacao das Fases 1-2, disponibilidade de GPU e maturidade minima de dados homologados por especialidade.
+>
+> **Gate de entrada de dados (obrigatorio):**
+> - baseline e processo de homologacao estabilizados na especialidade alvo;
+> - volume de rotulos suficiente para evitar overfitting em treino supervisionado;
+> - evidencia de que tecnicas da Fase 2 (config/rules/embeddings/LLM seletivo) nao capturam mais ganho relevante.
 
 ### S13 -- Continued Pre-Training (CPT)
 
 
-| Task  | Descricao                                                                  | Est. |
-| ----- | -------------------------------------------------------------------------- | ---- |
-| T13.1 | Preparar corpus de laudos nao-rotulados (limpeza via TextPipeline, dedup)  |      |
-| T13.2 | Configurar treinamento MLM com BERTimbau + executar em GPU (~4-8h maquina) |      |
-| T13.3 | Registrar encoder no MLflow + avaliar perplexity                           |      |
+| Task  | Descricao                                                                  | Est. | Status |
+| ----- | -------------------------------------------------------------------------- | ---- | ------ |
+| T13.1 | Preparar corpus de laudos nao-rotulados (limpeza via TextPipeline, dedup)  |      | Pendente |
+| T13.2 | Configurar treinamento MLM com BERTimbau + executar em GPU (~4-8h maquina) |      | Pendente |
+| T13.3 | Registrar encoder no MLflow + avaliar perplexity                           |      | Pendente |
 
 
 **Est. total:** 
 **AC:** Encoder adaptado ao dominio clinico PT-BR. Registrado no MLflow.
+
+**DoReady (S13):**
+
+- Gate de entrada de dados da Fase 3 atendido e documentado.
+- Corpus nao-rotulado com cobertura/qualidade minima e deduplicacao auditavel.
+- Plano de custo (GPU/tempo) aprovado com criterio de interrupcao.
 
 ---
 
 ### S14 -- Weak Supervision (pseudo-labels)
 
 
-| Task  | Descricao                                                                              | Est. |
-| ----- | -------------------------------------------------------------------------------------- | ---- |
-| T14.1 | Definir labeling functions a partir dos outputs atuais (1 LF por engine/especialidade) |      |
-| T14.2 | Treinar label model + gerar dataset pseudo-rotulado com faixas de confianca            |      |
-| T14.3 | Filtrar por confianca: alta (>0.85) -> treino, intermediaria -> future active learning |      |
+| Task  | Descricao                                                                              | Est. | Status |
+| ----- | -------------------------------------------------------------------------------------- | ---- | ------ |
+| T14.1 | Definir labeling functions a partir dos outputs atuais (1 LF por engine/especialidade) |      | Pendente |
+| T14.2 | Treinar label model + gerar dataset pseudo-rotulado com faixas de confianca            |      | Pendente |
+| T14.3 | Filtrar por confianca: alta (>0.85) -> treino, intermediaria -> future active learning |      | Pendente |
 
 
 **Est. total:** 
@@ -432,11 +483,11 @@
 ### S15 -- Fine-Tuning specialty head (piloto hepato)
 
 
-| Task  | Descricao                                                                              | Est. |
-| ----- | -------------------------------------------------------------------------------------- | ---- |
-| T15.1 | Preparar dados: pseudo-labels + gold standard hepato, stratified split                 |      |
-| T15.2 | Implementar head hepato (Linear + Sigmoid) + treinar com gradual unfreezing, k-fold CV |      |
-| T15.3 | Registrar head + metricas por fold no MLflow                                           |      |
+| Task  | Descricao                                                                              | Est. | Status |
+| ----- | -------------------------------------------------------------------------------------- | ---- | ------ |
+| T15.1 | Preparar dados: pseudo-labels + gold standard hepato, stratified split                 |      | Pendente |
+| T15.2 | Implementar head hepato (Linear + Sigmoid) + treinar com gradual unfreezing, k-fold CV |      | Pendente |
+| T15.3 | Registrar head + metricas por fold no MLflow                                           |      | Pendente |
 
 
 **Est. total:** 
@@ -447,11 +498,11 @@
 ### S16 -- Validacao comparativa (encoder vs baseline)
 
 
-| Task  | Descricao                                                           | Est. |
-| ----- | ------------------------------------------------------------------- | ---- |
-| T16.1 | Comparar encoder+head vs motor rule-based vs medico em amostra gold |      |
-| T16.2 | Testes estatisticos: McNemar (p < 0.05), Bootstrap CI, F-beta(2)    |      |
-| T16.3 | Gerar relatorio de concordancia e decisao go/no-go                  |      |
+| Task  | Descricao                                                           | Est. | Status |
+| ----- | ------------------------------------------------------------------- | ---- | ------ |
+| T16.1 | Comparar encoder+head vs motor rule-based vs medico em amostra gold |      | Pendente |
+| T16.2 | Testes estatisticos: McNemar (p < 0.05), Bootstrap CI, F-beta(2)    |      | Pendente |
+| T16.3 | Gerar relatorio de concordancia e decisao go/no-go                  |      | Pendente |
 
 
 **Est. total:** 
@@ -488,8 +539,8 @@
 
 ### S19 -- LLM fallback seletivo
 
-- Para casos inconclusivos (score 0.35-0.65)
-- Anonimizacao obrigatoria, schema de resposta, trilha de auditoria
+- Evolucao do fallback da Fase 2 para cenarios multi-especialidade e otimizado por custo/latencia.
+- Politicas avancadas de roteamento (por tipo de caso, risco e incerteza) com auditoria expandida.
 
 ### S20 -- NER clinico
 
@@ -506,8 +557,9 @@ Estudo + proposta    MVP rule-based       + embeddings          Encoder (obj. ev
 
                      S01 TextPipeline     S09 Embeddings        S13 CPT                S17 Heads multi-esp
                      S02 Engine           S10 Multi-config      S14 Weak Supervision   S18 Drift monitoring
-                     S03 Config YAML      S11 CI gates          S15 Fine-tuning        S19 LLM fallback
+                     S03 Config YAML      S11 CI gates          S15 Fine-tuning        S19 LLM avancado
                      S04 Metricas         S12 Baseline          S16 Validacao          S20 NER clinico
+                                          S12b LLM fallback
                      S05 Notebook
                      S06 Validacao
                      S07 Inventario

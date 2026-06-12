@@ -60,6 +60,13 @@ def llm_uncertainty_band(nlp_config: Mapping[str, Any]) -> tuple[float, float]:
     return (0.35, 0.65)
 
 
+def _llm_failure_fallback_fl(current_fl: int, cfg: Mapping[str, Any]) -> int:
+    policy = str(cfg.get("fallback_policy") or "keep_current").strip().lower()
+    if policy == "positive_in_band":
+        return 1
+    return current_fl
+
+
 def decide_deterministic_regex(
     *,
     treated: str,
@@ -186,6 +193,33 @@ def _build_messages(
     ]
 
 
+def _extract_message_content(message: Mapping[str, Any]) -> str:
+    """Normaliza content string ou blocos (reasoning / Databricks OSS)."""
+    raw = message.get("content")
+    if raw is None:
+        return ""
+    if isinstance(raw, str):
+        return raw.strip()
+    if isinstance(raw, list):
+        parts: list[str] = []
+        for block in raw:
+            if not isinstance(block, Mapping):
+                continue
+            btype = str(block.get("type") or "").strip().lower()
+            if btype == "text":
+                parts.append(str(block.get("text") or ""))
+                continue
+            for sub in block.get("summary") or []:
+                if isinstance(sub, Mapping):
+                    parts.append(str(sub.get("text") or ""))
+        for part in reversed(parts):
+            stripped = part.strip()
+            if stripped.startswith("{") or "relevante" in stripped.lower():
+                return stripped
+        return "\n".join(p for p in parts if p.strip()).strip()
+    return str(raw).strip()
+
+
 def call_openai_compatible_chat(
     *,
     cfg: Mapping[str, Any],
@@ -197,10 +231,11 @@ def call_openai_compatible_chat(
     except ImportError:
         return "", "httpx_missing_install_llm_extra"
 
-    base = str(cfg.get("base_url") or "").rstrip("/")
+    raw_base = cfg.get("base_url") or os.environ.get("DATABRICKS_SERVING_ENDPOINT_BASE", "")
+    base = str(raw_base).rstrip("/")
     model = str(cfg.get("model") or "").strip()
     key_env = str(cfg.get("api_key_env") or "NLP_ENGINE_LLM_API_KEY").strip()
-    api_key = os.environ.get(key_env, "").strip()
+    api_key = os.environ.get(key_env, "").strip() or os.environ.get("DATABRICKS_TOKEN", "").strip()
     timeout_s = float(cfg.get("timeout_s") or 30.0)
 
     if not base or not model:
@@ -208,7 +243,8 @@ def call_openai_compatible_chat(
     if not api_key:
         return "", f"missing_env:{key_env}"
 
-    url = f"{base}/chat/completions"
+    path = str(cfg.get("chat_completions_path") or "v1/chat/completions").strip().lstrip("/")
+    url = f"{base}/{path}"
     payload: dict[str, Any] = {
         "model": model,
         "messages": messages,
@@ -228,13 +264,17 @@ def call_openai_compatible_chat(
                 json=payload,
             )
         if r.status_code >= 400:
-            return "", f"http_{r.status_code}"
+            try:
+                body = (r.text or "")[:400]
+            except Exception:
+                body = ""
+            return "", f"http_{r.status_code}:{body}"
         data = r.json()
         choices = data.get("choices") or []
         if not choices:
             return "", "no_choices"
         msg = choices[0].get("message") or {}
-        content = str(msg.get("content") or "").strip()
+        content = _extract_message_content(msg if isinstance(msg, Mapping) else {})
         return content, None
     except Exception as exc:
         return "", str(exc)[:120]
@@ -262,13 +302,13 @@ def decide_llm_http(
 
     if err:
         ex = LlmExtras("llm", True, model, err)
-        return current_fl, "llm_router_llm_fallback", True, ex
+        return _llm_failure_fallback_fl(current_fl, cfg), "llm_router_llm_fallback", True, ex
 
     fl_new, suffix = _parse_llm_json(content)
     if fl_new is None:
         src = f"llm_router_llm_{suffix}"
         ex = LlmExtras("llm", True, model, "")
-        return current_fl, src, True, ex
+        return _llm_failure_fallback_fl(current_fl, cfg), src, True, ex
 
     verdict_src = "llm_router_llm_positive" if fl_new == 1 else "llm_router_llm_negative"
     ex = LlmExtras("llm", True, model, "")

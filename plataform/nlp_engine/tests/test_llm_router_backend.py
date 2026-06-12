@@ -101,6 +101,37 @@ def test_llm_router_step_llm_fallback_on_http_error(monkeypatch: pytest.MonkeyPa
     assert meta["llm_error"] == "http_500"
 
 
+def test_llm_router_fallback_policy_positive_in_band(monkeypatch: pytest.MonkeyPatch) -> None:
+    import nlp_engine.llm_router_backend as lb
+
+    def fake_call(**kwargs: object) -> tuple[str, str | None]:
+        return "", "http_500"
+
+    monkeypatch.setattr(lb, "call_openai_compatible_chat", fake_call)
+
+    cfg = {
+        "llm_router": {
+            "enabled": True,
+            "mode": "llm",
+            "uncertainty_band": [0.35, 0.65],
+            "fallback_policy": "positive_in_band",
+            "base_url": "https://example.invalid/v1",
+            "model": "x",
+            "api_key_env": "NLP_ENGINE_LLM_API_KEY",
+        },
+    }
+    fl, src, band, meta = lb.llm_router_step(
+        treated="texto sintetico sem phi",
+        current_fl=0,
+        calibrated_score=0.5,
+        nlp_config=cfg,
+    )
+    assert fl == 1
+    assert src == "llm_router_llm_fallback"
+    assert band is True
+    assert meta["llm_error"] == "http_500"
+
+
 def test_engine_end_to_end_llm_mode_mocked(monkeypatch: pytest.MonkeyPatch) -> None:
     import nlp_engine.llm_router_backend as lb
 

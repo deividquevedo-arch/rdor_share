@@ -61,6 +61,16 @@ Validacao: [`output_invariants.validate_engine_output_row`](../../plataform/nlp_
 | `n_negated_spans` | `int` | Sim | >= 0 |
 | `rule_engine_version` | `str` | Sim | Vazio se `feature_flags.rule_engine` desligado. |
 | `score_policy_version` | `str` | Sim | Ex.: `v1_bins_legacy` |
+| `decision_source` | `str` | Sim | Taxonomia canônica: `rule`, `hybrid`, `hybrid_calibrated`, `embedding_fallback`, `llm_router_*`, `disabled`. |
+| `uncertainty_band_hit` | `bool` | Sim | Indica se a linha caiu na banda de incerteza ativa no cenário. |
+| `semantic_score` | `float` | Sim | [0,1], mesmo sem embeddings (default 0.0). |
+| `semantic_matched_term` | `str` | Sim | Termo semântico vencedor (ou vazio). |
+| `semantic_backend` | `str` | Sim | Backend semântico usado (ou vazio). |
+| `embedding_model` | `str` | Sim | Modelo semântico (ou vazio). |
+| `llm_router_mode` | `str` | Sim | `deterministic` ou `llm` (default estável). |
+| `llm_called` | `bool` | Sim | `true` quando houve chamada externa na linha. |
+| `llm_model` | `str` | Sim | Modelo LLM efetivo (ou vazio). |
+| `llm_error` | `str` | Sim | Erro curto do LLM (vazio quando sem erro). |
 | `segmentation_strategy` | `str` | Condicional | Presente quando rule-based ligado e segmentacao aplicada: `headers` \| `anchors` \| `full_doc` |
 
 Validacao estrutural: `validate_exm_laudo_resultado_json` no mesmo modulo.

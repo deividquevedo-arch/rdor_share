@@ -46,6 +46,9 @@ Indice central dos documentos de discovery, arquitetura, roadmap, diretrizes e a
 | `anexo03-historias-e-tasks-v0.md` | Historias S00+ e tasks por fase |
 | `notas/s01-s02-paridade-evidencia-v0.md` | Comandos e registo de paridade S01 / auditoria S02 |
 | `notas/paridade-legado-matriz-gaps-v0.md` | Matriz legado vs motor e Gap_ID (anexo03) |
+| `notas/hepatologia-validacao-carol-homolog-v0.md` | Validação Carol + métricas homolog 496 (fecho parêntese) |
+| `notas/hepatologia-config-alinhamento-v2-clin-v0.md` | YAML `0.1.11` — léxico v2 + documento clínico |
+| `notas/linha-evolucao-xxrads-nlp-engine-v0.md` | Linha de evolucao xxRADS no `nlp_engine` (V1/V2, YAML-driven) |
 | `anexo04-decisoes-config-e-deploy-v0.md` | Decisoes HEAD + MLOps (config/deploy) |
 | `diretriz-arquitetura-pre-codigo-v0.md` | Protocolo de 4 passos antes de codar |
 | `diretriz-desenvolvimento-libs-v0.md` | Padroes das 3 libs e testes |
