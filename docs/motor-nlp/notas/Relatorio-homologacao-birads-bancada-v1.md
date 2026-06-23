@@ -90,7 +90,11 @@
 
 Validados: exact-match estável/melhor, suíte da lib **141 passed**, ruff e mypy verdes.
 
-**❌ Revertido — super-agregação (§4):** tentou-se excluir menções em contexto de exame anterior; a bancada mostrou **regressão** (a heurística cortava conclusões legítimas). Revertido por completo (lib no baseline). Correção correta exige **extração consciente de seção** (priorizar a Conclusão) — item dedicado, com testes próprios e validação clínica.
+**❌ Revertido — super-agregação (§4) — 2 abordagens tentadas, ambas regrediram:**
+1. **Exclusão por contexto comparativo** (marcadores "comparação/laudo prévio" + data): cortava conclusões legítimas → exact-match repr. 99,55% → 97,4%.
+2. **Scoping por seção de conclusão** (agregar só após "Impressão/Conclusão"): corrige os 2 casos, mas o BI-RADS operativo nem sempre está na conclusão (às vezes nos Achados) → exact-match estrat. **96,06% → 88,98%** (≈18 regressões nas categorias altas).
+
+Ambas revertidas (lib no baseline, 141 passed). **Conclusão:** distinguir a categoria operativa de citações de exame anterior exige compreensão de documento de nível clínico, não heurística de marcador/seção. Não vale trocar 2 acertos por ~18 erros. **Os 2 casos ficam como limitação conhecida e aceita** (motor em 99,8%+ de acurácia); reabrir só com um parser de seção validado clinicamente.
 
 **🛠 Bancada — CSV Excel-safe:** `id_exame` agora gravado como `="<id>"` no CSV de divergências, evitando que o Excel o converta em notação científica / perca zeros à esquerda. Os 4 ids antes corrompidos foram recuperados por conteúdo do laudo (todos `igual`, sem erro escondido).
 
@@ -100,7 +104,7 @@ Validados: exact-match estável/melhor, suíte da lib **141 passed**, ruff e myp
 
 | # | Ação | Tipo | Responsável |
 |---|---|---|---|
-| 1 | **Super-agregação** — extração por seção (priorizar Conclusão) | Técnico (motor, maior) | Motor + validação clínica |
+| 1 | **Super-agregação** (2 casos) — limitação aceita; só reabrir com parser de seção validado clinicamente (2 heurísticas já regrediram — §5) | Técnico (motor, grande) | Motor + validação clínica |
 | 2 | Revisão clínica dos 2 ambos-errados + lote dos "iguais" | Clínico | Time clínico |
 | 3 | ✅ Reconferidos os 4 ids corrompidos pelo Excel (todos `igual`) | Técnico | **Concluído** |
 | 4 | Commit dos fixes (config v2 + CSV Excel-safe) + publicação da wheel | Técnico | Aguarda autorização |
