@@ -166,3 +166,21 @@ Próximos: resolver os `# CONFIRMAR` (§4) → rodar E2E em HML (runner `ntb_ia_
 3. **llm_fallback:** ligar só quando fechar o local + subir wheel nova da lib + branch da plataforma.
 4. **Dados de teste:** confirmado que vêm do lake (`pull_rads_sample.py` → samples da bancada).
 5. **relevance_mode 3 modos:** ✅ implementado (este item).
+
+---
+
+## ★★★ #1 RESOLVIDO — column_map confirmado no lake (2026-06-26, commit `c4d10dd`)
+
+Consulta ao `information_schema` (re-auth `databricks auth login -p adb-2013197995950192`):
+- **Tabela entrada** `diamond_{sys}.{sys}.tb_diamond_mod_{sys}_entrada` (fonte do staging legado):
+  `an`(id) · `Laudo`(texto) · `dataexame` · `modalidade` · `tipoexame` · `id_pct` · `idunidade`.
+- **Tabela saida** (legado p/ homolog): `exm_an` · `exm_laudo_texto` · `{sys}`(categoria) · **`fl_relevante`(INT)** → `run_homolog` OK.
+- **column_map corrigido** nos 4 configs (era nome do gold/birads): `id_exame:an`, `exm_laudo_texto:[Laudo]`, `exm_mod:modalidade`, `exm_tipo:tipoexame`, `dt_exame:dataexame`, `id_paciente:id_pct`, `id_unidade:idunidade`. config **pirads v6 / tirads v7**.
+
+**Validação no lake:** entrada PI **4.492** / TI **54.750** linhas. O **legado promove fl por cat≥4**
+(PI: 300+110 = **410 = fl_relevante**) → confirma `relevance_mode=rads_only` como **idêntico ao legado**.
+TI tem **10 casos cat 6** (TR6 escrito) — validar match no E2E.
+
+**Todos os `# CONFIRMAR` resolvidos.** Caminho do E2E HML: `fonte_staging=legado`, runner
+`ntb_ia_motor_e2e` widget `specialty=pirads|tirads`, perfil `rule_only`. Falta só: subir wheel
+nova da lib + branch da plataforma → rodar E2E → ligar `llm_fallback` em HML.
