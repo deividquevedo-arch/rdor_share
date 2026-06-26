@@ -2,6 +2,59 @@
 
 Documento para retomar sem perder contexto. Sucede `checkpoint-rads-expansao-2026-06-23.md`.
 
+---
+
+## ★ ATUALIZAÇÃO (continuação 2026-06-25) — lote A/B/C + critério BI-RADS + llm_fallback
+
+Após a homologação manual do TI-RADS (ver `homologacao-manual-tirads-parcial-v0.md`) e o CSV
+consolidado (`bancada/divergencias_consolidado.csv`, 280 div.), evoluímos as configs para **v4**.
+
+**1. Critério BI-RADS = legado (decisão de negócio):** `fl_relevante=1` SÓ p/ cat ≥ 4; **achados
+clínicos desativados** (`findings: {}`, reversível — léxico preservado em comentário). A/B vs legado:
+match **0,738 → 0,999** (FP 261 → 0). Os 261 FP eram 100% `decision_source=rule` (achados benignos
+cat 2/3 + procedimentos). NÃO reativar achados até a navegação definir.
+
+**2. Lote A/B/C (determinístico, config-only, zero regressão):**
+- **A — negação não apaga grau RADS:** `rads_extraction.negation.tokens: []` nos 3 sistemas (grau é
+  asserção; `"sem calcificações (TIRADS 4)"` não nega). Recupera FN do TI; 0 regressão BI/PI.
+- **B — composto `"N e M"`:** pattern extra captura o 2º número (`"TI-RADS 3 e 4"` → max 4). PI/TI.
+- **C — palavra `"Categoria/Cat"`:** tolerada entre alias e número no grupo de palavra. PI/TI
+  (BI-RADS já trata via alias `categoria`).
+
+**3. Métricas finais (pós-lote):**
+| Sistema | exact-match | FP | FN | match relevância |
+|---|---|---|---|---|
+| BI-RADS | 0,9955 | 0 | 1 | **0,999** (= legado) |
+| PI-RADS repr | 0,9951 | 1 | 1 | 0,998 |
+| PI-RADS strat | 0,9948 | 0 | 1 | 0,9961 |
+| TI-RADS repr | 0,9928 | 1 | **0** | **0,999** |
+| TI-RADS strat | 0,9854 | 0 | 3 | 0,9897 |
+
+(TI strat FN=3: 2 são caso **D** = erro da referência, romano `TIRADS I` + ref super-agregou; 1 é
+`categoria+FN` ainda não revisado.)
+
+**4. llm_fallback de SUPORTE (staged, isonomia c/ hepato):** trigger `alias_without_category` — só
+dispara se o alias está presente e o regex NÃO resolveu a categoria. **ADITIVO** (nunca altera a
+extração regex; só recupera FN — ex.: romano, cauda longa). Conexão p/ Databricks **Haiku 4.5**
+(`model=databricks-claude-haiku-4-5`, `api_key_env=DATABRICKS_TOKEN`; base_url vem do runner).
+**`enabled:false`** (staged). **Validado LOCAL com a OpenAI do usuário** (`gpt-4o-mini`):
+`"(TIRADS I)" → TR1`. Backend `call_openai_compatible_chat` (`base_url` + `v1/chat/completions` +
+`api_key_env`). Local override: `base_url=https://api.openai.com`, `model=gpt-4o-mini`,
+`OPENAI_API_KEY` (via env; key guardada só no scratchpad da sessão).
+
+**🔐 SEGURANÇA:** a chave OpenAI foi colada no chat → **usuário deve ROTACIONAR** (está no histórico).
+Nunca escrita em config/commit; só no scratchpad temporário + referenciada por env var.
+
+**Commits locais (sem push):** plataforma `c7b17c1` (critério BI + A/B/C) · `95315e3` (llm_fallback) ·
+lib `5fc763c` (testes, suite 164). Tudo em `feature/rads-config-homolog` (plataforma) e
+`release/v0.1.1` (lib).
+
+**Próximos:** (a) resolver `# CONFIRMAR` dos `.py` (column_map / `data.legacy` refs do lake PI/TI);
+(b) E2E em HML; (c) **ligar `llm_fallback` (enabled:true)** após validar em HML com Haiku 4.5;
+(d) revisar o 1 `categoria+FN` residual do TI strat. TR6-biópsia segue em aberto.
+
+---
+
 ## 1. O que foi feito nesta sessão
 
 1. **Avaliação dos CSVs de divergência** — 34 divergências PI/TI classificadas. Descobertas:
