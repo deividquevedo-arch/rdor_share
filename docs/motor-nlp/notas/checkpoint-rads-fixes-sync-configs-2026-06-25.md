@@ -127,3 +127,42 @@ $VENV/python.exe bancada/consolidate_divergencias.py  # gera divergencias_consol
 # validar os configs .py (exec + config_loader): ver §4.
 ```
 Próximos: resolver os `# CONFIRMAR` (§4) → rodar E2E em HML (runner `ntb_ia_motor_e2e`, widget specialty=pirads|tirads); avaliar CSV consolidado com o time; depois merge `feature/rads-config-homolog` → `branch-from-versao-alpha`; e merge nlp-engine-lib → hml + publicar wheel.
+
+---
+
+## ★★ ATUALIZAÇÃO 2 (2026-06-26) — relevance_mode (3 modos) + diagnóstico de arquitetura
+
+### relevance_mode configurável — 3 modos (commits lib `891a15d`/`c1ed32b`, plataforma `168d866`)
+`rads_extraction.relevance_mode` governa como o RADS interage com o fluxo normal de relevância
+(regras → embeddings → híbrido → LLM). O léxico de `findings` fica SEMPRE preservado (toggle).
+
+| modo | comportamento |
+|---|---|
+| `normal` | relevância SÓ do fluxo normal; RADS extraído p/ auditoria mas **não** promove |
+| `normal_plus_rads` (default) | fluxo normal **+** promoção RADS (cat≥promote eleva 0→1). `rule_plus_rads` = sinônimo |
+| `rads_only` | só a categoria RADS decide (zera o fluxo normal antes de promover) |
+
+- Engine: suprime a promoção quando `normal`; zera o fl do fluxo normal quando `rads_only`.
+  `decision_source` ganhou `rads_only` (validado em output_invariants).
+- **Estado atual dos configs:** BI/PI/TI em `rads_only` (= critério legado). Trocar p/
+  `normal`/`normal_plus_rads` é uma linha. Resolveu o FP #2 do PI (PI repr FP 1→0). Suite 171.
+
+### Diagnóstico de arquitetura (2026-06-26)
+1. **Função RADS é genérica (config-driven):** novo sistema = bloco de config (aliases, categories,
+   patterns, normalization, relevance_policy, aggregation_*, negation, llm_fallback, relevance_mode).
+   Zero código. Vários sistemas coexistem.
+2. **RADS ativos:** BI-RADS, PI-RADS, TI-RADS ✅. **LI-RADS** só como keywords no hepato (não
+   estruturado) — manter assim por enquanto (decisão do usuário).
+3. **Achados clínicos:** camada `findings`/`findings_regex` preservada; `relevance_mode` decide se
+   entram na relevância. Desacoplado: extração de categoria · achados · política de relevância.
+
+### Status dos pontos abertos (2026-06-26)
+1. **column_map / refs do lake (#CONFIRMAR):** `data.legacy` refs CONFIRMADAS via `pull_rads_sample`
+   (`diamond_{sys}.{sys}.tb_diamond_mod_{sys}_saida`; colunas do lake = `exm_an`, `exm_laudo_texto`,
+   `exm_data`, categoria `{sys}`). **`column_map` do GOLD ainda não confirmado** — token Databricks
+   EXPIROU (re-auth: `databricks auth login -p adb-2013197995950192`), depois consultar
+   `information_schema` de `diamond_pirads`/`diamond_tirads`.
+2. **LI-RADS:** manter como está (keywords no hepato).
+3. **llm_fallback:** ligar só quando fechar o local + subir wheel nova da lib + branch da plataforma.
+4. **Dados de teste:** confirmado que vêm do lake (`pull_rads_sample.py` → samples da bancada).
+5. **relevance_mode 3 modos:** ✅ implementado (este item).
