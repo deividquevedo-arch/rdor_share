@@ -20,6 +20,30 @@
 
 ---
 
+## Estado real consolidado — wheel `fabrica_ia-0.5.6` (atualizado 2026-06-12)
+
+> Banner de sincronizacao: muitos itens das Fases 1-2 foram **entregues e estao em producao na wheel 0.5.6**, mas nao haviam sido sinalizados nas tabelas por-task abaixo. Este bloco e a fonte rapida de verdade; as tabelas detalhadas serao reconciliadas item a item conforme necessario.
+
+**Evolucao de arquitetura (vs S00):** os "3 repos/libs independentes" foram **consolidados em 1 pacote** `fabrica-ia` (`pip install fabrica-ia`) com subpacotes `nlp_engine`, `data_manager`, `nlp_platform` (orquestracao batch) e `monitoring`. Wheel versionada (0.5.6), publicada em UC Volume, CI no **Azure DevOps**.
+
+| Historia | Item | Estado real (0.5.6) |
+|---|---|---|
+| S00 | Infra + wheel + CI | ✅ Entregue (1 lib consolidada; wheel 0.5.6 publicada; CI Azure DevOps) |
+| S01 | TextPipeline (`to_plain`, RTF/HTML, anchors, headers, negacao, boilerplate, footer) | ✅ Entregue |
+| S02 | `ClinicalNlpEngine` + `contracts` + `output_invariants` | ✅ Entregue |
+| S03 | Config YAML externalizada (`config_loader`) | ✅ Entregue |
+| S04 | Metricas/logging (`nlp_platform.batch.homolog` + `monitoring`) | ✅ Entregue |
+| S05 | Notebook fino / composition root (facades `nlp_platform.batch`) | ✅ Entregue |
+| S06 | Validacao paralela hepato | ✅ Entregue (cenario Carol: Recall 100% vs 21,7% legado — `notas/s10-relatorio-final-homologacao-hepatologia-v0.md`) |
+| S09 | Embeddings (`semantic_expand`, opcional) | ✅ Entregue |
+| S10 | Multi-especialidade (`SpecialtyConfig` + batch generico) | ✅ Entregue |
+| S12b | LLM fallback seletivo (`llm_router_backend`, `fallback_policy: positive_in_band`) | ✅ Entregue (na 0.5.6) |
+| **RADS** | `rads_extraction` (BI-RADS/LI-RADS/...) | 🟡 **Fases 0–3 entregues** (`fabrica_ia-0.5.7`); Fase 4 piloto BI-RADS em curso — `doc-plano-implementacao-rads-extraction-v0.md` |
+
+**Fonte de verdade do codigo:** **`fabrica-ia-lib` e canonica** — a wheel **`fabrica_ia-0.5.6`** e a verdade absoluta em uso pela plataforma. A bancada `plataform/nlp_engine` esta **defasada** e **nao e fonte** (sync a partir dela regrediria a lib). Implementar evolucoes (incl. RADS) **direto na lib**.
+
+---
+
 ## FASE 1 -- MVP rule-based (Sprint 2)
 
 ### S00 -- Setup de infraestrutura (3 repos + CI)

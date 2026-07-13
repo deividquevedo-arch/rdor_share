@@ -1,70 +1,38 @@
-# Documentacao -- Motor NLP / Plataforma clinica
+# Documentação — Motor NLP / Plataforma clínica
 
-Indice central dos documentos de discovery, arquitetura, roadmap, diretrizes e alinhamento operacional.
+Índice central. Reorganizado em 2026-07-13 por **assunto** (antes tudo solto em `notas/`).
 
----
+## Estrutura
 
-## Ordem de leitura sugerida
+| Pasta | Conteúdo |
+|---|---|
+| **`_fundacao/`** | Base do motor: discovery, análise de engines, visão, roadmap, anexos (modelo/arquitetura/histórias/decisões), diretrizes, contratos, specs (rule-engine, scoring), modelo de decisão, LLM router, governança/telemetria. |
+| **`rads/`** | **Extração de categoria BI/PI/TI-RADS.** Arquitetura de config RADS, plano de implementação, regras clínicas. `rads/notas/`: checkpoints (birads/rads), decisões de expansão PI/TI, homologações BI/PI/TI-RADS, linha de evolução xxRADS. |
+| **`tireoide/`** | **Linha de cuidado de tireoide (relevância V1).** Gold spot v13, mapa de gaps, relatório final V1, spec da camada quantitativa. Subpastas: `checkpoints/` (tirads/quantitativa), `homologacao/` (reconciliação, homologação de negócio, homologação manual), `dados/` (base ouro, revisões médicas, resíduos, CSVs/xlsx). |
+| **`hepatologia/`** | Bancada, calibração, serving, validações e relatórios de homologação de hepatologia. |
+| **`pulmao/`** | Piloto e deep-dive de pulmão. |
+| **`sprints/`** | Evidências genéricas de sprint/paridade (s01, s02, s09, s10-validação, matriz de gaps, quality-guard, inventário de governança). |
+| **`_processo/`** | Handoff, notas de call, znotes, prep de conversa, decisão de embedding/model-serving, exploração global. |
+| **`checklists/`** | Checklist de implementação (Fase 1). |
 
-1. **Contexto e estado atual:** `01-discovery-estado-atual-nlp-v0.md` -> `02-analise-profunda-engines-nlp-v0.md`
-2. **Ideacao / brainstorm:** `03-documento-auxiliar-brainstorm-motor-ds-nlp-llm-ml-v0.md`
-3. **Visao e entregas:** `04-visao-refinada-motor-nlp-unificado-v0.md` -> `05-roadmap-entregas-sprint-v0.md`
-4. **Alinhamento EngML:** `06-resumo-alinhamento-engml-v0.md`
-5. **Sintese executiva:** `07-relatorio-final-v0-plataforma-nlp-clinica.md`
-6. **Anexos:** `anexo01` a `anexo04` (modelo, arquitetura, historias/tasks, decisoes config/deploy)
-7. **Diretrizes de execucao:** `diretriz-arquitetura-*` -> `diretriz-desenvolvimento-*` -> `diretriz-config-*` -> `diretriz-tech-lead-*`
-8. **Operacional / alinhamento:** `doc-pontos-alinhamento-*`, `doc-gestao-dependencias-*`, resumos de decisoes, `prep-conversa-mleng.md`
+## Ordem de leitura (fundação)
 
----
+1. **Contexto:** `_fundacao/01-discovery-estado-atual-nlp-v0.md` → `_fundacao/02-analise-profunda-engines-nlp-v0.md`
+2. **Ideação:** `_fundacao/03-documento-auxiliar-brainstorm-motor-ds-nlp-llm-ml-v0.md`
+3. **Visão e entregas:** `_fundacao/04-visao-refinada-motor-nlp-unificado-v0.md` → `_fundacao/05-roadmap-entregas-sprint-v0.md`
+4. **Alinhamento EngML:** `_fundacao/06-resumo-alinhamento-engml-v0.md`
+5. **Síntese executiva:** `_fundacao/07-relatorio-final-v0.4-plataforma-nlp-clinica.md`
+6. **Anexos:** `_fundacao/anexo01`…`anexo04` (modelo, arquitetura, histórias/tasks, decisões config/deploy)
+7. **Diretrizes:** `_fundacao/diretriz-arquitetura-*` → `diretriz-desenvolvimento-*` → `diretriz-config-*` → `diretriz-tech-lead-*`
+8. **Specs de engine:** `_fundacao/spec-rule-engine-t022-v0.md`, `_fundacao/spec-scoring-t023-v0.md`
 
-## Desenvolvimento (codigo)
+## Por onde começar por especialidade
 
-- **Validação local x Databricks (paridade, matriz, smoke):** [doc-validacao-paridade-databricks-v0.md](doc-validacao-paridade-databricks-v0.md)
-- **Pacote `nlp_engine` (TextPipeline, CI, Pandoc/RTF):** [plataform/nlp_engine/README.md](../../plataform/nlp_engine/README.md)
-- **Checklist Fase 1 (modulo a modulo):** [checklists/checklist-implementacao-motor-nlp-fase1-v0.md](checklists/checklist-implementacao-motor-nlp-fase1-v0.md)
-- **Historias e tasks:** `anexo03-historias-e-tasks-v0.md`
-- **Arquitetura tecnica e contrato I/O:** `anexo02-arquitetura-motor-nlp-v0.md`
-- **Regras do Agent (Cursor):** `.cursor/rules/motor-nlp.mdc` (raiz do repositorio)
+- **RADS (categoria):** `rads/notas/00 - linha-evolucao-xxrads-nlp-engine-v0.md` → `rads/doc-regras-clinicas-rads-v0.md`
+- **Tireoide (relevância V1):** `tireoide/relatorio-final-tirads-v1-2026-07-12.md` (fecho) + `tireoide/mapa-gaps-tirads-v0.md` (gaps vivos) + `tireoide/gold-spot-tirads-v13-2026-07-07.md`
+- **Hepatologia:** `hepatologia/Relatorio-final-homologacao-hepatologia-v1.md`
 
----
-
-## Tabela de ficheiros
-
-| Ficheiro | Descricao |
-|----------|-----------|
-| `01-discovery-estado-atual-nlp-v0.md` | Discovery do estado atual dos pipelines NLP |
-| `02-analise-profunda-engines-nlp-v0.md` | Analise dos 5 tipos de engine por especialidade |
-| `03-documento-auxiliar-brainstorm-motor-ds-nlp-llm-ml-v0.md` | Brainstorm DS/NLP/ML/LLM |
-| `04-visao-refinada-motor-nlp-unificado-v0.md` | Visao tecnico-cientifica e fases 3-4 |
-| `05-roadmap-entregas-sprint-v0.md` | Roadmap por sprint, lacunas, plano de acao |
-| `06-resumo-alinhamento-engml-v0.md` | Briefing para Engenharia de ML |
-| `07-relatorio-final-v0-plataforma-nlp-clinica.md` | Relatorio consolidado v0 |
-| `anexo01-modelo-motor-nlp-v0.md` | Modelo acessivel do motor (o que/como/porque) |
-| `anexo02-arquitetura-motor-nlp-v0.md` | Arquitetura hoje vs alvo, contrato de dados |
-| `doc-contrato-engine-rule-based-v0.md` | Contrato minimo entrada / `nlp` / saida (motor rule-based S02) |
-| `doc-quality-guard-t024b-composition-v0.md` | T02.4b ate lib `monitoring`: gate no composition root |
-| `anexo03-historias-e-tasks-v0.md` | Historias S00+ e tasks por fase |
-| `notas/s01-s02-paridade-evidencia-v0.md` | Comandos e registo de paridade S01 / auditoria S02 |
-| `notas/paridade-legado-matriz-gaps-v0.md` | Matriz legado vs motor e Gap_ID (anexo03) |
-| `notas/hepatologia-validacao-carol-homolog-v0.md` | Validação Carol + métricas homolog 496 (fecho parêntese) |
-| `notas/hepatologia-config-alinhamento-v2-clin-v0.md` | YAML `0.1.11` — léxico v2 + documento clínico |
-| `notas/linha-evolucao-xxrads-nlp-engine-v0.md` | Linha de evolucao xxRADS no `nlp_engine` (V1/V2, YAML-driven) |
-| `anexo04-decisoes-config-e-deploy-v0.md` | Decisoes HEAD + MLOps (config/deploy) |
-| `diretriz-arquitetura-pre-codigo-v0.md` | Protocolo de 4 passos antes de codar |
-| `diretriz-desenvolvimento-libs-v0.md` | Padroes das 3 libs e testes |
-| `diretriz-config-e-governanca-v0.md` | YAML em duas camadas, governanca clinica |
-| `diretriz-tech-lead-refatoracao-v0.md` | RPI, SDD, progressive disclosure, code review |
-| `doc-pontos-alinhamento-pre-codigo-v0.md` | Checklist B1-B4 e paralelos pre-codigo |
-| `doc-gestao-dependencias-libs-v0.md` | Opcoes de pip/requirements/cluster no Databricks |
-| `doc-validacao-paridade-databricks-v0.md` | Validação pytest x cluster; matriz de paridade; smoke Databricks |
-| `prep-conversa-mleng.md` | Preparacao pessoal para conversa com EngML |
-| `resumo-decisoes-config-deploy-v0.md` | Resumo acessivel das decisoes config/deploy |
-| `onepager-decisoes-config-deploy-v0.md` | One-pager executivo config/deploy |
-| `checklists/checklist-implementacao-motor-nlp-fase1-v0.md` | SPEC/impl/teste/validacao por historia Fase 1 |
-| `notas/` | Notas de trabalho (`znotes`, etc.) |
-
----
-
-## Codigo dos algoritmos
-
-Os repositorios de produto continuam em `algoritmos/` e `modelo/` na raiz do projeto (fora de `docs/`).
+## Desenvolvimento (código)
+- Validação local × Databricks: `_fundacao/doc-validacao-paridade-databricks-v0.md`
+- Busca conversacional (escopo por componente): `_fundacao/doc-busca-conversacional-componentes-v0.md`
+- Checklist Fase 1: `checklists/checklist-implementacao-motor-nlp-fase1-v0.md`

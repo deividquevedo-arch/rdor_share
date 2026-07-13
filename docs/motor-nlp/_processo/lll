@@ -1,0 +1,12 @@
+fabrica-ia-plataforma
+├─ apps
+   ├─ databricks
+       ├─ nlp
+           ├─ ntb_ia_composition_root.ipynb  ### merge de shared + {especialidade} + outras configs
+           ├─ data  ??? (compartilhado)
+           ├─ model ??? (compartilhado)
+           ├─ setup ??? (compartilhado)
+           ├─ configs
+               ├─ ntb_ia_shared_config.ipynb
+               ├─ ntb_ia_hepatologia_config.ipynb
+               ├─ ntb_ia_{especialidade}_config.ipynb
