@@ -22,8 +22,24 @@
 
 ## 2. Validação contra a base ouro
 
-Execução em `dev`, janela **2026-06-25 a 2026-06-27**, cruzada por `id_exame` com
-`docs/motor-nlp/tireoide/dados/base-ouro-tirads-v2-2026-07-24.csv` (586 ids resolvidos, 127 positivos).
+Execução em `dev`, janela **2026-06-25 a 2026-06-27**, cruzada por `id_exame` com a base ouro V2.
+
+### Base ouro entregue junto
+
+**`docs/motor-nlp/tireoide/dados/base-ouro-tirads-v2-2026-07-24.csv`**
+
+895 linhas · colunas `id_exame, verdade_v1, verdade_v2, reclassificado` · **sem texto de laudo**, por LGPD.
+
+⚠️ **Use a coluna `verdade_v2` e considere só os valores `0` e `1`:**
+
+| `verdade_v2` | linhas |
+|---|---|
+| `0` (não relevante) | 459 |
+| `1` (relevante) | 127 |
+| `PENDENTE` | 300 |
+| `?` | 9 |
+
+São **586 ids resolvidos**; os 309 restantes não foram fechados clinicamente e devem ser excluídos de qualquer cálculo. A coluna `verdade_v1` é a régua anterior — 7 rótulos foram reclassificados de `1` para `0` na V2 (marcados em `reclassificado`), com dupla confirmação. Critérios e auditoria da reclassificação em `base-ouro-tirads-v2-metricas.md`.
 
 | | plataforma nova | referência homologada |
 |---|---|---|
