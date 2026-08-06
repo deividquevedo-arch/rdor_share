@@ -135,15 +135,15 @@ limiar. Determinístico e auditável.
 
 O bloco por critério passa a distinguir a origem:
 
-- `source: "row_field"` · `llm_called: false`
+- `source: "value_text"` · `llm_called: false`
 - `raw`: a string original (`"Inferior a 0.01"`) — auditoria clínica precisa ver o que estava lá
 - `censored`: `"left"` / `"right"` quando aplicável
-- valor ausente ou não parseável → `met=None` com `source` **distinguível**
-  (`field_missing` / `parse_failed`)
+- texto sem valor parseável → `met=None` com `source` **distinguível** (`parse_failed`), nunca
+  confundível com "medida não encontrada"
 
 ⚠️ **Falha tem de ser observável.** É a lição do fallback de embeddings, que degrada em silêncio
-(`REFERENCIA-PARAMETROS.md`, débito aberto). Aqui, campo ausente **não pode** parecer
-"medida não encontrada".
+(`REFERENCIA-PARAMETROS.md`, débito aberto). O formato tabular (§4.3) é justamente onde o parse
+vai falhar — e precisa aparecer, não sumir.
 
 ### 3.5 Onde encaixa no motor
 
