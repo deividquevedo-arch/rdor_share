@@ -2,9 +2,8 @@
 
 **Data:** 2026-08-04 · **Para:** MLOps · **Origem:** validação de `transplante_pulmao` e `tirads` em `dev`
 
-> Vale para qualquer especialidade. As entregas específicas estão em
-> `docs/motor-nlp/pulmao/entrega-mlops-transplante-pulmao-v1.md` e
-> `docs/motor-nlp/tireoide/entrega-mlops-tirads-v1.md`.
+> Vale para qualquer especialidade. As entregas específicas de **transplante de pulmão** e
+> **TI-RADS** estão anexas ao mesmo card.
 
 ---
 
@@ -53,7 +52,31 @@ Sugestão de forma: chave opcional em `data.filters`, ex. `text_filter: {keyword
 
 ---
 
-## 5. Três coisas que falham em silêncio
+## 5. Wheel nova ignorada em cluster quente — e `engine_version` mente
+
+**É o mais perigoso da lista, porque o indicador de versão diz que deu certo.**
+
+No `ntb_ia_motor_e2e` a instalação e o import ficam em sequência, sem reiniciar o Python:
+
+```
+226:  wheel = installer.bootstrap()      # instala a wheel resolvida
+231:  from nlp_engine.nlp_engine...      # importa em seguida
+```
+
+Se o cluster já tinha o `nlp_engine` importado de uma execução anterior, o import **reaproveita o módulo em memória** e a wheel nova não passa a valer. Só que `engine_version` vem de `_package_version()`, que lê o **metadata em disco** — já atualizado. Resultado: a coluna mostra a versão nova e o código executado é o antigo.
+
+Aconteceu conosco na validação da `0.7.2`: `engine_version = 0.7.2` na tabela, colunas novas ausentes. Resolveu reiniciando o cluster.
+
+Duas correções possíveis, ambas simples:
+
+- chamar `dbutils.library.restartPython()` logo após o `bootstrap()`, antes dos imports — é o que a bancada de validação (`plataform/tests/ntb_ia_validacao_lib.py:69`) já faz;
+- ou, após o import, comparar `nlp_engine.__version__` com a wheel resolvida e **falhar** se divergir.
+
+Sem isso, qualquer atualização de lib pode ser silenciosamente ignorada em cluster reaproveitado — e a evidência aponta para o lado errado.
+
+---
+
+## 6. Três coisas que falham em silêncio
 
 **`gold_query` é ignorado** — zero ocorrências em `.py`. A doc de vocês (`boas-praticas/04`) já marca com 🔴 que o config de `transplante_pulmao` caía nisso e rodava sem filtro nenhum. Já convertemos o nosso, mas valeria o builder emitir warning ao encontrar a chave.
 
@@ -65,7 +88,28 @@ Duas mitigações: ligar `json_response_format` na config, e expor `parse_failed
 
 ---
 
-## 6. O que funcionou sem ressalva
+## 7. O modelo de embeddings ficou no Volume antigo
+
+A lib passou a ser publicada em `gold_fabrica_ia_hml/nlp_engine/nlp_engine_lib`, mas a pasta
+`st_models/` **não** acompanhou: as configs de TI-RADS e hepatologia seguem apontando para
+`/Volumes/diamond_ia_hml/nlp_engine/nlp_engine_lib/st_models/paraphrase-multilingual-MiniLM-L12-v2`.
+
+**Hoje funciona** — o Volume antigo ainda existe e está legível. Conferido no run de TI-RADS:
+`semantic_backend = "sentence_transformers"` em **2.711 de 2.711** laudos, zero fallback.
+
+O risco é o dia em que `diamond_ia_hml` for limpo. Aí o modelo não carrega e a decisão híbrida
+degrada para `token_overlap` — **sem erro, sem log, sem alerta**. A métrica cai e nada aponta a
+causa. Não afeta o pulmão, que não usa embeddings.
+
+Pedido: **copiar `st_models/` para o Volume novo** antes de qualquer limpeza do antigo. Ajustamos
+as configs em seguida.
+
+Do nosso lado, abrimos débito na lib para tornar esse fallback observável — hoje só dá para
+detectar inspecionando `semantic_backend` dentro do blob, achado por achado.
+
+---
+
+## 8. O que funcionou sem ressalva
 
 - **Credencial e `base_url` injetados pelo runner** — nenhuma ocorrência de `missing_api_key`, `missing_base_url_or_model`, `retry_exhausted` ou erro HTTP em 4.796 laudos processados nas duas especialidades.
 - **Merge de `runtime.llm_router` sobre `nlp.llm_router`** (`config/ntb_ia_loader.py:106-109`) — é o que liga o juiz e o extrator quantitativo. Funcionou nas duas configs.
