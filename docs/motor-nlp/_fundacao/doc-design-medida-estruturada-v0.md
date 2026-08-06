@@ -98,7 +98,9 @@ e sangue não será o último.
         'measure': {
             'name': 'tsh',
             'unit': 'mUI/L',
-            'source': {'kind': 'row_field', 'field': 'exm_valor_resultado'},
+            # A medida vem do PROPRIO texto, por parse deterministico — nao do LLM.
+            # Ver secao 4: o valor ja chega em `exm_laudo_texto`.
+            'source': {'kind': 'value_text'},
         },
         'threshold': {'op': '<', 'value': 0.4},
         'applies_to_exam_type': ['tsh'],
@@ -107,7 +109,8 @@ e sangue não será o último.
 }
 ```
 
-`source.kind` abre espaço para outras origens no futuro sem quebrar o contrato. Ausente = `llm`.
+`source.kind` abre espaço para outras origens no futuro (`row_field`, se algum dia a plataforma
+expuser o componente isolado) sem quebrar o contrato. Ausente = `llm`, comportamento de hoje.
 
 **Um critério por analito.** Uma linha = um exame, então TSH e T4 livre nunca coexistem na mesma
 linha — não cabe `any_of` entre analitos. Isso é compatível com a redefinição de negócio de
@@ -144,23 +147,71 @@ O bloco por critério passa a distinguir a origem:
 
 ### 3.5 Onde encaixa no motor
 
-`process_quantitative_criteria` hoje recebe só o `treated`. Para ler um campo, precisa receber
-também a linha (`st.row`). É a única mudança de assinatura; o caminho LLM segue idêntico.
+`process_quantitative_criteria` já recebe o `treated` — que é exatamente onde o valor está.
+**Nenhuma mudança de assinatura é necessária.** O caminho LLM segue idêntico.
 
-Critério com `source` **não chama o LLM** — o gate de âncora e o custo desaparecem.
+Critério com `source: value_text` **não chama o LLM** — o gate de âncora e o custo desaparecem.
+O escopo do analito vem de `applies_to_exam_type`, que já existe.
 
 ---
 
-## 4. Dependência do lado da plataforma
+## 4. Dependência da plataforma — VERIFICADA, NÃO EXISTE
 
-O motor lê um **campo da linha**. Alguém precisa levar o valor do array para lá — é o
-`column_map`, na camada de dados.
+**Auditado em 2026-08-06 nos dois repositórios. Não é preciso perguntar ao MLOps.**
 
-O componente correto é o que sobra ao filtrar `nme_exame` em (`METODO`, `MÉTODO`, `MATERIAL`).
-**Confirmar com o MLOps** se o `column_map` da plataforma nova consegue projetar elemento de array,
-ou se precisa de um passo de achatamento antes.
+### 4.1 O que o `column_map` consegue (e não consegue)
 
-Sem isso a feature não roda — é a dependência crítica.
+`InputMapper.map_input` (`plataform/data/ntb_ia_input.py:53-83`) projeta **7 campos fixos**
+(`engine_input_fields`: id_exame, id_paciente, id_unidade, exm_laudo_texto, exm_mod, exm_tipo,
+dt_exame) e resolve cada um via `resolve_column`, que apenas **escolhe o primeiro nome de coluna
+existente** entre candidatos — depois `F.col(source).cast(StringType())`.
+
+Conclusão: o `column_map` **não** expressa projeção de array, campo aninhado nem expressão. Campo
+novo também não passaria: a lista é fixa.
+
+### 4.2 Mas o valor já chega ao motor
+
+Antes do mapeamento, **as duas plataformas achatam o array na mão**, com o mesmo código:
+
+```python
+F.array_join(F.transform("proced_lista_exames", lambda x: x["laudo_original"]), "\n")
+```
+
+- plataforma nova: `plataform/pipeline_e2e/nlp_ia_02_input.py:396`
+- runner legado:  `apps/databricks/nlp_engine/pipeline_e2e/nlp_ia_02_input.py:143`
+
+O resultado vira `proced_laudo_exame_original` → `exm_laudo_texto`. **O valor do exame de sangue
+já está no texto que o motor recebe.**
+
+### 4.3 Como o valor chega, medido (TSH, junho/2026, n=34.449)
+
+| forma do `exm_laudo_texto` | fração | exemplo |
+|---|---|---|
+| número puro | **75,5%** | `1,24` |
+| método/material + valor | ~24% | `MATERIAL: SORO ~ MÉTODO: QUIMIOLUMINESCÊNCIA AMPLIADA ~ 1,863` |
+| relatório tabular | minoria | `Data de Coleta/Recebimento: 24/06/2026 ... EXAME ...` |
+
+⚠️ Detalhe que torna o parse determinístico: **o texto de método/material não contém dígito**.
+Nos dois primeiros formatos o único token numérico é o valor. O terceiro formato tem datas e
+horas — ali o parse ingênuo erra, e é justamente o caso que deve cair no fail-safe (ou no caminho
+LLM, que continua disponível).
+
+### 4.4 Consequência para o desenho
+
+**Não há dependência de plataforma, e o `source: row_field` fica desnecessário.** A medida é
+extraída do próprio `exm_laudo_texto`, de forma determinística, com o critério restrito ao analito
+por `applies_to_exam_type` (que já existe e já é usado — `exm_tipo` mapeia `proced_descricao`).
+
+Isso reduz a feature a **uma mudança só na lib**, sem tocar em runner, `column_map` ou
+`data_manager`. Nada a pedir ao MLOps.
+
+### 4.5 Precedente no legado
+
+O padrão de explodir o array e filtrar por `nme_exame` já existe — `explode(proced_lista_exames)`
+em `birads/data/ntb_ia_entrada.py:216` e `hepatologia/data/ntb_ia_entrada.py:187`; `transform(...)`
+em `tirads/data:232` e `ateromatose/data:236`. Mas sempre em **notebook de entrada por
+especialidade**, nunca no `data_manager` compartilhado. É o caminho a seguir **se** um dia
+precisarmos do componente isolado (ex.: usar a faixa de referência do próprio laboratório, V3.1).
 
 ---
 
@@ -180,15 +231,14 @@ Sem isso a feature não roda — é a dependência crítica.
 
 | # | Pendência | Com quem |
 |---|---|---|
-| 1 | Validar os limiares (TSH < 0,4 · T4L > 1,8 ng/dL · TRAb > 1,5) | Lucas (especialista) |
-| 2 | Confirmar se `column_map` projeta elemento de array | MLOps |
-| 3 | Re-rotular a base ouro para `verdade_v3` | time + revisão médica |
+| 1 | Validar os limiares (TSH < 0,4 · T4L > 1,8 ng/dL · TRAb > 1,5) | Lucas — **não bloqueia**: seguir com os atuais e revisar depois (decisão de 2026-08-06) |
+| 2 | ~~Confirmar se `column_map` projeta elemento de array~~ | ✅ **RESOLVIDO** — ver §4: não há dependência |
+| 3 | Base ouro `verdade_v3` | **surge depois**: implementar a V3, rodar um lote e construir o gabarito a partir dele (decisão de 2026-08-06) |
 
-⚠️ **A pendência 3 não é burocracia.** Validar régua nova contra gabarito antigo não significa
-nada — está registrado na nota de método da spec.
+⚠️ Segue valendo que **validar régua nova contra gabarito antigo não significa nada** (nota de
+método da spec). Por isso a base ouro V3 nasce do lote processado pela V3, não antes dele.
 
-**O item 1 não bloqueia a implementação da lib**: a feature é agnóstica, os números vivem na
-config. Dá para construir e testar com os limiares atuais e ajustar depois.
+**Nada bloqueia a implementação.** A feature é agnóstica e os números vivem na config.
 
 ---
 
