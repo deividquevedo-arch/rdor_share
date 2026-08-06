@@ -1,6 +1,6 @@
 # Design — medida de fonte ESTRUTURADA na camada quantitativa
 
-**Data:** 2026-08-06 · **Status:** desenho aprovado, não implementado · **Lib:** `nlp_engine` (proposta ≥ 0.8.0)
+**Data:** 2026-08-06 · **Status:** ✅ **IMPLEMENTADO** na `nlp_engine 0.8.0` (branch `feat/medida-valor-texto`)
 **Motivador:** exames de sangue do Tireoide V3 · **Escopo:** feature global, agnóstica a especialidade
 
 > Documento de apoio para não perder contexto entre tarefas paralelas. Registra **o achado que
@@ -136,8 +136,10 @@ limiar. Determinístico e auditável.
 O bloco por critério passa a distinguir a origem:
 
 - `source: "value_text"` · `llm_called: false`
-- `raw`: a string original (`"Inferior a 0.01"`) — auditoria clínica precisa ver o que estava lá
-- `censored`: `"left"` / `"right"` quando aplicável
+- `evidence`: o texto original (`"Inferior a 0.01"`). No caminho determinístico o texto **é** a
+  evidência — por isso **não** há campo `raw` separado, que seria a mesma string duas vezes
+- `censored`: `"left"` / `"right"` quando aplicável. ⚠️ Nesse caso `value` é o **limite**
+  observado, não medida exata
 - texto sem valor parseável → `met=None` com `source` **distinguível** (`parse_failed`), nunca
   confundível com "medida não encontrada"
 
@@ -228,6 +230,11 @@ precisarmos do componente isolado (ex.: usar a faixa de referência do próprio 
 ---
 
 ## 6. Pendências antes de implementar
+
+**Implementado em 2026-08-06** (`971ac02`): `ValorMedido` (intervalo) + `parse_valor_texto` +
+`compare_intervalo` + `Criterion.measure_source` + ramo `_assess_value_text`. 13 testes partindo da
+config, com caller que **levanta** se o LLM for chamado. Mutante morto (sem a censura, 4 testes caem).
+Contrato completo em `nlp-engine-lib/docs/REFERENCIA-PARAMETROS.md` §9 e §10.3.
 
 | # | Pendência | Com quem |
 |---|---|---|
