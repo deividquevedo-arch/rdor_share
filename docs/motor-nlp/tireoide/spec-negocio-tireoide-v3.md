@@ -1,6 +1,6 @@
 # SPEC de negócio — Linha de cuidado Tireoide **V3**
 
-**Versão:** 3.0 · **Data:** 2026-08-10 · **Config:** `0.3.0-tirads` · **Motor:** `nlp_engine >= 0.8.1`
+**Versão:** 3.1 · **Data:** 2026-08-10 · **Config:** `0.3.0-tirads` · **Motor:** `nlp_engine >= 0.8.1`
 **Status:** implementado, aguardando homologação clínica
 
 > **V3 = V2 (imagem) + cintilografia de tireoide + exame de sangue.**
@@ -65,8 +65,8 @@ pescoço marcou achados de parótida, laringe e mandíbula. **Esses ficam fora.*
 |---|---|---|---|
 | **TSH** | **< 0,4** | mUI/L | hipertireoidismo |
 | **T4 livre** | **> 1,8** | ng/dL | hipertireoidismo |
-| **T3 livre** | **> 6,3** | pg/mL | hipertireoidismo (T3-toxicose) |
-| **T3 total** | **> 1,81** | ng/mL | hipertireoidismo (T3-toxicose) |
+| **T3 livre** | **≥ 4,4** | pg/mL | 🚩 **FLAG** — não captura sozinho |
+| **T3 total** | **≥ 2,0** | ng/mL | 🚩 **FLAG** — não captura sozinho |
 | **TRAb** | **> 1,5** | UI/L | **doença de Graves** |
 | **Anti-TPO** | **> 34** | IU/mL | **autoimunidade tireoidiana** |
 
@@ -81,13 +81,30 @@ direto nunca seria atingido (p95 do lake = 1,6) e **falharia em silêncio**.
 **TRAb** — corroborado pelo dado: o limite superior da faixa de referência do próprio laboratório
 tem mediana **1,76**.
 
-**T3 livre e T3 total** — o limiar **é** o limite superior da faixa de referência que o laboratório
-grava em campo estruturado, com concentração quase total: **6,3** em 98% dos T3 livre e **1,81** em
-99,9% dos T3 total.
+**T3 livre e T3 total** — limiares definidos pela Carol em 2026-08-10: **≥ 4,4 pg/mL** e
+**≥ 2,0 ng/mL**. Substituem a proposta anterior baseada na faixa de referência do laboratório
+(6,3 e 1,81), que produzia assimetria inexplicável — 11 casos de T3 livre contra 164 de T3 total.
+Com os cortes clínicos o resultado equilibra: **87 e 91 casos/mês**, coerente com serem o mesmo
+fenômeno medido de duas formas.
 
-🔴 **RESSALVA ABERTA, para a homologação decidir:** faixa de referência é *"acima do normal"*, o que
-**não é necessariamente** *"relevante para captação"*. A spec original dizia apenas "elevado". Este é
-o único critério do V3 cujo corte ainda não tem aval clínico explícito.
+### 🚩 Por que o T3 é FLAG e não critério de captação
+
+> *"T3 elevado sozinho, **sem TSH suprimido**, não estabelece o diagnóstico de hipertireoidismo."*
+> — Carol, 2026-08-10
+
+Há elevação de T3 e T4 **totais** sem hipertireoidismo real: excesso de medicação, disalbuminemia
+familiar, gravidez, uso de estrogênio (anticoncepcional, menopausa, pessoas trans) — condições que
+aumentam as **proteínas ligadoras** sem doença tireoidiana.
+
+⚠️ Por isso o T4 usado aqui é o **LIVRE**, que não sofre esse efeito. Já o **T3 total sofre** — mais
+um motivo para ser flag.
+
+No pipeline diagnóstico (referência americana), **o TSH é a porta de entrada**: T3 e T4 só entram
+*depois* de TSH suprimido, para separar tireotoxicose franca de hipertireoidismo subclínico. O T3
+é **diagnóstico complementar** — confirma T3-toxicose quando TSH baixo e T4 livre normal.
+
+**Implementação:** `annotate_only` — o critério é avaliado e registrado no audit, mas **não promove
+sozinho**. Volume: ~178 casos/mês marcados.
 
 **Anti-TPO** — a spec original o classificou como **qualitativo** (reagente / não reagente). O dado
 mostra o contrário: é **numérico com censura à esquerda** (2.263 de 3.962 vêm como `"Inferior a 0,2"`).
@@ -193,6 +210,41 @@ envio for por paciente, o volume cai proporcionalmente.
 **V3.2 — sangue positivo → buscar USG com doppler.** É lógica **entre** exames e pacientes; o motor
 decide laudo a laudo. Exige desenho próprio.
 
+### V3.3 — relação T3/T4 total (proposta clínica, viabilidade medida)
+
+> *"Em doença de Graves e nódulos tóxicos — que são as doenças que estamos avaliando — a relação é
+> **> 20:1**, porque há muito mais T3 que T4. Já nas **tireoidites destrutivas** (De Quervain,
+> silenciosa, pós-parto, induzida por drogas ou por iodo) a relação é **< 20:1**. Essas não são
+> doenças-alvo, mas são **diferenciais** de hipertireoidismo verdadeiro."*
+> — Carol, 2026-08-10
+
+**É o critério de maior potencial para reduzir falso-positivo**, porque separa doença-alvo de
+diferencial. Medido em junho/2026:
+
+| | |
+|---|---|
+| pares paciente-dia com T3 e T4 total | **1.324** (19% dos pacientes com algum dos dois) |
+| relação mediana | **14,6** |
+| **acima de 20:1** — perfil Graves / nódulo tóxico | **101** |
+| abaixo de 20:1 — perfil tireoidite destrutiva | 1.223 |
+
+Os números confirmam a descrição clínica: a maioria fica abaixo, e uma minoria consistente acima.
+
+**Três obstáculos, e o terceiro é estrutural:**
+
+1. **Unidade.** O lake traz T3 em **ng/mL** e a relação clássica exige **ng/dL** (fator 100). Sem a
+   conversão a razão dá 0,15 em vez de 14,6, e **nenhum caso apareceria** — mesma armadilha do T4
+   livre em pmol/L, e igualmente silenciosa.
+2. **Um analito por exame.** T3 total e T4 total **nunca vêm no mesmo laudo**; são linhas distintas.
+3. **O motor decide laudo a laudo** e não cruza exames do mesmo paciente. Mesmo que cruzasse, a
+   camada quantitativa compara **medida contra limiar fixo** — não sabe comparar **uma medida com
+   outra**.
+
+**Conclusão:** exige capacidade nova — agregação por paciente, janela temporal entre exames,
+normalização de unidade e comparação medida-a-medida. Mesma classe da V3.2. **Não cabe no V3.**
+
+---
+
 **Bethesda** (punção e biópsia) — deferido na V2 por ausência de ganho medido.
 
 **Ecocardiograma e cateterismo** — pertencem a outra linha de cuidado.
@@ -203,9 +255,10 @@ decide laudo a laudo. Exige desenho próprio.
 
 | # | pendência | com quem |
 |---|---|---|
-| 1 | **Limiar do T3** — faixa de referência é o corte certo para rastreio? | homologação |
+| 1 | ~~Limiar do T3~~ | ✅ **fechado em 2026-08-10** — ≥ 4,4 e ≥ 2,0, como FLAG |
 | 2 | Limiar do Anti-TPO (34 IU/mL) — confirmação | homologação |
 | 3 | Cintilografia de tireoide — nenhum caso avaliado ainda (14/mês) | homologação |
+| 4 | 🚩 **Visibilidade da flag T3 na saída** — hoje só existe no blob de audit, não nas colunas | decisão técnica |
 
 ---
 
