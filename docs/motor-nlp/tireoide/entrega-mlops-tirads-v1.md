@@ -1,9 +1,13 @@
-# Entrega — TI-RADS na plataforma NLP
+# Entrega — TI-RADS **V2** na plataforma NLP
 
-**Data:** 2026-08-04 · **Para:** MLOps · **Status:** validado, pronto para o fluxo diário
+**Data:** 2026-08-10 · **Para:** MLOps · **Status:** validado, pronto para o fluxo diário
 
-> Comportamentos da plataforma que valem para qualquer especialidade estão em
-> `docs/motor-nlp/_fundacao/notas-plataforma-nlp-mlops.md`. Aqui só o que é do TI-RADS.
+> ⚠️ **Escopo: régua V2** — nódulo/cisto ≥ 1 cm, TI-RADS 4/5, massa, linfonodo suspeito e bócio
+> nodular, sobre exames de imagem. A **V3** (cintilografia e exame de sangue) está **em
+> desenvolvimento** e **não faz parte desta entrega**.
+
+> Comportamentos da plataforma que valem para **qualquer especialidade** estão no documento
+> *Plataforma NLP — observações de uso e um pedido*, anexo ao mesmo card. Aqui só o que é do TI-RADS.
 
 ---
 
@@ -13,9 +17,9 @@
 |---|---|
 | especialidade | `tirads` |
 | config | `plataform/config/speciality/ntb_ia_tirads_config.py` |
-| branch | `feature/validacao-plataforma` (`fabrica-ia-nlp-platform`) |
+| origem | `hml` (`fabrica-ia-nlp-platform`) — subida pelo PR 7009 |
 | `config_version` | `0.1.0-tirads-rads-v22.11-v2` |
-| `nlp_engine` | `0.7.1` |
+| `nlp_engine` | `0.8.0` |
 | perfil | TI-RADS (`rads_extraction`) + achados clínicos + embeddings (hybrid) + juiz LLM + quantitativo |
 
 ---
@@ -26,7 +30,7 @@ Execução em `dev`, janela **2026-06-25 a 2026-06-27**, cruzada por `id_exame` 
 
 ### Base ouro entregue junto
 
-**`docs/motor-nlp/tireoide/dados/base-ouro-tirads-v2-2026-07-24.csv`**
+Anexo: **`base-ouro-tirads-v2-2026-07-24.csv`**
 
 895 linhas · colunas `id_exame, verdade_v1, verdade_v2, reclassificado` · **sem texto de laudo**, por LGPD.
 
@@ -39,11 +43,11 @@ Execução em `dev`, janela **2026-06-25 a 2026-06-27**, cruzada por `id_exame` 
 | `PENDENTE` | 300 |
 | `?` | 9 |
 
-São **586 ids resolvidos**; os 309 restantes não foram fechados clinicamente e devem ser excluídos de qualquer cálculo. A coluna `verdade_v1` é a régua anterior — 7 rótulos foram reclassificados de `1` para `0` na V2 (marcados em `reclassificado`), com dupla confirmação. Critérios e auditoria da reclassificação em `base-ouro-tirads-v2-metricas.md`.
+São **586 ids resolvidos**; os 309 restantes não foram fechados clinicamente e devem ser excluídos de qualquer cálculo. A coluna `verdade_v1` é a régua anterior — 7 rótulos foram reclassificados de `1` para `0` na V2 (marcados em `reclassificado`), com dupla confirmação. Os critérios e a auditoria da reclassificação estão registrados do nosso lado; se precisarem, pedimos e enviamos.
 
-| | plataforma nova | referência homologada |
+| | plataforma nova (`nlp_engine 0.8.0`) | referência homologada |
 |---|---|---|
-| laudos processados | 2.711 | — |
+| laudos processados | 2.709 | — |
 | coorte presente | **440 de 586 (75,1%)** | 586 |
 | positivos cobertos | **121 de 127** | 127 |
 | TP · FP · FN · TN | 121 · 3 · **0** · 316 | 127 · 4 · 0 · 455 |
@@ -52,6 +56,10 @@ São **586 ids resolvidos**; os 309 restantes não foram fechados clinicamente e
 | MCC | **0,9832** | 0,9803 |
 
 **Zero falso-negativo**, precisão e MCC acima da referência.
+
+**Estabilidade entre versões da lib.** O mesmo lote foi processado em `0.7.1`, `0.7.5`, `0.7.6` e
+`0.8.0`, com resultado **idêntico**. As colunas de achados e as correções desse intervalo são
+aditivas: nenhuma alterou decisão. É o requisito que queríamos demonstrar antes de entregar.
 
 ---
 
@@ -73,7 +81,34 @@ Ficaram fora de propósito: `cervical` (+1.120 exames para 3 positivos, casa "co
 
 ---
 
-## 4. Pontos específicos do TI-RADS
+## 4. Colunas de achados (`nlp_engine >= 0.7.6`)
+
+Três colunas planas, para saber o que o motor encontrou **sem parsear o `exm_laudo_resultado`**:
+
+| coluna | conteúdo | exemplo |
+|---|---|---|
+| `findings` | nome clínico do achado | `Nódulo; Cisto` |
+| `findings_spans` | idem, quantificando a evidência | `Nódulo(2); Cisto(1)` |
+| `findings_match` | nome + termo casado, para auditoria | `Nódulo: nódulos, nódulo sólido` |
+
+**Nada precisa mudar do lado de vocês** — as colunas são criadas automaticamente pelo `mergeSchema`
+do persister. Validado em execução real.
+
+Os sete achados saem com **nome clínico**, não com o identificador técnico:
+
+`Nódulo` · `Cisto` · `Massa` · `Linfonodomegalia` · `Tumor` · `Bócio` · `Hipertireoidismo`
+
+Distribuição observada no run: `Nódulo` 111 · `Cisto` 26 · `Nódulo; Cisto` 13 · `Linfonodomegalia` 10.
+
+⚠️ **A string não é chave de agrupamento.** A ordem varia com a quantidade de evidências, então
+`Nódulo; Cisto` e `Cisto; Nódulo` são o mesmo par. Para agregar, quebre por `; `.
+
+ℹ️ Relevante com `findings` vazio é **informação, não falha**: significa decisão sem lastro
+determinístico — veio do juiz LLM ou da semântica. No run foram 5 de 124.
+
+---
+
+## 5. Pontos específicos do TI-RADS
 
 ### 4.1 `column_map` foi reescrito por inteiro
 
@@ -91,7 +126,7 @@ Diferente do pulmão. A config do TI-RADS tem `use_embeddings: True` e `decision
 
 ---
 
-## 5. Pendência clínica, não técnica
+## 6. Pendência clínica, não técnica
 
 6 positivos de 127 seguem fora: **"região cervical/supraclavicular"** e **"PAAF/biópsia de linfonodo"**. Não constam da lista de exames da spec.
 
@@ -99,14 +134,33 @@ Incluí-los custaria +3.100 exames (2,7× o lote) para ganhar 6. Está com o esp
 
 ---
 
-## 6. Widgets do run de validação
+## 7. Widgets do run de validação
 
 Só o que difere do padrão descrito na nota geral:
 
 | widget | valor |
 |---|---|
 | `specialty` | `tirads` |
+| `date_range_enable` | **`true`** — com `false` as datas são ignoradas em silêncio |
 | `start_date` / `end_date` | `2026-06-25` / `2026-06-27` |
-| `embedding_enable` | **`true`** |
+| `limit_rows` | **vazio** — o default `100` corta o lote |
+| `nlp_engine_version` | `0.8.0` |
+| `embedding_enable` | **`true`** — a config usa `decision_mode: hybrid` |
 
-**Conferência rápida do lote:** entrada com **2.711 linhas** e **572 relevantes**.
+**Conferência rápida do lote:** entrada com **2.709 linhas** e **572 relevantes**.
+
+---
+
+## 8. Bloqueio em aberto: falta o schema
+
+Com a migração `diamond_ia_*` → `diamond_fabrica_ia_*`, o schema `tirads` **não foi provisionado**:
+
+```
+[SCHEMA_NOT_FOUND] The schema `diamond_fabrica_ia_dev.tirads` cannot be found.
+```
+
+Em `diamond_fabrica_ia_dev` existem `cancer_rim`, `transplante_pulmao`, `hepatologia` e `flowhub`
+(criados em 06/08); `tirads` ficou de fora. Também falta em `_hml` e produção, que hoje só têm
+`hepatologia` e `flowhub` — o que afeta igualmente o **transplante de pulmão** na promoção.
+
+A validação desta entrega foi feita no catálogo **anterior** (`diamond_ia_dev`), antes da migração.
