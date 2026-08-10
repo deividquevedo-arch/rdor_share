@@ -37,7 +37,37 @@ caso**. A relação T3/T4 nem contorno tem.
 
 ---
 
-## 2. O que a lib é hoje
+## 2. Inventário: o que a lib JÁ tem
+
+Antes de propor o que falta, o que já existe — e é mais do que parece.
+
+| capacidade | existe? | onde |
+|---|---|---|
+| combinar várias medidas (`all_of` / `any_of`) | ✅ | `Criterion.logic` |
+| condicionar critério à presença de outro achado | ✅ | `anchor.finding` / `anchor.text` |
+| condicionar **limiar** a um valor lido do texto | ✅ | `threshold_by` (ex.: idade) |
+| um critério condicionar a relevância de outro | ✅ | `on_met: gate_relevance` |
+| gate **coordenado** entre critérios | ✅ | `_coordinated_gate_demotes` |
+| conversão de unidade | ✅ | `normalize_value` |
+| faixa fisiológica (fail-safe) | ✅ | `plausible_range` |
+| restringir critério por tipo de exame | ✅ | `applies_to_exam_type` |
+| leitura determinística de valor | ✅ | `measure.source.kind: value_text` |
+| **comparar uma medida com OUTRA medida** | ❌ | — compara medida contra **limiar fixo** |
+| **agrupar por paciente** | ❌ | — tudo opera dentro de **um laudo** |
+
+> **A semântica de combinação e condicionamento está toda pronta.** Falta uma peça só, e ela é a
+> mesma para os cinco casos: **tornar o resultado dos outros laudos do mesmo paciente visível para
+> a avaliação**.
+
+Isso muda o dimensionamento: a **Fase 1 reaproveita a lógica de decisão existente**, não a reescreve.
+O esforço concentra-se em agrupamento, janela temporal e em distinguir "histórico insuficiente" de
+"não atende".
+
+Só a **Fase 2** (relação T3/T4) exige capacidade genuinamente nova — comparação medida-a-medida.
+
+---
+
+## 3. O que a lib é hoje
 
 ```python
 def process(self, rows: Sequence[Mapping[str, Any]], nlp_config: Mapping[str, Any],
@@ -55,12 +85,12 @@ não tem nenhuma noção de paciente além disso.
 **A lib não faz I/O, por princípio.** Não lê tabela, não conhece Spark, recebe o dict pronto. É o
 que a torna testável offline e reprodutível.
 
-E uma limitação da camada quantitativa: ela compara **medida contra limiar fixo**
-(`Condition(measure, op, value)`). **Não sabe comparar uma medida com outra.**
+Os dois vazios do inventário (§2) decorrem daí: não há agrupamento por paciente, e
+`Condition(measure, op, value)` compara medida contra **limiar fixo**, nunca contra outra medida.
 
 ---
 
-## 3. A fronteira de responsabilidade
+## 4. A fronteira de responsabilidade
 
 A pergunta que originou este desenho foi: *isso cabe na lib ou precisa ser externo?*
 
@@ -82,9 +112,9 @@ plataformas.
 
 ---
 
-## 4. Contrato proposto
+## 5. Contrato proposto
 
-### 4.1 Config — bloco novo, opt-in
+### 5.1 Config — bloco novo, opt-in
 
 ```python
 'patient_criteria': {
@@ -116,7 +146,7 @@ Duas formas, porque os casos são de naturezas diferentes:
 `from` aponta para o critério por-laudo que **já produziu a medida**. O motor não re-extrai nada:
 consome o que está no audit da primeira passada.
 
-### 4.2 Semântica
+### 5.2 Semântica
 
 **Duas passadas.** A primeira é a atual, por laudo. A segunda agrupa por `id_paciente` e avalia os
 `patient_criteria` sobre os audits já produzidos.
@@ -133,7 +163,7 @@ vez de **14,6**, e **nenhum caso apareceria**, sem erro nenhum. Mesma armadilha 
 pmol/L. Por isso `unit` é campo **exigido** em `measures`, e a conversão usa o `normalize_value` que
 já existe.
 
-### 4.3 Linhas de contexto
+### 5.3 Linhas de contexto
 
 O histórico que a plataforma passa pode estar **fora da janela de saída** — um TSH de 60 dias atrás
 não deve virar linha na tabela de hoje.
@@ -147,7 +177,7 @@ Proposta: a plataforma marca essas linhas, e a lib as usa para decidir **sem emi
 Sem isso, ou o histórico polui a saída, ou a plataforma precisa filtrar depois — e aí a contagem de
 processados deixa de bater com o que foi decidido.
 
-### 4.4 Saída
+### 5.4 Saída
 
 **O contrato não muda: um registro por exame.** A decisão de paciente escreve nos registros daquele
 paciente, dentro da janela.
@@ -164,12 +194,12 @@ Campos novos no audit, seguindo o padrão já estabelecido:
 
 ---
 
-## 5. O que é genuinamente novo
+## 6. O que é genuinamente novo
 
 | item | esforço | risco |
 |---|---|---|
 | agrupar por paciente na segunda passada | baixo — o lote já está em memória | baixo |
-| `requires_all` / `requires_any` sobre audits existentes | baixo | baixo |
+| `requires_all` / `requires_any` sobre audits existentes | **baixo — reusa a semântica de `anchor` e `all_of`/`any_of`, que já existem** | baixo |
 | **comparação medida-a-medida (`ratio`)** | médio | **conversão de unidade** |
 | linhas de contexto (`_context_only`) | baixo na lib, **médio na plataforma** | contagem de processados |
 | janela temporal | baixo | fuso e granularidade de `dt_exame` |
@@ -180,7 +210,7 @@ seleciona por janela de data; passaria a precisar de um segundo fetch por pacien
 
 ---
 
-## 6. O que fica de fora
+## 7. O que fica de fora
 
 **Decisão que atravessa lotes.** Se o TSH suprimido está num run de mês passado e o T4 chega hoje, a
 correlação exige estado persistente entre execuções — outra classe de problema. O desenho aqui cobre
@@ -195,11 +225,16 @@ cadastro não é problema do motor.
 
 ---
 
-## 7. Faseamento sugerido
+## 8. Faseamento sugerido
 
-**Fase 1 — `requires_all` / `requires_any`.** Resolve os casos 2, 3 e 5 sem capacidade de razão nem
-conversão de unidade. É o que devolve o Anti-TPO e o T4 livre à condição de promotores, com
-segurança clínica. Menor esforço, maior retorno imediato.
+**Fase 1 — `requires_all` / `requires_any`.** Resolve os casos 2, 3 e 5. **Reaproveita a semântica
+que já existe** (`anchor`, `all_of`/`any_of`, `gate_relevance`) — o que muda é o escopo de avaliação,
+que passa do laudo para o paciente. Sem razão e sem conversão de unidade.
+
+Devolve o Anti-TPO e o T4 livre à condição de promotores com segurança clínica: dos 142 casos de T4
+elevado, **95 seriam corretamente refutados** pelo TSH do próprio paciente (§9).
+
+Menor esforço, maior retorno imediato.
 
 **Fase 2 — `ratio` com conversão de unidade.** Habilita a relação T3/T4 (caso 1), que é o critério
 de maior potencial para reduzir falso-positivo.
@@ -211,16 +246,41 @@ A Fase 1 vale por si. Recomendo não tratar as três como um pacote.
 
 ---
 
-## 8. Pré-requisito antes de construir
+## 9. Custo do histórico — MEDIDO
 
-**Medir o custo do histórico.** A plataforma precisa saber quantos exames por paciente traria, em
-qual janela, e o que isso custa de leitura. Sem esse número, a Fase 1 é desenho sem dimensionamento.
+Medido em 2026-08-10 sobre 13.303 pacientes com exame de tireoide na semana de 15–20/06.
 
-É uma medição que dá para fazer antes de escrever qualquer linha de código.
+| janela | exames no lote | **acréscimo** |
+|---|---|---|
+| 30 dias | 28.545 | +14% |
+| **90 dias** | **32.273** | **+29%** |
+| 180 dias | 37.899 | +51% |
+
+Média de **2,85 exames por paciente** em 180 dias — crescimento modesto.
+
+**Recomendação: janela de 90 dias.** Captura 136 dos 142 casos de T4 livre elevado; ir para 180
+acrescenta 22 pontos de volume para ganhar 6 casos.
+
+### O que a Fase 1 resolveria, em número
+
+Dos **142 pacientes com T4 livre elevado** na janela de 90 dias:
+
+| situação | pacientes | significado |
+|---|---|---|
+| TSH suprimido | **41** | ✅ hipertireoidismo confirmado |
+| **TSH normal** | **95** | ❌ **não é hipertireoidismo** — encaminhamento indevido hoje |
+| sem TSH no período | **6** | ⚠️ indeterminado |
+
+**Dois terços dos encaminhamentos por T4 livre são refutados pelo próprio TSH do paciente.**
+
+Os 6 sem TSH sustentam a exigência de `insufficient_history` distinguível: descartá-los perderia
+caso legítimo; promovê-los repetiria o erro atual.
+
+**Anti-TPO:** 4 positivos no período, **nenhum acompanhado** — confirma a decisão clínica com dado.
 
 ---
 
-## 9. Referências
+## 10. Referências
 
 - SPEC V3 e as pendências 2b e V3.3: `docs/motor-nlp/tireoide/spec-negocio-tireoide-v3.md`
 - Medida determinística e a armadilha de unidade: `doc-design-medida-estruturada-v0.md`
