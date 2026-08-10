@@ -1,6 +1,6 @@
 # SPEC de negócio — Linha de cuidado Tireoide **V3**
 
-**Versão:** 3.1 · **Data:** 2026-08-10 · **Config:** `0.3.0-tirads` · **Motor:** `nlp_engine >= 0.8.1`
+**Versão:** 3.2 · **Data:** 2026-08-10 · **Config:** `0.4.0-tirads` · **Motor:** `nlp_engine >= 0.8.1`
 **Status:** implementado, aguardando homologação clínica
 
 > **V3 = V2 (imagem) + cintilografia de tireoide + exame de sangue.**
@@ -68,7 +68,7 @@ pescoço marcou achados de parótida, laringe e mandíbula. **Esses ficam fora.*
 | **T3 livre** | **≥ 4,4** | pg/mL | 🚩 **FLAG** — não captura sozinho |
 | **T3 total** | **≥ 2,0** | ng/mL | 🚩 **FLAG** — não captura sozinho |
 | **TRAb** | **> 1,5** | UI/L | **doença de Graves** |
-| **Anti-TPO** | **> 34** | IU/mL | **autoimunidade tireoidiana** |
+| **Anti-TPO** | **> 34** | IU/mL | 🚩 **FLAG** — não captura sozinho |
 
 ### 3.3 Origem de cada limiar
 
@@ -108,7 +108,19 @@ sozinho**. Volume: ~178 casos/mês marcados.
 
 **Anti-TPO** — a spec original o classificou como **qualitativo** (reagente / não reagente). O dado
 mostra o contrário: é **numérico com censura à esquerda** (2.263 de 3.962 vêm como `"Inferior a 0,2"`).
-O limiar de 34 IU/mL captura 418 de 1.462 com valor (28,6%).
+O limiar de 34 IU/mL marca **442 exames/mês**.
+
+### 🚩 Por que o Anti-TPO é FLAG
+
+> *"Anti-TPO isolado, sem TSH suprimido e sem TRAb, indica paciente para a linha de cuidado?"*
+> **"Só acompanhada."** — Carol, 2026-08-10
+
+O anticorpo marca autoimunidade **em geral**: é positivo tanto em **Graves** (hipertireoidismo,
+alvo) quanto em **Hashimoto** (hipotireoidismo, **fora do alvo**) — e Hashimoto é muito mais
+prevalente. Isolado, inflava o escopo em **442 encaminhamentos/mês** sem indicar a doença-alvo.
+
+A própria spec de negócio já o descrevia como *"flag autoimune"*; promovê-lo foi erro de leitura
+na implementação.
 
 ### 3.4 Valores censurados
 
@@ -194,10 +206,14 @@ Nomes usados: `Nódulo` · `Cisto` · `Massa` · `Linfonodomegalia` · `Tumor` �
 
 Medido em junho/2026.
 
-| fonte | exames/mês | taxa de relevância | **encaminhamentos** |
-|---|---|---|---|
-| imagem | 22.059 | 19,1% | ~4.200 |
-| sangue | ~90.000 | 1,7% | ~1.500 |
+| fonte | exames/mês | **encaminhamentos** |
+|---|---|---|
+| imagem | 22.059 | ~4.200 (19–22%) |
+| sangue — **promotores** (TSH · T4 livre · TRAb) | ~80.000 | **~1.676** |
+| sangue — **flags** (Anti-TPO · T3) | ~8.400 | 0 (só marcam) |
+
+A régua **promove o que é específico** e **marca o que é complementar**. Passar Anti-TPO e T3 a
+flag removeu ~620 encaminhamentos/mês de baixa especificidade.
 | cintilografia de tireoide | 14 | a medir | — |
 
 ⚠️ **Paciente ≠ laudo.** Cerca de 25% dos relevantes são exames repetidos do mesmo paciente. Se o
@@ -255,8 +271,9 @@ normalização de unidade e comparação medida-a-medida. Mesma classe da V3.2. 
 
 | # | pendência | com quem |
 |---|---|---|
-| 1 | ~~Limiar do T3~~ | ✅ **fechado em 2026-08-10** — ≥ 4,4 e ≥ 2,0, como FLAG |
-| 2 | Limiar do Anti-TPO (34 IU/mL) — confirmação | homologação |
+| 1 | ~~Limiar do T3~~ | ✅ **fechado** — ≥ 4,4 e ≥ 2,0, como FLAG |
+| 2 | ~~Anti-TPO isolado indica?~~ | ✅ **fechado** — "só acompanhada"; vira FLAG |
+| 2b | 🔴 **T4 livre elevado sem TSH suprimido** também não é hipertireoidismo pelo pipeline. Mantido promotor por ora — virá-lo flag agora perderia recall sem substituto (exige V3.3) | decisão futura |
 | 3 | Cintilografia de tireoide — nenhum caso avaliado ainda (14/mês) | homologação |
 | 4 | 🚩 **Visibilidade da flag T3 na saída** — hoje só existe no blob de audit, não nas colunas | decisão técnica |
 
