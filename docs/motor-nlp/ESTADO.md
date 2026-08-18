@@ -46,10 +46,12 @@ homologada. Exige `nlp_engine >= 0.8.5`.
 
 V1 **entregue** (2026-08-06, card 246669). V2 **especificado e parado**.
 
-- 🟡 O bloqueio "promoção sempre vence o gate" foi **parcialmente resolvido** na `0.8.5`
-  (`gates_ordinal_promotion`), mas ali a blindagem levantada é a **ordinal**. Falta avaliar se o
-  pulmão precisa também de `on_met: demote` para expressar contraindicação — hoje um paciente com
-  VEF1 < 30% **e** FEVE < 40% seria encaminhado sendo contraindicado.
+🔴 **V2 NÃO autorizada — em backlog até liberação do Natan.** Não trabalhar nela sem esse aval.
+
+- 🟡 Quando for liberada: o bloqueio "promoção sempre vence o gate" foi **parcialmente resolvido**
+  na `0.8.5` (`gates_ordinal_promotion`), mas ali a blindagem levantada é a **ordinal**. Falta
+  avaliar se o pulmão precisa também de `on_met: demote` para expressar contraindicação — hoje um
+  paciente com VEF1 < 30% **e** FEVE < 40% seria encaminhado sendo contraindicado.
 
 ## Hepatologia
 
@@ -72,9 +74,16 @@ No ca-rim, a mesma correção recuperou **+25 laudos em 6 dias**.
 
 ## Câncer de rim — Leandro
 
-Migrando para a plataforma nova (branch `cancer_rim/feature/migracao-config-motor`, config existe).
-Já resolveu a segmentação com `full_doc`. Os 3 avisos dele viraram 0.8.3/0.8.4; o da versão do motor
-se resolve com a migração.
+✅ **Ativou o juiz LLM e subiu para >91%** (2026-08-18). Já tinha resolvido a segmentação com
+`full_doc`; os 3 avisos dele viraram 0.8.3/0.8.4, e o da versão do motor se resolve com a migração
+(branch `cancer_rim/feature/migracao-config-motor`).
+
+- ❓ **Confirmar qual métrica subiu.** O juiz estava desligado porque **derrubava 3 a 8 pacientes
+  confirmados** — precisão já era ~92% com ele. Se os >91% forem precisão, a pergunta que decide é
+  se o **recall** se manteve em 1,000. Em rastreio, precisão comprada com paciente perdido é
+  regressão, não ganho.
+- O diagnóstico escrito para ele (`docs/motor-nlp/cancer_rim/diagnostico-config-cancer-rim.md`)
+  ainda não foi enviado; se ele alinhou o prompt à v0.5 por conta própria, parte dele já venceu.
 
 ## Contexto do paciente — card 280008
 
