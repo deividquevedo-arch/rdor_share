@@ -13,34 +13,36 @@
 
 ## nlp_engine (lib) — `nlp-engine-lib`
 
-**0.8.4 na `hml`** (último deploy). **0.9.0 pronta e commitada, não pushada** — branch
-`feat/gate-condiciona-promocao-ordinal`. Gate verde: ruff, format, mypy, 561 testes, release-check.
+**0.9.1 na `hml`**, tags `v0.9.0` e `v0.9.1` publicadas, wheels no Volume. Gate: ruff, format,
+mypy, **570 testes**, `release-check`.
 
-- `0.8.5` **`gates_ordinal_promotion`**: um critério de gate declara QUAIS categorias condiciona.
-  Destrava "TR4 só aprova com nódulo/cisto ≥1 cm" — e é o mesmo bloqueio do transplante de pulmão V2
-  ("promoção sempre vence o gate"). Também: `findings_policy.display` monta `TR4 - Nódulo (1.8 cm)`.
-- `0.9.0` **nomenclatura ordinal completa** na saída e no código (rename limpo, sem chave dupla —
-  medimos que não há consumidor a jusante) + **blob = núcleo mínimo + trilha sempre emitida**
-  (−7% no laudo negativo, que é o caso comum).
-- Guarda nova: `test_sem_definicao_duplicada` — Python aceita redefinição em silêncio, e uma
-  edição malfeita duplicou 3 funções com os 528 testes verdes.
-- Dívida: release notes de 0.7.4 a 0.8.1 nunca escritas.
+- `0.8.5→0.9.0` **`gates_ordinal_promotion`** (um critério de gate declara QUAIS categorias
+  condiciona — destrava "TR4 só com ≥1 cm"), **`findings` de negócio** (`TR4 - Nódulo (1.8 cm)`,
+  categoria em todo laudo entregue), **nomenclatura ordinal completa** (rename limpo, sem chave
+  dupla) e **blob = núcleo mínimo + trilha sempre emitida** (−7% no laudo negativo).
+- `0.9.1` **laudo de uma linha deixou de ser apagado** pela regra de boilerplate — era
+  falso-negativo silencioso em todas as especialidades. Ver [[laudo-de-uma-linha-e-apagado]].
+- Guardas novas: `test_sem_definicao_duplicada` e `test_ordinal_taxonomy` (varre o `src/`).
 
-## Tireoide V2/V3 — `fabrica-ia-nlp-platform`, branch `tirads/feature/v3-sangue`
+🔴 **CI de release quebrado.** O host do variable group `nlp-engine-lib-hml` já foi corrigido para
+`adb-7405607882166874`, mas o **`DATABRICKS_TOKEN` continua o do workspace antigo** →
+`403 Invalid access token`. Com o Diego. Os wheels de 0.9.0 e 0.9.1 subi **manualmente**; o
+`nlp_engine-latest` segue apontando para a **0.8.4**, de propósito.
 
-Config **`0.7.0-tirads`** commitada, **não pushada**. **Sem PR** — o combinado é PR só depois de
-homologada. Exige `nlp_engine >= 0.8.5`.
+## Tireoide V2 — `fabrica-ia-nlp-platform`, branch `tirads/feature/v3-sangue`
 
-- ✅ **Régua V2 fechada** (decisão do negócio, 18/08): **só TR5 e TR4 ≥1 cm**. `relevance_mode:
-  ordinal_only` — achado léxico não promove mais. Razão: a operação não absorve o volume.
-- 🔴 **Volumetria do Natan desatualizada nas duas direções** — a régua estreitou (medido: 1.389 dos
-  2.815 relevantes saem, ~49%) e o TR4 voltou condicionado. **Só um run resolve.**
-- 🔴 **Aguardando Carol:** planilha de 500 laudos entregue (400 do que é entregue + 100 candidatos a FN).
-- ⚠️ **Achado novo (18/08):** o gate de órgão descarta achado em **101 laudos** TR4/TR5+ (226 spans).
-  Neles o paciente não se perde porque a categoria promove — mas o mesmo gate roda em laudo **sem**
-  categoria, e lá não há rede. Candidato direto a FN; cai no grupo de 100 da planilha da Carol.
-  Contornado nos critérios de tamanho com `anchor.text`.
-- Defeito conhecido: 31 de 1.492 entregues sem achado nem categoria; 10 sequer citam "tireoide".
+Config **`0.7.0-tirads`** no ar (não pushei PR — o combinado é PR só depois de homologada).
+
+- ✅ **Régua V2 fechada** (negócio, 18/08): **só TR5 e TR4 ≥1 cm**. `relevance_mode: ordinal_only`;
+  sangue em `annotate_only` (segue avaliando e auditando, só não promove).
+- ✅ **Backup das 3 variantes de escopo** em `_versoes-estaveis/` + matriz no cabeçalho da config:
+  V2 completa / V2 estreita / V3 diferem por **duas chaves**. Reativar é virar chave.
+- 🟡 **Run de validação em andamento** (17/06–11/07, 42.175 laudos, engine 0.9.0). Falta conferir
+  sanidade, formato do `findings` e montar a volumetria do Natan — que hoje está desatualizada
+  nas duas direções (régua estreitou ~49%, TR4 voltou condicionado).
+- ✅ O schema `tirads` **existe** em `diamond_fabrica_ia_hml` (a nota anterior estava errada).
+- ⚠️ 4.490 de 42.175 (10,65%) com texto tratado vazio — **4.398 vazios na ORIGEM** (teto de recall).
+  Sobram **92 com ~1,7 MB de bruto** zerados por outra causa, não investigados.
 
 ## Transplante de pulmão
 
@@ -59,7 +61,17 @@ V1 **entregue** (2026-08-06, card 246669). V2 **especificado e parado**.
 de todo laudo. **Nunca medido.** Mensurável desde a 0.8.3 (`segmentation_coverage`).
 No ca-rim, a mesma correção recuperou **+25 laudos em 6 dias**.
 
-## Câncer de estômago
+## Câncer de estômago — branch `cancer_estomago/feature/migracao-plataforma`
+
+✅ **Migrado para a plataforma nova** (`0.2.0`, régua byte-idêntica) **e régua da úlcera fechada**
+(`0.3.0`). Exige `nlp_engine >= 0.9.1`.
+
+- ✅ **Recall 0,533 → 1,000, FN=0** no lote de 37, contra o gabarito revisado pela decisão do
+  negócio. Achado `ulcera` **separado** do `ulcera_suspeita`, para a fila distinguir os dois.
+- 🔴 **Precisão NÃO medida** — a avaliação offline roda sem o juiz, que é quem filtra. Úlcera
+  gástrica é achado comum: **exigir run antes de comprometer data.**
+- ⚠️ `…10142484` aparece como FP com `Úlcera`, mas é candidato a TP (lesão ulcerada com necrose e
+  bordas friáveis, biopsiada) — foi marcado "Não" **antes** da decisão do Targa. Reconfirmar.
 
 ✅ **Negócio respondeu (Targa, 18/08): dos pré-malignos, só ÚLCERA entra.** Isso reclassifica 5 dos
 7 FN — sobram 2 (úlcera gástrica real). **Recall 0,533 → 0,800.**
@@ -101,6 +113,10 @@ e não depende de nenhuma das 6 decisões em aberto.
 
 ## Dívidas transversais
 
+- 🔴 **`main` do `nlp-engine-lib` está 167 commits atrás da `hml`**, parada na `0.1.0` desde 10/07 —
+  e é a **branch default**, ou seja, a landing page do repo mostra versão e requisito de Python
+  errados. Decisão de repositório (trocar o default para `hml`, ou mergear). Cinco outras branches
+  têm README e `pyproject` divergentes.
 - 🔴 **9 CSVs com texto de laudo** nos commits locais da raiz — bloqueia push de `docs/`, que
   portanto está **sem backup**.
 - `git-steward` ainda é 78 linhas sempre carregadas; candidato a virar regra curta + skill.
