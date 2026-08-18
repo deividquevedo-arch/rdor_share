@@ -18,7 +18,7 @@
 
 CONFIG = {
     "specialty_id": "transplante_pulmao",
-    "config_version": "0.1.1-pulmao-v1-target",
+    "config_version": "0.1.2-pulmao-failover",
     "model_version": "v0",
     "description": (
         "Rastreio de elegibilidade a Transplante de Pulmão a partir do resultado de exames de função "
@@ -28,10 +28,9 @@ CONFIG = {
 
     # --- Motor NLP: QUANTITATIVO puro (sem findings/embeddings/llm-router de relevância) -----------
     "nlp": {
-        # F4 (nlp_engine>=0.5.8): ordem coerente da cascata (evidencia dura antes do juiz). ADOTADO:
-        # validado 1:1 vs legacy na base ouro (TP126/FP1/FN0, recall 1,0 / MCC 0,996) — pulmao e
-        # quantitativo puro, a reordenacao nao altera o resultado, so deixa o fluxo correto.
-        "pipeline_order": "target",
+        # Ordem coerente da cascata (evidencia dura antes do juiz) e default da lib desde 0.6.0 —
+        # nao precisa mais declarar `pipeline_order`. Validado 1:1 vs legacy na base ouro
+        # (TP126/FP1/FN0, recall 1,0 / MCC 0,996): pulmao e quantitativo puro, a ordem nao altera.
         "target_organs": ["pulmao"],
         "organs": {"pulmao": {"seeds": ["pulmão", "pulmao", "pulmonar", "respiratório"]}},
         "segmentation": {"mode": "full_doc"},  # laudos de função pulmonar são curtos
@@ -71,6 +70,9 @@ CONFIG = {
                     "rules": [{"max": 17, "value": 50.0}],
                 },
                 "on_met": "promote",
+                # FP-01: VEF1 % do previsto plausivel entre 5 e 200; fora disso o LLM leu litros/
+                # relacao por engano -> descarta a medida (met=None, fail-safe) em vez de promover FP.
+                "plausible_range": [5, 200],
                 "anchor": {"text": r"(?i)\bvef\s?-?1\b|\bfev\s?-?1\b|volume expirat[óo]rio"},
                 "extraction_hint": (
                     "Extraia o VEF1 em % do PREVISTO/PREDITO. O termo pode vir por SIGLA (VEF1, FEV1) "
@@ -84,8 +86,13 @@ CONFIG = {
                 ),
                 "llm": {
                     "model": "databricks-claude-haiku-4-5",
+                    # Failover de modelo (nlp_engine>=0.5.12): em 429 do haiku, tenta o sonnet antes
+                    # de desistir — distribui carga em vez de esperar/serializar. max_tokens limita
+                    # a resposta (só extrai valor+unidade+evidencia, JSON curto).
+                    "fallback_models": ["databricks-claude-sonnet-4-5"],
                     "api_key_env": "DATABRICKS_TOKEN",
                     "temperature": 0,
+                    "max_tokens": 256,
                 },
             },
             "funcao_intersticial": {
@@ -120,8 +127,13 @@ CONFIG = {
                 ),
                 "llm": {
                     "model": "databricks-claude-haiku-4-5",
+                    # Failover de modelo (nlp_engine>=0.5.12): em 429 do haiku, tenta o sonnet antes
+                    # de desistir — distribui carga em vez de esperar/serializar. max_tokens limita
+                    # a resposta (só extrai valor+unidade+evidencia, JSON curto).
+                    "fallback_models": ["databricks-claude-sonnet-4-5"],
                     "api_key_env": "DATABRICKS_TOKEN",
                     "temperature": 0,
+                    "max_tokens": 256,
                 },
             },
         },
