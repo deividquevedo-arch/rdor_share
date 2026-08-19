@@ -7,42 +7,47 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-08-18** (fim do dia).
+> Atualizado em **2026-08-19**.
 
 ---
 
 ## nlp_engine (lib) — `nlp-engine-lib`
 
-**0.9.3 na `hml`**, tags `v0.9.0`–`v0.9.3` publicadas, wheels no Volume. Gate: ruff, format, mypy,
-**575 testes**, `release-check`.
+**0.9.4 na `hml`**, tags `v0.9.0`–`v0.9.4` publicadas, wheels no Volume. Gate: ruff, format, mypy,
+**577 testes**, `release-check`.
 
 - `0.9.0` **`gates_ordinal_promotion`** (critério de gate declara QUAIS categorias condiciona) +
   **nomenclatura ordinal completa** (rename limpo) + **blob = núcleo mínimo + trilha sempre**.
 - `0.9.1` laudo de uma linha deixou de ser apagado — ver [[laudo-de-uma-linha-e-apagado]].
 - `0.9.2` `findings_policy.display` era engolido pelo carregador (a config declarava e sumia).
 - `0.9.3` categoria ordinal sai **uma vez**, no achado que ela qualifica.
+- `0.9.4` laudo que é SÓ aviso volta a sair vazio — a `0.9.1` deixava resíduo e quebrava o
+  sinal `texto tratado vazio`, que vale para 41% do corpus do ca-estômago.
 
 🔴 **CI de release quebrado — espera Diego.** Host já corrigido para `adb-7405607882166874`;
-falta o **`DATABRICKS_TOKEN`** do variable group `nlp-engine-lib-hml`. **Três releases subidas à
-mão** por isso. `nlp_engine-latest` segue na **0.8.4**, de propósito.
+falta o **`DATABRICKS_TOKEN`** do variable group `nlp-engine-lib-hml`. **Cinco releases subidas à mão** por isso. `nlp_engine-latest` segue na **0.8.4**, de propósito.
 
-## Tireoide V2 — `fabrica-ia-nlp-platform`, branch `tirads/feature/v3-sangue`
+## Tireoide V2 — ✅ ENTREGUE EM HML
 
-✅ **Régua fechada e validada em bancada.** Config `0.8.0-tirads`. Sem PR — o combinado é PR só
-depois de homologada. Exige `nlp_engine >= 0.9.3`.
+**PR aprovado e mergeado** (PR 7071, `005735e`). Config **`0.8.0-tirads`** na `hml`, exige
+`nlp_engine >= 0.9.3`. Branch de origem: `tirads/feature/v2-sem-sangue`.
 
-- **Escopo:** só TR5 e TR4 ≥1 cm (`ordinal_only`), sangue em `annotate_only`, **juiz desligado**
-  (medido: 3.786 chamadas, 17 promoções todas fora do escopo), **sangue fora da captação**
-  (71,4% da entrada gerava zero).
-- **Validado em bancada:** `findings` sai `TR4 - Nódulo (1,8 cm)`, categoria uma vez só, zero
-  driver de juiz. Queda de **8,03% → 2,90%** no mesmo dia (~64% menos apontamentos).
-- 🟡 **Volumetria definitiva** depende do run da janela cheia (17/06–11/07) — ou o número do dia
-  único basta, decisão do Natan.
-- 🔴 **`model_version` de bancada precisa voltar a `v0` antes do PR** (hoje `bench0818full`).
-- ⚠️ 26% dos entregues saem só com a categoria (`TR5`), sem nome de lesão: 9 de 15 por gate de
-  órgão, 6 sem termo na régua. Não mexer sem medir — afrouxar o gate traz outro órgão.
+- **Escopo entregue:** só TR5 e TR4 ≥1 cm (`ordinal_only`), sangue **fora da captação e da
+  promoção**, juiz LLM desligado, `findings` no formato `TR4 - Nódulo (1,8 cm)`.
+- **Impacto medido:** 8,03% → 2,90% de apontamentos no mesmo dia (~64% menos). Volumetria de
+  ordem de grandeza: ~94 laudos e ~62 pacientes/dia. ⚠️ **medida sobre UM dia** — se o Natan
+  precisar de número firme, rodar a janela 17/06–11/07.
+- ✅ **A dedup da VIEW foi corrigida** (PR 7075): ela reprojetava o histórico inteiro a cada
+  `CREATE OR REPLACE` e reenviava laudo já entregue. Agora filtra por `dt_execucao_modelo`.
+  Isso reduz muito a necessidade de filtrar `config_version` na view do João — sobra só o dia
+  da transição, se o job noturno rodar a `0.1.0` e a `0.8.0` no mesmo dia.
+- 🔴 **O job noturno ainda aponta para a `0.1.0`** — precisa passar a usar a config nova.
 - 🔴 **Aguardando Carol:** planilha de 500 laudos, desde 13/08.
+- ⚠️ 26% dos entregues saem só com a categoria (`TR5`), sem nome de lesão: 9 de 15 por gate de
+  órgão, 6 sem termo na régua. Melhoria de qualidade, não de recall — não mexer sem medir.
 - ✅ Backup das 3 variantes de escopo em `_versoes-estaveis/` + matriz no cabeçalho da config.
+- ℹ️ **V3 (sangue) segue especificada e guardada** na branch `tirads/feature/v3-sangue`.
+  Reativar = duas chaves + devolver as palavras-chave de captação.
 
 ## Transplante de pulmão
 
