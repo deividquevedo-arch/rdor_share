@@ -7,42 +7,42 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-08-18**.
+> Atualizado em **2026-08-18** (fim do dia).
 
 ---
 
 ## nlp_engine (lib) — `nlp-engine-lib`
 
-**0.9.1 na `hml`**, tags `v0.9.0` e `v0.9.1` publicadas, wheels no Volume. Gate: ruff, format,
-mypy, **570 testes**, `release-check`.
+**0.9.3 na `hml`**, tags `v0.9.0`–`v0.9.3` publicadas, wheels no Volume. Gate: ruff, format, mypy,
+**575 testes**, `release-check`.
 
-- `0.8.5→0.9.0` **`gates_ordinal_promotion`** (um critério de gate declara QUAIS categorias
-  condiciona — destrava "TR4 só com ≥1 cm"), **`findings` de negócio** (`TR4 - Nódulo (1.8 cm)`,
-  categoria em todo laudo entregue), **nomenclatura ordinal completa** (rename limpo, sem chave
-  dupla) e **blob = núcleo mínimo + trilha sempre emitida** (−7% no laudo negativo).
-- `0.9.1` **laudo de uma linha deixou de ser apagado** pela regra de boilerplate — era
-  falso-negativo silencioso em todas as especialidades. Ver [[laudo-de-uma-linha-e-apagado]].
-- Guardas novas: `test_sem_definicao_duplicada` e `test_ordinal_taxonomy` (varre o `src/`).
+- `0.9.0` **`gates_ordinal_promotion`** (critério de gate declara QUAIS categorias condiciona) +
+  **nomenclatura ordinal completa** (rename limpo) + **blob = núcleo mínimo + trilha sempre**.
+- `0.9.1` laudo de uma linha deixou de ser apagado — ver [[laudo-de-uma-linha-e-apagado]].
+- `0.9.2` `findings_policy.display` era engolido pelo carregador (a config declarava e sumia).
+- `0.9.3` categoria ordinal sai **uma vez**, no achado que ela qualifica.
 
-🔴 **CI de release quebrado.** O host do variable group `nlp-engine-lib-hml` já foi corrigido para
-`adb-7405607882166874`, mas o **`DATABRICKS_TOKEN` continua o do workspace antigo** →
-`403 Invalid access token`. Com o Diego. Os wheels de 0.9.0 e 0.9.1 subi **manualmente**; o
-`nlp_engine-latest` segue apontando para a **0.8.4**, de propósito.
+🔴 **CI de release quebrado — espera Diego.** Host já corrigido para `adb-7405607882166874`;
+falta o **`DATABRICKS_TOKEN`** do variable group `nlp-engine-lib-hml`. **Três releases subidas à
+mão** por isso. `nlp_engine-latest` segue na **0.8.4**, de propósito.
 
 ## Tireoide V2 — `fabrica-ia-nlp-platform`, branch `tirads/feature/v3-sangue`
 
-Config **`0.7.0-tirads`** no ar (não pushei PR — o combinado é PR só depois de homologada).
+✅ **Régua fechada e validada em bancada.** Config `0.8.0-tirads`. Sem PR — o combinado é PR só
+depois de homologada. Exige `nlp_engine >= 0.9.3`.
 
-- ✅ **Régua V2 fechada** (negócio, 18/08): **só TR5 e TR4 ≥1 cm**. `relevance_mode: ordinal_only`;
-  sangue em `annotate_only` (segue avaliando e auditando, só não promove).
-- ✅ **Backup das 3 variantes de escopo** em `_versoes-estaveis/` + matriz no cabeçalho da config:
-  V2 completa / V2 estreita / V3 diferem por **duas chaves**. Reativar é virar chave.
-- 🟡 **Run de validação em andamento** (17/06–11/07, 42.175 laudos, engine 0.9.0). Falta conferir
-  sanidade, formato do `findings` e montar a volumetria do Natan — que hoje está desatualizada
-  nas duas direções (régua estreitou ~49%, TR4 voltou condicionado).
-- ✅ O schema `tirads` **existe** em `diamond_fabrica_ia_hml` (a nota anterior estava errada).
-- ⚠️ 4.490 de 42.175 (10,65%) com texto tratado vazio — **4.398 vazios na ORIGEM** (teto de recall).
-  Sobram **92 com ~1,7 MB de bruto** zerados por outra causa, não investigados.
+- **Escopo:** só TR5 e TR4 ≥1 cm (`ordinal_only`), sangue em `annotate_only`, **juiz desligado**
+  (medido: 3.786 chamadas, 17 promoções todas fora do escopo), **sangue fora da captação**
+  (71,4% da entrada gerava zero).
+- **Validado em bancada:** `findings` sai `TR4 - Nódulo (1,8 cm)`, categoria uma vez só, zero
+  driver de juiz. Queda de **8,03% → 2,90%** no mesmo dia (~64% menos apontamentos).
+- 🟡 **Volumetria definitiva** depende do run da janela cheia (17/06–11/07) — ou o número do dia
+  único basta, decisão do Natan.
+- 🔴 **`model_version` de bancada precisa voltar a `v0` antes do PR** (hoje `bench0818full`).
+- ⚠️ 26% dos entregues saem só com a categoria (`TR5`), sem nome de lesão: 9 de 15 por gate de
+  órgão, 6 sem termo na régua. Não mexer sem medir — afrouxar o gate traz outro órgão.
+- 🔴 **Aguardando Carol:** planilha de 500 laudos, desde 13/08.
+- ✅ Backup das 3 variantes de escopo em `_versoes-estaveis/` + matriz no cabeçalho da config.
 
 ## Transplante de pulmão
 
@@ -70,6 +70,8 @@ No ca-rim, a mesma correção recuperou **+25 laudos em 6 dias**.
   negócio. Achado `ulcera` **separado** do `ulcera_suspeita`, para a fila distinguir os dois.
 - 🔴 **Precisão NÃO medida** — a avaliação offline roda sem o juiz, que é quem filtra. Úlcera
   gástrica é achado comum: **exigir run antes de comprometer data.**
+- 🔴 **Não rodado na plataforma nova ainda.** Migração e régua estão commitadas e pushadas
+  (`3858ed8`, `ba049b1`), sem run.
 - ⚠️ `…10142484` aparece como FP com `Úlcera`, mas é candidato a TP (lesão ulcerada com necrose e
   bordas friáveis, biopsiada) — foi marcado "Não" **antes** da decisão do Targa. Reconfirmar.
 
