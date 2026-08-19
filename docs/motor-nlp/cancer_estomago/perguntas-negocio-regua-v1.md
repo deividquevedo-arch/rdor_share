@@ -1,5 +1,43 @@
 # Câncer de Estômago — 5 perguntas objetivas
 
+> ## ✅ RESPONDIDO PELO NEGÓCIO — Targa, 2026-08-18
+>
+> > *"A palavras-chaves da V1 passarão a contemplar também lesões pré-malignas (ex.: pólipos,
+> > gastrite atrófica, metaplasias, displasia e úlceras)?"*
+> > **"Vamos considerar somente as úlceras, pois podem ser lesões neoplásicas. Restante das
+> > palavras vamos continuar desconsiderando."**
+>
+> **As 5 perguntas ficam fechadas por esta resposta:**
+>
+> | # | fecho |
+> |---|---|
+> | 1 · pré-maligna entra? | **sim, e só úlcera** |
+> | 2 · quais delas? | **só úlcera**; pólipo, gastrite atrófica, metaplasia e displasia seguem fora |
+> | 3 · ignorar INDICAÇÃO? | **sim** — é a pergunta do exame, não o resultado; já implementado |
+> | 4 · tumor tratado sem recidiva? | **segue fora** — "restante vamos continuar desconsiderando" |
+> | 5 · achado só no esôfago? | **não conta** — a linha de cuidado é estômago; consequência do escopo |
+>
+> ### O que isso mudou na régua (`0.3.0-cancer_estomago`)
+>
+> Achado **`ulcera`** novo, separado do `ulcera_suspeita` — este último exige sinal morfológico de
+> malignidade e excluía "úlcera em cicatrização", que era um dos falso-negativos confirmados.
+> Separados, a fila distingue *"Úlcera suspeita"* de *"Úlcera"* na priorização.
+>
+> Exclusão explícita de **duodeno, esôfago, palato, boca e língua** — decorre do fecho da 5. Não é
+> redundante com o gate de órgão: com `organ.scope: block` e laudo numa linha só, o documento
+> inteiro é um bloco, e uma úlcera duodenal passaria.
+>
+> ### Reclassificação dos 7 falso-negativos
+>
+> Só **2 continuam FN** (úlcera gástrica de verdade). Dos outros 5: três são pólipo/enantemática
+> (fora do escopo), um tem a úlcera **negada** no texto e outro é úlcera em **palato duro**.
+> **Recall 0,533 → 1,000** no lote, contra o gabarito revisado.
+>
+> ⚠️ **Precisão não medida** — a avaliação foi offline, sem o juiz, que é a camada que filtra.
+> Úlcera gástrica é achado comum: exigir run antes de comprometer data.
+
+---
+
 **Base:** retorno de negócio da versão `0.1.8` — 36 laudos com veredito, 15 marcados relevantes.
 **Resultado:** 8 acertos · 3 marcados pelo motor e recusados · **7 marcados por vocês e não pelo motor**.
 
