@@ -1,9 +1,6 @@
 ---
 description: Diretrizes do Motor NLP Clinico -- 3 libs, config YAML, clean arch, RPI, SDD, anti-vibe-coding
-alwaysApply: true
 ---
-
-<!-- GERADO por .claude/scripts/sync-cursor-rules.py a partir de .claude/rules/. NAO editar aqui: edite a fonte e rode o script. -->
 
 # Motor NLP Clinico -- Regras para o Agent
 
