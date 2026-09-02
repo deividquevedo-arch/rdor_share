@@ -236,7 +236,11 @@ Duas agendas (42min + 2h24) depois da queda do TI-RADS em produção. **Mapa com
 - 🔴 **A base ouro não tem lugar oficial.** Gabarito vive em planilha, e-mail e arquivo
   temporário — sem `spec_version`, sem `dt_anotacao`, sem dono. Custou uma conclusão errada em
   20/08. A sandbox do Datahub (Diego) **não cobre** isso: nosso caso é o inverso, artefato que já
-  nasce oficial. Proposta levada ao grupo: tabela por especialidade no schema que já existe.
+  nasce oficial.
+  ✅ **Destino decidido em 02/09: o LAKE, não o repositório.** Alinhamento com o Diego em curso
+  sobre schema e formato, com reuso posterior e treinamento de modelo proprietário no horizonte.
+  Enquanto isso os harnesses saíram do diretório temporário do job — que é apagado junto com ele —
+  para `Desktop/Rede D'Or/_ferramentas/`, fora do git.
 - ⚠️ **`embedding_model` das 3 configs aponta para `diamond_ia_hml`**, o Volume ANTIGO. Hoje
   responde e o modelo está íntegro (verificado 20/08), então **não está degradando**. Mas o dia
   em que aquele Volume sair do ar, as três caem para `token_overlap` **sem erro e sem log**.
