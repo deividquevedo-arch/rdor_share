@@ -7,44 +7,44 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-08-27**.
+> Atualizado em **2026-09-02**.
 
 ---
 
 ## nlp_engine (lib) — `nlp-engine-lib`
 
-**0.9.4 na `hml`**, tags `v0.9.0`–`v0.9.4` publicadas, wheels no Volume. Gate: ruff, format, mypy,
-**484 testes**, `release-check`.
+**`0.11.1` na `hml`**, tags `v0.9.0`–`v0.11.1` publicadas. Gate: ruff, format, mypy, **628 testes**,
+`release-check`.
 
-- `0.9.0` **`gates_ordinal_promotion`** (critério de gate declara QUAIS categorias condiciona) +
-  **nomenclatura ordinal completa** (rename limpo) + **blob = núcleo mínimo + trilha sempre**.
-- `0.9.1` laudo de uma linha deixou de ser apagado — ver [[laudo-de-uma-linha-e-apagado]].
-- `0.9.2` `findings_policy.display` era engolido pelo carregador (a config declarava e sumia).
-- `0.9.3` categoria ordinal sai **uma vez**, no achado que ela qualifica.
-- `0.9.4` laudo que é SÓ aviso volta a sair vazio — a `0.9.1` deixava resíduo e quebrava o
-  sinal `texto tratado vazio`, que vale para 41% do corpus do ca-estômago.
+- `0.10.0` **observabilidade do LLM e empacotamento** — `llm_router_mode` distingue os 3 motivos ·
+  `llm_input_chars` · `llm_api_key_origin` · `py.typed` · `setup.py` removido. **Fecha os 4 P1.**
+- `0.10.1` **legenda ordinal descendente** deixa de promover. Defeito 1 do card `285305`.
+  Critério passou a aceitar corrida monotônica de ±1 que **toque** a categoria mínima.
+  Medido: 53 de 314 entregas removidas (16,9%) em run de dev de 20.648 laudos.
+- `0.11.0` **falha de infraestrutura não vira decisão clínica** — `require_measure` não rebaixa
+  quando a medida faltou por erro de LLM · promoção semântica sem arbitragem do juiz não entrega ·
+  a queda para `token_overlap` deixa de ser silenciosa.
+- `0.11.1` **a camada semântica deixa de promover trecho negado.** A régua negava e a semântica
+  promovia o mesmo texto. Reusa `is_negated_in_sentence_plain`; a âncora que faltava é construída
+  com `tokenize_sentence_norm`. Direção default **`left`**, não `both`. Card `298597`.
 
-🟡 **`0.10.0` pronta e NÃO pushada** — branch `feat/0.10.0-observabilidade-e-empacotamento`, 8
-commits, árvore limpa. Gates verdes: ruff, format, mypy, **593 testes**, `release-check` completo.
-Escopo: `llm_router_mode` distingue os 3 motivos · `llm_input_chars` · **`llm_api_key_origin`** ·
-`py.typed` · `setup.py` removido. Espera autorização para push + PR para `hml`.
+🔴 **`main` está DUAS versões atrás** — `0.10.1`. A `0.11.0` e a `0.11.1` só estão na `hml`.
 
-✅ **CI de release corrigido** (2026-08-20). `nlp_engine-latest` no Volume **é a 0.9.4** — verificado
-baixando a wheel e lendo o METADATA.
+🟡 **Validação da `0.11.1` em curso.** Coorte de 4.508 laudos de hepatologia (18/08) contra o run de
+referência de 01/09. Parcial em 2.495: **443 → 439 relevantes, 4 perdidos, 0 ganhos**, 77 com score
+semântico reduzido, 43 mudaram de `decision_source`. Zero score subiu — a mudança só remove.
+⚠️ A nota de release afirma impacto zero e **isso não se sustenta**; será corrigida com o número
+final.
 
-✅ **Changelog fechado** (27/08): 5 tags publicadas não tinham seção no `RELEASE.md` (`0.7.4` a
-`0.8.1`; a `0.7.5` era a da entrega do transplante V1). Preenchidas, e o `check_release.py` ganhou
-gate que falha nomeando a versão sem entrada.
+🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
+`0.12.0` higiene (15 cards, nenhum toca `fl_relevante`, um golden prova o lote) → `0.13.0` estrutura
+(6 cards, `process()` em streaming **quebra a API**) → `0.14.0` juiz sem evidência → `0.15.0` vínculo
+lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
 
-🔴 **A falha de LLM é SILENCIOSA e a régua a mascara.** Provado em produção em 27/08. `met=None` por
-endpoint morto vira "não atende" e o gate **rebaixa** — 2.947 laudos no TI-RADS em 21/08. Distinguir
-"não pôde avaliar" de "não atendeu" **muda comportamento**: bump próprio, SPEC ainda não escrita.
+🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
+`0.14.0`. Exige medição prévia por linha.
 
-🔴 **P0-0 novo: o juiz pode promover sem evidência de regra.** É quebra de invariante — já existe
-`_tem_evidencia_dura` impedindo o juiz de **derrubar** evidência dura; falta a simétrica, impedindo
-que ele **crie** relevância do nada. Hoje contornado por banda na config (ca-estômago), o que é
-frágil: qualquer especialidade nova viola baixando o número. Medido: 2.861 de 3.199 laudos que iam
-ao juiz não tinham evidência alguma.
+⚠️ **Branch `docs/plano-e-specs-ops` sem push** — plano e SPECs.
 
 ## Tireoide V2 — ✅ ENTREGUE EM HML
 
@@ -73,7 +73,11 @@ ao juiz não tinham evidência alguma.
   Os **4 casos que saem como `TR5` puro são 4/4 falso positivo** — o TR veio da **legenda do ACR**
   no rodapé, não de achado. Os `TR4` puros são legítimos. A nota anterior ("melhoria de qualidade,
   não de recall") estava errada.
-- 🔴 **Card `285305`** (Defect, P1) — dois defeitos consolidados, ambos na lib:
+- 🟡 **Card `285305`** (Defect, P1) — dois defeitos consolidados, ambos na lib.
+  ✅ **Defeito 1 CORRIGIDO** na `0.10.1` (tag publicada, na `main`). Produção rodou `0.10.0` em
+  02/09 por ser a versão publicada no momento da execução; o próximo noturno pega a `0.10.1`.
+  🔴 Falta a **medição 17/06–11/07 antes/depois**, exigida pelo card, e o **defeito 2**.
+  Detalhe original dos dois:
   **(1) legenda ACR** — `_legend_exclude_ids` só reconhece corrida **ascendente por +1 começando no
   rank 0**; a legenda desse emissor é `TR5→TR1`, descendente. 5 categorias, passa o `min_run=4`, e
   escapa. Medido: **6 de 18 pacientes (33%)** no arquivo RJ de 27/08. Provado ponta a ponta com a
@@ -204,6 +208,22 @@ confiança. O `alert_threshold_relevance_drop` não pega falha de LLM: no TI-RAD
 - `persist_input` é **código morto** — declarado, lido, nunca consumido.
 - ✅ Schemas provisionados: `cancer_estomago`, `cancer_colon`, `cancer_rim`, `tumor_osseo` em **hml**
   (21/08). Produção segue com hepatologia, tirads e transplante_pulmao.
+
+### Runs de bancada em dev estão caros — card `298596` (02/09)
+
+🔴 **`limit_rows` não isola coorte.** O teto é aplicado **depois** da união da fila, cuja ordem é
+inéditos → pendentes → **reprocessados por último**. `df_queue.limit(N)` pega as N primeiras, então
+a coorte a remedir fica sempre fora do teto. O run fecha **com sucesso sem tocar a coorte**.
+
+- Medido em 02/09, hepatologia: fila de **110.777** para medir 6.398; depois de limpar pendentes,
+  fila de **62.266** com 55.868 inéditos. Os 1.000 primeiros gravados tiveram **zero id em comum**
+  com a coorte.
+- ✅ **Contorno:** janela de **um dia integralmente processado** zera os inéditos. Com 18/08,
+  `gold=4508 | ineditos=0 | fila=4508` — **14× menos LLM**. ⚠️ Depende de coincidência: nos outros
+  dias da mesma coorte sobrariam 1.203 e 2.765 inéditos.
+- ✅ **Backlog de 104.379 pendentes em dev na hepatologia LIMPO** (02/09). Era resíduo de run
+  interrompido; as outras três especialidades tinham **zero**.
+- `include_pending` tem default `True` e **não tem widget** — não dá para desligar pela UI.
 
 ## Alinhamento com a plataforma — 2026-08-21
 
