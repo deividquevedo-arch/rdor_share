@@ -261,7 +261,14 @@ Duas agendas (42min + 2h24) depois da queda do TI-RADS em produção. **Mapa com
   sobre schema e formato, com reuso posterior e treinamento de modelo proprietário no horizonte.
   Enquanto isso os harnesses saíram do diretório temporário do job — que é apagado junto com ele —
   para `Desktop/Rede D'Or/_ferramentas/`, fora do git.
-- ⚠️ **`embedding_model` das 3 configs aponta para `diamond_ia_hml`**, o Volume ANTIGO. Hoje
-  responde e o modelo está íntegro (verificado 20/08), então **não está degradando**. Mas o dia
-  em que aquele Volume sair do ar, as três caem para `token_overlap` **sem erro e sem log**.
+- 🟡 **`embedding_model` das configs aponta para `diamond_ia_hml`**, o Volume ANTIGO — **caminho
+  literal, idêntico nos três ambientes**, então produção lê o modelo de um volume de HOMOLOGAÇÃO do
+  workspace antigo. Hoje responde e o modelo está íntegro; o risco é latente. Se aquele Volume sair
+  do ar, as linhas com embeddings caem para `token_overlap` — a `0.11.0` registra a queda na trilha,
+  mas o resultado muda sem alarme na monitoria.
+  ✅ **MiniLM já copiado** para `gold_fabrica_ia_hml/nlp_engine/nlp_engine_lib/st_models/` (01/09).
+  🔴 **Produção não tem destino:** o catálogo `gold_fabrica_ia` não possui o schema `nlp_engine`.
+  Criar schema é do time da Fábrica. Card **`298600`**, com o ponto em aberto: como resolver o
+  caminho **por ambiente** — mesma classe do `base_url` do LLM, resolvido no PR 7135.
+  ℹ️ O `mpnet-base-v2` fica **fora de escopo**: só existe no volume antigo e serve notebooks legados.
 - `git-steward` ainda é 78 linhas sempre carregadas; candidato a virar regra curta + skill.
