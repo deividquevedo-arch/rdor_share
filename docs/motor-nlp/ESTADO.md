@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-02**.
+> Atualizado em **2026-09-03**.
 
 ---
 
@@ -35,6 +35,21 @@ referência de 01/09. Parcial em 2.495: **443 → 439 relevantes, 4 perdidos, 0 
 semântico reduzido, 43 mudaram de `decision_source`. Zero score subiu — a mudança só remove.
 ⚠️ A nota de release afirma impacto zero e **isso não se sustenta**; será corrigida com o número
 final.
+
+🟡 **`0.12.0` EM CURSO** — branch `feat/0.12.0-higiene-consolidada`, 5 commits, **8 dos 15 cards**:
+`P2-07` extra vazio · `P2-09` contrato vinculante · `P2-10` hierarquia de exceções · `P2-11` fim do
+engolir silencioso · `P2-12` ruff `B`/`BLE`/`C901` e mypy `strict` · `P2-17` SQL parametrizado ·
+`P2-19` `__all__` · `P2-22` cobertura com gate.
+Gates: ruff, format, mypy strict, **745 testes**, cobertura **86,66%** por ramo, release-check.
+Faltam `P2-08`, `P2-20`, `P2-21`, `P2-23`, `P2-24`, `P3-26`, `P3-28`.
+
+- ✅ **A lib passou a emitir log.** Não emitia em lugar nenhum — `NullHandler` no pacote e `logger`
+  em `to_plain` e `html_plain`. Dos 13 `except Exception`, 4 estreitados, 7 passam a registrar a
+  classe, 1 segue amplo de propósito e documentado.
+- ✅ **O contrato de saída deixou de ser decorativo.** `contracts.py` estava em **0%** porque
+  ninguém o importava; o motor emitia `findings`, `findings_match`, `findings_spans` e
+  `decision_trail` sem declaração. Agora `process()` devolve `EngineOutputRow` e um teste compara
+  emitido contra declarado nos dois sentidos.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
 `0.12.0` higiene (15 cards, nenhum toca `fl_relevante`, um golden prova o lote) → `0.13.0` estrutura
@@ -76,7 +91,14 @@ lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
 - 🟡 **Card `285305`** (Defect, P1) — dois defeitos consolidados, ambos na lib.
   ✅ **Defeito 1 CORRIGIDO** na `0.10.1` (tag publicada, na `main`). Produção rodou `0.10.0` em
   02/09 por ser a versão publicada no momento da execução; o próximo noturno pega a `0.10.1`.
-  🔴 Falta a **medição 17/06–11/07 antes/depois**, exigida pelo card, e o **defeito 2**.
+  ✅ **Defeito 1 MEDIDO em 03/09, por A/B real** — coorte de 2.177 laudos (02–03/07), dois motores
+  na mesma execução: **156 → 133 entregas, 23 removidas (14,7%), zero acrescentadas**. Causalidade
+  provada: **23 de 23 mencionam ACR e PAAF**, nenhum removido sem legenda. Convergiu com os 16,9%
+  da medição simulada de 01/09. Produção pegou a `0.10.1` em 03/09.
+  ⚠️ A medição foi sobre 2 dias, não sobre 17/06–11/07: a baseline daquela janela existia em dev e
+  **se perdeu quando as tabelas do TI-RADS foram dropadas em 03/09 às 12:36** e recriadas.
+  Recuperável por `UNDROP` (7 dias), pendente de decisão com o João.
+  🔴 Falta o **defeito 2** (medida associada ao nódulo errado) — é a `0.15.0`.
   Detalhe original dos dois:
   **(1) legenda ACR** — `_legend_exclude_ids` só reconhece corrida **ascendente por +1 começando no
   rank 0**; a legenda desse emissor é `TR5→TR1`, descendente. 5 categorias, passa o `min_run=4`, e
@@ -185,6 +207,40 @@ Estudo e desenho **concluídos** (doc macro, drawio, nota de review, 2 comentár
 🔴 **Pendente: SPEC da fase 0** — exclusão/refutação no escopo do laudo. É o critério que fecha o card,
 e não depende de nenhuma das 6 decisões em aberto.
 
+## Revisão de config das especialidades — régua de 2026-09-03
+
+🔴 **Config não passa com bloco morto.** Régua fixada, valendo para qualquer PR de especialidade.
+Referência: `cancer_rim`. Regra canônica em `.claude/rules/motor-nlp.md`.
+
+O runner lê `specialty_id`, `config_version`, `model_version`, `data`, `nlp` e **`runtime.llm_router`**.
+Não lê `catalog`, `monitoring`, `distribution`, nem interpola `{catalog}`/`{run_id}`.
+
+⚠️ **A SPEC 27 §6.1 está ERRADA** ao afirmar que nada lê `runtime` — `ntb_ia_loader.py:105-113`
+faz `self.llm_router.update(runtime_llm)`, e o `runtime` **sobrescreve** o `nlp`. Foi o que
+derrubou a primeira subida do ca-estômago. O guia `boas-praticas/02` Passo 6, em compensação, já
+pede a coerência entre os dois blocos.
+
+### PR `7159` — ca-rim (Leandro)
+
+Config valida no `load()` da lib: juiz **ligado** (`enabled: True` explícito), 27 termos semânticos,
+negação com 51 frases e `direction: left`, threshold `0.92`.
+✅ Atendeu dois pedidos: comentário de calibragem e `embedding_model` no Volume do ambiente novo.
+🟡 Falta remover `catalog`, `monitoring` e `distribution`.
+ℹ️ O comentário dele documenta que `ambiguity_band` é **inerte** em `decision_mode: hybrid` —
+confirmado em `decision_pipeline.py:555`, único uso.
+
+### PR `7191` — ca-cólon (Lucas)
+
+Config valida no `load()`: 13 findings, 148 termos, negação com 64 frases e direção por achado.
+**Zero PHI** nos notebooks e no RUNBOOK — conferido.
+🟡 Pedidos: `nlp.llm_router.enabled: False` explícito (o juiz está desligado e a config parece
+ligada — prompt completo declarado); remover blocos mortos; cabeçalho (é o único dos seis configs
+sem nenhum) e changelog no arquivo, incluindo o `match_rate` de paridade, que se perde com a
+remoção dos notebooks.
+ℹ️ **Sem LLM neste ciclo, por paridade com o legado.** O juiz entra no próximo.
+ℹ️ Os dois `assert` do backtest dele — wheel instalada contra o pin e `config_version` carregada
+contra a esperada — são o padrão que vale copiar.
+
 ## Plataforma / MLOps
 
 🔴 **O LLM nunca funcionou em produção nesta plataforma** (medido 27/08). **8.058 tentativas, zero
@@ -230,6 +286,10 @@ a coorte a remedir fica sempre fora do teto. O run fecha **com sucesso sem tocar
 Duas agendas (42min + 2h24) depois da queda do TI-RADS em produção. **Mapa completo em**
 [`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`](_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md)
 — 15 gaps com dono, prioridade e solução.
+
+🟡 **A instalação da lib passou de wheel para `pip`** (PR 7194, João, 03/09), com feed privado.
+`latest` ou vazio instala sem pin; versão específica vira `nlp-engine==<versão>`. ⚠️ Muda a
+conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 
 **Decisões que MUDARAM e valem a partir de agora:**
 
