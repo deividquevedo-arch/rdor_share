@@ -95,9 +95,10 @@ lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
   na mesma execução: **156 → 133 entregas, 23 removidas (14,7%), zero acrescentadas**. Causalidade
   provada: **23 de 23 mencionam ACR e PAAF**, nenhum removido sem legenda. Convergiu com os 16,9%
   da medição simulada de 01/09. Produção pegou a `0.10.1` em 03/09.
-  ⚠️ A medição foi sobre 2 dias, não sobre 17/06–11/07: a baseline daquela janela existia em dev e
-  **se perdeu quando as tabelas do TI-RADS foram dropadas em 03/09 às 12:36** e recriadas.
-  Recuperável por `UNDROP` (7 dias), pendente de decisão com o João.
+  ℹ️ A medição foi sobre 2 dias, não sobre 17/06–11/07: a baseline daquela janela se perdeu no drop
+  das tabelas de dev em 03/09. **Recuperação por `UNDROP` descartada** — o A/B de 2 dias é
+  metodologicamente superior ao planejado (dois motores reais em vez de simulação) e o número
+  convergiu. Se o negócio exigir a janela cheia, custa dois runs.
   🔴 Falta o **defeito 2** (medida associada ao nódulo errado) — é a `0.15.0`.
   Detalhe original dos dois:
   **(1) legenda ACR** — `_legend_exclude_ids` só reconhece corrida **ascendente por +1 começando no
@@ -107,6 +108,13 @@ lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
   **(2) medida do nódulo errado** — o critério pede o **MAIOR nódulo do laudo**, não o que é TR4.
   `gate_mets` é por critério, não por menção: não existe vínculo lesão↔medida. Entregamos
   `TR4 - Nódulo (2.1 cm)` num laudo cujo TI-RADS 4 media 0,4 cm. **2 dos 7 TR4** do arquivo.
+- 🟡 **A REFINAR (03/09, sugestão do Natan): TR4 valeria sem evidência de tamanho, quando houver
+  PAAF.** Hoje o TR4 exige medida (`require_measure: True` + `gates_ordinal_promotion`). A proposta
+  é uma **exceção**: PAAF como gatilho alternativo ao tamanho.
+  Perguntas em aberto para amanhã: a lib já expressa "gate dispensado quando outro achado está
+  presente", ou é feature nova? Qual a volumetria — PAAF é raro e nem todo laudo com PAAF vem sem
+  medida, então o ganho precisa ser dimensionado antes de virar trabalho.
+  Prioridade **abaixo** dos defeitos em curso. Candidato a delegar.
 - ⚠️ **Antes de corrigir, rodar a janela 17/06–11/07** para dimensionar. Fazer **depois da `0.10.0`**,
   para o antes/depois ter uma variável só.
 - ℹ️ **O arquivo que o Natan monitora vem de HML, não de produção** — conferido exame a exame.
@@ -182,6 +190,15 @@ Branch `cancer_estomago/config-0.6.1-hml`, **config `0.6.2`**, commits `598fb04`
   regressão, não ganho.
 - O diagnóstico escrito para ele (`docs/motor-nlp/cancer_rim/diagnostico-config-cancer-rim.md`)
   ainda não foi enviado; se ele alinhou o prompt à v0.5 por conta própria, parte dele já venceu.
+
+## Migração dos algoritmos legados — 🟡 A PLANEJAR (03/09)
+
+Frente nova, a organizar amanhã. Ordem indicada: **reumatologia** (começar o quanto antes),
+depois **ateromatose**, **doenças biliares** e **neuroimunologia**.
+
+A refinar antes de virar trabalho: inventário de cada régua legada, se existe gabarito, volumetria,
+e o que reaproveitar do caminho já percorrido em ca-cólon e ca-rim — que são migrações do mesmo
+tipo e já produziram padrão (config, exchange, bancada, paridade).
 
 ## Câncer de cólon — 🟡 LEVANTAMENTO PARA MIGRAÇÃO
 
