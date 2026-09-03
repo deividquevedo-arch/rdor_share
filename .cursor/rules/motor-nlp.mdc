@@ -67,6 +67,50 @@ alwaysApply: true
 - Libs recebem dict, nao leem arquivo. Notebook extrai e injeta
 - `config_version` e `engine_version` obrigatorios em todo output
 
+## Config de especialidade -- nada passa com bloco morto
+
+**Config declarada e nao consumida nao passa em revisao.** Vale para PR de qualquer
+especialidade, sem excecao. Referencia: `cancer_rim`.
+
+### O que o runner LE
+
+`specialty_id` -- `config_version` -- `model_version` -- `data` -- `nlp` -- e **`runtime.llm_router`**.
+
+⚠️ A SPEC 27 §6.1 afirma que "nada neste pipeline le `runtime`". **Esta ERRADO.** O
+`ntb_ia_loader.py:105-113` faz `self.llm_router.update(runtime_llm)` -- o `runtime` **sobrescreve**
+o `nlp`. Foi o que derrubou a primeira subida do ca-estomago. Nao confiar na SPEC nesse ponto.
+
+### O que NAO e lido, e portanto nao entra
+
+- `catalog` -- o catalogo efetivo vem do `EnvironmentConfig`. Pior que inutil: costuma apontar para
+  o ambiente errado (`diamond_ia_hml`, workspace antigo) e quem promove le "dev" na config de prd.
+- `monitoring` -- nenhuma chave. E a `metrics_table` declarada nem e a tabela usada.
+- `distribution` -- `outbound_volume`, `outbox` e `inbox` so aparecem dentro das proprias configs.
+- placeholders `{catalog}` e `{run_id}` -- ninguem interpola; ficam literais.
+
+### Chave que decide comportamento e SEMPRE declarada
+
+Mesmo quando o valor coincide com o default. `nlp.llm_router.enabled` e o caso canonico: ausente,
+a lib assume `False`, mas um bloco com `mode`, `model`, `uncertainty_band` e `prompt_system`
+completo faz o leitor concluir o contrario. Vale nos dois sentidos -- ligado sem declarar e tao
+ruim quanto desligado sem declarar.
+
+O guia da propria plataforma ja pede isso: `docs/usage/boas-praticas/02`, Passo 6 --
+*"mantenha `runtime` coerente com `nlp.llm_router`"*.
+
+### Por que a regra e dura
+
+Bloco morto nao parece placeholder: os valores sao **plausiveis** -- um catalogo que existe, uma
+tabela com nome verossimil, um prompt inteiro. Ninguem desconfia. E a mesma classe do extra
+`[databricks]` vazio, que dava `pip install` com sucesso sem instalar nada.
+
+### Cabecalho e changelog
+
+Config e artefato revisavel: cabecalho `# MAGIC %md` dizendo o que a linha decide, de onde veio a
+regua, o que foi adaptado e quais divergencias sao deliberadas; e o historico de versoes **no
+arquivo**, com o numero que sustentou cada uma. Historico que so existe no `git log` nao chega em
+quem abre a config.
+
 ## Entrega ao negocio -- perfil COMPLETO, nunca estagio intermediario
 
 - **O alvo de toda especialidade e o fluxo completo:** regra -> hibrido calibrado -> juiz.
