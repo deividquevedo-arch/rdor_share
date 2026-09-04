@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-03**.
+> Atualizado em **2026-09-04**.
 
 ---
 
@@ -28,13 +28,40 @@
   promovia o mesmo texto. Reusa `is_negated_in_sentence_plain`; a âncora que faltava é construída
   com `tokenize_sentence_norm`. Direção default **`left`**, não `both`. Card `298597`.
 
-🔴 **`main` está DUAS versões atrás** — `0.10.1`. A `0.11.0` e a `0.11.1` só estão na `hml`.
+🔴 **`main` está TRÊS versões atrás** — `0.10.1`. `0.11.0`, `0.11.1` e `0.11.2` só na `hml`
+(a `0.11.2` nem isso: só na branch).
+ℹ️ **Merge `hml → main` leva as três juntas** — não existe subir só a última sem criar divergência.
+Cada uma tem número medido, então o pacote não é opaco.
+✅ **O feed publica a partir da `main`** — verificado no `azure-pipelines.yml`: `main` → feed
+`fabrica-ai`, `hml` → `fabrica-ai-hml`, trigger nas duas. ⚠️ O stage `Deliver` publica no feed
+**E** sobe no Volume; com a troca para `pip` (PR 7194 do João) há dois caminhos vivos — confirmar
+com ele se o upload ao Volume será desativado.
 
 🟡 **Validação da `0.11.1` em curso.** Coorte de 4.508 laudos de hepatologia (18/08) contra o run de
 referência de 01/09. Parcial em 2.495: **443 → 439 relevantes, 4 perdidos, 0 ganhos**, 77 com score
 semântico reduzido, 43 mudaram de `decision_source`. Zero score subiu — a mudança só remove.
 ⚠️ A nota de release afirma impacto zero e **isso não se sustenta**; será corrigida com o número
 final.
+
+🔴 **`0.11.2` PRONTA E PUSHADA, AGUARDA PR — entra ANTES da `0.12.0`.**
+Branch `fix/0.11.2-espaco-colado-antes-de-acento`, 3 commits, `aa005a8`, a partir da `hml`.
+Defeito P0 **ativo em produção**: `to_plain.py:173` apagava o espaço entre palavra de 1 a 4 letras
+e palavra iniciada por acento. `sem` tem 3 letras → `semúlceras` vira **um token** e o negador
+some. **6 laudos entregues em 04/09 no ca-estômago dizendo o oposto** (`Tumor; Úlcera` num laudo
+que diz *"sem úlceras ou tumorações"*).
+
+- **A função nunca acertou:** 9 regras medidas uma a uma sobre 616 laudos → **825 junções, zero
+  legítimas**; as 5 que a justificavam (`çã o`→`ção`) **nunca dispararam**. Removidas 4, mantidas 5.
+- **Impacto medido nas 4 linhas** (motor 2× por linha, LLM desligado dos dois lados):
+  `cancer_estomago` 17 → **11** (−6, 35%) · `tirads` 47 → 47 · `hepatologia` 5 → 5 ·
+  `cancer_rim` 2 → 2. ⚠️ Pré-condição verificada: o texto tratado mudou em 105, 135 e 257 de 400
+  nas três que deram zero — sem isso o zero seria medição vazia.
+- **Efeito nos dois sentidos:** também faz achado **sumir** (`de úlcera`→`deúlcera`), já registrado
+  em 27% dos laudos com úlcera. A correção recupera esses.
+- ⚠️ **As homologações das 4 linhas foram feitas sobre texto com o defeito** — recall 0,600 /
+  precisão 1,000 do ca-estômago inclui estes FP e precisa ser reavaliado.
+- Card `299423` (P1). SPEC `docs/spec-0.11.2-espaco-colado-antes-de-acento.md`. 16 testes onde
+  havia **zero**, 4 mutantes mortos.
 
 🟡 **`0.12.0` EM CURSO** — branch `feat/0.12.0-higiene-consolidada`, 5 commits, **8 dos 15 cards**:
 `P2-07` extra vazio · `P2-09` contrato vinculante · `P2-10` hierarquia de exceções · `P2-11` fim do
@@ -59,7 +86,9 @@ lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
 🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
 `0.14.0`. Exige medição prévia por linha.
 
-⚠️ **Branch `docs/plano-e-specs-ops` sem push** — plano e SPECs.
+⚠️ **Branches sem push:** `docs/plano-e-specs-ops` (plano dos 28 cards + SPECs 0.12.0/0.13.0),
+`docs/0.11.1-impacto-medido` e `feat/0.12.0-higiene-consolidada` (5 commits, 8 cards).
+✅ `fix/0.11.2-espaco-colado-antes-de-acento` **pushada**, aguardando PR.
 
 ## Tireoide V2 — ✅ ENTREGUE EM HML
 
@@ -144,7 +173,26 @@ quantitativos, que dependem do LLM. Com o 403, nada promove e o run fecha em suc
 de todo laudo. **Nunca medido.** Mensurável desde a 0.8.3 (`segmentation_coverage`).
 No ca-rim, a mesma correção recuperou **+25 laudos em 6 dias**.
 
-## Câncer de estômago — 🔴 PR ABERTO EM HML, AGUARDA REVOTE
+## Câncer de estômago — ✅ EM PRODUÇÃO desde 2026-09-04
+
+Config **`0.6.9-cancer_estomago`** (gate da úlcera isolada), engine `0.10.1`. PRs 7166 e 7187
+mergeados pelo João.
+
+**Primeiro dia em prd (04/09):** 151 laudos · 6 relevantes (3,97%) · **zero entregue sem achado**
+(eram 36) · zero erro de LLM. O gate rebaixou **5 de 11** laudos com achado léxico.
+
+🔴 **MAS os 6 relevantes eram FALSO POSITIVO** — todos pelo defeito do espaço colado, corrigido na
+`0.11.2`. Com a correção seriam **11 relevantes em vez de 17** na coorte de 333 laudos.
+
+ℹ️ **Zero chamadas ao juiz**, por duas causas distintas: 145 laudos abaixo do piso da banda
+`[0,60; 0,97]`, e 1 dentro da banda que saiu `skipped_deterministic` porque o `quantitative_gate`
+já tinha decidido. Não é defeito — é o desenho da `0.6.9`. ⚠️ Acompanhar: se o juiz nunca for
+chamado, produção roda comportamento diferente do homologado (lá foram 345 chamadas em 10.783).
+
+⚠️ A taxa de 3,97% está acima dos 0,70% da janela de homologação. Parte é o defeito do espaço;
+o resto pode ser diferença de corpus. Reavaliar depois da `0.11.2`.
+
+## Câncer de estômago — histórico do PR 7102
 
 Branch `cancer_estomago/feature/migracao-plataforma`, commit `e371036`, pushado.
 Exige `nlp_engine >= 0.9.4`. SPEC: `cancer_estomago/spec-negocio-cancer-estomago-v1.md`.
@@ -237,26 +285,38 @@ faz `self.llm_router.update(runtime_llm)`, e o `runtime` **sobrescreve** o `nlp`
 derrubou a primeira subida do ca-estômago. O guia `boas-praticas/02` Passo 6, em compensação, já
 pede a coerência entre os dois blocos.
 
-### PR `7159` — ca-rim (Leandro)
+### PR `7159` — ca-rim (Leandro) — ✅ PRONTO PARA APROVAR
 
-Config valida no `load()` da lib: juiz **ligado** (`enabled: True` explícito), 27 termos semânticos,
-negação com 51 frases e `direction: left`, threshold `0.92`.
-✅ Atendeu dois pedidos: comentário de calibragem e `embedding_model` no Volume do ambiente novo.
-🟡 Falta remover `catalog`, `monitoring` e `distribution`.
+`7587020`. Config valida no `load()`: juiz **ligado** (`enabled: True` explícito), 27 termos,
+negação 51 frases `direction: left`, threshold `0.92`, `findings` 5, `organs ['rim']`.
+
+**Cinco pedidos, todos atendidos:** comentário de calibragem com os valores efetivos ·
+`embedding_model` no Volume novo (`gold_fabrica_ia_hml/.../MiniLM-L12-v2`) · removidos `catalog`,
+`monitoring` e `distribution` · removido `gold_filter.mode` (não é lido) · cabeçalho corrigido +
+**changelog de `0.4.0` a `0.6.0`**, com o registro de que não existe `0.5.2`.
+
 ℹ️ O comentário dele documenta que `ambiguity_band` é **inerte** em `decision_mode: hybrid` —
-confirmado em `decision_pipeline.py:555`, único uso.
+confirmado em `decision_pipeline.py:555`, único uso. Eu estava impreciso ao dizer "três números e
+só um vale".
+ℹ️ **Vira a referência** para limpar as outras especialidades.
 
-### PR `7191` — ca-cólon (Lucas)
+### PR `7191` — ca-cólon (Lucas) — 🟡 aguardando ajustes
 
-Config valida no `load()`: 13 findings, 148 termos, negação com 64 frases e direção por achado.
-**Zero PHI** nos notebooks e no RUNBOOK — conferido.
-🟡 Pedidos: `nlp.llm_router.enabled: False` explícito (o juiz está desligado e a config parece
-ligada — prompt completo declarado); remover blocos mortos; cabeçalho (é o único dos seis configs
-sem nenhum) e changelog no arquivo, incluindo o `match_rate` de paridade, que se perde com a
-remoção dos notebooks.
-ℹ️ **Sem LLM neste ciclo, por paridade com o legado.** O juiz entra no próximo.
+Config valida: 13 findings, 148 termos, negação 64 frases com direção **por achado**. **Zero PHI**
+nos notebooks e no RUNBOOK.
+
+🔴 **`nlp.llm_router` não declara `enabled`** — juiz DESLIGADO (correto para a paridade com o
+legado) mas a config declara `mode`, `model`, `uncertainty_band` e `prompt_system` completo, e
+quem lê conclui o contrário. É o `283644` espelhado. Pedido: `'enabled': False` explícito.
+🟡 Pedidos: remover blocos mortos · `catalog` aponta para `diamond_ia_hml` (workspace **antigo**) ·
+**cabeçalho** (é o único dos seis configs sem nenhum) · **changelog** no arquivo, incluindo o
+`match_rate` de paridade, que se perde com a remoção dos notebooks.
+ℹ️ **Sem LLM neste ciclo**, por paridade. O juiz entra no próximo.
 ℹ️ Os dois `assert` do backtest dele — wheel instalada contra o pin e `config_version` carregada
 contra a esperada — são o padrão que vale copiar.
+ℹ️ O CONFIG dele termina com `assert` travando `soft_findings`, a lista de achados e
+`document_vet.enabled`. Contraria a SPEC 27 (§7 diz "dicionário literal e nada mais") **para
+melhor** — registrado no card `299238`.
 
 ## Plataforma / MLOps
 
@@ -322,6 +382,32 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 
 **P0/P1 sem card, e são nossos:** doc do consumidor + mensagem de erro · vazamento de memória no
 `process()` · lib não emite log no caminho NLP.
+
+## Cards — quadro em 2026-09-04
+
+**Nossos, em execução:** `285305` TI-RADS (defeito 1 medido e corrigido; falta o defeito 2 =
+`0.15.0`) · `283644` juiz por contorno · `283647` contrato lib↔plataforma (fica aberto, só alinha
+quando os bumps fecharem) · `283648` `[P0-29]` juiz sem evidência (= `0.14.0`) · **`299423`
+espaço colado** (= `0.11.2`, pushada) · `298598` Feature: plano de bumps · os **8 cards da
+`0.12.0`** movidos para Sprint 5 / Em Execução.
+
+**Para a plataforma:** `298596` `limit_rows` não isola coorte · `298600` `embedding_model` por
+ambiente · `299238` **SPEC 27 contradiz o código** (card acumulador — registrar ali os ajustes
+que aparecerem, alinhar de uma vez com o `283647`).
+
+**Encerrados hoje/ontem:** `298597` (a `0.11.1`).
+
+## A refinar — anotado, não iniciado
+
+- 🟡 **TR4 sem evidência de tamanho quando houver PAAF** (sugestão do Natan). É **exceção**, não
+  mudança da régua geral: PAAF como gatilho alternativo ao tamanho. Perguntas em aberto: a lib já
+  expressa "gate dispensado quando outro achado está presente", ou é feature nova? Qual a
+  volumetria — PAAF é raro e nem todo laudo com PAAF vem sem medida. Prioridade **abaixo** dos
+  defeitos em curso. Candidato a delegar.
+- 🟡 **Migração dos algoritmos legados**, na ordem **reumatologia** (começar o quanto antes),
+  **ateromatose**, **doenças biliares**, **neuroimunologia**. A levantar: inventário de cada régua,
+  existência de gabarito, volumetria, e o que reaproveitar do padrão que ca-cólon e ca-rim já
+  produziram.
 
 ## Dívidas transversais
 
