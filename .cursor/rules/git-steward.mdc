@@ -40,6 +40,26 @@ Se for pedido algo assim: **parar**, dizer o risco em uma linha, e esperar confi
 - **Descrição de PR: no máximo 4.000 caracteres.** Limite do time — o que não couber vai para a
   SPEC e entra como link. Medir ANTES de entregar o texto.
 
+## Mensagem de commit: por ARQUIVO quando tiver crase, barra ou regex
+
+`git commit -m "..."` e heredoc de shell **destroem** o conteúdo em silêncio:
+
+- **crase** vira substituição de comando — `` `sem` `` some e a frase fica sem o sujeito;
+- **barra invertida** é comida — `\b` vira `b`, `\s` vira `s`;
+- o commit é criado **com sucesso**, então o erro só aparece lendo o histórico depois.
+
+Custou dois erros em 2026-09-04: um script de mutação que não mutava nada (e me fez concluir
+que quatro mutantes tinham sobrevivido) e uma mensagem de commit publicada com buracos.
+
+**Regra:** mensagem com crase, regex, barra ou aspas vai para arquivo e entra por
+`git commit -F <arquivo>` — escrito por Python/Write, nunca por heredoc.
+
+Vale igual para `--discussion` de card e descrição de PR: passar por arquivo ou por
+`subprocess` com lista de argumentos, jamais interpolado no shell.
+
+⚠️ **Verificar depois de gravar.** `git log -1 --pretty=%B` custa um segundo e é a única prova
+de que a mensagem sobreviveu.
+
 ## Segredos e dados sensíveis
 
 Interromper e alertar se aparecer em staging: `.env`, `*.pem`, chaves, tokens, credenciais em
