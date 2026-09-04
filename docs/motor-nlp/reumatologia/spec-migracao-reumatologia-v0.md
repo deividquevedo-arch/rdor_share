@@ -2,6 +2,10 @@
 
 > Levantamento em [`briefing-migracao-reumatologia-v0.md`](briefing-migracao-reumatologia-v0.md).
 > Escrita em 2026-09-04. Escopo da **V1**.
+>
+> **Fonte da regua:** `IAAzureDatabricksReumatologia`, branch **`hml`**, commit `b200286`
+> (2026-07-23) — a que o job de producao executa. Nao usar a `main` (parada em 2024) nem a copia
+> em `fabrica-ia-plataforma` (parada em 2026-05-15).
 
 ---
 
@@ -27,9 +31,15 @@ então a migração não pode afirmar acerto. Só pode afirmar equivalência.
 
 **Filtro de entrada:** reproduzido do legado **sem correção**, via `gold_filter.keywords`.
 
+🔴 **Espelhar a versão de 2026-07-23, não a anterior.** O PR 6893 removeu a região craniana
+(`crânio`, `cabeça`, `face`, `intracranian`, `mastoid`) e pôs `temporo` no lugar de `face`.
+Reproduzir a lista antiga reintroduz o defeito que o bugfix corrigiu, e a paridade passa a medir
+contra a régua errada.
+
 ⚠️ Os dois defeitos do filtro (`ILIKE '%tc%'` e `ILIKE '%pe'`, ambos casando substring e ambos
-neutralizando um `RLIKE` estrito posto ao lado por `OR`) são **preservados na V1**. Corrigi-los
-muda o denominador e torna a paridade não comparável. Viram frente própria, medida à parte.
+neutralizando um `RLIKE` estrito posto ao lado por `OR`) **sobrevivem ao bugfix** — verificado na
+`hml`, 3 ocorrências de cada. São **preservados na V1**: corrigi-los muda o denominador e torna a
+paridade não comparável. Viram frente própria, medida à parte.
 
 ---
 

@@ -1,8 +1,21 @@
 # Briefing — migração da reumatologia para o `nlp_engine`
 
 > Levantamento do algoritmo legado, com volumetria e baseline medidos em 2026-09-04.
-> Fonte: `fabrica-ia-plataforma/apps/databricks/reumatologia/`, workspace antigo,
-> `hive_metastore.ia`.
+>
+> **Fonte:** repositorio **`IAAzureDatabricksReumatologia`**, branch **`hml`**, commit
+> `b200286` (2026-07-23). Dados em `hive_metastore.ia`, workspace antigo.
+>
+> ⚠️ **Cada linha legada tem repositorio proprio** (`IAAzureDatabricksColon`,
+> `IAAzureDatabricksRim`, ...). A copia em `fabrica-ia-plataforma/apps/databricks/reumatologia/`
+> **nao e a fonte**: parou em 2026-05-15.
+>
+> ⚠️ **Producao roda a `hml`, nao a `main`.** Verificado no job `ia-reumatologia`
+> (`836374875734315`), que aponta para `/Repos/AzureDatabricksMLOps/IAAzureDatabricksReumatologia`
+> com a `hml` conectada. A `main` parou em `f770f81`, 2024-09-11, com estrutura anterior
+> (`ntb_ia_algoritmo.py`) que producao **nao** executa.
+>
+> ℹ️ O **algoritmo** e byte-identico entre a `hml` e a copia de maio — a analisa da regua abaixo
+> vale para os dois. Difere so o notebook de **entrada**, em 85 linhas.
 
 ---
 
@@ -115,10 +128,18 @@ isso se decide com um A/B, não por leitura.
 Filtro em três camadas sobre `exame_nr`, `dsc_codigo_txt` e `cod_procedimento_txt`:
 
 1. **modalidade** — tomografia, ultrassom, ressonância (`tc`, `usg`, `rm`, `rnm`)
-2. **região** — crânio, joelho, articulação, coluna, lombar, tornozelo, pé, mão, ombro, punho,
-   cervical, quadril, bacia, perna, braço, cotovelo, coxa, pescoço, cabeça, dorsal, osso, vértebra,
-   lombossacra, sacro, mastoide, temporomandibular, face
+2. **região** — articulação, bacia, braço, cervical, coluna, cotovelo, coxa, dorsal, joelho,
+   lombar, lombossacra, mão, ombro, osso, pé, perna, pescoço, punho, quadril, sacro, temporo /
+   temporomandibular, tornozelo, vértebra
 3. **exclusões** — angio, artérias, carótidas, venoso, PAAF, punção, biópsia
+
+🔴 **A região craniana foi REMOVIDA em 2026-07-23** — PR 6893, *"Bugfix de exames incorretos"*.
+Saíram `crânio`, `cabeça`, `face`, `intracranian` e `mastoid`; `face` foi substituída por
+`temporo`, que casa a articulação temporomandibular sem trazer o crânio inteiro.
+
+⚠️ **A migração precisa espelhar a versão de julho, não a de maio.** Reproduzir a lista antiga
+reintroduziria em silêncio o defeito que o bugfix corrigiu — e a paridade mediria contra a régua
+errada.
 
 ### 🔴 Dois defeitos no filtro
 
