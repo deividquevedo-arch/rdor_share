@@ -91,6 +91,35 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
+## `0.12.2` — 🟡 PRONTA, LOCAL, AGUARDA A MEDIÇÃO FECHAR
+
+Branch `fix/0.12.2-ancora-ausente-nao-e-nao-se-aplica`, da `hml`. Commits `3baa234` e `0464e7b`.
+**Não pushada.** Card `300200` (Defect P1). SPEC no repo.
+
+**Corrige defeito ATIVO em produção**, reportado pelo negócio em 08/09 como "TI-RADS entregando
+sem achado". Critério `gate_relevance` com `require_measure: True` cuja âncora não é reconhecida
+**sumia do gate** — e a promoção ordinal que ele deveria condicionar saía entregue sem nunca ter
+sido conferida. Medido: **36 de 1.032 entregas** como `TR4` pelado.
+
+🔴 **O gatilho é encoding corrompido NA ENTRADA, fora da lib** — `no<U+FFFD>dulo`, com U+FFFD em
+36 de 40 laudos contra zero no controle de 778. A âncora casa em **0 de 40**.
+
+⚠️ **Não é regressão, é premissa.** A SPEC da `0.11.0` §1.3 classificou os três `skipped_*` como
+"não se aplica", e está correta nos termos dela. Faltou prever que âncora ausente carrega **dois
+sentidos opostos**: o achado não existe, ou o achado existe e não foi reconhecido.
+
+- Gate de sete alvos: **1.113 testes, 87,56%** por ramo. **6 mutantes mortos**, reconfirmados
+  depois da refatoração que o `C901` impôs (a mudança levou a função a 16; extraí
+  `_registrar_ancora_ausente` em vez de silenciar com `noqa`).
+- ⚠️ **A combinação "sem âncora + `require_measure`" tinha ZERO cobertura** — por isso o defeito
+  passou. O teste existente usa critério que não declara `require_measure`.
+- ⚠️ **Troca falso positivo por falso negativo naqueles 36:** são nódulos reais com texto
+  corrompido. O par que desfaz isso é a **fuzzy lexical**, medida e ainda não decidida.
+- 🟡 **A medição A/B ainda não fechou.** Três tentativas foram descartadas por defeito do
+  harness — comparar contra produção (que chama LLM na camada quantitativa), ler o `llm_called`
+  de topo em vez do por-critério, e tratar erro de rede como fim-de-dados (parou em 2.000 de
+  8.157 e reportou "aceite atendido").
+
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
 ✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
 streaming **quebra a API**) → `0.14.0` juiz sem evidência → `0.15.0` vínculo lesão↔medida.
@@ -250,14 +279,38 @@ Branch `cancer_estomago/config-0.6.1-hml`, **config `0.6.2`**, commits `598fb04`
 - O diagnóstico escrito para ele (`docs/motor-nlp/cancer_rim/diagnostico-config-cancer-rim.md`)
   ainda não foi enviado; se ele alinhou o prompt à v0.5 por conta própria, parte dele já venceu.
 
-## Migração dos algoritmos legados — 🟡 A PLANEJAR (03/09)
+## Reumatologia — ✅ ENTREGUE, PR ABERTO PARA `hml`
 
-Frente nova, a organizar amanhã. Ordem indicada: **reumatologia** (começar o quanto antes),
-depois **ateromatose**, **doenças biliares** e **neuroimunologia**.
+Card `299111`, **movido para *Pronto para QA*** e comentado com a evidência. Branch
+`reumatologia/feature/migracao-plataforma`, três commits, **6 arquivos, 2.296 linhas, adição
+pura**. PR **7231**, revisores João e Diego.
 
-A refinar antes de virar trabalho: inventário de cada régua legada, se existe gabarito, volumetria,
-e o que reaproveitar do caminho já percorrido em ca-cólon e ca-rim — que são migrações do mesmo
-tipo e já produziram padrão (config, exchange, bancada, paridade).
+**Paridade 99,34% em 8.631 laudos** (25 e 27/08), contra a saída gravada do legado:
+99,158% e 99,508% nos dois dias · **57 divergências `1→0`, ZERO `0→1`**.
+
+✅ **As 57 são falso positivo do legado**, enumeradas pela evidência que ele mesmo gravou. Três
+vias: frase negada ou de normalidade (*"sem erosão óssea"*, *"fáscia preservada"*) · **cabeçalho
+metodológico** (*"Lesões elementares AVALIADAS: ... erosão óssea..."* — o que foi procurado, não
+achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoide como
+`sacroileite`). **A migração não perde recall — remove falso positivo**, e a causa é a negação.
+
+- ⚠️ **A fonte é a branch `hml` do legado, commit `7293729`.** Nem a `main` (2024) nem a cópia em
+  `fabrica-ia-plataforma` (05/2026) servem: são anteriores ao PR 6893, que removeu a região
+  craniana do filtro. A primeira tentativa usou a cópia local errada.
+- ⚠️ **`skip_organ_gate: True` REPRODUZ o legado, não relaxa.** Com `force_full_doc` ele chama
+  `strict_organ_filters=False` e não aplica A/B/C. Sem a chave, 3 dos 5 achados somem.
+- ℹ️ O insumo do exchange **estava no legado**: 43 colunas do `dic_col_names`, 4 listas suspensas,
+  e 605 unidades com 4 grupos de destinatários no `unidades.json` do datalake do workspace antigo.
+- 🔴 **O legado não tem config de `prd`** — só `dev` e `hml`. O `prd` usa a lista de `hml`.
+  Confirmar antes de promover.
+- 🔴 **Schema `reumatologia` só existe em `dev`.** É do time da Fábrica criar; sinalizado ao Ops
+  junto com o PR, por procedimento próprio — **não** vai na descrição do PR.
+
+## Migração dos algoritmos legados — as três seguintes
+
+Ordem indicada: **ateromatose**, **doenças biliares**, **neuroimunologia**. A reumatologia
+produziu o padrão a reaproveitar: clonar a branch `hml` do repo legado (nunca a cópia local),
+gerar a config programaticamente do `CONFIG`, e medir paridade contra a saída gravada.
 
 ## Câncer de cólon — 🟡 LEVANTAMENTO PARA MIGRAÇÃO
 
@@ -394,7 +447,7 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 **P0/P1 sem card, e são nossos:** doc do consumidor + mensagem de erro · vazamento de memória no
 `process()` · lib não emite log no caminho NLP.
 
-## Cards — quadro em 2026-09-08
+## Cards — quadro em 2026-09-08 (tarde)
 
 ✅ **Em *Pronto para QA*, os 15 da `0.12.x`:** `253573` `P2-07` · `253574` `P2-08` · `253575`
 `P2-09` · `253576` `P2-10` · `253577` `P2-11` · `253578` `P2-12` · `253583` `P2-17` · `253585`
@@ -411,18 +464,34 @@ plano de bumps.
 ambiente · `299238` **SPEC 27 contradiz o código** (card acumulador — registrar ali os ajustes
 que aparecerem, alinhar de uma vez com o `283647`).
 
-🔴 **Dois achados do smoke ainda SEM CARD** — não vieram desta release, e some se não for aberto:
+✅ **Os três achados sem card foram abertos em 08/09:**
 
-1. **Texto de entrada duplicado.** 6 laudos em 4.507 com o texto repetido exatamente `2n+1` vezes.
-   É a montagem da entrada, **antes** da lib — não é defeito do motor. Custa LLM proporcional e
-   pode alterar contagem de span. Para a plataforma.
-2. **Hepatologia perde 86% dos laudos na segmentação.** `segmentation_coverage` < 1,0 em **3.867
-   de 4.507**, com 3.196 cabeçalhos descartados. É o `mode: auto` da config daquela linha,
-   agora **mensurável** — no ca-rim a mesma correção recuperou +25 laudos em 6 dias. Nosso.
+- **`300200`** (Defect **P1**, nosso) — âncora ausente sai do gate. É a `0.12.2`.
+- **`300201`** (Defect P2, **plataforma**) — texto de entrada duplicado `2n+1` vezes: 6 laudos em
+  4.507. É a montagem da entrada, antes da lib. Custa LLM proporcional e pode truncar por
+  `max_input_chars`.
+- **`300202`** (Defect P2, nosso) — hepatologia descarta 86% na segmentação:
+  `segmentation_coverage` < 1,0 em **3.867 de 4.507**, com 3.196 cabeçalhos descartados. É o
+  `mode: auto`, única linha assim. No ca-rim a mesma correção recuperou +25 laudos em 6 dias.
+  ⚠️ Medir A/B antes de trocar: sem gabarito clínico, não há como arbitrar o delta.
 
 **Encerrados:** `298597` (a `0.11.1`) · `299423` (a `0.11.2`).
 
+✅ **`299111` reumatologia em *Pronto para QA***, comentado com a evidência.
+
 ## A refinar — anotado, não iniciado
+
+- 🟡 **Expansão léxica por similaridade (fuzzy) na lib — DECISÃO EM ABERTO.** É o par da
+  `0.12.2`: sozinha, a correção troca falso positivo por falso negativo nos laudos com texto
+  corrompido. Medido com `difflib.SequenceMatcher`, `min_ratio` 0,84 (o do legado):
+  `nodulo`↔`no◆dulo` **0,923 casa** · `ulcera`↔`u◆lcera` **0,923** · `lesao`↔`les◆ao` **0,909** ·
+  controles negativos rejeitados (`nodulo`↔`deulcera` 0,429; `nodulo`↔`figado` 0,167).
+  ✅ **Serve as 4 linhas** e não depende de infraestrutura — é `difflib`, biblioteca padrão.
+  Contraste: os embeddings estão **não-funcionais em produção** (`FileNotFoundError` em 86% a
+  100% dos laudos nas 3 linhas que os usam).
+  ⚠️ **Não substitui embeddings:** `sacroiliaca`↔`sacroileite` dá 0,727 e não casa.
+  ⚠️ Só **aumenta** recall — exige medição por linha antes de subir. O limiar é régua: 0,84
+  rejeita `nodulacao` (0,800).
 
 - 🟡 **TR4 sem evidência de tamanho quando houver PAAF** (sugestão do Natan). É **exceção**, não
   mudança da régua geral: PAAF como gatilho alternativo ao tamanho. Perguntas em aberto: a lib já
