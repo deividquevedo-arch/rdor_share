@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-04**.
+> Atualizado em **2026-09-08**.
 
 ---
 
@@ -28,23 +28,23 @@
   promovia o mesmo texto. Reusa `is_negated_in_sentence_plain`; a âncora que faltava é construída
   com `tokenize_sentence_norm`. Direção default **`left`**, não `both`. Card `298597`.
 
-🔴 **`main` está TRÊS versões atrás** — `0.10.1`. `0.11.0`, `0.11.1` e `0.11.2` só na `hml`
-(a `0.11.2` nem isso: só na branch).
-ℹ️ **Merge `hml → main` leva as três juntas** — não existe subir só a última sem criar divergência.
-Cada uma tem número medido, então o pacote não é opaco.
+🔴 **`main` está em `0.11.2`; a `hml` está em `0.12.1`.** Toda a `0.12.x` só existe na `hml`.
+ℹ️ **Merge `hml → main` leva a `0.12.0` e a `0.12.1` juntas.** É higiene, não muda decisão, e a
+não-regressão está provada (1.075 casos, sha256 idêntico) — o pacote não é opaco.
+🔴 **É o que falta para produção poder pinar `0.12.1`:** o feed de prd publica a partir da `main`.
 ✅ **O feed publica a partir da `main`** — verificado no `azure-pipelines.yml`: `main` → feed
-`fabrica-ai`, `hml` → `fabrica-ai-hml`, trigger nas duas. ⚠️ O stage `Deliver` publica no feed
-**E** sobe no Volume; com a troca para `pip` (PR 7194 do João) há dois caminhos vivos — confirmar
-com ele se o upload ao Volume será desativado.
+`fabrica-ai`, `hml` → `fabrica-ai-hml`, trigger nas duas. ✅ Confirmado em 08/09: produção rodou a
+engine **`0.11.2`** em 07 e 08/09, que é a versão da `main`.
+ℹ️ Os **dois destinos são deliberados**: o `UploadVolume` passou a depender do `PublishPyPI`, então
+ou os dois recebem a mesma wheel, ou nenhum recebe. Não há duplicidade a resolver — resta apenas
+provar o caminho `livre` no próximo bump.
 
-🟡 **Validação da `0.11.1` em curso.** Coorte de 4.508 laudos de hepatologia (18/08) contra o run de
-referência de 01/09. Parcial em 2.495: **443 → 439 relevantes, 4 perdidos, 0 ganhos**, 77 com score
-semântico reduzido, 43 mudaram de `decision_source`. Zero score subiu — a mudança só remove.
-⚠️ A nota de release afirma impacto zero e **isso não se sustenta**; será corrigida com o número
-final.
+✅ **Validação da `0.11.1` concluída.** Coorte de 4.508 laudos de hepatologia (18/08) contra o run
+de referência de 01/09: **803 → 797 relevantes, 6 perdidos, 0 ganhos**. Zero score subiu — a mudança
+só remove. ⚠️ A nota de release afirmava impacto zero e **isso não se sustentava**; corrigida.
+ℹ️ Medição na branch `docs/0.11.1-impacto-medido`, ainda sem push.
 
-🔴 **`0.11.2` PRONTA E PUSHADA, AGUARDA PR — entra ANTES da `0.12.0`.**
-Branch `fix/0.11.2-espaco-colado-antes-de-acento`, 3 commits, `aa005a8`, a partir da `hml`.
+✅ **`0.11.2` ENTREGUE NA `hml`** (PR mergeado), e é a versão que está na `main`.
 Defeito P0 **ativo em produção**: `to_plain.py:173` apagava o espaço entre palavra de 1 a 4 letras
 e palavra iniciada por acento. `sem` tem 3 letras → `semúlceras` vira **um token** e o negador
 some. **6 laudos entregues em 04/09 no ca-estômago dizendo o oposto** (`Tumor; Úlcera` num laudo
@@ -63,32 +63,44 @@ que diz *"sem úlceras ou tumorações"*).
 - Card `299423` (P1). SPEC `docs/spec-0.11.2-espaco-colado-antes-de-acento.md`. 16 testes onde
   havia **zero**, 4 mutantes mortos.
 
-🟡 **`0.12.0` EM CURSO** — branch `feat/0.12.0-higiene-consolidada`, 5 commits, **8 dos 15 cards**:
-`P2-07` extra vazio · `P2-09` contrato vinculante · `P2-10` hierarquia de exceções · `P2-11` fim do
-engolir silencioso · `P2-12` ruff `B`/`BLE`/`C901` e mypy `strict` · `P2-17` SQL parametrizado ·
-`P2-19` `__all__` · `P2-22` cobertura com gate.
-Gates: ruff, format, mypy strict, **745 testes**, cobertura **86,66%** por ramo, release-check.
-Faltam `P2-08`, `P2-20`, `P2-21`, `P2-23`, `P2-24`, `P3-26`, `P3-28`.
+## `0.12.1` — ✅ ENTREGUE NA `hml`, 15 CARDS EM *PRONTO PARA QA*
 
-- ✅ **A lib passou a emitir log.** Não emitia em lugar nenhum — `NullHandler` no pacote e `logger`
-  em `to_plain` e `html_plain`. Dos 13 `except Exception`, 4 estreitados, 7 passam a registrar a
-  classe, 1 segue amplo de propósito e documentado.
-- ✅ **O contrato de saída deixou de ser decorativo.** `contracts.py` estava em **0%** porque
-  ninguém o importava; o motor emitia `findings`, `findings_match`, `findings_spans` e
-  `decision_trail` sem declaração. Agora `process()` devolve `EngineOutputRow` e um teste compara
-  emitido contra declarado nos dois sentidos.
+Tag `v0.12.1` → `c4af996`. **Os 15 cards da higiene fechados**, comentados com evidência e movidos
+no board (`253573`–`253594`). Gate de **sete alvos**: ruff, format, mypy strict, api-ref,
+api-surface, doctest, cobertura — **1.104 testes, 87,59% por ramo**.
+
+**Nenhum laudo muda de decisão, e isso foi PROVADO:** harness diferencial de 25 configs × 43 textos
+= **1.075 casos, sha256 idêntico** entre `HEAD` e `origin/hml`, com venv por árvore. Smoke em dev
+com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `findings`.
+
+- ✅ **A lib passou a emitir log.** Não emitia em lugar nenhum. Nove pontos de fallback contam
+  **e** registram na mesma chamada — separados, um dos dois envelhece.
+- 🔴 **O contrato declarava a menos, e a lacuna só fechou em TRÊS ondas.** Sete chaves emitidas e
+  não declaradas: quatro achadas por auditoria, e **três só apareceram no blob de um run real**
+  (`llm_prompt_tokens`, `llm_completion_tokens`, `semantic_evidence`).
+  ⚠️ **Verificação de contrato por fixture é estruturalmente insuficiente** — nenhum perfil escrito
+  à mão esgota o que produção emite. `tests/chaves_observadas_em_run_real.json` (21 chaves de 1.500
+  blobs) virou piso versionado.
+- 🔴 **A `0.12.0` do FEED é inutilizável.** Um `409 Conflict` publicou no feed antes da correção do
+  contrato, e o feed é **imutável**: mesmo número, conteúdo diferente do Volume. Daí a `0.12.1`.
+  ✅ A esteira foi corrigida — o upload ao Volume passou a **depender** da publicação no feed, e o
+  `release-check` julga pela **tag**, porque o agente do CI não tem `az` autenticado.
+  ⚠️ **O caminho `livre` da esteira segue sem prova**: o build 8418 exercitou só o `publicada`.
+  Conferir o Volume logo após o próximo bump.
+- 🟡 **Doc do consumidor aguarda OPS** — branch `docs/contrato-saida-0.12.1` na plataforma, a
+  partir da `hml`, adição pura de 89 linhas. É o par que faltou na `0.9.x` e derrubou o TI-RADS.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
-`0.12.0` higiene (15 cards, nenhum toca `fl_relevante`, um golden prova o lote) → `0.13.0` estrutura
-(6 cards, `process()` em streaming **quebra a API**) → `0.14.0` juiz sem evidência → `0.15.0` vínculo
-lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
+✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
+streaming **quebra a API**) → `0.14.0` juiz sem evidência → `0.15.0` vínculo lesão↔medida.
+SPEC da `0.13.0` escrita, mas **ainda na branch `docs/plano-e-specs-ops`, sem push**.
 
 🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
 `0.14.0`. Exige medição prévia por linha.
 
-⚠️ **Branches sem push:** `docs/plano-e-specs-ops` (plano dos 28 cards + SPECs 0.12.0/0.13.0),
-`docs/0.11.1-impacto-medido` e `feat/0.12.0-higiene-consolidada` (5 commits, 8 cards).
-✅ `fix/0.11.2-espaco-colado-antes-de-acento` **pushada**, aguardando PR.
+⚠️ **Branches sem push:** `docs/plano-e-specs-ops` (plano dos 28 cards + SPEC da `0.13.0`) e
+`docs/0.11.1-impacto-medido`. Conteúdo absorvido, **exceto a SPEC da `0.13.0`** — descartar as duas
+implica reescrevê-la.
 
 ## Tireoide V2 — ✅ ENTREGUE EM HML
 
@@ -106,13 +118,10 @@ lesão↔medida. SPECs da `0.12.0` e `0.13.0` escritas.
   da transição, se o job noturno rodar a `0.1.0` e a `0.8.0` no mesmo dia.
 - ✅ **O job noturno passou para a `0.8.0-tirads`.** Verificado: produção em 21/08 com
   `0.8.0-tirads` + engine `0.9.4` — 31.418 laudos, 997 relevantes.
-- 🔴 **Pipeline quebrou na etapa `nlp_config` (20/08, João):** `nlp.findings values must be
-  list[str]`. **Config e wheel já DESCARTADAS como causa** — a `0.8.0-tirads` do `origin/hml`
-  passa validada contra o código de dentro da wheel `latest` (0.9.4) baixada do Volume. Espera o
-  **log da etapa `install`**, que mostra a versão efetivamente instalada.
-  ⚠️ **NÃO achatar o `findings` para `list[str]`** — destruiria `regex`, `exclude`, `unless` e
-  `skip_organ_gate`, e o pipeline voltaria a rodar **errando em silêncio**.
-- 🔴 **Aguardando Carol:** planilha de 500 laudos, desde 13/08.
+- ✅ **A quebra de 20/08 na etapa `nlp_config` não se repetiu.** A linha roda em produção em
+  todos os dias agendados desde 21/08, e em 07–08/09 já na engine `0.11.2`. Nada a investigar.
+  ⚠️ Se voltar: **NÃO achatar o `findings` para `list[str]`** — destruiria `regex`, `exclude`,
+  `unless` e `skip_organ_gate`, e o pipeline voltaria a rodar **errando em silêncio**.
 - 🔴 **CORRIGIDO O ENTENDIMENTO (27/08): sair só com a categoria NÃO é questão de exibição.**
   Os **4 casos que saem como `TR5` puro são 4/4 falso positivo** — o TR veio da **legenda do ACR**
   no rodapé, não de achado. Os `TR4` puros são legítimos. A nota anterior ("melhoria de qualidade,
@@ -207,11 +216,12 @@ chamado 345 vezes (eram 3.199) · run de 45 min (eram 169).
 - ⚠️ **O recall de 0,600 é o TETO contra esse gabarito, não limitação da régua.** A anotação do
   Targa é **anterior** à decisão sobre úlceras: cinco dos 15 relevantes dele ficam fora por decisão
   posterior, e um era promoção do juiz sem evidência.
-- 🔴 **Aguardando Carol** — 133 laudos (75 entregues + 58 recusados com achado).
-- 🔴 **Aguardando Targa** — 120 casos para homologar, mais duas questões: MALT em seguimento conta
-  como progressão? achado maligno fora do estômago entra?
-- 🔴 **Schema `cancer_estomago` NÃO existe em hml** — só em dev. É do time da Fábrica e é o
-  **caminho crítico**: não depende de nenhuma validação.
+- ✅ **Carol sem pendências** (08/09).
+- ✅ **Targa: o retorno virá do que está rodando em PRD**, não de lote para homologar (08/09).
+  Seguem em aberto, para quando houver massa: MALT em seguimento conta como progressão? achado
+  maligno fora do estômago entra?
+- ✅ **Schema `cancer_estomago` provisionado** — verificado em 08/09 em `diamond_fabrica_ia_hml`
+  **e** em `diamond_fabrica_ia` (prd).
 - Arquivos gerados em `Desktop/Rede D'Or/` (fora do git, têm texto de laudo).
 
 
@@ -383,19 +393,33 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 **P0/P1 sem card, e são nossos:** doc do consumidor + mensagem de erro · vazamento de memória no
 `process()` · lib não emite log no caminho NLP.
 
-## Cards — quadro em 2026-09-04
+## Cards — quadro em 2026-09-08
+
+✅ **Em *Pronto para QA*, os 15 da `0.12.x`:** `253573` `P2-07` · `253574` `P2-08` · `253575`
+`P2-09` · `253576` `P2-10` · `253577` `P2-11` · `253578` `P2-12` · `253583` `P2-17` · `253585`
+`P2-19` · `253586` `P2-20` · `253587` `P2-21` · `253588` `P2-22` · `253589` `P2-23` · `253590`
+`P2-24` · `253592` `P3-26` · `253594` `P3-28`. Cada um comentado com a evidência dos seus
+critérios — 67 evidências medidas contra a árvore mergeada, não contra a branch de trabalho.
 
 **Nossos, em execução:** `285305` TI-RADS (defeito 1 medido e corrigido; falta o defeito 2 =
 `0.15.0`) · `283644` juiz por contorno · `283647` contrato lib↔plataforma (fica aberto, só alinha
-quando os bumps fecharem) · `283648` `[P0-29]` juiz sem evidência (= `0.14.0`) · **`299423`
-espaço colado** (= `0.11.2`, pushada) · `298598` Feature: plano de bumps · os **8 cards da
-`0.12.0`** movidos para Sprint 5 / Em Execução.
+quando os bumps fecharem) · `283648` `[P0-29]` juiz sem evidência (= `0.14.0`) · `298598` Feature:
+plano de bumps.
 
 **Para a plataforma:** `298596` `limit_rows` não isola coorte · `298600` `embedding_model` por
 ambiente · `299238` **SPEC 27 contradiz o código** (card acumulador — registrar ali os ajustes
 que aparecerem, alinhar de uma vez com o `283647`).
 
-**Encerrados hoje/ontem:** `298597` (a `0.11.1`).
+🔴 **Dois achados do smoke ainda SEM CARD** — não vieram desta release, e some se não for aberto:
+
+1. **Texto de entrada duplicado.** 6 laudos em 4.507 com o texto repetido exatamente `2n+1` vezes.
+   É a montagem da entrada, **antes** da lib — não é defeito do motor. Custa LLM proporcional e
+   pode alterar contagem de span. Para a plataforma.
+2. **Hepatologia perde 86% dos laudos na segmentação.** `segmentation_coverage` < 1,0 em **3.867
+   de 4.507**, com 3.196 cabeçalhos descartados. É o `mode: auto` da config daquela linha,
+   agora **mensurável** — no ca-rim a mesma correção recuperou +25 laudos em 6 dias. Nosso.
+
+**Encerrados:** `298597` (a `0.11.1`) · `299423` (a `0.11.2`).
 
 ## A refinar — anotado, não iniciado
 
@@ -430,7 +454,8 @@ que aparecerem, alinhar de uma vez com o `283647`).
   do ar, as linhas com embeddings caem para `token_overlap` — a `0.11.0` registra a queda na trilha,
   mas o resultado muda sem alarme na monitoria.
   ✅ **MiniLM já copiado** para `gold_fabrica_ia_hml/nlp_engine/nlp_engine_lib/st_models/` (01/09).
-  🔴 **Produção não tem destino:** o catálogo `gold_fabrica_ia` não possui o schema `nlp_engine`.
+  🔴 **Produção não tem destino, reconfirmado em 08/09:** `gold_fabrica_ia` tem apenas `fhir` e
+  `information_schema` — não possui o schema `nlp_engine`.
   Criar schema é do time da Fábrica. Card **`298600`**, com o ponto em aberto: como resolver o
   caminho **por ambiente** — mesma classe do `base_url` do LLM, resolvido no PR 7135.
   ℹ️ O `mpnet-base-v2` fica **fora de escopo**: só existe no volume antigo e serve notebooks legados.
