@@ -87,8 +87,9 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   `release-check` julga pela **tag**, porque o agente do CI não tem `az` autenticado.
   ⚠️ **O caminho `livre` da esteira segue sem prova**: o build 8418 exercitou só o `publicada`.
   Conferir o Volume logo após o próximo bump.
-- 🟡 **Doc do consumidor aguarda OPS** — branch `docs/contrato-saida-0.12.1` na plataforma, a
-  partir da `hml`, adição pura de 89 linhas. É o par que faltou na `0.9.x` e derrubou o TI-RADS.
+- 🟡 **Doc do consumidor em revisão — PR `7228`**, `docs/contrato-saida-0.12.1` → `hml`, revisor
+  **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
+  `0.9.x` e derrubou o TI-RADS.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
 ✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
