@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-09**.
+> Atualizado em **2026-09-09** (2ª sessão).
 
 ---
 
@@ -91,7 +91,7 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — ✅ VALIDADA NO AMBIENTE E PUBLICADA EM PRODUÇÃO
+## `0.12.2` ✅ EM PRODUÇÃO · `0.12.3` ✅ PUBLICADA, CONFIG SEGURADA
 
 ✅ **PRs 7243 e 7244 mergeados.** `main` em `e3e821e`, `version = "0.12.2"`.
 🔴 **A publicação em `fabrica-ai` foi PULADA, e os dois deploys passaram VERDES.** O gate da
@@ -167,6 +167,35 @@ sentidos opostos**: o achado não existe, ou o achado existe e não foi reconhec
   por-critério, tratar erro de rede como fim-de-dados, e estourar o teto de 25 MB por resposta.
   ℹ️ **Isto mede o delta de decisão, não o ambiente.** Falta o run em dev pinando a `0.12.2` — o
   que exige a versão publicada no feed de dev, ou seja, o PR para a `hml` primeiro.
+
+### `0.12.3` — o par da `0.12.2`
+
+✅ **Mergeada (PR 7248), tagueada `v0.12.3`, publicada nos DOIS feeds.** `main` em `bc1f052`.
+🟢 **Inerte:** `waive` é opt-in e nenhuma config a declara — provado no ambiente, run de 02/07 com
+a config `0.8.0` deu **zero divergência** contra a `0.12.2`.
+
+**Medido duas vezes, por caminhos independentes, mesmo número:**
+
+| | A/B local | pelo runner |
+|---|---|---|
+| promovidos `0 → 1` | **3** | **3** |
+| rebaixados `1 → 0` | **0** | **0** |
+| com `gate_waived_by` | 3 de 3 | 3 de 3 |
+| dispensas aplicadas | 28 | 28 |
+
+ℹ️ **28 dispensas mudaram 3 decisões** — dispensar um critério só importa onde o gate ia rebaixar.
+Os 11 de outros exames que só *mencionam* punção não alteram nada.
+
+🔴 **PR de config SEGURADO.** Branch `tirads/feature/waive-paaf` (`f8a16d7`, config `0.9.0-tirads`)
+pushada, **PR não aberto**: chave nova de config e dois campos novos no blob impactam o processo do
+Ops e exigem alinhamento prévio. Proposta registrada no card `283647`.
+⚠️ **A regra foi quebrada nesta entrega** — `waive`, `gate_waived_by` e `gate_waived_error`
+entraram na lib antes do alinhamento. Exposição real é zero (nada emite sem config), mas o
+procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**, não só saída.
+
+⚠️ **O `gold_filter` segue sem punção, e é a causa MAIOR:** 67 exames citando TI-RADS 4 em 16 dias
+nunca chegam ao motor, contra 36 rebaixados pelo gate. Sem medição e sem card — filtro de entrada
+só se mede rodando.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
 ✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
