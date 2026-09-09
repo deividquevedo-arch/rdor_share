@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-08**.
+> Atualizado em **2026-09-09**.
 
 ---
 
@@ -91,9 +91,10 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — 🟡 PRONTA, LOCAL, AGUARDA A MEDIÇÃO FECHAR
+## `0.12.2` — ✅ MEDIÇÃO FECHADA, LOCAL, AGUARDA AUTORIZAÇÃO DE PUSH
 
-Branch `fix/0.12.2-ancora-ausente-nao-e-nao-se-aplica`, da `hml`. Commits `3baa234` e `0464e7b`.
+Branch `fix/0.12.2-ancora-ausente-nao-e-nao-se-aplica`, da `hml`. Commits `3baa234`, `0464e7b`
+e `d6cffa7`.
 **Não pushada.** Card `300200` (Defect P1). SPEC no repo.
 
 **Corrige defeito ATIVO em produção**, reportado pelo negócio em 08/09 como "TI-RADS entregando
@@ -115,10 +116,16 @@ sentidos opostos**: o achado não existe, ou o achado existe e não foi reconhec
   passou. O teste existente usa critério que não declara `require_measure`.
 - ⚠️ **Troca falso positivo por falso negativo naqueles 36:** são nódulos reais com texto
   corrompido. O par que desfaz isso é a **fuzzy lexical**, medida e ainda não decidida.
-- 🟡 **A medição A/B ainda não fechou.** Três tentativas foram descartadas por defeito do
-  harness — comparar contra produção (que chama LLM na camada quantitativa), ler o `llm_called`
-  de topo em vez do por-critério, e tratar erro de rede como fim-de-dados (parou em 2.000 de
-  8.157 e reportou "aceite atendido").
+- ✅ **A/B FECHADO, aceite atendido.** 4.321 laudos do TI-RADS em produção (07–09/09), motor duas
+  vezes no mesmo processo, LLM e embeddings desligados dos dois lados: **4 rebaixados `1 → 0`
+  (0,97% de 411 entregas), ZERO promovidos, 4 de 4 com `require_measure_no_anchor`**. Pré-condição:
+  **306** laudos exercitam o caminho (alvo ≥ 30). Os quatro são `TR4` pelado, com `id_exame`
+  sequencial. `release-check` coerente e **6 mutantes** reconferidos mortos.
+  ⚠️ Quatro tentativas anteriores foram descartadas por defeito do harness — comparar contra
+  produção (que chama LLM na camada quantitativa), ler o `llm_called` de topo em vez do
+  por-critério, tratar erro de rede como fim-de-dados, e estourar o teto de 25 MB por resposta.
+  ℹ️ **Isto mede o delta de decisão, não o ambiente.** Falta o run em dev pinando a `0.12.2` — o
+  que exige a versão publicada no feed de dev, ou seja, o PR para a `hml` primeiro.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
 ✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
@@ -396,6 +403,27 @@ contra a esperada — são o padrão que vale copiar.
 melhor** — registrado no card `299238`.
 
 ## Plataforma / MLOps
+
+🔴 **A Gold entrega RTF cru em `exm_laudo_texto`** (medido 09/09). O documento não teve o texto
+extraído: começa em `{tf1nsinsicpg1252`, vem numa **única linha**, e o maior tem
+**814.685 caracteres** — 482 mil dígitos contra 389 espaços, ou seja, payload hexadecimal de
+imagem embutida.
+
+| linha | laudos | em RTF | maior |
+|---|---|---|---|
+| TI-RADS | 4.321 | **116** (2,7%) | 815 KB |
+| hepatologia | 5.374 | **231** (4,3%) | 1.039 KB |
+| **cancer_estomago** | 753 | **105** (13,9%) | 33 KB |
+| transplante_pulmao | 286 | **25** (8,7%) | 512 KB |
+
+No TI-RADS esses 116 ocupam **63,4 dos 68,6 MB** do dia — 92% do volume de texto sai de 2,7% dos
+registros. ℹ️ **Não há perda de decisão comprovada:** o tratamento limpa a marcação e sobram ~1.419
+caracteres legíveis (77 dos 116 mencionam tireoide). Controlando por tipo de exame, tireoide em RTF
+entrega 2 de 46 (4,35%) contra 201 de 2.776 (7,24%) em texto puro — com n=46, compatível com a taxa
+normal. O custo é de processamento e robustez: qualquer leitura em lote da coluna estoura o teto de
+25 MB por resposta, e foi o que interrompeu duas medições. 🟡 **Sem card ainda**; é distinto do
+`300201` (duplicação `2n+1`).
+
 
 🔴 **O LLM nunca funcionou em produção nesta plataforma** (medido 27/08). **8.058 tentativas, zero
 sucessos**, nas 4 linhas, em toda a história da tabela (21/08 a 26/08). Erro:
