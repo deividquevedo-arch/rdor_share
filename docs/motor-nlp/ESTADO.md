@@ -279,14 +279,19 @@ Branch `cancer_estomago/config-0.6.1-hml`, **config `0.6.2`**, commits `598fb04`
 - O diagnóstico escrito para ele (`docs/motor-nlp/cancer_rim/diagnostico-config-cancer-rim.md`)
   ainda não foi enviado; se ele alinhou o prompt à v0.5 por conta própria, parte dele já venceu.
 
-## Reumatologia — ✅ ENTREGUE, PR ABERTO PARA `hml`
+## Reumatologia — ✅ VALIDADA EM DEV, PR 7231 AGUARDA REVISÃO
 
-Card `299111`, **movido para *Pronto para QA*** e comentado com a evidência. Branch
-`reumatologia/feature/migracao-plataforma`, três commits, **6 arquivos, 2.296 linhas, adição
-pura**. PR **7231**, revisores João e Diego.
+Card `299111` em *Pronto para QA*, comentado com a evidência. Branch
+`reumatologia/feature/migracao-plataforma`, três commits, **6 arquivos, 2.386 linhas, adição
+pura**. Revisores João e Diego.
 
-**Paridade 99,34% em 8.631 laudos** (25 e 27/08), contra a saída gravada do legado:
-99,158% e 99,508% nos dois dias · **57 divergências `1→0`, ZERO `0→1`**.
+✅ **Run completo em dev e envio ponta a ponta**, 08/09: 3.865 laudos, 24 relevantes em
+**9 pacientes**, e **5 arquivos entregues** (SP, BA, DF, RJ, PE), conferidos no Excel.
+⚠️ **A validação local não substituía isto** — ela prova a régua e não toca runner,
+`gold_filter`, `column_map`, view nem envio. Seis bloqueios só apareceram rodando.
+
+**Paridade em CINCO medições independentes, 99,158% a 99,508%, ZERO ganhos em todas.**
+A do ambiente: **99,423%** em 3.810 pares. As divergências são falso positivo do legado.
 
 ✅ **As 57 são falso positivo do legado**, enumeradas pela evidência que ele mesmo gravou. Três
 vias: frase negada ou de normalidade (*"sem erosão óssea"*, *"fáscia preservada"*) · **cabeçalho
@@ -301,8 +306,16 @@ achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoi
   `strict_organ_filters=False` e não aplica A/B/C. Sem a chave, 3 dos 5 achados somem.
 - ℹ️ O insumo do exchange **estava no legado**: 43 colunas do `dic_col_names`, 4 listas suspensas,
   e 605 unidades com 4 grupos de destinatários no `unidades.json` do datalake do workspace antigo.
+- ✅ **Filtro de entrada calibrado nos dois sentidos, com custo medido:** 82 → **92 de 92
+  relevantes** por +2,6% de volume, e exames vasculares fora do escopo excluídos a custo
+  zero. ℹ️ `doppler` fica no escopo: excluí-lo custaria **32 dos 92** — é padrão em
+  ultrassom reumatológico.
 - 🔴 **O legado não tem config de `prd`** — só `dev` e `hml`. O `prd` usa a lista de `hml`.
   Confirmar antes de promover.
+- 🟡 **Achado para a plataforma, sem card ainda:** `dt_execucao_modelo` é gravado em **UTC**
+  e a view de exportação filtra pela data **local (BRT)**. Quem rodar entre 21:00 e 00:00
+  fica com a view vazia, **sem erro**. O agendamento das 04:00 está fora da janela, então
+  produção não sofre — a única defesa hoje é a regra do checklist.
 - 🔴 **Schema `reumatologia` só existe em `dev`.** É do time da Fábrica criar; sinalizado ao Ops
   junto com o PR, por procedimento próprio — **não** vai na descrição do PR.
 
