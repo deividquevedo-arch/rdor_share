@@ -91,7 +91,7 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — ✅ NA `main` · 🔴 NÃO CHEGOU AO FEED DE PRODUÇÃO
+## `0.12.2` — ✅ VALIDADA NO AMBIENTE E PUBLICADA EM PRODUÇÃO
 
 ✅ **PRs 7243 e 7244 mergeados.** `main` em `e3e821e`, `version = "0.12.2"`.
 🔴 **A publicação em `fabrica-ai` foi PULADA, e os dois deploys passaram VERDES.** O gate da
@@ -100,6 +100,18 @@ esteira decidia pela **tag**, que é única no repositório, enquanto os feeds s
 "já publicada". **Produção segue na `0.11.2`, com o defeito P1 ativo.**
 ℹ️ A `0.11.2` está no feed de prd porque foi promovida em 07/09, **antes** deste gate (PRs
 7224–7227, de 08/09). A `0.12.1` e a `0.12.2` são as primeiras promoções depois dele.
+✅ **PUBLICADA em `fabrica-ai`** depois do PR 7246. Produção passa a instalá-la (usa `latest`).
+✅ **VALIDADA NO AMBIENTE** — run em dev de 02/07, 1.052 laudos, `engine_version` confirmado
+`0.12.2`. Contra a baseline `0.10.1` do mesmo dia: **3 rebaixados `1 → 0`, ZERO `0 → 1`**, os
+três com `require_measure_no_anchor` e os três **PAAF com `TR4` pelado**. Pré-condição: 94 laudos
+exercitaram o caminho.
+ℹ️ A baseline é `0.10.1` e não `0.11.2`, mas a atribuição se sustenta: `require_measure_no_anchor`
+só existe a partir da `0.12.2`, e nenhuma outra mudança se materializou na coorte.
+ℹ️ **Esta coorte é a baseline da `0.12.3`:** o aceite dela é o espelho — os 3 PAAF voltam
+(`0 → 1`) e nenhum dos outros 1.049 muda.
+⚠️ Um run anterior, de 18/08, deu **zero divergência**: os 9 `TR4` pelado daquele dia não são PAAF
+e as outras condições do gate coordenado os protegem. Coorte sem a população não mede nada.
+
 🟡 **Correção pronta e pushada:** branch `fix/gate-do-feed-por-destino`, commit `898e6dc`, da
 `hml`. O feed de destino passa a decidir (`ARTIFACT_FEED_NAME`), a consulta usa o índice `pip`
 com a credencial do `TwineAuthenticate` — funciona no agente, que não tem `az` —, e o
