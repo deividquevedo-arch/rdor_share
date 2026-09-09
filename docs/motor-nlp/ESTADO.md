@@ -481,6 +481,26 @@ Duas agendas (42min + 2h24) depois da queda do TI-RADS em produção. **Mapa com
 [`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`](_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md)
 — 15 gaps com dono, prioridade e solução.
 
+🔴 **A validação em dev de versão que só existe na `hml` é IMPOSSÍVEL hoje** (medido 09/09, ao
+tentar rodar a `0.12.2`). O cluster de dev resolve o `pip` contra o feed **`fabrica-ai`**, que é o
+de **produção**, alimentado pela `main`:
+
+| feed | alimentado por | versões de `nlp-engine` |
+|---|---|---|
+| `fabrica-ai-hml` | `hml` | 0.9.4 · 0.10.0 · 0.10.1 · 0.11.0 · 0.11.1 · 0.11.2 · 0.12.0 · 0.12.1 · **0.12.2** |
+| **`fabrica-ai`** | `main` | 0.9.4 · 0.10.0 · 0.10.1 · **0.11.2** |
+
+O erro é `Could not find a version that satisfies nlp-engine==0.12.2 (from versions: 0.9.4, 0.10.0,
+0.10.1, 0.11.2)` — a lista é exatamente o conteúdo do feed de produção.
+⚠️ **O Volume não é mais rota alternativa:** `gold_fabrica_ia_hml/.../nlp_engine_lib/` parou na
+**0.9.4**, e o widget `nlp_engine_volume` foi **removido** no PR 7233. Isso também responde o item
+que estava aberto sobre o caminho `livre` da esteira: o Volume deixou de ser caminho de instalação.
+🔴 **O fluxo acordado em 21/08 — "PR para `hml` publica no volume de dev para validação nossa" —
+ficou sem implementação quando a instalação passou de wheel para `pip` em 03/09.** Ninguém notou
+porque desde então não se tentou validar uma versão que existisse só na `hml`.
+✅ **A correção é de MLOps e é pequena:** declarar `fabrica-ai-hml` como índice extra do `pip` no
+cluster/policy de **dev** — e só de dev. Sem isso, ou se promove sem validar, ou não se valida.
+
 🟡 **A instalação da lib passou de wheel para `pip`** (PR 7194, João, 03/09), com feed privado.
 `latest` ou vazio instala sem pin; versão específica vira `nlp-engine==<versão>`. ⚠️ Muda a
 conversa sobre fixar versão por especialidade — o mecanismo agora existe.
