@@ -91,10 +91,18 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — ✅ MEDIDA E PUSHADA, AGUARDA PR PARA A `hml`
+## `0.12.2` — ✅ NA `hml` E TAGUEADA · PR PARA A `main` ABERTO
 
-Branch `fix/0.12.2-ancora-ausente-nao-e-nao-se-aplica`, da `hml`. Commits `3baa234`, `0464e7b`
-e `d6cffa7`.
+✅ **PR 7240 mergeado**, `5588d5c` na `hml`, **tag `v0.12.2`** publicada. Feed `fabrica-ai-hml` OK.
+🟡 **Promoção para a `main` partida em DOIS PRs**, para o Ops poder pinar sem arrastar a mudança de
+comportamento: **PR 1** `release/0.12.1-para-main` (`0a3c1e0`, 94 arquivos) e **PR 2** `hml → main`
+(10 arquivos, só a `0.12.2`). Os dois abertos, aguardando Diego, João e Gabriel.
+🟡 **SPEC `0.12.3`** escrita — o gate dispensado por evidência alternativa (`waived_by_text`).
+Branch `docs/spec-0.12.3-gate-dispensado`, commits `0b6d72b` e `531376d`, **sem push**.
+🔴 **A `0.12.3` NÃO fecha o caso do negócio sozinha:** o exame reportado nunca chega ao motor —
+o `gold_filter` não seleciona `punção aspirativa por agulha fina guiada por ultrassonografia`.
+São **67** punções citando TI-RADS 4 em 16 dias, contra 36 rebaixadas pelo gate. A causa maior é
+**config**, não biblioteca.
 **Não pushada.** Card `300200` (Defect P1). SPEC no repo.
 
 **Corrige defeito ATIVO em produção**, reportado pelo negócio em 08/09 como "TI-RADS entregando
