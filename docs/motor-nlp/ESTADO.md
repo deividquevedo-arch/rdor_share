@@ -91,7 +91,21 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — ✅ NA `hml` E TAGUEADA · PR PARA A `main` ABERTO
+## `0.12.2` — ✅ NA `main` · 🔴 NÃO CHEGOU AO FEED DE PRODUÇÃO
+
+✅ **PRs 7243 e 7244 mergeados.** `main` em `e3e821e`, `version = "0.12.2"`.
+🔴 **A publicação em `fabrica-ai` foi PULADA, e os dois deploys passaram VERDES.** O gate da
+esteira decidia pela **tag**, que é única no repositório, enquanto os feeds são **dois**. A
+`v0.12.2` existia desde a publicação em `fabrica-ai-hml`, então o build da `main` concluiu
+"já publicada". **Produção segue na `0.11.2`, com o defeito P1 ativo.**
+ℹ️ A `0.11.2` está no feed de prd porque foi promovida em 07/09, **antes** deste gate (PRs
+7224–7227, de 08/09). A `0.12.1` e a `0.12.2` são as primeiras promoções depois dele.
+🟡 **Correção pronta e pushada:** branch `fix/gate-do-feed-por-destino`, commit `898e6dc`, da
+`hml`. O feed de destino passa a decidir (`ARTIFACT_FEED_NAME`), a consulta usa o índice `pip`
+com a credencial do `TwineAuthenticate` — funciona no agente, que não tem `az` —, e o
+`TwineAuthenticate` roda **antes** do release-check. Medido: `fabrica-ai` ia de `publicada`
+para **`livre`**; `fabrica-ai-hml` segue `publicada`.
+⚠️ **Precisa ir à `main` para destravar**, e é o merge lá que publica a `0.12.2` em prd.
 
 ✅ **PR 7240 mergeado**, `5588d5c` na `hml`, **tag `v0.12.2`** publicada. Feed `fabrica-ai-hml` OK.
 🟡 **Promoção para a `main` partida em DOIS PRs**, para o Ops poder pinar sem arrastar a mudança de
