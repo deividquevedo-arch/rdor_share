@@ -91,7 +91,7 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   **Diego**, sem voto. Adição pura de 89 linhas, um arquivo, sem conflito. É o par que faltou na
   `0.9.x` e derrubou o TI-RADS.
 
-## `0.12.2` — ✅ MEDIÇÃO FECHADA, LOCAL, AGUARDA AUTORIZAÇÃO DE PUSH
+## `0.12.2` — ✅ MEDIDA E PUSHADA, AGUARDA PR PARA A `hml`
 
 Branch `fix/0.12.2-ancora-ausente-nao-e-nao-se-aplica`, da `hml`. Commits `3baa234`, `0464e7b`
 e `d6cffa7`.
@@ -102,8 +102,12 @@ sem achado". Critério `gate_relevance` com `require_measure: True` cuja âncora
 **sumia do gate** — e a promoção ordinal que ele deveria condicionar saía entregue sem nunca ter
 sido conferida. Medido: **36 de 1.032 entregas** como `TR4` pelado.
 
-🔴 **O gatilho é encoding corrompido NA ENTRADA, fora da lib** — `no<U+FFFD>dulo`, com U+FFFD em
-36 de 40 laudos contra zero no controle de 778. A âncora casa em **0 de 40**.
+🔴 **O gatilho é o TIPO DE EXAME: laudo de PAAF cita a categoria TI-RADS sem escrever "nódulo".**
+Em 25/08–09/09, PAAF tem **36 `TR4` pelado em 613 laudos** contra 21 em 20.153 dos demais exames.
+⚠️ **A atribuição anterior ao encoding corrompido estava errada** — o mojibake se concentrou nos
+mesmos laudos de PAAF (40 de 46), e a correlação foi tomada por causa. A janela do A/B não tem
+**nenhuma** ocorrência de `U+FFFD` e os quatro rebaixam assim mesmo. O mojibake é real, é da
+montagem da entrada, e **parou depois de 03/09** (24 em 26/08, 21 em 31/08, 1 em 03/09, zero desde).
 
 ⚠️ **Não é regressão, é premissa.** A SPEC da `0.11.0` §1.3 classificou os três `skipped_*` como
 "não se aplica", e está correta nos termos dela. Faltou prever que âncora ausente carrega **dois
@@ -114,8 +118,11 @@ sentidos opostos**: o achado não existe, ou o achado existe e não foi reconhec
   `_registrar_ancora_ausente` em vez de silenciar com `noqa`).
 - ⚠️ **A combinação "sem âncora + `require_measure`" tinha ZERO cobertura** — por isso o defeito
   passou. O teste existente usa critério que não declara `require_measure`.
-- ⚠️ **Troca falso positivo por falso negativo naqueles 36:** são nódulos reais com texto
-  corrompido. O par que desfaz isso é a **fuzzy lexical**, medida e ainda não decidida.
+- 🔴 **Troca falso positivo por falso negativo no laudo de PUNÇÃO** — o caso de maior suspeição
+  clínica, o nódulo já selecionado para PAAF. ⚠️ **A fuzzy lexical NÃO é o par:** não existe
+  `nódulo` corrompido para casar, a palavra não foi escrita. O par correto é a **exceção de PAAF**
+  proposta pelo negócio (categoria vale sem evidência de tamanho quando há punção), hoje anotada
+  em *A refinar* — e que esta correção promove a dependência direta.
 - ✅ **A/B FECHADO, aceite atendido.** 4.321 laudos do TI-RADS em produção (07–09/09), motor duas
   vezes no mesmo processo, LLM e embeddings desligados dos dois lados: **4 rebaixados `1 → 0`
   (0,97% de 411 entregas), ZERO promovidos, 4 de 4 com `require_measure_no_anchor`**. Pré-condição:
@@ -404,10 +411,15 @@ melhor** — registrado no card `299238`.
 
 ## Plataforma / MLOps
 
-🔴 **A Gold entrega RTF cru em `exm_laudo_texto`** (medido 09/09). O documento não teve o texto
-extraído: começa em `{tf1nsinsicpg1252`, vem numa **única linha**, e o maior tem
-**814.685 caracteres** — 482 mil dígitos contra 389 espaços, ou seja, payload hexadecimal de
-imagem embutida.
+🟡 **O pipeline lê o laudo em RTF cru, e existe um irmão em texto limpo** (medido 09/09).
+`exm_laudo_texto` vem de `proced_laudo_exame_original`, derivado de
+`proced_lista_exames.laudo_original` — e o guia `boas-praticas/04` §5.2 **manda** esse candidato ser
+o primeiro. Para uma fatia dos exames esse campo é o documento RTF inteiro: começa em `{\rtf1\ansi\ansicpg1252`, vem numa **única linha**, e o maior tem **814.685 caracteres** — 482 mil dígitos contra 389
+espaços, payload hexadecimal de imagem embutida.
+✅ **A Gold TEM o texto extraído:** o mesmo struct traz `laudo_transformado`, com acentuação correta
+(`TOMOGRAFIA COMPUTADORIZADA DO PESCOÇO`), em 1.391 a 3.404 caracteres nos cinco maiores.
+⚠️ **Mas ele não serve sozinho:** está vazio em **158 de 4.321** laudos — provavelmente a razão de o
+guia preferir o `original`. O candidato a avaliar é o `coalesce`, com custo medido antes.
 
 | linha | laudos | em RTF | maior |
 |---|---|---|---|
