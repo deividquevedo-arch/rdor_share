@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-09** (2ª sessão).
+> Atualizado em **2026-09-09** (3ª sessão).
 
 ---
 
@@ -197,10 +197,33 @@ procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**
 nunca chegam ao motor, contra 36 rebaixados pelo gate. Sem medição e sem card — filtro de entrada
 só se mede rodando.
 
+## `0.13.0` — 🟡 2 DE 6 CARDS, BRANCH PUSHADA SEM PR
+
+Branch `feat/0.13.0-estrutura` (`e832f7c`, `9313809`). ✅ **SPEC salva na `hml`** (`fa9e7ea`) —
+existia só em branch local havia 7 dias.
+
+- ✅ **`253579` [P2-13] singleton do spaCy.** A consolidação já existia; faltava o que o card
+  descreve: **inicialização sem lock, publicando o objeto ANTES do `add_pipe`**. Uma segunda
+  thread recebia pipeline **sem sentencizer**, e o `decision_pipeline` degradava em SILÊNCIO para
+  `full_doc`. Corrigido com double-checked locking + publicação atômica. **5 mutantes mortos**;
+  memória: **−580,2 KB por processo**.
+- ✅ **`253581` [P2-15] divisão do módulo.** 778 → **407** linhas, mais três de 207, 87 e 210.
+  **CA5 provado: 300 laudos, ZERO divergentes, byte-a-byte.**
+  ⚠️ Três desvios declarados: primitivos de frase e `OrdinalMention` foram para o módulo de
+  categoria (evitam ciclo); **o CA2 não fecha ao pé da letra** — pede nenhum arquivo acima de 300
+  linhas e **dez excedem**, `quantitative.py` tem 1.687; os nomes `test_rads_*` do CA6 são
+  anteriores ao rename de 0.9.0.
+- 🟡 Faltam `253580` (decompor `process()` **sem** streaming), `253582` (clamp — **pode alterar
+  valor**, e a SPEC manda sair para release própria se alterar), `253591` e `253593` (ADRs).
+- 🔵 **`process()` com streaming vira BUMP PRÓPRIO** — decisão do usuário: quebra a API e a
+  plataforma já contorna montando lotes externamente.
+
+ℹ️ **A fila da lib é nossa.** Nenhum dos seis cards do Ops depende deles para começar; onde o Ops
+é gargalo é em **config** — `waive`, `gold_filter`, pin e índice de dev.
+
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
-✅ `0.12.0`/`0.12.1` higiene **entregue** → 🟡 `0.13.0` estrutura (6 cards, `process()` em
-streaming **quebra a API**) → `0.14.0` juiz sem evidência → `0.15.0` vínculo lesão↔medida.
-SPEC da `0.13.0` escrita, mas **ainda na branch `docs/plano-e-specs-ops`, sem push**.
+✅ `0.12.0`–`0.12.3` **entregues** → 🟡 `0.13.0` estrutura (2 de 6) → `0.14.0` juiz sem evidência
+(card `283648`, **P1 aberto há 19 dias sem medição registrada**) → `0.15.0` vínculo lesão↔medida.
 
 🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
 `0.14.0`. Exige medição prévia por linha.
