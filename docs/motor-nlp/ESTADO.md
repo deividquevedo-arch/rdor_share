@@ -222,8 +222,9 @@ existia só em branch local havia 7 dias.
 é gargalo é em **config** — `waive`, `gold_filter`, pin e índice de dev.
 
 🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
-✅ `0.12.0`–`0.12.3` **entregues** → 🟡 `0.13.0` estrutura (2 de 6) → `0.14.0` juiz sem evidência
-(card `283648`, **P1 aberto há 19 dias sem medição registrada**) → `0.15.0` vínculo lesão↔medida.
+✅ `0.12.0`–`0.12.3` **entregues** → 🟡 `0.13.0` estrutura (2 de 6) → `0.14.0` **juiz sem evidência
++ tokens na extração quantitativa** (card `283648`, P1 aberto há 20 dias sem medição registrada;
+o item de tokens é inclusão de 10/09) → `0.15.0` vínculo lesão↔medida.
 
 🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
 `0.14.0`. Exige medição prévia por linha.
@@ -549,8 +550,10 @@ Medido em 10/09:
 
 **221 das 270 chamadas do dia não têm contabilidade nenhuma.** ⚠️ Não é estimável por regra de
 três: o input do juiz da hepatologia mede 2.000 caracteres, e os laudos de TI-RADS vão de ~1.500 a
-815 KB. 🟡 **Sem card ainda** — proposta de incluir na `0.14.0`, que já toca o caminho do LLM e já
-exigirá alinhamento de contrato com o Ops.
+815 KB.
+✅ **INCLUÍDO NO ESCOPO DA `0.14.0`** — decisão do usuário, para puxar **um alinhamento só** com o
+Ops em vez de abrir uma terceira rodada de mudança de contrato. É inclusão de escopo, não algo que
+já estivesse no card `283648`.
 
 🔴 **Noturno falhando por lote vazio** (27/08): `nlp_config`/`input`/`persisters` com sucesso e
 `process` com `ValueError: Nenhum laudo recebido`, nas 3 linhas agendadas, nas duas tentativas.
@@ -627,6 +630,15 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 
 **P0/P1 sem card, e são nossos:** doc do consumidor + mensagem de erro · vazamento de memória no
 `process()` · lib não emite log no caminho NLP.
+
+## Alinhamento com o Ops — pauta consolidada em 2026-09-10
+
+📄 **`_processo/alinhamento-ops-2026-09-10.md`** reúne **17 itens em 6 temas**, cada um com
+evidência medida, o que se pede e quem decide. **Três bloqueiam trabalho hoje:** o índice
+`fabrica-ai-hml` em dev, o pin por especialidade, e o aval dos campos novos de contrato.
+
+Traz pauta de 60 minutos em quatro blocos e a lista do que já fechou do nosso lado, para a agenda
+não gastar tempo com isso. Vira ata em `_processo/atas/` depois da reunião.
 
 ## Cards — quadro em 2026-09-08 (tarde)
 
