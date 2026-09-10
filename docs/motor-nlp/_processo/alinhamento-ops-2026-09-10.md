@@ -401,29 +401,42 @@ Card acumulador. A divergência mais cara já custou uma subida: a SPEC §6.1 af
 
 ## Tema 7 — Governança: uso de agentes na revisão de código
 
-### 7.1 🟡 Não há diretriz comunicada, e a ausência já produz atrito
+### 7.1 🟡 Diretriz sem canal de emissão — o alcance foi esclarecido, o mandato não
 
-**O que é.** Não existe orientação acordada sobre o uso de agentes de IA na revisão de código e na
-produção de análises técnicas. Os agentes em uso rodam em **conta corporativa administrada pela
-própria empresa** — o conteúdo não trafega para fora do controle dela.
+**O que é.** Circulou restrição ao uso de agentes de IA sobre conteúdo de revisão de código. Houve
+esclarecimento posterior de que o **alvo são times externos**, não os integrantes do próprio time —
+o que resolve a aplicação imediata e **não fecha o item**.
 
-Sem regra, cada revisor adota um método diferente, e restrições declaradas caso a caso, dentro de
-artefatos de revisão, criam atrito sem produzir proteção: comentário de pull request não tem
-controle de acesso próprio — quem enxerga o PR enxerga o comentário.
+**O que permanece em aberto, e é o que a pauta trata:**
 
-**O que se pede.** Definir e registrar:
+- **A diretriz não foi emitida por nenhum canal com mandato para isso.** Não houve comunicação por
+  PO, PMO ou Head. Nasceu e circulou entre pares.
+- **As duas frentes envolvidas são lideranças técnicas de mesmo nível** — Ciência de Dados e MLOps,
+  disciplinas distintas, nenhuma subordinada à outra. Orientação entre pares não vincula a frente do
+  outro; para vincular, precisa vir de quem pode emitir.
+- **Escopo esclarecido em conversa não é diretriz.** Enquanto o alcance ("times externos") não
+  estiver escrito onde as demais diretrizes do time vivem, a próxima aplicação volta a depender de
+  interpretação de quem a lê — e o esclarecimento não alcança quem não estava na conversa.
+- **O lugar da declaração também é parte do problema.** Restrição anotada dentro de artefato de
+  revisão não produz proteção: comentário de pull request não tem controle de acesso próprio — quem
+  enxerga o PR enxerga o comentário.
 
-- **se há restrição**, qual o critério que a aciona (tipo de conteúdo, ambiente, classificação) e
-  **onde ela se declara** — o lugar precisa ter controle de acesso compatível com o que se pretende
-  proteger;
-- **se não há**, registrar explicitamente que não há, para que a ausência deixe de ser preenchida
-  por convenção individual.
+ℹ️ Os agentes em uso rodam em **conta corporativa administrada pela própria empresa** — o conteúdo
+não trafega para fora do controle dela. Qualquer restrição precisa declarar contra o que protege,
+já que o vazamento para fora do perímetro não é o risco em causa.
 
-ℹ️ A decisão vale para todos os revisores e para todos os projetos. Enquanto o vazio existir, cada
-marcação individual vira precedente sem mandato, e a revisão cruzada fica dependente de quem a
-faz — não do que se combinou.
+**O que se pede.** Que a diretriz seja emitida — ou dispensada — por quem tem mandato, e registrada
+com três coisas explícitas:
 
-**Quem decide:** Ops / TechLead, com registro onde as demais diretrizes do time vivem.
+- **a quem se aplica** (o esclarecimento sobre times externos, por escrito);
+- **o critério que a aciona** — tipo de conteúdo, ambiente ou classificação, não caso a caso;
+- **onde ela se declara**, num lugar com controle de acesso compatível com o que pretende proteger.
+
+Se a conclusão for que não há restrição, **registrar que não há** tem o mesmo valor: fecha o vazio
+que hoje é preenchido por convenção individual.
+
+**Quem decide:** não é decisão entre pares técnicos. Sobe para PO / PMO / Head, com registro onde
+as demais diretrizes do time vivem.
 
 ---
 
@@ -436,7 +449,7 @@ faz — não do que se combinou.
 | **3. Embeddings em produção** | 15 min | **3.0**, 4.2 | destino do modelo em prd e prazo — é o item de maior impacto clínico |
 | **4. Defeitos e provisionamento** | 10 min | 3.3, 3.4, 4.1 | quais viram card; prioridade relativa |
 | **5. Fila de PRs** | 10 min | 5.1 a 5.4 | revisor e prazo para cada |
-| **6. Governança** | 5 min | **7.1** | há diretriz de uso de agentes? se não, registrar que não há |
+| **6. Governança** | 5 min | **7.1** | diretriz de uso de agentes: quem emite, a quem se aplica, onde fica escrita — ou registro de que não há |
 
 **Preparação sugerida:** este documento circula antes. Os itens 1.1 e 1.2 podem ser decididos por
 mensagem — se saírem antes, a agenda começa pelo bloco 2.
