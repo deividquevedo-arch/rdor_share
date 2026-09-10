@@ -4,7 +4,8 @@
 > medida, para que a agenda comece com a informação em mãos e termine em decisão. Depois da
 > reunião vira ata em `_processo/atas/`, com o que **passou a valer**.
 >
-> Consolidado em **2026-09-10**. Fonte: `ESTADO.md` e as medições referenciadas em cada item.
+> Consolidado em **2026-09-10** e **atualizado no fim do dia**, com o que evoluiu depois da
+> primeira versão. Fonte: `ESTADO.md` e as medições referenciadas em cada item.
 
 ---
 
@@ -71,8 +72,8 @@ e exige admin.
 **O que é.** `jobs/ambientes/prod.json` e `hml.json` declaram `"nlp_engine_version": "latest"`. Sem
 pin, o `pip` resolve a maior versão do feed.
 
-**Evidência comportamental.** A versão do motor em produção mudou **cinco vezes** sem ninguém tocar
-no job, nas quatro linhas, sempre no mesmo dia:
+**Evidência comportamental.** A versão do motor em produção mudou **quatro vezes** sem ninguém
+tocar no job, nas quatro linhas, sempre no mesmo dia:
 
 | até | versão em prd |
 |---|---|
@@ -96,6 +97,19 @@ do ca-estômago que entrega o oposto do laudo (contagem do defeito por versão: 
 `0.10.1` = 4, `0.11.2` = 0).
 ⚠️ **Não pinar `0.12.1`**: ela **não existe** no feed de produção — o build dela foi pulado pelo
 defeito descrito em 1.4.
+
+✅ **JÁ ESTÁ EM CARD — história `301938`, aberta e atribuída em 10/09.** Traz a lista exata por
+linha, o histórico dos nove dias, o que a `0.9.4` reintroduz com medição, e o critério de aceite.
+**Cobre oito linhas:** as quatro ativas mais `cancer_colon`, `cancer_rim`, `tumor_osseo` e
+`reumatologia`, que entram na versão pinada vigente.
+
+ℹ️ **Verificado que a `0.9.4` CARREGA em todas as configs atuais** — `0.6.9-cancer_estomago` declara
+`>= 0.9.4` e `0.8.0-tirads` declara `>= 0.9.2`. Não há incompatibilidade a alegar; o impedimento é
+regressão medida, e só. Alegar quebra seria overclaim.
+
+🔴 **Enquanto o pin não for aplicado, qualquer publicação nossa move produção.** Se a `0.13.0` sair
+nos próximos dias, ela entra em prd sem passar por ninguém. É argumento para aplicar cedo, não para
+adiar até o refinamento.
 
 **Quem decide:** Ops / TechLead.
 
@@ -499,3 +513,8 @@ Registro para a reunião não gastar tempo com o que já fechou:
 - ✅ Migração de reumatologia validada ponta a ponta em dev: paridade de 99,42% em cinco medições
   independentes, cinco arquivos entregues e conferidos.
 - ✅ 15 cards de higiene da `0.12.x` em *Pronto para QA*, com 67 evidências medidas.
+- ✅ **A lista de versões por linha foi entregue** — história `301938`, com as oito linhas, o
+  histórico verificado no `engine_version` das tabelas de saída, e critério de aceite.
+- ✅ **A Feature `298598` (plano de bumps) foi atualizada** — parava na `0.11.1`. Registra agora as
+  8 versões entregues, a `0.13.0` com 2 de 6 cards, e os três desvios do plano (`0.11.2`, `0.12.2`
+  e `0.12.3` entraram por defeito ativo em produção).
