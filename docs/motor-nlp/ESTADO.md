@@ -680,8 +680,12 @@ de **produção**, alimentado pela `main`:
 
 O erro é `Could not find a version that satisfies nlp-engine==0.12.2 (from versions: 0.9.4, 0.10.0,
 0.10.1, 0.11.2)` — a lista é exatamente o conteúdo do feed de produção.
-⚠️ **O Volume não é mais rota alternativa:** `gold_fabrica_ia_hml/.../nlp_engine_lib/` parou na
-**0.9.4**, e o widget `nlp_engine_volume` foi **removido** no PR 7233. Isso também responde o item
+⚠️ **O Volume deixou de ser rota — mas NÃO por falta de wheel.** Verificado em 10/09: o volume
+`gold_fabrica_ia_hml/.../nlp_engine_lib/` **contém `0.12.1`, `0.12.2` e `0.12.3`**, e a esteira da
+lib segue publicando lá (`UploadVolume`). O que parou foi o **consumo**: o widget
+`nlp_engine_volume` foi **removido** no PR 7233 e não há índice extra declarado.
+ℹ️ A afirmação anterior — "o Volume parou na 0.9.4" — **estava errada**. Há lacuna entre `0.9.4` e
+`0.12.1`, mas as três últimas versões estão lá. **A correção é de consumo, não de publicação.** Isso também responde o item
 que estava aberto sobre o caminho `livre` da esteira: o Volume deixou de ser caminho de instalação.
 🔴 **O fluxo acordado em 21/08 — "PR para `hml` publica no volume de dev para validação nossa" —
 ficou sem implementação quando a instalação passou de wheel para `pip` em 03/09.** Ninguém notou
