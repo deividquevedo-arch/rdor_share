@@ -496,6 +496,39 @@ contra a esperada — são o padrão que vale copiar.
 `document_vet.enabled`. Contraria a SPEC 27 (§7 diz "dicionário literal e nada mais") **para
 melhor** — registrado no card `299238`.
 
+## PR 7234 — NPS na esteira da fábrica (Lucas) — 🟡 REVISADO, COMENTÁRIO NÃO POSTADO
+
+📄 **`_processo/revisao-pr-7234-nps.md`** — três passadas mais o cruzamento com a revisão de Ops.
+Repositório `IAAzureDatabricksNPS`, branch `nps/feature/esteira-fabrica`.
+
+🔴 **Um bloqueante, de uma linha:** `nps/src/eval/acuracia.py` levanta `NameError` na primeira
+chamada. **A raiz é que nenhum teste cobre a árvore `nps/`**, que é justamente a que a esteira
+publica — a suíte existente é da outra árvore.
+
+**As duas revisões medem contra réguas diferentes, e ambas se sustentam.** A de Ops mede prontidão
+para **produção** (13 itens, ~4-5 sprints, *não pronto*); o PR tem alvo **`hml`**, cria o job
+**pausado** e exclui do escopo ligar o job e promover. Aplicar o dimensionamento ao merge confunde
+as duas.
+
+✅ **O cruzamento não abriu item novo — 5 complementam, 3 corrigem, 3 concordam.** Toda afirmação
+foi conferida na árvore publicada, não aceita pelo texto.
+
+- **Complementam:** o `NameError` · o **determinismo com porta de saída em runtime** (`top_k` sai do
+  payload no 400 e o run segue sem ele, guardado por estado global mutável com o job a 4 workers) ·
+  a localização do dado de paciente em log · a amostra de **179** trechos, que não distingue 93,3%
+  de 89,4% (IC ~±4,5 pontos) · a árvore publicada sem teste.
+- **Corrigem:** `workers=4` **não é hardcode**, é default de widget · **duas das quatro colunas de
+  PII são `cast(null as string)`**, sempre nulas — mascará-las não produz efeito · são **4** cópias
+  do mapa de catálogos, não 3, e a que faltou é `nps/serving/ntb_ia_nps_exporta_consumo.py`.
+- **Concordam:** `/mnt/` no caminho publicado — e é **leitura em runtime**, não constante residual ·
+  `mergeSchema: 'true'` na escrita principal · duplicação de `enderecos.py`.
+
+⚠️ **Um item foi registrado como achado próprio e não era:** o `mergeSchema` consta do item 9 de
+Ops, com a mesma recomendação. Corrigido no documento. O de log concretiza os itens 10 e 12.
+
+🟡 **Comentário redigido e revisado, aguardando decisão de postar.** Só o bloco *complementa*, em
+caráter complementar — os itens de concordância não vão.
+
 ## Plataforma / MLOps
 
 🟡 **O pipeline lê o laudo em RTF cru, e existe um irmão em texto limpo** (medido 09/09).
@@ -633,12 +666,19 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 
 ## Alinhamento com o Ops — pauta consolidada em 2026-09-10
 
-📄 **`_processo/alinhamento-ops-2026-09-10.md`** reúne **17 itens em 6 temas**, cada um com
+📄 **`_processo/alinhamento-ops-2026-09-10.md`** reúne **19 itens em 7 temas**, cada um com
 evidência medida, o que se pede e quem decide. **Três bloqueiam trabalho hoje:** o índice
 `fabrica-ai-hml` em dev, o pin por especialidade, e o aval dos campos novos de contrato.
 
-Traz pauta de 60 minutos em quatro blocos e a lista do que já fechou do nosso lado, para a agenda
-não gastar tempo com isso. Vira ata em `_processo/atas/` depois da reunião.
+Traz pauta de **75 minutos** e a lista do que já fechou do nosso lado, para a agenda não gastar
+tempo com isso. Vira ata em `_processo/atas/` depois da reunião.
+
+🟡 **Tema 7 — governança do uso de agentes.** Circulou restrição ao uso de agentes de IA sobre
+conteúdo de revisão de código; houve esclarecimento posterior de que o alvo são **times externos**,
+o que resolve a aplicação imediata e **não fecha o item**. Permanece: a diretriz não foi emitida por
+canal com mandato (sem PO, PMO ou Head), as duas frentes envolvidas são lideranças técnicas de mesmo
+nível em disciplinas distintas, e escopo esclarecido em conversa não alcança quem não estava nela.
+**Quem decide subiu para PO / PMO / Head** — não é decisão entre pares técnicos.
 
 ## Cards — quadro em 2026-09-08 (tarde)
 
