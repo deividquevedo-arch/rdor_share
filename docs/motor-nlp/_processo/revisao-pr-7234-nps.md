@@ -341,10 +341,12 @@ revisões, porque quebra sem aviso se o mount sair do ar.
 - **§6.2** — conteúdo de comentário de paciente impresso em log de job;
 - **§6.4** — a amostra de 179 trechos não distingue os dois números que a descrição compara.
 
-**Achado novo, que só apareceu na verificação cruzada:** a escrita principal da classificação usa
-`mode('append')` com **`mergeSchema: 'true'`** (linha 538). Somado a D1 e à esteira sem etapa de
-teste, uma deriva de schema entra na tabela de saída **em silêncio**. É a mesma classe da lacuna de
-contrato que custou três ondas de correção na `0.12.1` do motor.
+**Localização do item de schema já levantado pela revisão de Ops:** a escrita afetada é a principal
+da classificação — `mode('append')` com **`mergeSchema: 'true'`**, linha 538 de
+`model/ntb_ia_nps_classificacao.py`. Somada a D1 e à esteira sem etapa de teste, a deriva entra na
+tabela de saída **em silêncio**. É a mesma classe da lacuna de contrato que custou três ondas de
+correção na `0.12.1` do motor, o que sustenta a recomendação já feita de validar o schema antes de
+escrever em vez de absorver a diferença.
 
 ### 7.4 Ações para o autor
 
@@ -389,10 +391,12 @@ em aberto.
 **E três itens saem do escopo do autor** (§6.6): a esteira compartilhada não roda teste, as
 dependências não estão fixadas, e o template é referenciado por tag móvel. São decisões de MLOps.
 
-**O cruzamento com a revisão de Ops (§7) fechou dois itens e abriu um.** O `/mnt/` no caminho
-publicado é leitura em runtime, e sobe para a lista de merge; a PII na exportação é real, mas duas
-das quatro colunas são sempre nulas. O item novo é o `mergeSchema: 'true'` na escrita principal.
-As duas revisões medem contra réguas diferentes — produção e `hml` —, e as duas se sustentam.
+**O cruzamento com a revisão de Ops (§7) não abriu item novo — precisou dois itens e refutou um.**
+O `/mnt/` no caminho publicado é leitura em runtime, e por isso sobe para a lista de merge; a PII na
+exportação é real, mas duas das quatro colunas são `cast(null as string)`, o que muda a ação
+proposta; e o `workers=4` **não é hardcode**, é default de widget. O que esta auditoria acrescenta
+está todo em B1, §6.2, §6.3 e §6.4. As duas revisões medem contra réguas diferentes — produção e
+`hml` —, e as duas se sustentam.
 
 O PR está acima do padrão em documentação: cada número com base e data, divergências deliberadas
 declaradas, limites conhecidos listados, e critério de GO/NO GO explícito. Os achados desta
