@@ -310,7 +310,7 @@ proposta) e **concorda** (item de Ops confirmado, com a localização no código
 
 ℹ️ **O cruzamento não abriu item novo.** Cinco itens complementam, três corrigem e três concordam.
 O que parecia achado próprio no bloco de schema já constava do item 9 de Ops, com a mesma
-recomendação.
+recomendação; e o de log concretiza os itens 10 e 12 em vez de acrescentar categoria.
 
 ### 7.1 As duas revisões medem contra réguas diferentes, e ambas estão certas
 
@@ -324,15 +324,16 @@ compatíveis. O que a resposta precisa separar é **o que impede o merge** do **
 ⚠️ O dimensionamento de 4 a 5 sprints é para o conjunto inteiro. Aplicá-lo ao merge confunde as duas
 réguas e para uma entrega que já está validada no escopo que declara.
 
-### 7.2 Complementa — o que só esta auditoria levantou
+### 7.2 Complementa
 
-Cinco itens, nenhum deles presente na revisão de Ops:
+Cinco itens. Quatro não têm par do outro lado; o de log **concretiza** os itens 10 e 12 de Ops,
+que levantam a categoria sem localizar o ponto:
 
 | item | onde | peso |
 |---|---|---|
 | **B1** — `NameError` na primeira chamada de `eval/acuracia.py` | §2 | 🔴 único bloqueante de código, correção de uma linha |
 | **Determinismo com porta de saída em runtime** — `top_k` sai do payload no 400 e o run segue sem ele, guardado por **estado global mutável de módulo** com o job a 4 workers | §6.3 | 🟠 é o que dá peso real ao número de workers, e provavelmente explica as três divergências que a descrição deixou em aberto |
-| **Conteúdo de comentário de paciente em log** — 500 caracteres da resposta e a representação da exceção | §6.2 | 🟠 o item 10 de Ops levanta a **categoria**; este é o **ponto concreto** |
+| **Conteúdo de comentário de paciente em log** — 500 caracteres da resposta e a representação da exceção | §6.2 | 🟠 **ponto concreto dos itens 10 e 12 de Ops** — o 10 lista *exposição de dados em logs* como risco e o 12 pede log estruturado; nenhum dos dois localiza a chamada |
 | **A amostra não distingue os dois números comparados** — n=179, IC de ±4,5 pontos | §6.4 | 🟡 não invalida a conclusão, reforça: não há queda demonstrável |
 | **A árvore publicada não é coberta por teste nenhum** | D1 | 🟠 distinto dos itens 4 e 8 de Ops, que tratam da outra árvore. É a raiz de B1 |
 
