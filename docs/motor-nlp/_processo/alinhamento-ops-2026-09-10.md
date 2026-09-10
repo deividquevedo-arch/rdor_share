@@ -14,8 +14,9 @@ Cada item traz **o que é**, **a evidência** (medida, não impressão), **o que
 decide**. Itens marcados 🔴 **bloqueiam trabalho hoje**; 🟡 custam retrabalho ou risco; ℹ️ são
 informativos e não precisam de decisão.
 
-**Resumo:** 19 itens em 7 temas. **5 bloqueiam**, 4 pedem decisão de contrato, 7 são defeitos de
-plataforma sem correção, 2 são provisionamento, 4 são PRs parados e 1 é de governança.
+**Resumo:** 20 itens em 8 temas. **5 bloqueiam**, 4 pedem decisão de contrato, 7 são defeitos de
+plataforma sem correção, 2 são provisionamento, 4 são PRs parados, 1 é de governança e 1 é uma
+proposta de processo a aprovar.
 
 🔴 **O item mais grave é o 3.0:** os embeddings não funcionam em produção, e as três linhas que os
 declaram rodam um perfil que nunca foi homologado.
@@ -399,6 +400,36 @@ Card acumulador. A divergência mais cara já custou uma subida: a SPEC §6.1 af
 
 ---
 
+## Tema 6b — Proposta: definir o que é "validado" ao trocar versão da lib
+
+### 6b.1 🟡 A palavra existe no acordo e não existe definida em lugar nenhum
+
+**O que é.** O fluxo acordado e a pinagem por linha invocam *"nenhuma versão nova entra sem
+validação prévia"*. **Essa palavra não tem definição escrita.** Sem ela, cada promoção reabre a
+mesma discussão e a validação vira o que cada um entende por ela.
+
+⚠️ **O playbook de paridade existente não cobre.** Ele trata de evoluir **config e régua** contra
+gabarito. Na troca de versão a config fica congelada, só a engine muda, e **não existe gabarito** —
+precisão e recall não são calculáveis. O que se mede é o **delta de decisão**.
+
+**O que se leva.** Uma proposta escrita, em
+[`_processo/procedimento-promocao-de-versao.md`](procedimento-promocao-de-versao.md): quatro números
+obrigatórios, seis passos de medição, sete armadilhas que já invalidaram medição aqui, e critério de
+aceite em três itens.
+
+**O que se pede.** Que o time discuta e decida se adota. **Aprovada, a proposta vira página da wiki**
+em `/Fábrica de IA` — regra e convenção do time não moram em card nem em repositório de projeto — e
+os cards passam a citá-la por link em vez de reescrevê-la.
+
+ℹ️ **Não cria passo novo.** Formaliza o que já se faz nas medições desta semana; dá nome e piso.
+
+🔴 **Depende do item 1.1 para ser executável.** Hoje dev resolve o `pip` contra o feed de produção,
+então só se valida em dev uma versão que **já está em produção**.
+
+**Quem decide:** o time, com Ops e Ciência de Dados.
+
+---
+
 ## Tema 7 — Governança: uso de agentes na revisão de código
 
 ### 7.1 🟡 Diretriz sem canal de emissão — o alcance foi esclarecido, o mandato não
@@ -440,7 +471,7 @@ as demais diretrizes do time vivem.
 
 ---
 
-## Pauta proposta — 75 minutos
+## Pauta proposta — 80 minutos
 
 | bloco | tempo | itens | saída esperada |
 |---|---|---|---|
@@ -449,7 +480,8 @@ as demais diretrizes do time vivem.
 | **3. Embeddings em produção** | 15 min | **3.0**, 4.2 | destino do modelo em prd e prazo — é o item de maior impacto clínico |
 | **4. Defeitos e provisionamento** | 10 min | 3.3, 3.4, 4.1 | quais viram card; prioridade relativa |
 | **5. Fila de PRs** | 10 min | 5.1 a 5.4 | revisor e prazo para cada |
-| **6. Governança** | 5 min | **7.1** | diretriz de uso de agentes: quem emite, a quem se aplica, onde fica escrita — ou registro de que não há |
+| **6. Definição de "validado"** | 5 min | **6b.1** | proposta escrita; o time adota? aprovada, vira página da wiki |
+| **7. Governança** | 5 min | **7.1** | diretriz de uso de agentes: quem emite, a quem se aplica, onde fica escrita — ou registro de que não há |
 
 **Preparação sugerida:** este documento circula antes. Os itens 1.1 e 1.2 podem ser decididos por
 mensagem — se saírem antes, a agenda começa pelo bloco 2.

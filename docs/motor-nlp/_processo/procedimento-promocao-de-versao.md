@@ -1,8 +1,39 @@
-# Promoção de versão da lib
+# PROPOSTA — Promoção de versão da lib
 
-> **Destino: wiki `IA.wiki`, seção `/Fábrica de IA`.** Escrito no formato das páginas existentes
-> (*Checklist de aprovação do PR*, *Gitflow e ambientes*). Este arquivo é o rascunho para revisão;
-> aprovado, vira página e **é a fonte** — o repositório passa a apontar para lá.
+> ⚠️ **Isto é uma proposta, não uma norma.** Nada aqui vale como regra até o time discutir e
+> aprovar. **Não está publicado na wiki.**
+>
+> Se aprovado, o destino é a wiki `IA.wiki`, seção `/Fábrica de IA`, ao lado de *Checklist de
+> aprovação do PR* e *Gitflow e ambientes* — e passa a ser a fonte, com o repositório apontando
+> para lá. Está escrito no formato daquelas páginas justamente para que a aprovação seja a única
+> coisa que falte.
+
+---
+
+## 0. O que se pede ao time
+
+**O problema.** A pinagem por linha e o fluxo acordado invocam a palavra *"validado"* — *nenhuma
+versão nova entra sem validação prévia*. **Essa palavra não está definida em lugar nenhum.** Sem
+definição, cada bump reabre a mesma discussão, e a validação vira o que cada um entende por ela.
+
+**O que NÃO resolve.** O playbook de paridade existente trata de evoluir **config e régua** contra
+gabarito. Aqui a config fica congelada, só a engine muda, e **não existe gabarito** — precisão e
+recall não são calculáveis. São problemas diferentes.
+
+**A decisão pedida:**
+
+1. O time adota esta definição de *"validado"* para troca de versão em linha de produção?
+2. Os **quatro números** da seção 3 e o **critério de aceite** da seção 6 são o mínimo aceitável?
+3. Aprovado, a página vai para `/Fábrica de IA` e os cards passam a **citá-la por link**, em vez de
+   reescrever a regra.
+
+**O que muda na prática, se adotado.** Quem promove versão entrega quatro números em vez de
+*"rodou sem erro"*. Quem revisa tem critério objetivo para aceitar ou devolver. Nenhum passo novo é
+criado — o que existe hoje passa a ter nome e piso.
+
+---
+
+## O texto proposto
 
 O que você precisa medir para trocar a versão da `nlp_engine` de uma linha em produção — e o que
 não conta como validação. Todos os itens vêm de medições reais deste projeto; nenhum é hipotético.
@@ -13,7 +44,7 @@ não conta como validação. Todos os itens vêm de medições reais deste proje
 
 ---
 
-## 1. Quando esta página se aplica
+## 1. Quando se aplica
 
 | situação | aplica? |
 |---|---|
@@ -102,7 +133,7 @@ critério.
 
 | o quê | onde |
 |---|---|
-| **esta regra** | **aqui, na wiki** — é política do time |
+| **esta regra** | na **wiki**, se aprovada — é política do time, não artefato de projeto |
 | a **evidência** de uma promoção (os quatro números, coorte, data) | no **card** daquela versão |
 | em que versão cada linha está agora | no `ESTADO.md` do repositório de documentação |
 
