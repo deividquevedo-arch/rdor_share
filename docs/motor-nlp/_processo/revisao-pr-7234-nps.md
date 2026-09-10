@@ -304,6 +304,14 @@ Chegou uma segunda revisão, pelo lado de Ops: 13 itens, checklist de 5 fases, d
 4 a 5 sprints e conclusão *não pronto para produção*. **Toda afirmação cruzada abaixo foi conferida
 na árvore publicada da branch** — nenhuma foi aceita pelo texto.
 
+O cruzamento está organizado em três blocos, e a distinção é o que evita repetir trabalho já feito:
+**complementa** (o que só esta auditoria levantou), **corrige** (verificação que muda a ação
+proposta) e **concorda** (item de Ops confirmado, com a localização no código e nada mais).
+
+ℹ️ **O cruzamento não abriu item novo.** Cinco itens complementam, três corrigem e três concordam.
+O que parecia achado próprio no bloco de schema já constava do item 9 de Ops, com a mesma
+recomendação.
+
 ### 7.1 As duas revisões medem contra réguas diferentes, e ambas estão certas
 
 A revisão de Ops mede contra **prontidão para produção**. Este PR tem como alvo a **`hml`**, cria o
@@ -316,39 +324,43 @@ compatíveis. O que a resposta precisa separar é **o que impede o merge** do **
 ⚠️ O dimensionamento de 4 a 5 sprints é para o conjunto inteiro. Aplicá-lo ao merge confunde as duas
 réguas e para uma entrega que já está validada no escopo que declara.
 
-### 7.2 Onde as duas revisões se encontram
+### 7.2 Complementa — o que só esta auditoria levantou
 
-| item de Ops | nesta auditoria | o que a verificação mostrou |
+Cinco itens, nenhum deles presente na revisão de Ops:
+
+| item | onde | peso |
 |---|---|---|
-| `/mnt/` no caminho publicado | — | ✅ **confirmado, e é mais forte que o relatado.** Não é constante residual: `path_controle_carga` alimenta a leitura das linhas 245 e 258 e a marca d'água da 522. É **leitura em runtime** do mount legado, em 3 pontos de `data/ntb_ia_nps_entrada.py` — os outros dois notebooks publicados têm zero |
-| colunas de PII na saída | §6.2 (dado de paciente em log) | ✅ **confirmado, com correção.** As 4 colunas atravessam a cadeia inteira — entrada → classificação → `output_schema` → exportação → `contrato_fabrica` (renomeadas para `nm_paciente`, `num_cpf_paciente`). **Mas `telefonePaciente` e `emailPaciente` são `cast(null as string)` na entrada:** sempre nulos. A exposição real é **nome e CPF**, e ela **chega à camada de exportação**, que é a superfície voltada ao negócio |
-| duplicação do mapa de catálogos | D2 | ✅ confirmado. Foram encontradas **4** cópias, não 3; conferidas **idênticas hoje** — não há deriva ainda, o risco é de manutenção |
-| referências de teste fixas | D1 | ✅ mesma raiz. Nenhum teste cobre a árvore que a esteira publica |
-| `workers=4` | E1 | 🟡 **atenuado pela verificação.** A linha 100 lê um **widget** com default `'4'` — é parametrizável, não fixo no código. Segue valendo o esclarecimento de E1 (a descrição pede 2), mas não é bloqueio de código |
+| **B1** — `NameError` na primeira chamada de `eval/acuracia.py` | §2 | 🔴 único bloqueante de código, correção de uma linha |
+| **Determinismo com porta de saída em runtime** — `top_k` sai do payload no 400 e o run segue sem ele, guardado por **estado global mutável de módulo** com o job a 4 workers | §6.3 | 🟠 é o que dá peso real ao número de workers, e provavelmente explica as três divergências que a descrição deixou em aberto |
+| **Conteúdo de comentário de paciente em log** — 500 caracteres da resposta e a representação da exceção | §6.2 | 🟠 o item 10 de Ops levanta a **categoria**; este é o **ponto concreto** |
+| **A amostra não distingue os dois números comparados** — n=179, IC de ±4,5 pontos | §6.4 | 🟡 não invalida a conclusão, reforça: não há queda demonstrável |
+| **A árvore publicada não é coberta por teste nenhum** | D1 | 🟠 distinto dos itens 4 e 8 de Ops, que tratam da outra árvore. É a raiz de B1 |
 
-### 7.3 O que cada revisão viu sozinha
+Mais dois esclarecimentos de escopo sem par do outro lado: `timeout_seconds: 0` em uma das tasks
+(E2) e a fonte não variar por ambiente — dev e hml leem produção (E3).
 
-**Só na revisão de Ops** — e vale corrigir: o `/mnt/` em runtime é o item mais concreto das duas
-revisões, porque quebra sem aviso se o mount sair do ar.
+### 7.3 Corrige — três verificações que mudam a ação proposta
 
-**Só nesta auditoria**, e nenhum apareceu do outro lado:
+| afirmação de Ops | o que a árvore publicada mostra |
+|---|---|
+| `workers=4` é hardcode | 🟡 **não é.** A linha 100 de `model/ntb_ia_nps_classificacao.py` lê um **widget** com default `'4'` — já é parametrizável. Resta declarar o valor pretendido, já que a descrição pede 2 (= E1) |
+| quatro colunas de PII a mascarar | 🟡 **duas delas são sempre nulas.** `telefonePaciente` e `emailPaciente` são `cast(null as string)` na entrada (linhas 379–380). Mascarar coluna sempre nula não produz efeito. A ação real se divide em **(a)** nome e CPF na superfície de consumo, que é pergunta para o DPO, e **(b)** duas colunas declaradas no contrato e nunca preenchidas — ou passam a ser preenchidas, ou saem do schema |
+| 3 cópias do mapa de catálogos | 🟡 **são 4.** A que falta na lista é `nps/serving/ntb_ia_nps_exporta_consumo.py`. As quatro estão **idênticas hoje** — não há deriva ainda, o risco é de manutenção (= D2) |
 
-- **B1** — `NameError` na primeira chamada de `eval/acuracia.py`. É o único bloqueante de código, e é
-  correção de uma linha;
-- **§6.3** — o determinismo tem porta de saída em runtime, guardada por **estado global mutável de
-  módulo**, com o job rodando a 4 workers. É o que dá peso real ao número de workers, e provavelmente
-  explica as três divergências que a descrição deixou em aberto;
-- **§6.2** — conteúdo de comentário de paciente impresso em log de job;
-- **§6.4** — a amostra de 179 trechos não distingue os dois números que a descrição compara.
+### 7.4 Concorda — só a localização
 
-**Localização do item de schema já levantado pela revisão de Ops:** a escrita afetada é a principal
-da classificação — `mode('append')` com **`mergeSchema: 'true'`**, linha 538 de
-`model/ntb_ia_nps_classificacao.py`. Somada a D1 e à esteira sem etapa de teste, a deriva entra na
-tabela de saída **em silêncio**. É a mesma classe da lacuna de contrato que custou três ondas de
-correção na `0.12.1` do motor, o que sustenta a recomendação já feita de validar o schema antes de
-escrever em vez de absorver a diferença.
+Três itens de Ops confirmados sem nada a acrescentar além de onde o código está:
 
-### 7.4 Ações para o autor
+- **`/mnt/` no caminho publicado** — e é **leitura em runtime**, não constante residual:
+  `path_controle_carga` alimenta as leituras das linhas 245 e 258 e a marca d'água da 522. Os outros
+  dois notebooks publicados têm zero ocorrências.
+- **`mergeSchema: 'true'`** — a escrita afetada é a linha 538 de
+  `model/ntb_ia_nps_classificacao.py`, em `mode('append')`. Somada a D1 e à esteira sem etapa de
+  teste, a deriva entra na tabela de saída **em silêncio** — mesma classe da lacuna de contrato que
+  custou três ondas de correção na `0.12.1` do motor.
+- **Duplicação de `enderecos.py` e testes com referências fixas** — confirmados.
+
+### 7.5 Ações para o autor
 
 **A — antes do merge na `hml`** (as três somam menos de um dia):
 
