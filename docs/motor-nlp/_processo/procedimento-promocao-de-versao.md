@@ -133,13 +133,24 @@ critério.
 
 | o quê | onde |
 |---|---|
-| **esta regra** | na **wiki**, se aprovada — é política do time, não artefato de projeto |
+| **esta regra** | na **wiki**, se aprovada — é política do time |
 | a **evidência** de uma promoção (os quatro números, coorte, data) | no **card** daquela versão |
-| em que versão cada linha está agora | no `ESTADO.md` do repositório de documentação |
+| a versão **declarada** de cada linha | na **configuração do job** — é o próprio pin, e é a fonte |
+| a versão que **de fato executou** | no campo `engine_version` da **tabela de saída** daquela linha |
 
-⚠️ **Regra e convenção não moram em card.** Card registra o que foi medido numa aplicação
-específica; a política vive na wiki e é citada por link. Card que reescreve a regra cria uma segunda
-fonte, e as duas divergem na primeira mudança.
+⚠️ **Nenhum documento entra nesta tabela como fonte da versão vigente.** A versão declarada é o pin
+no job; a que executou está gravada em toda linha da saída. As duas são **verificáveis por qualquer
+pessoa, a qualquer momento**, e discordam entre si quando algo deu errado — que é exatamente o sinal
+que se quer.
+
+🔴 **Procedimento não pode depender de documento que uma pessoa mantém.** Documento de trabalho é
+mutável por natureza, tem um dono, e envelhece entre uma atualização e outra. Amarrar o
+procedimento a ele transforma manutenção de anotação em pré-requisito de processo, e cria um ponto
+único de falha onde não precisa haver nenhum.
+
+⚠️ **E regra não mora em card.** Card registra o que foi medido numa aplicação específica; a
+política vive na wiki e é citada por link. Card que reescreve a regra cria uma segunda fonte, e as
+duas divergem na primeira mudança.
 
 ---
 
