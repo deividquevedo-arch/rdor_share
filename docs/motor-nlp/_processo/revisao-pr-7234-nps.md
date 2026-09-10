@@ -206,11 +206,110 @@ diff: são perguntas sobre o **entorno** da mudança, e só existem porque custa
 
 ---
 
+## 6. Terceira passada — clean code, arquitetura, PEPs, segurança, LangGraph e ciência de dados
+
+Passada feita lendo o código, não o diff. **Rendeu mais que as duas anteriores**, e separa o que é
+deste PR do que é da esteira compartilhada — esta última é decisão de MLOps, não do autor.
+
+### 6.1 O que está bem-feito e vale preservar
+
+**LangGraph — é o ponto mais forte do projeto:**
+
+- grafo linear com dois roteamentos condicionais e **atalhos explícitos para `END`**
+  (`materialize_fast_path`, `materialize_empty_finais`) — saída rápida é nó, não `if` escondido;
+- nós são **funções puras** `(state, source)`, e o grafo só as conecta. A injeção do `source` na
+  construção mantém tudo testável sem tocar em I/O;
+- **os reducers estão nos dois campos certos.** `segmentos_pos_fanout` e `llm_calls` são
+  `Annotated[list[...], add]` — exatamente os dois que o fan-out escreve. É o erro mais comum em
+  LangGraph, e aqui não foi cometido.
+
+**Segurança da credencial.** O token entra **por parâmetro**, não por `os.getenv` nem literal; há
+guarda explícita para token vazio; o cabeçalho é montado no ponto de uso. Não há segredo versionado.
+
+**Endereçamento.** `enderecos.py` como fronteira única dos nomes de tabela é bom padrão — o defeito
+está nas constantes de módulo (D3), não no desenho.
+
+### 6.2 Segurança — dado de paciente em log
+
+Em falha, o módulo de LLM imprime 500 caracteres da resposta do modelo e a representação da
+exceção. O conteúdo é a classificação **do comentário de um paciente**, e a representação de uma
+exceção HTTP costuma carregar o corpo da requisição — que contém o comentário.
+
+Vai para o log do job, que tem audiência maior que a tabela e não tem o mesmo controle de acesso.
+
+**Sugestão:** registrar motivo estruturado e o identificador da predição, deixando o conteúdo na
+tabela de trace, onde o acesso é governado.
+
+A degradação de cache e de `top_k` também registra corpo de resposta do gateway — risco menor,
+mesma categoria.
+
+### 6.3 O determinismo declarado tem uma porta de saída em runtime
+
+A chamada é configurada determinística: temperatura zero, `top_k` em 1, `top_p` ignorado.
+
+**Mas `top_k` é removido do payload em runtime** quando o gateway o recusa com 400. A partir daí o
+run inteiro segue sem ele, e a hipótese de determinismo sobre a qual a paridade foi medida deixa de
+valer no meio da execução.
+
+Isto é **candidato direto a explicar os três comentários que divergem de junho com prompt idêntico**,
+que a descrição atribui à troca de caminho. A degradação é registrada, então dá para confirmar:
+basta olhar se aquele run degradou.
+
+A flag que guarda a degradação é **estado global mutável de módulo**, e o job roda com quatro
+workers. É a mesma classe do singleton sem lock que a `0.13.0` do motor NLP acabou de corrigir.
+
+### 6.4 Ciência de dados — a amostra não distingue o que a descrição compara
+
+**179 trechos** sustentam a comparação 93,3% contra 89,4% — cerca de sete acertos de diferença. Com
+essa amostra os dois números **não são distinguíveis**: o intervalo de confiança de uma proporção
+próxima de 0,9 sobre n=179 fica em torno de ±4,5 pontos.
+
+Isso **não invalida a conclusão** — reforça. A descrição já oferece a comparação correta, contra os
+**89,1%** só-Haiku de junho, e 89,4% está acima. O que vale ajustar é a leitura de que houve queda:
+não há queda demonstrável, há mudança de configuração declarada.
+
+**O gabarito da Ouvidoria não declara versão nem data de anotação.** É a mesma lacuna que já custou
+uma conclusão errada no motor NLP: sem isso, meses depois não se distingue régua que mudou de
+gabarito que mudou.
+
+### 6.5 Clean code e PEPs
+
+| item | observação |
+|---|---|
+| **Sem `pyproject.toml`, `setup.cfg` ou `.pre-commit-config.yaml`** | não há lint, formatador nem verificação de tipos configurados. Os 1.242 testes rodam por invocação manual |
+| **`AgentState` mistura convenções** | campos em camelCase convivem com campos em snake_case no mesmo `TypedDict`. Os primeiros provavelmente espelham colunas de origem — mas nada no tipo diz isso, e a PEP 8 pede snake_case |
+| **`top_p` na assinatura, ignorado** | parâmetro declarado e não consumido, com `noqa` explicando que é compatibilidade. É o mesmo padrão que a régua de config do motor NLP proíbe: quem lê conclui que o valor age |
+
+### 6.6 Para a revisão de Ops — decisões que não são do autor
+
+**Os três valem para todos os projetos da fábrica, não só o NPS.**
+
+**M1 — a esteira publica sem rodar teste nenhum.** O pipeline do NPS apenas estende o template
+compartilhado, e o template **não tem `pytest`, `ruff`, `lint` nem stage de teste** — só publicação
+e criação de job. Os 1.242 testes verdes são execução **manual**, e nada impede um merge com a
+suíte vermelha. Combinado com D1, o defeito B1 desta revisão tinha dois portões abertos em série.
+
+**M2 — as dependências não estão fixadas.** O notebook instala a biblioteca de grafo por **faixa**,
+não por versão. O comportamento do agente pode mudar **sem nenhuma alteração no repositório** — é a
+mesma classe do `latest` que moveu o motor em produção cinco vezes.
+
+**M3 — o template é referenciado por tag móvel.** Uma tag pode ser movida, e aí a esteira muda sem
+que nenhum repositório consumidor mude.
+
+---
+
 ## 6. Conclusão
 
-**Um bloqueante, de uma linha.** Três esclarecimentos que custam minutos. Oito notas de débito, das
-quais **D1 é a que vale priorizar** — ela é a causa-raiz do bloqueante e continua aberta depois de
-ele ser corrigido.
+**Um bloqueante, de uma linha.** Três esclarecimentos que custam minutos. Oito notas de débito na
+segunda passada e mais seis na terceira, das quais **D1 é a que vale priorizar** — é a causa-raiz do
+bloqueante e continua aberta depois de ele ser corrigido.
+
+**Da terceira passada, dois itens sobem de peso:** o dado de paciente em log (§6.2) e a porta de
+saída do determinismo (§6.3), que provavelmente explica as três divergências que a descrição deixou
+em aberto.
+
+**E três itens saem do escopo do autor** (§6.6): a esteira compartilhada não roda teste, as
+dependências não estão fixadas, e o template é referenciado por tag móvel. São decisões de MLOps.
 
 O PR está acima do padrão em documentação: cada número com base e data, divergências deliberadas
 declaradas, limites conhecidos listados, e critério de GO/NO GO explícito. Os achados desta
