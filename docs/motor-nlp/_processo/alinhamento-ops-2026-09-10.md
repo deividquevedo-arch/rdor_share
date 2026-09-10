@@ -14,8 +14,8 @@ Cada item traz **o que é**, **a evidência** (medida, não impressão), **o que
 decide**. Itens marcados 🔴 **bloqueiam trabalho hoje**; 🟡 custam retrabalho ou risco; ℹ️ são
 informativos e não precisam de decisão.
 
-**Resumo:** 18 itens em 6 temas. **5 bloqueiam**, 4 pedem decisão de contrato, 7 são defeitos de
-plataforma sem correção, 2 são provisionamento e 4 são PRs parados.
+**Resumo:** 19 itens em 7 temas. **5 bloqueiam**, 4 pedem decisão de contrato, 7 são defeitos de
+plataforma sem correção, 2 são provisionamento, 4 são PRs parados e 1 é de governança.
 
 🔴 **O item mais grave é o 3.0:** os embeddings não funcionam em produção, e as três linhas que os
 declaram rodam um perfil que nunca foi homologado.
@@ -399,7 +399,35 @@ Card acumulador. A divergência mais cara já custou uma subida: a SPEC §6.1 af
 
 ---
 
-## Pauta proposta — 70 minutos
+## Tema 7 — Governança: uso de agentes na revisão de código
+
+### 7.1 🟡 Não há diretriz comunicada, e a ausência já produz atrito
+
+**O que é.** Não existe orientação acordada sobre o uso de agentes de IA na revisão de código e na
+produção de análises técnicas. Os agentes em uso rodam em **conta corporativa administrada pela
+própria empresa** — o conteúdo não trafega para fora do controle dela.
+
+Sem regra, cada revisor adota um método diferente, e restrições declaradas caso a caso, dentro de
+artefatos de revisão, criam atrito sem produzir proteção: comentário de pull request não tem
+controle de acesso próprio — quem enxerga o PR enxerga o comentário.
+
+**O que se pede.** Definir e registrar:
+
+- **se há restrição**, qual o critério que a aciona (tipo de conteúdo, ambiente, classificação) e
+  **onde ela se declara** — o lugar precisa ter controle de acesso compatível com o que se pretende
+  proteger;
+- **se não há**, registrar explicitamente que não há, para que a ausência deixe de ser preenchida
+  por convenção individual.
+
+ℹ️ A decisão vale para todos os revisores e para todos os projetos. Enquanto o vazio existir, cada
+marcação individual vira precedente sem mandato, e a revisão cruzada fica dependente de quem a
+faz — não do que se combinou.
+
+**Quem decide:** Ops / TechLead, com registro onde as demais diretrizes do time vivem.
+
+---
+
+## Pauta proposta — 75 minutos
 
 | bloco | tempo | itens | saída esperada |
 |---|---|---|---|
@@ -408,6 +436,7 @@ Card acumulador. A divergência mais cara já custou uma subida: a SPEC §6.1 af
 | **3. Embeddings em produção** | 15 min | **3.0**, 4.2 | destino do modelo em prd e prazo — é o item de maior impacto clínico |
 | **4. Defeitos e provisionamento** | 10 min | 3.3, 3.4, 4.1 | quais viram card; prioridade relativa |
 | **5. Fila de PRs** | 10 min | 5.1 a 5.4 | revisor e prazo para cada |
+| **6. Governança** | 5 min | **7.1** | há diretriz de uso de agentes? se não, registrar que não há |
 
 **Preparação sugerida:** este documento circula antes. Os itens 1.1 e 1.2 podem ser decididos por
 mensagem — se saírem antes, a agenda começa pelo bloco 2.
