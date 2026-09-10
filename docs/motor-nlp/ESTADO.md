@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-09** (3ª sessão).
+> Atualizado em **2026-09-10**.
 
 ---
 
@@ -523,12 +523,34 @@ normal. O custo é de processamento e robustez: qualquer leitura em lote da colu
 `300201` (duplicação `2n+1`).
 
 
-🔴 **O LLM nunca funcionou em produção nesta plataforma** (medido 27/08). **8.058 tentativas, zero
-sucessos**, nas 4 linhas, em toda a história da tabela (21/08 a 26/08). Erro:
-`403 — Invalid access to Org: 7405607882166874`. Em HML, 100% de sucesso na mesma janela.
-**Causa:** produção roda em `adb-7405605001346204` e o `base_url` estava fixo no outro workspace —
-o token do contexto do notebook é sempre do workspace onde o job roda. João corrigiu no PR 7135
-(URL por ambiente). ⚠️ **Ainda SEM TESTE**: o run de 27/08 às 04:00 falhou antes de processar.
+✅ **O LLM VOLTOU A FUNCIONAR EM PRODUÇÃO — verificado em 10/09.** No run noturno: **270 chamadas
+nas quatro linhas, ZERO `llm_error`**. Fecha o item que estava aberto desde 27/08.
+
+ℹ️ Histórico: em 27/08 eram **8.058 tentativas e zero sucessos**, em toda a história da tabela,
+com `403 — Invalid access to Org: 7405607882166874`. Produção roda em `adb-7405605001346204` e o
+`base_url` estava fixo no outro workspace — o token do contexto do notebook é sempre do workspace
+onde o job roda. Corrigido no PR 7135 (URL por ambiente), e a nota dizia "ainda SEM TESTE" até
+agora.
+
+🔴 **A contabilidade de tokens cobre só UMA das duas origens de chamada.** `llm_prompt_tokens`,
+`llm_completion_tokens`, `llm_input_chars` e `llm_api_key_origin` são escritos apenas por
+`llm_router_step` — o caminho do **juiz**. A **extração quantitativa de medida** chama o LLM e não
+registra nenhum deles; o bloco `quantitative.<criterio>` traz `kind`, `met`, `on_met`, `value`,
+`unit`, `threshold`, `evidence` e `llm_called`, e nada de token.
+
+Medido em 10/09:
+
+| linha | juiz | chamadas | tokens por chamada | no dia |
+|---|---|---|---|---|
+| **hepatologia** | ativo | 49 | **1.004,1** (990,1 + 14,0) | **49.202** |
+| tirads | desligado | 143 | — | — |
+| transplante_pulmao | — | 71 | — | — |
+| cancer_estomago | — | 7 | — | — |
+
+**221 das 270 chamadas do dia não têm contabilidade nenhuma.** ⚠️ Não é estimável por regra de
+três: o input do juiz da hepatologia mede 2.000 caracteres, e os laudos de TI-RADS vão de ~1.500 a
+815 KB. 🟡 **Sem card ainda** — proposta de incluir na `0.14.0`, que já toca o caminho do LLM e já
+exigirá alinhamento de contrato com o Ops.
 
 🔴 **Noturno falhando por lote vazio** (27/08): `nlp_config`/`input`/`persisters` com sucesso e
 `process` com `ValueError: Nenhum laudo recebido`, nas 3 linhas agendadas, nas duas tentativas.
