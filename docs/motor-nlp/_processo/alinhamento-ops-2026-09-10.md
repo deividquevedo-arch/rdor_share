@@ -14,8 +14,11 @@ Cada item traz **o que é**, **a evidência** (medida, não impressão), **o que
 decide**. Itens marcados 🔴 **bloqueiam trabalho hoje**; 🟡 custam retrabalho ou risco; ℹ️ são
 informativos e não precisam de decisão.
 
-**Resumo:** 17 itens em 6 temas. **3 bloqueiam**, 4 pedem decisão de contrato, 6 são defeitos de
+**Resumo:** 18 itens em 6 temas. **5 bloqueiam**, 4 pedem decisão de contrato, 7 são defeitos de
 plataforma sem correção, 2 são provisionamento e 4 são PRs parados.
+
+🔴 **O item mais grave é o 3.0:** os embeddings não funcionam em produção, e as três linhas que os
+declaram rodam um perfil que nunca foi homologado.
 
 ---
 
@@ -220,6 +223,48 @@ mão esgota o que produção emite.
 
 ## Tema 3 — Defeitos de plataforma abertos
 
+### 3.0 🔴 Os embeddings NÃO funcionam em produção — as três linhas rodam em `token_overlap`
+
+**O que é.** As configs declaram `use_embeddings: True` e apontam `embedding_model` para
+`/Volumes/**diamond_ia_hml**/nlp_engine/nlp_engine_lib/st_models/paraphrase-multilingual-MiniLM-L12-v2`
+— o Volume do **workspace ANTIGO**, com **caminho literal idêntico nos três ambientes**. Em
+produção esse caminho não existe, e a camada semântica cai para `token_overlap`.
+
+**Evidência**, produção **10/09** — não é número de agosto:
+
+| linha | laudos | com `FileNotFoundError` | % que cai para `token_overlap` |
+|---|---|---|---|
+| hepatologia | 5.172 | **5.108** | **98,8%** |
+| cancer_estomago | 201 | **201** | **100%** |
+| tirads | 1.568 | **1.348** | **86,0%** |
+
+A trilha registra, laudo a laudo:
+
+```
+"semantic": "neutral — best 0.14 (below threshold) [token_overlap] FALLBACK:FileNotFoundError"
+```
+
+ℹ️ A instrumentação está **funcionando** — foi a `0.11.0` que fez essa queda deixar de ser
+silenciosa. O que não devia estar acontecendo é a queda.
+
+🔴 **A consequência é de qualidade, não de custo: produção roda um perfil que nunca foi
+homologado.** A config declara `decision_mode: hybrid` com embeddings, e o que executa é a régua
+mais sobreposição de tokens. Homologação não transfere entre comportamentos diferentes, e as duas
+camadas puxam em direções opostas.
+
+⚠️ **A monitoria não pega** (ver 3.6): não há coluna de LLM nem de backend semântico, e a taxa de
+relevância se sustenta pela régua. Sem a trilha da `0.11.0`, isto seguiria invisível.
+
+ℹ️ O ca-rim **já foi corrigido** — aponta para `gold_fabrica_ia_hml` desde o PR 7159. Mas ele não
+está em produção; as três que estão são exatamente as três que falham.
+
+**O que se pede.** Resolver o caminho **por ambiente**, e não por literal — é a mesma classe do
+`base_url` do LLM, já resolvida no PR 7135. Depende de 4.2 (o schema de destino em prd).
+
+**Quem decide:** Ops + Fábrica (o schema) · DS ajusta as configs depois.
+
+---
+
 ### 3.1 🟡 `limit_rows` não isola coorte — card `298596`
 
 O teto é aplicado **depois** da união da fila, cuja ordem é inéditos → pendentes → **reprocessados
@@ -306,18 +351,19 @@ custo nem detectar degradação por lá.
 Necessário em `hml` e `prd` para a linha migrada entrar. Criar schema é do time da Fábrica, por
 procedimento próprio.
 
-### 4.2 🟡 Schema `nlp_engine` não existe em produção — card `298600`
+### 4.2 🔴 Schema `nlp_engine` não existe em produção — card `298600`
 
-`gold_fabrica_ia` tem apenas `fhir` e `information_schema`. Enquanto isso, o `embedding_model` das
-configs aponta para `diamond_ia_hml`, o Volume **antigo**, com **caminho literal idêntico nos três
-ambientes** — produção lê o modelo de um volume de homologação do workspace antigo.
+`gold_fabrica_ia` tem apenas `fhir` e `information_schema`. **É o destino que falta para resolver o
+item 3.0** — sem schema em prd, não há para onde apontar o `embedding_model`.
 
-Hoje responde; o risco é latente. Se aquele Volume sair do ar, as linhas com embeddings caem para
-`token_overlap`, e a `0.11.0` registra a queda na trilha, mas **o resultado muda sem alarme na
-monitoria**.
+✅ O MiniLM já foi copiado para `gold_fabrica_ia_hml/nlp_engine/nlp_engine_lib/st_models/` em 01/09;
+falta o equivalente em produção.
 
-⚠️ O ponto em aberto é **como resolver o caminho por ambiente** — mesma classe do `base_url` do
-LLM, que já foi resolvida no PR 7135.
+⚠️ **A nota anterior dizia que "hoje responde, o risco é latente". Isso não se sustenta mais:** a
+medição de 10/09 mostra o `FileNotFoundError` acontecendo em 86% a 100% dos laudos das três linhas.
+O risco não é latente — está materializado desde antes.
+
+ℹ️ O `mpnet-base-v2` fica **fora de escopo**: só existe no volume antigo e serve notebooks legados.
 
 ---
 
@@ -353,14 +399,15 @@ Card acumulador. A divergência mais cara já custou uma subida: a SPEC §6.1 af
 
 ---
 
-## Pauta proposta — 60 minutos
+## Pauta proposta — 70 minutos
 
 | bloco | tempo | itens | saída esperada |
 |---|---|---|---|
 | **1. Desbloqueio** | 15 min | 1.1, 1.2 | data para o índice de dev; versão a pinar por linha |
 | **2. Contrato** | 20 min | 2.1, 2.2, 2.3, 6 | aval dos campos novos; dono do contrato de entrada |
-| **3. Defeitos e provisionamento** | 15 min | 3.3, 3.4, 4.1, 4.2 | quais viram card; prioridade relativa |
-| **4. Fila de PRs** | 10 min | 5.1 a 5.4 | revisor e prazo para cada |
+| **3. Embeddings em produção** | 15 min | **3.0**, 4.2 | destino do modelo em prd e prazo — é o item de maior impacto clínico |
+| **4. Defeitos e provisionamento** | 10 min | 3.3, 3.4, 4.1 | quais viram card; prioridade relativa |
+| **5. Fila de PRs** | 10 min | 5.1 a 5.4 | revisor e prazo para cada |
 
 **Preparação sugerida:** este documento circula antes. Os itens 1.1 e 1.2 podem ser decididos por
 mensagem — se saírem antes, a agenda começa pelo bloco 2.

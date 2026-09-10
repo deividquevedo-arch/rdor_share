@@ -711,11 +711,26 @@ que aparecerem, alinhar de uma vez com o `283647`).
   sobre schema e formato, com reuso posterior e treinamento de modelo proprietário no horizonte.
   Enquanto isso os harnesses saíram do diretório temporário do job — que é apagado junto com ele —
   para `Desktop/Rede D'Or/_ferramentas/`, fora do git.
-- 🟡 **`embedding_model` das configs aponta para `diamond_ia_hml`**, o Volume ANTIGO — **caminho
-  literal, idêntico nos três ambientes**, então produção lê o modelo de um volume de HOMOLOGAÇÃO do
-  workspace antigo. Hoje responde e o modelo está íntegro; o risco é latente. Se aquele Volume sair
-  do ar, as linhas com embeddings caem para `token_overlap` — a `0.11.0` registra a queda na trilha,
-  mas o resultado muda sem alarme na monitoria.
+- 🔴 **OS EMBEDDINGS NÃO FUNCIONAM EM PRODUÇÃO — medido em 10/09.** As três linhas que os declaram
+  rodam em `token_overlap`, e a trilha registra laudo a laudo:
+  `"semantic": "... [token_overlap] FALLBACK:FileNotFoundError"`.
+
+  | linha | laudos | com `FileNotFoundError` | % |
+  |---|---|---|---|
+  | hepatologia | 5.172 | **5.108** | **98,8%** |
+  | cancer_estomago | 201 | **201** | **100%** |
+  | tirads | 1.568 | **1.348** | **86,0%** |
+
+  **Causa:** `embedding_model` aponta para `/Volumes/diamond_ia_hml/...`, o Volume do workspace
+  ANTIGO, em **caminho literal idêntico nos três ambientes**. Em produção ele não existe.
+  🔴 **A consequência é de qualidade:** a config declara `decision_mode: hybrid` com embeddings, e
+  o que executa é régua mais sobreposição de tokens — **produção roda um perfil que nunca foi
+  homologado**. A monitoria não pega, porque a régua sustenta a taxa.
+  ⚠️ **A nota anterior dizia "hoje responde, o risco é latente" — não se sustenta.** O risco está
+  materializado, e provavelmente desde antes: só ficou visível porque a `0.11.0` instrumentou a
+  queda.
+  ℹ️ O **ca-rim já foi corrigido** (aponta para `gold_fabrica_ia_hml` desde o PR 7159), mas não está
+  em produção. As três que estão são as três que falham.
   ✅ **MiniLM já copiado** para `gold_fabrica_ia_hml/nlp_engine/nlp_engine_lib/st_models/` (01/09).
   🔴 **Produção não tem destino, reconfirmado em 08/09:** `gold_fabrica_ia` tem apenas `fhir` e
   `information_schema` — não possui o schema `nlp_engine`.
