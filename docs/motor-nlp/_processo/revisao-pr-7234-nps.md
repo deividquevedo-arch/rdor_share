@@ -298,7 +298,85 @@ que nenhum repositório consumidor mude.
 
 ---
 
-## 6. Conclusão
+## 7. Cruzamento com a revisão de Ops
+
+Chegou uma segunda revisão, pelo lado de Ops: 13 itens, checklist de 5 fases, dimensionamento de
+4 a 5 sprints e conclusão *não pronto para produção*. **Toda afirmação cruzada abaixo foi conferida
+na árvore publicada da branch** — nenhuma foi aceita pelo texto.
+
+### 7.1 As duas revisões medem contra réguas diferentes, e ambas estão certas
+
+A revisão de Ops mede contra **prontidão para produção**. Este PR tem como alvo a **`hml`**, cria o
+job **pausado** e exclui explicitamente do escopo ligar o job, promover para `main` e para prd.
+
+Não há contradição a resolver: *não pronto para produção* e *pronto para entrar na `hml`* são
+compatíveis. O que a resposta precisa separar é **o que impede o merge** do **que é backlog até prd**
+— e é isso que a lista de ações abaixo faz.
+
+⚠️ O dimensionamento de 4 a 5 sprints é para o conjunto inteiro. Aplicá-lo ao merge confunde as duas
+réguas e para uma entrega que já está validada no escopo que declara.
+
+### 7.2 Onde as duas revisões se encontram
+
+| item de Ops | nesta auditoria | o que a verificação mostrou |
+|---|---|---|
+| `/mnt/` no caminho publicado | — | ✅ **confirmado, e é mais forte que o relatado.** Não é constante residual: `path_controle_carga` alimenta a leitura das linhas 245 e 258 e a marca d'água da 522. É **leitura em runtime** do mount legado, em 3 pontos de `data/ntb_ia_nps_entrada.py` — os outros dois notebooks publicados têm zero |
+| colunas de PII na saída | §6.2 (dado de paciente em log) | ✅ **confirmado, com correção.** As 4 colunas atravessam a cadeia inteira — entrada → classificação → `output_schema` → exportação → `contrato_fabrica` (renomeadas para `nm_paciente`, `num_cpf_paciente`). **Mas `telefonePaciente` e `emailPaciente` são `cast(null as string)` na entrada:** sempre nulos. A exposição real é **nome e CPF**, e ela **chega à camada de exportação**, que é a superfície voltada ao negócio |
+| duplicação do mapa de catálogos | D2 | ✅ confirmado. Foram encontradas **4** cópias, não 3; conferidas **idênticas hoje** — não há deriva ainda, o risco é de manutenção |
+| referências de teste fixas | D1 | ✅ mesma raiz. Nenhum teste cobre a árvore que a esteira publica |
+| `workers=4` | E1 | 🟡 **atenuado pela verificação.** A linha 100 lê um **widget** com default `'4'` — é parametrizável, não fixo no código. Segue valendo o esclarecimento de E1 (a descrição pede 2), mas não é bloqueio de código |
+
+### 7.3 O que cada revisão viu sozinha
+
+**Só na revisão de Ops** — e vale corrigir: o `/mnt/` em runtime é o item mais concreto das duas
+revisões, porque quebra sem aviso se o mount sair do ar.
+
+**Só nesta auditoria**, e nenhum apareceu do outro lado:
+
+- **B1** — `NameError` na primeira chamada de `eval/acuracia.py`. É o único bloqueante de código, e é
+  correção de uma linha;
+- **§6.3** — o determinismo tem porta de saída em runtime, guardada por **estado global mutável de
+  módulo**, com o job rodando a 4 workers. É o que dá peso real ao número de workers, e provavelmente
+  explica as três divergências que a descrição deixou em aberto;
+- **§6.2** — conteúdo de comentário de paciente impresso em log de job;
+- **§6.4** — a amostra de 179 trechos não distingue os dois números que a descrição compara.
+
+**Achado novo, que só apareceu na verificação cruzada:** a escrita principal da classificação usa
+`mode('append')` com **`mergeSchema: 'true'`** (linha 538). Somado a D1 e à esteira sem etapa de
+teste, uma deriva de schema entra na tabela de saída **em silêncio**. É a mesma classe da lacuna de
+contrato que custou três ondas de correção na `0.12.1` do motor.
+
+### 7.4 Ações para o autor
+
+**A — antes do merge na `hml`** (as três somam menos de um dia):
+
+1. **B1** — corrigir o `NameError`. Uma linha.
+2. **`/mnt/` fora do caminho publicado** — trocar a leitura do controle de carga por Volume do Unity
+   Catalog ou por tabela. É a única dependência de infraestrutura do workspace antigo no que sobe.
+3. **E1, E2, E3** — responder os três esclarecimentos. Sobre `workers`, basta declarar qual é o valor
+   pretendido: o widget já permite os dois.
+
+**B — antes de prd, como débito registrado** (não bloqueia a `hml`):
+
+4. **PII na exportação** — confirmar com o DPO se nome e CPF são necessários na superfície de
+   consumo. **E resolver as duas colunas sempre nulas:** coluna declarada no contrato e nunca
+   preenchida é bloco morto — ou passa a ser preenchida, ou sai do schema.
+5. **§6.2** — tirar conteúdo de comentário do log, deixando motivo estruturado e identificador.
+6. **§6.3** — trocar o estado global mutável por estado por execução, e registrar na saída se a
+   degradação ocorreu. Sem isso, a premissa de determinismo não é auditável depois do run.
+7. **`mergeSchema: 'true'`** — fixar o schema esperado e falhar na divergência, em vez de absorvê-la.
+8. **D1** — um teste que importe a árvore publicada. Fecha a raiz de B1 e do item de referências fixas.
+9. **§6.4** — ajustar a leitura da comparação: não há queda demonstrável na amostra, há mudança de
+   configuração declarada. E datar e versionar o gabarito.
+10. **D2, D3** — cópia única do mapa de catálogos, resolvida por ambiente.
+
+**C — não é do autor, é decisão de MLOps** (§6.6): esteira sem etapa de teste, dependências sem
+versão fixada e template referenciado por tag móvel. Os três valem para todos os projetos da
+fábrica, e a decisão pertence a quem revisa por Ops — não cabe pedir ao autor deste PR.
+
+---
+
+## 8. Conclusão
 
 **Um bloqueante, de uma linha.** Três esclarecimentos que custam minutos. Oito notas de débito na
 segunda passada e mais seis na terceira, das quais **D1 é a que vale priorizar** — é a causa-raiz do
@@ -310,6 +388,11 @@ em aberto.
 
 **E três itens saem do escopo do autor** (§6.6): a esteira compartilhada não roda teste, as
 dependências não estão fixadas, e o template é referenciado por tag móvel. São decisões de MLOps.
+
+**O cruzamento com a revisão de Ops (§7) fechou dois itens e abriu um.** O `/mnt/` no caminho
+publicado é leitura em runtime, e sobe para a lista de merge; a PII na exportação é real, mas duas
+das quatro colunas são sempre nulas. O item novo é o `mergeSchema: 'true'` na escrita principal.
+As duas revisões medem contra réguas diferentes — produção e `hml` —, e as duas se sustentam.
 
 O PR está acima do padrão em documentação: cada número com base e data, divergências deliberadas
 declaradas, limites conhecidos listados, e critério de GO/NO GO explícito. Os achados desta
