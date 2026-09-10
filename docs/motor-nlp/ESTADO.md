@@ -496,6 +496,50 @@ contra a esperada — são o padrão que vale copiar.
 `document_vet.enabled`. Contraria a SPEC 27 (§7 diz "dicionário literal e nada mais") **para
 melhor** — registrado no card `299238`.
 
+## Pin da versão por linha — 🟡 HISTÓRIA `301938` ABERTA, AGUARDA REVISÃO
+
+🔴 **Produção roda `latest`, e isso moveu a versão QUATRO vezes em nove dias** — verificado no
+`engine_version` das tabelas de saída em `diamond_fabrica_ia`:
+
+| linha | 02/09 | 03–04/09 | 05–09/09 | **10/09** | laudos em 10/09 |
+|---|---|---|---|---|---|
+| hepatologia | 0.10.0 | 0.10.1 | 0.11.2 | **0.12.3** | 5.172 |
+| tirads | 0.10.0 | 0.10.1 | 0.11.2 | **0.12.3** | 1.568 |
+| cancer_estomago | 0.10.0 | 0.10.1 | 0.11.2 | **0.12.3** | 201 |
+| transplante_pulmao | 0.10.0 | 0.10.1 | 0.11.2 | **0.12.3** | 96 |
+
+✅ **As quatro linhas ativas executaram a `0.12.3` em 10/09, sobre 7.037 laudos.**
+
+🟡 **Divergência com o Ops sobre o número do pin.** A proposta do Ops é `0.9.4`, por ter sido a
+versão vigente no alinhamento de semanas atrás; a nossa é `0.12.3`, por ser a que já executa.
+**O reenquadramento que decide:** pinar `0.12.3` tem **delta zero** — congela o que roda hoje.
+Pinar `0.9.4` **é** a mudança, três minors para trás, e é ela que precisaria de refinamento.
+
+⚠️ **A `0.9.4` CARREGA em todas as configs atuais** — `0.6.9-cancer_estomago` declara
+`>= 0.9.4` e `0.8.0-tirads` declara `>= 0.9.2`. **Não há incompatibilidade a alegar**, só regressão
+medida. Afirmar quebra seria overclaim.
+
+🔴 **O que a `0.9.4` reativa:** o P0 do espaço colado (`0.11.2`, medido 17 → 11 em 400 laudos, com
+6 laudos entregues em 04/09 dizendo o oposto) · a legenda ACR descendente (`0.10.1`, 23 de 156
+entregas) · a âncora ausente fora do gate (`0.12.2`, 36 de 1.032) · falha de infra virando decisão
+clínica (`0.11.0`) · semântica promovendo negado (`0.11.1`).
+⚠️ **E o argumento que fecha:** antes da `0.12.1` **a lib não emitia log em lugar nenhum**, e a
+monitoria não tem coluna de LLM. A régua sustenta a taxa — 3,17% → 3,21% no TI-RADS enquanto 4.703
+chamadas falhavam. **Regressão dessa classe não gera chamado**, então "se quebrar abro ticket" não
+cobre o risco.
+
+ℹ️ **Escopo do pin, verificado nos schemas de `diamond_fabrica_ia`:** 4 linhas ativas · 3 com schema
+provisionado e sem saída ainda (`cancer_colon`, `cancer_rim`, `tumor_osseo`) · **`reumatologia` não
+tem schema em prd** e precisa ser provisionada antes de entrar.
+**Regra proposta:** linha nova adota a versão pinada vigente, salvo especificação explícita **com
+medição** que a justifique.
+
+⚠️ **São QUATRO linhas em produção, não cinco** — só essas têm tabela de saída.
+
+✅ **Feature `298598` (plano de bumps) atualizada** — parava na `0.11.1`. Passa a registrar as 8
+versões entregues, a `0.13.0` com 2 de 6, a ampliação do escopo da `0.14.0` com a contabilidade de
+tokens, e os **três desvios do plano** (`0.11.2`, `0.12.2`, `0.12.3` entraram por defeito ativo).
+
 ## PR 7234 — NPS na esteira da fábrica (Lucas) — 🟡 REVISADO, COMENTÁRIO NÃO POSTADO
 
 📄 **`_processo/revisao-pr-7234-nps.md`** — três passadas mais o cruzamento com a revisão de Ops.
