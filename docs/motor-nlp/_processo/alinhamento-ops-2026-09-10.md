@@ -3,34 +3,56 @@
 > **Pauta, não ata.** Cada item traz **tópico · evidência · proposta · card sugerido**. Depois da
 > reunião vira ata em `_processo/atas/`, com o que passou a valer.
 >
-> Consolidado em **2026-09-10**, sobre verificação feita nos repositórios, no board e nos catálogos
-> de produção. Nenhum item entrou sem evidência conferida.
+> Consolidado em **2026-09-10**, revisto em **2026-09-11** contra os **dez POPs da Fábrica**.
+> Verificação feita nos repositórios, no board e nos catálogos de produção. Nenhum item entrou sem
+> evidência conferida.
 
 ---
 
 ## Regra de organização — um card, um dono
 
-🔴 **Card com responsabilidade dividida não fecha.** Feita a parte de um lado, o card segue aberto
-pela parte do outro, e ninguém consegue dizer se está pronto. Onde o trabalho é dos dois, o item
-vira **dois cards ligados**, cada um com dono único e critério de aceite próprio.
+🔴 **Card com responsabilidade dividida não fecha.** Feita a parte de um lado, ele segue aberto pela
+parte do outro, e ninguém consegue dizer se está pronto. Onde o trabalho é dos dois, o item vira
+**dois cards ligados**, cada um com dono único e critério de aceite próprio.
 
-Vale para os cards existentes que hoje misturam donos — marcados abaixo com **⚠️ separar**.
+Vale para os cards existentes que hoje misturam donos — marcados com **⚠️ separar**.
 
 ---
 
-## 0. Equalizar a ata de 21/08 — primeiro item
+# Bloco 0 — fundação
+
+Dois itens que destravam quase todo o resto.
+
+## 0.1 Equalizar a ata de 21/08
 
 **Evidência.** `_processo/atas/` está vazio. De 21/08 existem a transcrição bruta da ferramenta e o
-`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`, que é documento **do nosso lado**. Nenhum
+`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`, que é documento **de um lado só**. Nenhum
 registro acordado entre os dois times diz o que ficou decidido.
 
 **Consequência observada.** "O que foi combinado" é contestável, e foi contestado na definição do
 pin de versão em 10/09.
 
-**Proposta.** Fechar a ata de 21/08 com os dois lados, e passar a registrar ata de toda agenda de
-interface em `_processo/atas/`.
+**Proposta.** Fechar a ata de 21/08 com os dois lados, e registrar ata de toda agenda de interface.
 
 **Card sugerido:** `[Acordo] Equalizar a ata do alinhamento de 21/08` — dono: quem convocou.
+
+---
+
+## 0.2 🔴 Aprovar os POPs — nenhum dos dez está vigente
+
+**Evidência.** Os dez POPs estão em **versão 1.0**, com **`Vigência: a definir na aprovação`** e
+**`Aprovado por: a definir`**. O POP-IA-09 é explícito: *"Nenhum elo da cadeia está em uso hoje…
+este documento é o modo de trabalho a ser adotado — não a descrição do que já acontece."*
+
+**Consequência.** O material existe, é bom, e **não obriga ninguém**. Toda discussão de processo
+recomeça do zero porque não há norma a invocar — o que aconteceu duas vezes esta semana.
+
+**Proposta.** Aprovar e datar os dez, ou os que estiverem prontos. **É o item de maior alavancagem
+da pauta:** vários pedidos abaixo deixam de existir no instante em que o POP correspondente passa a
+valer.
+
+**Card sugerido:** `[Acordo] Aprovar e datar os POPs da Fábrica` — dono: quem os escreveu, com
+aprovação formal.
 
 ---
 
@@ -41,34 +63,53 @@ interface em `_processo/atas/`.
 **Evidência.** O cluster de dev resolve o `pip` contra `fabrica-ai`, que é o feed de **produção**.
 Erro em 09/09: `Could not find a version that satisfies nlp-engine==0.12.2 (from versions: 0.9.4,
 0.10.0, 0.10.1, 0.11.2)` — a lista é o conteúdo do feed de prd. O widget `nlp_engine_volume` foi
-removido e não há índice extra declarado em nenhum arquivo do repositório da plataforma.
+removido e não há índice extra declarado em nenhum arquivo da plataforma.
 
 ✅ **A wheel existe.** O volume de HML tem `nlp_engine-0.12.1`, `0.12.2` e `0.12.3`, e a esteira da
 lib segue publicando lá (`UploadVolume`). O que falta é o consumo.
 
+ℹ️ O POP-IA-04 registra *"Feed: há um por ambiente"* — a estrutura está prevista; o consumo em dev é
+que não aponta para o de homologação.
+
 **Consequência.** Só se valida em dev uma versão que **já está em produção** — o que anula a função
 da branch `hml` da lib e obriga a promover sem validar, ou a não validar.
 
-**Proposta.** Religar o consumo por uma das duas vias: restaurar a leitura do volume de HML, ou
-declarar `fabrica-ai-hml` como índice extra do `pip` no cluster de dev — **e só de dev**.
+**Proposta.** Religar o consumo: restaurar a leitura do volume de HML, **ou** declarar
+`fabrica-ai-hml` como índice extra do `pip` no cluster de dev — e só de dev.
 
 **Card sugerido:** `[Plataforma NLP] Restabelecer o consumo da lib em dev` — dono Ops.
 ⚠️ **separar de `283645`**, onde hoje está enterrado.
 
 ---
 
-## A2. Fluxo de branch, publicação e comunicação de mudança de interface
+## A2. O gate do POP-IA-08 existe numa direção só
 
-**Evidência.** Card `283645` aberto em 21/08, **estado Novo, sem movimento há 20 dias**. Nesse
-intervalo, duas mudanças no caminho de instalação foram para produção: PR 7194 (03/09, troca wheel
-por `pip`, 18 arquivos, toca `jobs/ambientes/prod.json`, **descrição vazia**) e PR 7233 (08/09,
-troca a policy e remove o volume da configuração do job). **As duas foram identificadas por
-tentativa em 09/09, não por comunicação prévia.**
+**Evidência.** O POP-IA-08 §5 estabelece que **alinhamento prévio é anterior à revisão de PR**:
 
-**Proposta.** Registrar o fluxo por escrito, e acrescentar: mudança em caminho de instalação, policy
-de cluster, arquivo de ambiente ou contrato é comunicada ao outro lado **antes do merge**.
+> *"O alinhamento não é uma etapa da revisão de Pull Request — é anterior a ela."*
+> *"Tocar nisso sem alinhar antes não é agilidade — é o que produz o incidente que alguém mais vai
+> precisar diagnosticar depois."*
 
-**Card sugerido:** manter `283645`, com escopo reduzido a fluxo e comunicação — dono Ops.
+E a fronteira de alçada é explícita: o Cientista de Dados **não edita** `mlops.yml`,
+`azure-pipelines.yml`, `jobs/clusters/` nem `jobs/ambientes/`; e **`ORGANS_SHARED` e a versão do
+motor são do Dono do NLP Engine**.
+
+🟡 **O gate regula apenas uma das direções.** Não há cláusula simétrica para quem edita
+`jobs/ambientes/`, a policy de cluster ou a esteira — itens que atravessam a fronteira no sentido
+inverso e afetam quem calibra.
+
+**O que se observou.** PR 7194 (03/09, troca wheel por `pip`, 18 arquivos, toca
+`jobs/ambientes/prod.json`, **descrição vazia**) e PR 7233 (08/09, troca a policy e remove o volume
+da configuração do job). **As duas foram identificadas por tentativa em 09/09**, não por comunicação
+prévia. O efeito é o item A1.
+
+**Proposta.** Estender o POP-IA-08 §5 com a coluna inversa: mudança em caminho de instalação,
+policy de cluster, arquivo de ambiente ou contrato é alinhada com o Dono do NLP Engine **antes do
+merge**, com o mesmo registro que o POP já exige na outra direção.
+
+ℹ️ Não é régua nova — é a mesma régua, na direção que falta.
+
+**Card sugerido:** manter `283645`, com escopo redefinido para isso — dono Ops.
 
 ---
 
@@ -117,15 +158,21 @@ falhavam** — a régua sustenta o número e o alerta não dispara.
 
 ---
 
-## A6. `dt_execucao_modelo` em UTC, view filtra por data local
+## A6. `dt_execucao_modelo` em UTC — **já consta como bug conhecido**
 
-**Evidência.** A gravação é em UTC e a view de exportação filtra pela data local (BRT). Run entre
-21:00 e 00:00 produz **view vazia, sem erro**. O agendamento das 04:00 está fora da janela, então
-produção não sofre hoje.
+**Evidência.** O POP-IA-08 §13 lista cinco bugs conhecidos, e o **bug 5** é este: *"Janela de datas
+em hml/prd usa UTC… a janela pode deslocar um dia; evite agendar 21h–00h."*
 
-**Proposta.** Uniformizar o fuso entre escrita e leitura.
+Conferido no código: a gravação é em UTC e a view de exportação filtra pela data local (BRT). Run
+entre 21:00 e 00:00 produz **view vazia, sem erro**.
 
-**Card sugerido:** `[Plataforma NLP] dt_execucao_modelo em UTC e view em data local` — dono Ops.
+ℹ️ **Não é achado nosso** — está documentado pelo próprio time, com contorno operacional ("evite
+agendar"), sem correção.
+
+**Proposta.** Definir se o contorno é a solução permanente ou se entra na fila de correção. Hoje a
+única defesa é lembrar da regra.
+
+**Card sugerido:** `[Plataforma NLP] Bug 5 do POP-IA-08 — fuso de UTC na janela de datas` — dono Ops.
 
 ---
 
@@ -143,12 +190,14 @@ struct traz `laudo_transformado`, com o texto limpo — vazio em 158 dos 4.321.
 
 ## A8. Provisionamento de schema
 
-**Evidência.** `reumatologia` não existe em `diamond_fabrica_ia`. O schema `nlp_engine` não existe
-em `gold_fabrica_ia`, que tem apenas `fhir` e `information_schema`.
+**Evidência.** O schema `nlp_engine` não existe em `gold_fabrica_ia`, que tem apenas `fhir` e
+`information_schema`. É o destino do modelo de embeddings em produção.
 
-**Proposta.** Provisionar os dois.
+ℹ️ `reumatologia` já foi provisionado — a linha entrou em produção em 11/09.
 
-**Card sugerido:** `300348`, nomeando quais schemas — dono Ops.
+**Proposta.** Provisionar `nlp_engine` em `gold_fabrica_ia`.
+
+**Card sugerido:** `300348`, nomeando o schema que falta — dono Ops.
 
 ---
 
@@ -169,8 +218,7 @@ de tokens. **Produção roda um perfil que nunca foi homologado**, e a monitoria
 
 **Proposta.** Caminho por ambiente, como já foi feito com o `base_url` do LLM no PR 7135.
 
-**Card sugerido:** `298600` ⚠️ **separar** — a parte de config é nossa; o provisionamento do schema
-em prd é do Ops e vai para A8.
+**Card sugerido:** `298600` ⚠️ **separar** — a config é nossa; o schema em prd vai para A8.
 
 ---
 
@@ -183,6 +231,8 @@ em 16 dias barradas na entrada**, contra 36 rebaixadas pelo gate. Custo de inclu
 16 dias**, ~31/dia, sobre linha que processa ~3.600/dia.
 
 ⚠️ Filtro de entrada é invisível para A/B local — só se mede rodando, e isso depende de A1.
+❓ **A confirmar na Figura 2 do POP-IA-08:** o `gold_filter` está do nosso lado da fronteira de
+alçada ou exige alinhamento? A matriz está em imagem e não foi possível ler.
 
 **Proposta.** Incluir os termos, com medição em dois dias distintos.
 
@@ -192,8 +242,8 @@ em 16 dias barradas na entrada**, contra 36 rebaixadas pelo gate. Custo de inclu
 
 ## B3. SPEC 27 contradiz o código
 
-**Evidência.** Card `299238` em estado **Novo e sem dono**. É a dependência declarada para
-destravar o PR 7228, que está com voto `-10` desde 08/09.
+**Evidência.** Card `299238` em estado **Novo e sem dono**. É a dependência declarada para destravar
+o PR 7228, que está com voto `-10` desde 08/09.
 
 **Proposta.** Atribuir, levar ao refinamento e fechar com os ajustes acumulados.
 
@@ -201,32 +251,34 @@ destravar o PR 7228, que está com voto `-10` desde 08/09.
 
 ---
 
-# Bloco C — acordo entre os dois
+## B4. A `nlp-engine-lib` diverge do layout declarado no POP-IA-04
 
-## C1. Isonomia de gate — verificação e matriz de impacto dos dois lados
+**Evidência.** O POP-IA-04 §3 define: *"**Layout flat**: pacote na raiz do repositório, **sem
+diretório `src/`**. É o padrão adotado."* A referência canônica dele é a `rededor-ai-lib`.
 
-**Evidência.** PR 7228, **adição pura de 89 linhas de documentação em um arquivo**, está com voto
-`-10` de revisor obrigatório e pedido de história e refinamento desde 08/09. PRs 7194 e 7233, que
-**alteraram o mecanismo de instalação em produção**, foram mergeados com descrição vazia ou igual ao
-título, e um revisor. O `ci.yml` da esteira compartilhada registra que **nenhum job do CI bloqueia a
-entrega** — `continueOnError` em todos — e que os gates de lint foram removidos na v2.0.0.
+A `nlp-engine-lib` usa `src/nlp_engine/nlp_engine/`, com `pythonpath=["src"]`.
 
-**Proposta.** Uma régua só, valendo para qualquer repositório da fábrica, o nosso incluído: definir
-o que exige história, refinamento, verificação e matriz de impacto. Toda alteração da lib já passa
-por comunicação, refinamento e medição de delta; submetidas ao mesmo processo, as mudanças de 03/09
-e 08/09 teriam sido medidas antes, e a divergência apareceria no teste.
+ℹ️ **Levantado por nós, não apontado.** A lib é anterior ao POP, e o layout `src/` é o recomendado
+pela comunidade Python — evita import acidental do diretório de trabalho em vez do pacote instalado.
 
-**Card sugerido:** `[Acordo] Régua única de gate para mudanças de interface` — dono: acordo, com um
-representante de cada lado.
+**Proposta.** Ou o POP acomoda os dois layouts com o critério de escolha, ou registramos a
+divergência como deliberada. O que não serve é o POP dizer uma coisa e a lib principal fazer outra.
+
+**Card sugerido:** `[NLP Engine] Declarar a divergência de layout ante o POP-IA-04` — dono DS.
 
 ---
 
-## C2. Contrato de entrada e de saída
+# Bloco C — acordo entre os dois
+
+## C1. Contrato de entrada e de saída
 
 **Evidência.** A **saída** tem piso versionado de 21 chaves, extraído de run real. A **entrada** não
 tem contrato nenhum: nem coluna de origem declarada (ver A7), nem tipos, nem obrigatoriedade. Campos
 novos do blob (`waive`, `gate_waived_by`, `gate_waived_error`, tokens da extração quantitativa)
 aguardam aval.
+
+ℹ️ O POP-IA-04 §1 já enuncia o princípio — *"contratos de entrada e saída explícitos e testáveis,
+sem depender de convenção tácita"*. Falta aplicá-lo à interface lib ↔ plataforma.
 
 **Proposta.** Declarar e versionar os dois lados do contrato.
 
@@ -238,12 +290,15 @@ saída, dono DS. Ligados entre si.
 # Fora da pauta
 
 **Definição de "validado" ao trocar versão** — proposta escrita em
-[`procedimento-promocao-de-versao.md`](procedimento-promocao-de-versao.md), a levar ao time. O pin
-em si está na história `301938`.
+[`procedimento-promocao-de-versao.md`](procedimento-promocao-de-versao.md). ℹ️ **Passa a ter destino
+natural: um POP.** Escrita no formato da wiki, encaixa como POP-IA-10 ou como seção do POP-IA-04.
 
-**Uso de agentes na revisão de código** — 🔒 **tema sensível, sem card.** Levar ao conhecimento do
-time como nota ao final da agenda, com cautela. Não há diretriz comunicada por PO, PMO ou Head, e as
-frentes envolvidas são lideranças técnicas de mesmo nível.
+**Card `300201`** (texto de entrada duplicado `2n+1`) — **sai da pauta e volta para nós**. O bug 2 do
+POP-IA-08 descreve dedup apontando fixo para hepatologia/dev, com a saída duplicando. Pode ser a
+mesma causa, e o card precisa ser cruzado antes de ir a qualquer reunião.
+
+**Uso de agentes na revisão de código** — 🔒 **tema sensível, sem card.** Nota ao final da agenda,
+para conhecimento do time, com cautela.
 
 ---
 
@@ -252,7 +307,7 @@ frentes envolvidas são lideranças técnicas de mesmo nível.
 - ✅ Defeito da esteira que pulava a publicação em produção — corrigido.
 - ✅ `0.12.2` e `0.12.3` publicadas nos dois feeds e validadas.
 - ✅ **O LLM voltou a funcionar em produção** — 270 chamadas em 10/09, zero erro.
-- ✅ Migração de reumatologia validada ponta a ponta, paridade de 99,42% em cinco medições.
+- ✅ Reumatologia **em produção**, legado desligado, com o exchange no formato do `cancer_rim`.
 - ✅ 15 cards de higiene da `0.12.x` em *Pronto para QA*, com 67 evidências medidas.
 - ✅ Lista de versões por linha entregue — história `301938`.
 - ✅ Feature `298598` atualizada: 8 versões entregues, `0.13.0` com 2 de 6 cards.
@@ -261,10 +316,17 @@ frentes envolvidas são lideranças técnicas de mesmo nível.
 
 # Resumo
 
-**13 itens** — 8 do Ops · 3 nossos · 2 de acordo.
+**15 itens** — 2 de fundação · 8 do Ops · 4 nossos · 1 de acordo.
 
-🔴 **Três bloqueiam trabalho hoje:** A1 (consumo em dev), B1 (embeddings) e C2 (aval dos campos
+🔴 **Três bloqueiam trabalho hoje:** A1 (consumo em dev), B1 (embeddings) e C1 (aval dos campos
 novos).
 
+⭐ **O item 0.2 é o de maior alavancagem.** Aprovar os POPs resolve, de uma vez, a ausência de norma
+que faz cada discussão de processo recomeçar do zero — e A2, A6 e C1 mudam de natureza no instante
+em que ela existe.
+
 ⚠️ **Quatro cards precisam ser separados por dono:** `283645` (A1 sai), `298600` (B1 × A8), `283647`
-(C2 vira dois), `300348` (nomear os schemas).
+(C1 vira dois), `300348` (nomear o schema).
+
+❓ **Uma pendência de leitura:** as Figuras 1 e 2 do POP-IA-08 — o gate e a matriz de alçada — são
+imagens. A matriz "mudança por mudança" decide o item B2.
