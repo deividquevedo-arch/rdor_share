@@ -94,9 +94,15 @@ E a fronteira de alçada é explícita: o Cientista de Dados **não edita** `mlo
 `azure-pipelines.yml`, `jobs/clusters/` nem `jobs/ambientes/`; e **`ORGANS_SHARED` e a versão do
 motor são do Dono do NLP Engine**.
 
-🟡 **O gate regula apenas uma das direções.** Não há cláusula simétrica para quem edita
-`jobs/ambientes/`, a policy de cluster ou a esteira — itens que atravessam a fronteira no sentido
-inverso e afetam quem calibra.
+A **Figura 2** desenha três quadros: *você edita* (`ntb_ia_<especialidade>_config.py` e
+`jobs/definicoes/<job>.json`) · *Dono do NLP Engine — alinhar antes de tocar* (`nlp-engine-lib` e
+`ORGANS_SHARED`) · *Administrador Databricks — alinhar antes de tocar* (cluster, node type, policy;
+catálogo, schema, grants, Volume; `mlops.yml`, ambientes, `jobs/clusters`).
+
+🟡 **A matriz é escrita de um ponto de vista só — o de quem calibra.** Ela diz a quem o Cientista de
+Dados recorre antes de tocar em cada quadro, e **não diz a quem o dono de um quadro recorre antes de
+alterá-lo**. `jobs/ambientes/` e a policy pertencem ao Administrador Databricks; alterá-los muda o
+caminho de instalação de quem consome, e nenhuma cláusula pede alinhamento nesse sentido.
 
 **O que se observou.** PR 7194 (03/09, troca wheel por `pip`, 18 arquivos, toca
 `jobs/ambientes/prod.json`, **descrição vazia**) e PR 7233 (08/09, troca a policy e remove o volume
@@ -201,6 +207,25 @@ struct traz `laudo_transformado`, com o texto limpo — vazio em 158 dos 4.321.
 
 ---
 
+## A9. ℹ️ O pin por linha pode estar na nossa alçada — a confirmar
+
+**Evidência.** A Figura 2 coloca `jobs/definicoes/<job>.json` no quadro **"você edita"**. É nesse
+arquivo que cada linha declara `"nlp_engine_version": "${nlp_engine_version}"` — uma **variável**,
+resolvida por `jobs/ambientes/<amb>.json`, que é do Administrador Databricks e hoje está em
+`latest`.
+
+**A pergunta.** Substituir a variável por um literal (`"0.12.3"`) na definição do job fixa aquela
+linha **sem tocar em `jobs/ambientes/`** — e a definição está no nosso quadro.
+
+ℹ️ Se funcionar, o pin por linha deixa de depender de mudança na infraestrutura e passa a ser PR de
+config. ⚠️ **Não é para fazer sem alinhar:** muda comportamento em produção, e o POP-IA-08 §5 diz
+que alinhamento antecede a revisão de PR. Mas muda quem executa, e é a pergunta mais barata da
+pauta.
+
+**Card sugerido:** resolver dentro da história `301938` — dono a definir conforme a resposta.
+
+---
+
 # Bloco B — DS / nós
 
 ## B1. `embedding_model` aponta para volume do workspace antigo
@@ -231,8 +256,9 @@ em 16 dias barradas na entrada**, contra 36 rebaixadas pelo gate. Custo de inclu
 16 dias**, ~31/dia, sobre linha que processa ~3.600/dia.
 
 ⚠️ Filtro de entrada é invisível para A/B local — só se mede rodando, e isso depende de A1.
-❓ **A confirmar na Figura 2 do POP-IA-08:** o `gold_filter` está do nosso lado da fronteira de
-alçada ou exige alinhamento? A matriz está em imagem e não foi possível ler.
+✅ **Alçada confirmada na Figura 2 do POP-IA-08:** `gold_filter` vive dentro de
+`ntb_ia_<especialidade>_config.py`, que está no quadro *"você edita"*. **Não exige alinhamento** —
+é PR de config pelo caminho normal.
 
 **Proposta.** Incluir os termos, com medição em dois dias distintos.
 
@@ -316,7 +342,7 @@ para conhecimento do time, com cautela.
 
 # Resumo
 
-**15 itens** — 2 de fundação · 8 do Ops · 4 nossos · 1 de acordo.
+**16 itens** — 2 de fundação · 9 do Ops · 4 nossos · 1 de acordo.
 
 🔴 **Três bloqueiam trabalho hoje:** A1 (consumo em dev), B1 (embeddings) e C1 (aval dos campos
 novos).
@@ -328,5 +354,6 @@ em que ela existe.
 ⚠️ **Quatro cards precisam ser separados por dono:** `283645` (A1 sai), `298600` (B1 × A8), `283647`
 (C1 vira dois), `300348` (nomear o schema).
 
-❓ **Uma pendência de leitura:** as Figuras 1 e 2 do POP-IA-08 — o gate e a matriz de alçada — são
-imagens. A matriz "mudança por mudança" decide o item B2.
+✅ **A Figura 2 do POP-IA-08 foi lida** e fechou o item B2: `gold_filter` está no quadro
+*"você edita"*. Segue por ler a Figura 1 (o fluxograma do gate), que não altera nenhum item desta
+pauta.
