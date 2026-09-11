@@ -424,27 +424,35 @@ achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoi
 - 🔴 **Schema `reumatologia` só existe em `dev`.** É do time da Fábrica criar; sinalizado ao Ops
   junto com o PR, por procedimento próprio — **não** vai na descrição do PR.
 
-## Reumatologia — ✅ EM PRODUÇÃO, ajuste de colunas do exchange em branch
+## Reumatologia — ✅ EM PRODUÇÃO · 🟡 PR DO EXCHANGE AGUARDA OPS
 
 ✅ **A linha entrou em produção e o legado foi desligado.** Schema `reumatologia` provisionado em
 `diamond_fabrica_ia`, com as quatro tabelas e a `vw_mod_diamond_reumatologia_export_v0`.
 
-🟡 **Cinco colunas novas no arquivo de navegação**, pedido do negócio em 11/09. Branch
-`reumatologia/feature/exchange-colunas-navegacao` (`e53b12c`), a partir da `hml`, **sem push**.
+🟡 **PR aberto** — branch `reumatologia/feature/exchange-colunas-navegacao` (`769d891`), três
+commits, da `hml`. **O arquivo de navegação passa a entregar só as 19 colunas da view**, no formato
+do `cancer_rim`, definido pelo negócio como referência.
 
-**Medido antes de mexer** — as cinco já existem no schema da view e vêm preenchidas em produção
-(173 linhas): `convenio` 173/173 · `plano` 173/173 · `medico_solicitante` 173/173 ·
-`crm_solicitante` e `uf_crm_solicitante` 154/173 (89%). **Não é o caso de `resultado`/`achados`**,
-que a view devolve `CAST(NULL AS STRING)`.
+**Entram** `convenio`, `plano`, `medico_solicitante`, `crm_solicitante`, `uf_crm_solicitante`.
+**Sai o bloco manual inteiro** — as 27 colunas herdadas do legado e as três listas suspensas que só
+elas usavam. Os três arquivos caem de ~640 para ~165 linhas.
 
-ℹ️ **Nome e posição do bloco do médico copiados da hepatologia**, que já entrega nesse formato:
-`Médico Solicitante`, `CRM`, `UF CRM`, imediatamente antes de `tipo_exame`.
-🔴 **`Cadastro Convenio` e `Cadastro Plano` deixam de existir** — decisão do negócio. Eram manuais e
-passam a vir do dado; a lista suspensa de 306 linhas saiu junto, para não apontar para coluna
-inexistente. Os três arquivos caem de ~630 para ~340 linhas.
+🔴 **`medico_solicitante` e `crm_solicitante` chegam CIFRADOS da view** — 165 de 173 registros em
+base64. Entraram em `descriptografia`. ⚠️ **`count()` conta cifrado como preenchido**: a primeira
+verificação reportou "100% preenchido" e estava certa no número e errada no sentido. Quem denunciou
+foi o `descriptografia` do `cancer_rim`, que declara os mesmos dois.
 
-⚠️ **Falta o run em dev com envio ponta a ponta** antes do PR: chave ausente na view aborta o envio,
-e isso só aparece rodando.
+✅ **Validado em dev com envio ponta a ponta** e conferido com o negócio em 11/09.
+ℹ️ O layout de coluna não varia por regional — os quatro arquivos que chegaram provam as 19 colunas.
+
+🟡 **Um arquivo (RJ) não gerou e-mail**, e a causa está fora do nosso lado: os cinco POSTs
+retornaram `202` no mesmo run, com o mesmo destinatário. `202` é aceite assíncrono, não entrega.
+⚠️ **Dois achados que não viraram card, por decisão:** o nome do arquivo particionado não carrega
+hora (`{now:%Y_%m_%d}`, contra `%Y%m%d_%H%M%S` no ramo sem partição), então re-run no mesmo dia
+colide no mesmo caminho e o que acontece na colisão é decisão do Logic App; e a assinatura SAS desse
+Logic App está **hardcoded** em `runs/ntb_ia_onedrive.py`. O primeiro é da ferramenta compartilhada
+`tools/data_exchange` e mexer altera o nome do arquivo de **todas** as linhas — não entra de carona
+num PR de coluna.
 
 ## Migração dos algoritmos legados — as três seguintes
 
