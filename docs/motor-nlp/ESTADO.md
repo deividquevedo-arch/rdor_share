@@ -189,6 +189,10 @@ Os 11 de outros exames que só *mencionam* punção não alteram nada.
 🔴 **PR de config SEGURADO.** Branch `tirads/feature/waive-paaf` (`f8a16d7`, config `0.9.0-tirads`)
 pushada, **PR não aberto**: chave nova de config e dois campos novos no blob impactam o processo do
 Ops e exigem alinhamento prévio. Proposta registrada no card `283647`.
+✅ **Guardada em dois lugares (11/09):** a branch (`f8a16d7`) e uma cópia em
+`docs/motor-nlp/_versoes-estaveis/ntb_ia_tirads_config_0.9.0-waive-paaf.py`. O resíduo do braço de
+baseline do A/B, que revertia o arquivo para `0.8.0` no working tree, foi **descartado** — a árvore
+do repo da plataforma está limpa e o commit segue íntegro.
 ⚠️ **A regra foi quebrada nesta entrega** — `waive`, `gate_waived_by` e `gate_waived_error`
 entraram na lib antes do alinhamento. Exposição real é zero (nada emite sem config), mas o
 procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**, não só saída.
@@ -419,6 +423,28 @@ achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoi
   produção não sofre — a única defesa hoje é a regra do checklist.
 - 🔴 **Schema `reumatologia` só existe em `dev`.** É do time da Fábrica criar; sinalizado ao Ops
   junto com o PR, por procedimento próprio — **não** vai na descrição do PR.
+
+## Reumatologia — ✅ EM PRODUÇÃO, ajuste de colunas do exchange em branch
+
+✅ **A linha entrou em produção e o legado foi desligado.** Schema `reumatologia` provisionado em
+`diamond_fabrica_ia`, com as quatro tabelas e a `vw_mod_diamond_reumatologia_export_v0`.
+
+🟡 **Cinco colunas novas no arquivo de navegação**, pedido do negócio em 11/09. Branch
+`reumatologia/feature/exchange-colunas-navegacao` (`e53b12c`), a partir da `hml`, **sem push**.
+
+**Medido antes de mexer** — as cinco já existem no schema da view e vêm preenchidas em produção
+(173 linhas): `convenio` 173/173 · `plano` 173/173 · `medico_solicitante` 173/173 ·
+`crm_solicitante` e `uf_crm_solicitante` 154/173 (89%). **Não é o caso de `resultado`/`achados`**,
+que a view devolve `CAST(NULL AS STRING)`.
+
+ℹ️ **Nome e posição do bloco do médico copiados da hepatologia**, que já entrega nesse formato:
+`Médico Solicitante`, `CRM`, `UF CRM`, imediatamente antes de `tipo_exame`.
+🔴 **`Cadastro Convenio` e `Cadastro Plano` deixam de existir** — decisão do negócio. Eram manuais e
+passam a vir do dado; a lista suspensa de 306 linhas saiu junto, para não apontar para coluna
+inexistente. Os três arquivos caem de ~630 para ~340 linhas.
+
+⚠️ **Falta o run em dev com envio ponta a ponta** antes do PR: chave ausente na view aborta o envio,
+e isso só aparece rodando.
 
 ## Migração dos algoritmos legados — as três seguintes
 
