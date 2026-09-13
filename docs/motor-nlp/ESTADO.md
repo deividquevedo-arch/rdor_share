@@ -762,6 +762,39 @@ canal com mandato (sem PO, PMO ou Head), as duas frentes envolvidas são lideran
 nível em disciplinas distintas, e escopo esclarecido em conversa não alcança quem não estava nela.
 **Quem decide subiu para PO / PMO / Head** — não é decisão entre pares técnicos.
 
+## Os POPs da Fábrica — 🟡 EXISTEM, NENHUM VIGENTE
+
+**Dez documentos** em `.alt.doc/POPs/`, cobrindo ciclo de vida de ML, modelo HuggingFace, coleta de
+dados, biblioteca Python, esteira DevOps, padronização de objetos, catálogos e schemas, edição da
+NLP Platform, e controle de versões.
+
+🔴 **Todos em `1.0`, com `Vigência: a definir na aprovação` e `Aprovado por: a definir`.** O
+POP-IA-09 declara: *"nenhum elo da cadeia está em uso hoje… este documento é o modo de trabalho a
+ser adotado, não a descrição do que já acontece."* **Aprová-los é o item de maior alavancagem** da
+pauta com o Ops.
+
+**O que eles já resolvem, e muda o nosso discurso:**
+
+- **POP-IA-08 (Edição da NLP Platform)** define a fronteira de alçada em três quadros. *Você edita:*
+  `ntb_ia_<especialidade>_config.py` e `jobs/definicoes/<job>.json`. *Dono do NLP Engine:* a lib e o
+  `ORGANS_SHARED`. *Administrador Databricks:* cluster, policy, catálogo, schema, grants, Volume,
+  `mlops.yml`, ambientes e `jobs/clusters`.
+  ✅ **`gold_filter` é nossa alçada** — vive no config da especialidade. Sai da pauta de Ops.
+  ℹ️ **A versão do motor é do Dono do NLP Engine** — sustenta a nossa posição no pin.
+  ℹ️ `jobs/definicoes/<job>.json` é nosso, e é onde a versão é declarada por linha. **Trocar
+  `${nlp_engine_version}` por literal pode pinar sem tocar na infraestrutura** — a confirmar.
+  ⚠️ **O gate está escrito numa direção só:** diz a quem o Cientista recorre antes de tocar cada
+  quadro, e não diz a quem o dono de um quadro recorre antes de alterá-lo.
+- **POP-IA-08 §13 lista cinco bugs conhecidos.** Dois cruzam com o que levantamos: **bug 5** é o fuso
+  UTC da janela de datas (com contorno *"evite agendar 21h–00h"*, sem correção), e **bug 2** é a
+  dedup apontando fixo para hepatologia/dev, com a saída duplicando — ⚠️ **pode ser a causa real do
+  card `300201`**, que precisa ser cruzado.
+- **POP-IA-04 (Bibliotecas Python)** declara **layout flat, sem `src/`**, com a `rededor-ai-lib` como
+  referência canônica. 🟡 **A `nlp-engine-lib` usa `src/`** — divergência a declarar por nós.
+
+📄 **`_processo/pauta-minima-ops.md`** — 9 itens, só o que está aberto e depende do Ops. A pauta
+longa (`alinhamento-ops-2026-09-10.md`) vira documento de apoio com a evidência completa.
+
 ## Cards — quadro em 2026-09-08 (tarde)
 
 ✅ **Em *Pronto para QA*, os 15 da `0.12.x`:** `253573` `P2-07` · `253574` `P2-08` · `253575`
