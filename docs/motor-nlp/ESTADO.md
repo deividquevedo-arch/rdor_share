@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-10**.
+> Atualizado em **2026-09-17**.
 
 ---
 
@@ -81,7 +81,10 @@ com **4.507 laudos de hepatologia**: zero divergência em `fl_relevante` e `find
   ⚠️ **Verificação de contrato por fixture é estruturalmente insuficiente** — nenhum perfil escrito
   à mão esgota o que produção emite. `tests/chaves_observadas_em_run_real.json` (21 chaves de 1.500
   blobs) virou piso versionado.
-- 🔴 **A `0.12.0` do FEED é inutilizável.** Um `409 Conflict` publicou no feed antes da correção do
+- 🟡 **`main` × `hml` da plataforma com o Diego (17/09)** — 59 commits pendentes na `hml` e 15
+que só existem na `main`. É o que segura o TI-RADS com as colunas novas em produção.
+
+🔴 **A `0.12.0` do FEED é inutilizável.** Um `409 Conflict` publicou no feed antes da correção do
   contrato, e o feed é **imutável**: mesmo número, conteúdo diferente do Volume. Daí a `0.12.1`.
   ✅ A esteira foi corrigida — o upload ao Volume passou a **depender** da publicação no feed, e o
   `release-check` julga pela **tag**, porque o agente do CI não tem `az` autenticado.
@@ -201,10 +204,41 @@ procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**
 nunca chegam ao motor, contra 36 rebaixados pelo gate. Sem medição e sem card — filtro de entrada
 só se mede rodando.
 
-## `0.13.0` — 🟡 2 DE 6 CARDS, BRANCH PUSHADA SEM PR
+## `0.13.0` — 🟡 4 DE 6 CARDS, BRANCH PUSHADA SEM PR · ✅ GOLDEN EXECUTADO
 
-Branch `feat/0.13.0-estrutura` (`e832f7c`, `9313809`). ✅ **SPEC salva na `hml`** (`fa9e7ea`) —
-existia só em branch local havia 7 dias.
+✅ **Branch `feat/0.13.0-estrutura` pushada em 17/09** — `9313809..0b26b6a`, 8 commits, dez
+gates verdes. **Sem PR** — os dois ADRs aguardam aval.
+✅ **Não-regressão provada, e o golden roda LOCAL** — não precisa de runner no Databricks. Corpus
+sintético, Python puro, uma árvore de trabalho por versão. **Baseline `v0.12.3`**, não a `v0.12.0`
+que a SPEC nomeava (entre as duas saíram três versões com mudança deliberada); SPEC corrigida.
+**Golden de decisão:** 8 laudos × 2 configs × 9 campos, sha256 `e9f9bb52…` idêntico.
+**Golden do clamp (item 4 da SPEC):** 18 entradas degeneradas × 2 funções, idêntico em 36 de 36 —
+**o item 4 fica nesta versão**, a condição de sair era alteração de valor e ela não ocorreu.
+⚠️ O corpus do golden de decisão tem **16 linhas** e não esgota a superfície; quem dimensiona a
+divisão de módulos é o CA5 do `253581` (300 laudos, byte a byte).
+🟡 **`253582` `[P2-16]` — CA5 e CA8 comentados no card; CA2 e CA3 abertos, e nenhum é mecânico:**
+o CA2 pede **renomear** (`_as_float` tem duas definições que são funções *diferentes* — uma extrai
+número de texto com `None` na ambiguidade, a outra faz coerção com default; fundir mudaria
+comportamento); o CA3 descreve uma duplicata de regex que **não existe** no código de hoje.
+🔴 **Falta para fechar:** aval nos dois ADRs · bump do `pyproject` (segue em `0.12.3`) · CA2 e CA3.
+
+Branch `feat/0.13.0-estrutura`. 🔴 **CORREÇÃO (16/09): a SPEC NÃO estava na `hml`.** O `fa9e7ea`
+é commit da branch `docs/spec-0.13.0-estrutura`, pushada e **nunca mergeada** — e o arquivo também
+não estava na branch de trabalho. Quem fosse implementar não veria a SPEC.
+✅ **Trazida para a `feat/0.13.0-estrutura` em 16/09, já com o escopo corrigido.**
+
+🔴 **A SPEC declarava escopo que não vale mais.** Descrevia o item 1 **com streaming** e a matriz
+de impacto dizia *"API pública: breaking — `process()` retorna iterador"*. O streaming saiu para
+bump próprio por decisão do usuário, e isso só existia no `ESTADO.md`. Corrigido: item 1 preserva
+a assinatura, a versão deixa de ser breaking, e o ganho de memória do G6 sai junto com o streaming.
+
+✅ **Item 5 (`253591` [P3-25]) — etapa 1 ENCERRADA em 16/09: o aninhamento é INTENCIONAL.**
+`src/nlp_engine/__init__.py` e `src/nlp_engine/nlp_engine/__init__.py` nasceram no **mesmo commit**
+(`ac16e09`, 12/06/2026); ali `monitoring/` e `nlp_engine/` já eram irmãos, e o docstring de topo já
+declarava *"motor de NLP clinico (nlp_engine) e observabilidade (monitoring)"*. Não é `mkdir`
+residual — o pacote de topo é guarda-chuva de distribuição, coerente com a arquitetura declarada.
+**Recomendação: manter**, e a entrega vira o CA3 (documentar), não a migração dos CA4–CA7.
+⚠️ **Falta o CA2: aprovação explícita do responsável técnico da lib.**
 
 - ✅ **`253579` [P2-13] singleton do spaCy.** A consolidação já existia; faltava o que o card
   descreve: **inicialização sem lock, publicando o objeto ANTES do `add_pipe`**. Uma segunda
@@ -217,8 +251,57 @@ existia só em branch local havia 7 dias.
   categoria (evitam ciclo); **o CA2 não fecha ao pé da letra** — pede nenhum arquivo acima de 300
   linhas e **dez excedem**, `quantitative.py` tem 1.687; os nomes `test_rads_*` do CA6 são
   anteriores ao rename de 0.9.0.
-- 🟡 Faltam `253580` (decompor `process()` **sem** streaming), `253582` (clamp — **pode alterar
-  valor**, e a SPEC manda sair para release própria se alterar), `253591` e `253593` (ADRs).
+✅ **17/09 — a `0.13.0` foi de 2 para 4 dos 6 itens**, e o que falta não é código.
+- **`253580`** [P2-14] — **7 de 8 CAs**. A decomposição já existia (`engine.py` tem 102 linhas,
+  `process()` 11 de corpo); os gaps eram **9 de 12 steps sem teste direto** e 2 docstrings.
+  **22 testes novos**, 3 mutantes verificados. Falta o **CA3**: golden de ≥300 laudos contra a `main`.
+- **`253582`** [P2-16] — CA1, CA4, CA6 e CA7 fechados. Eram **2** implementações de clamp, não 4;
+  **a divergência virou parâmetro** (`_clip01(..., invalido=0.0)`) em vez de ser apagada, e `NaN` é
+  inválido em todos os caminhos. **Impacto zero**, provado por inspeção das 7 configs. ⚠️ CA2
+  (`_as_float`) e CA3 (regex) têm **premissa inválida**: não são duplicatas.
+- **`253591`** e **`253593`** — **ADRs escritos**, em `Status: proposto`. 🟡 **Falta o CA2 dos dois:
+  aprovação explícita do responsável técnico da lib.**
+- 🔵 **Streaming fora**, e agora **na SPEC** — antes a decisão só existia no `ESTADO.md`, e a SPEC
+  ainda declarava a versão como *breaking*.
+
+🔴 **Falta para fechar o bump:** golden contra a `v0.12.0`, seção no `RELEASE.md` e bump no
+`pyproject` (está em `0.12.3`). Gate hoje: **1.237 testes, 88,05%** por ramo.
+
+✅ **PASSE DE CA EM 16/09 — quatro cards da `0.12.x` fechados na árvore.** 📄
+`_processo/passe-de-ca-cards-0.12.x-2026-09-16.md`. `253574` [P2-08] cinco `type: ignore` → zero,
+sem `noqa` · `253592` [P3-26] três links quebrados, decisão A/B registrada e **gate de índice** ·
+`253589` [P2-23] site publicado como artefato de CI · `253594` [P3-28] `detect-private-key`,
+`make hooks-install` e job de CI · `253587` [P2-21] **31 casos de borda de banda**, com dois
+mutantes mortos.
+🔴 **Duas correções à triagem de 15/09**, que amostrava o primeiro critério: o CA1 do `253594`
+estava atendido, e o `253587` tinha **57 de 60** parametrize com ids descritivos — a contagem
+ignorava `pytest.param(..., id=...)`.
+🔴 **`pre-commit` não era dependência declarada** — o `CONTRIBUTING` mandava rodar um comando que
+não existia. Declarado; derruba também o CA2 do `253590`.
+**Gate: 1.202 testes, 87,77% por ramo**, ruff/format/mypy/api-ref/api-surface/doctest verdes.
+✅ **Hooks instalados e os DOIS estágios verdes** — 6 no commit, 10 no push com a cobertura.
+O `pre-commit` entrou nas dependências de dev (não era declarado, e o `CONTRIBUTING` mandava
+rodá-lo), e o `uv.lock` foi regerado no mesmo passo.
+🔴 **CA4 do `253594` fica ABERTO: 9,4s contra o alvo de 5s.** Era 42s; os três checks de projeto
+inteiro (`doctest`, `api-ref-check`, `api-surface-check`, 27,6s somados) foram para o `pre-push`.
+🔴 **O alvo colide com o CA3 do próprio card:** piso do `pre-commit` 2,71s + `detect-private-key`
+(exigido pelo CA3) 1,13s + ruff 0,56s + format ~0,5s + guarda 0,53s = **~5,4s antes de qualquer
+gate de qualidade**. Sem `mypy` dá 6,85s; sem `mypy` e sem `large-files`, 5,20s — nenhuma fecha.
+✅ **O `mypy` FICA no commit** (decisão do usuário): mover não fecha o CA4 e troca 3,65s por
+`amend`/rebase quando o push reprova. Ele verifica o código recém-escrito, não artefato de
+consistência como os três que foram para o push.
+✅ **Decisão: não medir em outra máquina.** O alvo de 5s é exemplo no card; a contraposição é a
+decomposição. ⚠️ Hook de pre-commit **só roda na máquina de quem programa** — Windows corporativo é
+o ambiente real, não extrapolação; o que falta é amostra, e isso não será perseguido.
+ℹ️ O primeiro build dá o número de Linux (o estágio CI roda em PR de qualquer branch e agora
+executa `make hooks`), mas é `--all-files`, **não** a medição do CA4.
+🔴 **E o CA7 do `253589` já estava atendido** — o `site/` era publicado como artefato `docs` desde
+antes. O passo duplicado que eu acrescentei foi removido (`db695da`).
+✅ **O hook de push pagou o custo no primeiro uso:** pegou `ModuleNotFoundError: No module named
+'scripts'` que passava em `python -m pytest` e falharia no CI (`uv run pytest`). Corrigido com
+`pythonpath = ["src", "."]`.
+🟡 Abertos: `253590` CA8 (validação por terceiro, não verificável por quem escreveu) ·
+`253586` [P2-20] fixtures, que é refinamento.
 - 🔵 **`process()` com streaming vira BUMP PRÓPRIO** — decisão do usuário: quebra a API e a
   plataforma já contorna montando lotes externamente.
 
@@ -230,8 +313,38 @@ existia só em branch local havia 7 dias.
 + tokens na extração quantitativa** (card `283648`, P1 aberto há 20 dias sem medição registrada;
 o item de tokens é inclusão de 10/09) → `0.15.0` vínculo lesão↔medida.
 
-🔴 **P0-29 segue aberto** — o juiz pode promover sem evidência de regra. Card `283648`, alocado na
-`0.14.0`. Exige medição prévia por linha.
+🔴 **O P0-29 tem DUAS VIAS, e a segunda não é alcançável por banda** — ampliação redigida em 17/09,
+**não postada**: 📄 `_processo/ampliacao-card-283648.md`. Além do juiz promover, **a camada semântica
+promove e o juiz nunca é consultado**: em `hybrid`, `fl = 0` com `semantic_score >= threshold` vira
+`fl = 1`, e a arbitragem só ocorre dentro da banda.
+**Medido:** ateromatose `0.2.1` **33 de 44** · cancer_rim em dev **2 em 10.000**.
+**Banda larga** → juiz vê 81,5% dos laudos, custo proibitivo, `match_rate` 96,2% → 87,8%.
+**Banda estreita** → a via semântica passa livre. **O contorno do card fecha uma e abre a outra.**
+⚠️ O card está **sem critério de aceite**; sete propostos no rascunho.
+⚠️ **A hepatologia roda em produção com `[0.35, 0.65]` e o contorno não está aplicado lá** — mas
+**nada disso chega ao negócio**: a linha só acumula na tabela de saída, e os destinatários do
+exchange em prd são time técnico e caixa institucional, não a mesa de navegação (falta o fluxo
+complementar, card `303791`).
+**Então o P0-29 na hepatologia é dívida acumulando, não dano em curso.** Entra na passada única da
+frente, junto com o `embedding_model`, o `fallback_policy` e a segmentação — não precisa de ação
+isolada.
+
+✅ **P0-29 MEDIDO em 16/09 — a pré-condição da `0.14.0` está fechada.** Card `283648`.
+📄 `_processo/medicao-p0-29-juiz-sem-evidencia-2026-09-16.md`. Janela de 30 dias, seis linhas:
+**118 laudos entregues como relevantes com o juiz acionado e ZERO span positivo de regra — todos na
+hepatologia.** As outras duas linhas com juiz ligado deram **zero** (cancer_estomago 0 em 27,
+cancer_rim 0 em 16).
+🔴 **36 são correntes** (`llm_router_llm_positive`, 31/08 a **16/09**, ~1 por dia útil, 2 hoje), com
+score **0,367 a 0,566** — abaixo do teto analítico **0,597** de laudo sem achado. A hepatologia
+declara `uncertainty_band: [0.35, 0.65]`: **o piso está abaixo do teto**, então laudo sem achado
+nenhum chega ao juiz. O ca-estômago usa `[0.60, 0.97]` e o ca-rim `[0.75, 0.95]` — daí o zero.
+🔴 **82 são o incidente do 403** (21 e 26/08, `llm_error: http_403`), e expõem outra coisa: naquele
+dia **1.371 laudos foram entregues pela FALHA**, por `fallback_policy: positive_in_band` —
+declarada em `runtime.llm_router` contra `keep_current` no `nlp`, e **o `runtime` vence**.
+✅ Desde 02/09 há **zero falhas em 1.371 chamadas** — o PR 7135 resolveu.
+ℹ️ **Dá efeito clínico medido ao bloco `runtime`** e reforça o card `283644`, sem abrir card novo.
+⚠️ Não diz se os 36 estavam clinicamente certos — ausência de evidência é violação de arquitetura
+de todo modo, mas dimensionar a remoção exige olhar os 36 contra o critério da hepatologia.
 
 ⚠️ **Branches sem push:** `docs/plano-e-specs-ops` (plano dos 28 cards + SPEC da `0.13.0`) e
 `docs/0.11.1-impacto-medido`. Conteúdo absorvido, **exceto a SPEC da `0.13.0`** — descartar as duas
@@ -311,11 +424,58 @@ quantitativos, que dependem do LLM. Com o 403, nada promove e o run fecha em suc
   avaliar se o pulmão precisa também de `on_met: demote` para expressar contraindicação — hoje um
   paciente com VEF1 < 30% **e** FEVE < 40% seria encaminhado sendo contraindicado.
 
-## Hepatologia
+## Hepatologia — 🟡 TRABALHO CONSOLIDADO, NÃO FATIADO (decisão de 16/09)
 
-🔴 **Única especialidade em `segmentation.mode: auto`** — provavelmente descarta IMPRESSÃO/CONCLUSÃO
-de todo laudo. **Nunca medido.** Mensurável desde a 0.8.3 (`segmentation_coverage`).
-No ca-rim, a mesma correção recuperou **+25 laudos em 6 dias**.
+🔴 **Nada de hepatologia se toca isoladamente.** A linha **não está de fato em PRD**: falta o fluxo
+complementar depois do processamento, que a plataforma ainda não resolveu. O levantamento do que
+falta — estrutura necessária, processos excepcionais com fluxos distintos — é escopo do card
+`303791` *Plano de Migração algoritmos final*. Tudo entra **de uma vez só**, quando esse estudo
+fechar.
+
+**Fila acumulada para essa passada única:**
+
+- `300202` — `segmentation.mode: auto`, **única linha assim**, descarta IMPRESSÃO/CONCLUSÃO:
+  `segmentation_coverage` < 1,0 em **3.867 de 4.507**, 3.196 cabeçalhos descartados. Nunca medido;
+  no ca-rim a mesma correção recuperou **+25 laudos em 6 dias**. Exige A/B — sem gabarito clínico
+  não há como arbitrar o delta. **Sem dono e sem CA.**
+- `embedding_model` — aponta para o Volume do workspace antigo e falha em **99,3%** dos laudos em
+  produção (card `305810`).
+- `uncertainty_band: [0.35, 0.65]` — piso abaixo do teto analítico 0,597, causa dos **36** casos
+  correntes do P0-29 (ver `0.13.0`/`283648`).
+- `fallback_policy` — `keep_current` no `nlp` e `positive_in_band` no `runtime`, que vence.
+- limpeza dos blocos mortos e **ajuste das colunas da view** de exportação.
+- promoção da config **calibrada** local: a que está em prd ainda não é a standard plus.
+
+## Câncer de estômago — ✅ EM PRODUÇÃO · 🔴 O FILTRO DE ENTRADA PERDE 55% DAS ENDOSCOPIAS
+
+📄 `_processo/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`. Medido em 17/09 sobre
+`gold_corporativo_ia.corporativo.tb_gold_mov_exame`, janela de 12 meses (27/08/2025 a 26/08/2026).
+
+🔴 **O `gold_filter` deixa de fora mais laudo legível do que traz: 124/dia contra 106/dia.**
+
+| grupo | exames | /dia | legíveis | /dia |
+|---|---|---|---|---|
+| é EDA e **passa** o filtro | 79.968 | 219 | 38.545 | **106** |
+| é EDA e o filtro **NÃO pega** | **96.729** | 265 | **45.390** | **124** |
+| o filtro pega e **não é** EDA | 21 | 0 | 20 | 0 |
+
+⚠️ **O filtro não lê o laudo** — aplica `rlike` sobre **`proced_descricao`**
+(`GoldFilterBuilder.keyword_column`, default que o runner não sobrescreve).
+✅ **E é preciso**: só 21 exames em um ano entram sem ser EDA. O problema é inteiramente de recall.
+**94% da perda está em três descrições** que usam nomenclatura TUSS e não escrevem "digestiva alta":
+`endoscopia com biopsia e/ou citologia` (61.902), `endoscopia` (19.314), `endoscopia com biopsia e
+teste urease` (12.009).
+🔴 **E dos 219/dia que entram, só 106 têm texto legível** — os outros 113 são ponteiro ou vazio, e o
+motor roda sobre nada.
+ℹ️ Mesma classe do `gold_filter` do TI-RADS que não seleciona punção, com ordem de grandeza outra.
+🟡 **Ampliar exige medir o custo em volume antes** — a régua de filtro de entrada pede os dois
+sentidos. **Sem card**: filtro de entrada é nossa alçada (POP-IA-08).
+
+### O repositório clínico, para referência
+
+12 meses: **colonoscopia 126.351** (346/dia, 48,6% legíveis) · **endoscopia alta 176.697** (484/dia,
+47,5% legíveis). **Menos da metade tem laudo legível** — o resto é apontamento para outro sistema
+(25–28%) ou ausência de laudo (24–26%).
 
 ## Câncer de estômago — ✅ EM PRODUÇÃO desde 2026-09-04
 
@@ -327,6 +487,20 @@ mergeados pelo João.
 
 🔴 **MAS os 6 relevantes eram FALSO POSITIVO** — todos pelo defeito do espaço colado, corrigido na
 `0.11.2`. Com a correção seriam **11 relevantes em vez de 17** na coorte de 333 laudos.
+
+🔴 **O `gold_filter` deixa de fora 55% das EDA do repositório, e a exclusão NÃO é intencional.**
+A SPEC §2 declara o universo como *"entram: endoscopia digestiva alta (EDA)"* e apresenta o
+filtro como a implementação disso — o único risco que ela registra é o oposto (sem filtro, a
+entrada foi de 4.818.237 laudos). É lacuna de implementação, não recorte de escopo.
+**Medido em 12 meses (27/08/2025–26/08/2026):** `endoscopia com biopsia` traz **+76.533 exames**
+(209,7/dia) e **+36.991 legíveis** (101,3/dia); `endoscopia com cromoscopia` traz +246/+132.
+**A entrada legível vai de 105,3 para 207,0 laudos/dia.** 🟢 **Custo: 213 exames não-EDA em um
+ano** (0,6/dia) — precisão da ampliação **99,72%**. Seguem fora 43.641 exames (11.870 legíveis).
+⚠️ **Ampliar invalida a comparação com a homologação** (recall 0,600 / precisão 1,000 é contra o
+corpus estreito) e a taxa de 3,97% de produção. **Próximo passo: um dia em dev com o filtro novo**,
+medindo volume, chamadas ao juiz, taxa e tempo de run. **Sem card** — alçada da especialidade.
+📄 `cancer_estomago/medicao-ganho-gold-filter-2026-09-17.md` e
+`_processo/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`.
 
 ℹ️ **Zero chamadas ao juiz**, por duas causas distintas: 145 laudos abaixo do piso da banda
 `[0,60; 0,97]`, e 1 dentro da banda que saiu `skipped_deterministic` porque o `quantitative_gate`
@@ -429,9 +603,26 @@ achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoi
 ✅ **A linha entrou em produção e o legado foi desligado.** Schema `reumatologia` provisionado em
 `diamond_fabrica_ia`, com as quatro tabelas e a `vw_mod_diamond_reumatologia_export_v0`.
 
+🔴 **O PR 7287 NÃO CHEGOU A PRODUÇÃO — verificado em 17/09.** Produção sai da `main`
+(`groupPrd: fabrica-ia-lib-main`), e a `main` **não tem o 7287**: está **59 commits atrás** da `hml`,
+com **15 commits próprios** que nunca voltaram. O arquivo de prd lá segue no formato antigo, sem
+`findings`.
+🔴 **Então o defeito continua ativo:** o job roda todo dia em prd (1.591 laudos em 17/09, 694 com
+`findings` preenchido) e **entrega a coluna de achado vazia**. Avisado ao Diego, que vai promover.
+
+✅ **TI-RADS TAMBÉM NO PADRÃO — PR 7287 mergeado na `hml` em 15/09 às 21:28** (`cf281e7`), quatro commits.
+Os três ambientes do TI-RADS passaram a 22 colunas, 3 ocultas, `colunas_manuais` vazio e sem
+`descriptografia`. **Reumatologia e TI-RADS são os dois exemplos do formato final na árvore.**
+🔴 **E corrigiu um defeito ativo:** a coluna do achado em produção apontava para
+`classificacao_rads`, que a view materializa como `CAST(NULL AS STRING)` — era entregue **vazia em
+100% das linhas**. Medido: 0 de 89 não-nulos na view, contra 2.370 de 2.370 relevantes com
+`findings` preenchido. Validado em dev em 15/09: 55 registros, achado preenchido em 55 de 55.
+
 🟡 **PR aberto** — branch `reumatologia/feature/exchange-colunas-navegacao` (`769d891`), três
 commits, da `hml`. **O arquivo de navegação passa a entregar só as 19 colunas da view**, no formato
 do `cancer_rim`, definido pelo negócio como referência.
+ℹ️ **A referência passa a ser a própria `reumatologia`** — é o `cancer_rim` com as colunas vazias
+removidas, e é o formato a clonar nas próximas linhas.
 
 **Entram** `convenio`, `plano`, `medico_solicitante`, `crm_solicitante`, `uf_crm_solicitante`.
 **Sai o bloco manual inteiro** — as 27 colunas herdadas do legado e as três listas suspensas que só
@@ -454,11 +645,111 @@ Logic App está **hardcoded** em `runs/ntb_ia_onedrive.py`. O primeiro é da fer
 `tools/data_exchange` e mexer altera o nome do arquivo de **todas** as linhas — não entra de carona
 num PR de coluna.
 
-## Migração dos algoritmos legados — as três seguintes
+## Migração dos algoritmos legados — 🟡 DUAS NESTA SEMANA
 
-Ordem indicada: **ateromatose**, **doenças biliares**, **neuroimunologia**. A reumatologia
-produziu o padrão a reaproveitar: clonar a branch `hml` do repo legado (nunca a cópia local),
-gerar a config programaticamente do `CONFIG`, e medir paridade contra a saída gravada.
+**Nossa fila (14/09):** `doencas_biliares` e `neuroimunologia` **até 18/09**, depois **nódulo
+pulmonar**, **endometriose** e **birads**. ℹ️ **Ateromatose saiu da nossa fila — está com o Lucas.**
+
+🟢 **PRs 7321 (João) e 7275 (Lucas) APROVADOS — falta só o merge, nesta ordem: João, depois
+Lucas.** Decisão do usuário em 17/09: **não postar comentário nem ampliação por hora**. O
+comentário de aprovação do 7275 está redigido em `_processo/comentario-pr-7275-aprovacao.md` e
+**não foi publicado**. Sem card de `pause_status` por hora — refina depois.
+
+✅ **PR 7275 — TERCEIRA REVISÃO em 17/09: aprovado, com uma condição de ordem.** Ponta `7901021`,
+config `0.2.3`. Sete commits novos, `0.2.0` → `0.2.3`, **com medição**. 📄
+`_processo/auditoria-pr-7275-terceira-revisao.md`.
+🔴 **Dois achados dele viram evidência para o `283648`:** o `0.2.0` mostrou o juiz chamado em
+**6.111 de 7.500 (81,5%), todos sem achado** — o P0-29 numa segunda linha; e o `0.2.1` mostrou a
+**semântica promovendo 33 de 44 sem passar pelo juiz**, via que a banda não alcança.
+✅ **Desligar a semântica está certo** — ele refinou duas vezes antes.
+🟡 **Condição única: merge depois do PR 7321** (João), porque a `0.2.3` aponta o `embedding_model`
+para o Model do UC, que só o `ConfigLoader` daquele PR resolve. Inerte hoje (`use_embeddings: False`).
+🔴 **Correções minhas na revisão:** o sync não bloqueia (`mergeStatus: succeeded`, zero conflito);
+o `pause_status` literal é padrão das **oito** definições, não desvio dele; e a precisão de 0,625
+**não decide nada** — é `5/8` contra `5/9`, um laudo, IC 0,31–0,86.
+ℹ️ **Alinhamento do usuário com o Lucas (17/09):** ele estava migrando e ajustando régua ao mesmo
+tempo, e não confia na última régua do legado. Orientação: **rodar o e2e em dev sobre a janela
+congelada, adjudicar os divergentes e julgar plausibilidade** — não perseguir alvo numérico; e
+`pause_status` igual ao da reumatologia.
+
+ℹ️ Histórico das duas primeiras revisões e das orientações: `_processo/auditoria-pr-7275-ateromatose.md`
+e `_processo/orientacao-pr-7275-ateromatose.md`.
+
+Padrão a reaproveitar, produzido pela reumatologia: clonar a branch `hml` do repo legado (nunca a
+cópia local), gerar a config programaticamente do `CONFIG`, e medir paridade contra a saída gravada.
+
+✅ **Os dois legados são o MESMO motor** — 45 linhas diferentes em 5.210. Varia `TARGET_ORGAN`, os
+nomes de tabela e um punhado de termos. **Uma extração serve as duas**, e também as três seguintes.
+
+- 🔴 **O dicionário de órgãos é compartilhado e carrega vocabulário estrangeiro.** No notebook do
+  biliar, `colon` aparece **77 vezes** e `rim` **26** — mesmo padrão do ca-cólon. Remover muda
+  resultado: medir, não limpar no olho.
+- ⚠️ **A segmentação difere:** `FORCE_FULL_DOC_FOR = {"neuroimunologia"}` contra conjunto **vazio**
+  no biliar. Mesma classe do `mode: auto` da hepatologia, que descarta 86%. Não clonar uma na outra.
+- 🔴 **Dependência de terceiro com prazo:** os schemas `doencas_biliares` e `neuroimunologia`
+  precisam ser provisionados pelo time da Fábrica, em **dev e prd**. Na reumatologia a ausência em
+  prd virou bloqueio na hora de promover.
+
+## DII — ✅ MEDIDO E VALIDADO, AGUARDA OK PARA PR
+
+Branch `doenca_inflamatoria_intestinal/feature/migracao-config-motor` (`3e6362e`), config
+**`0.2.1-doenca_inflamatoria_intestinal`**, sem conflito com a `hml`. Dono: Leandro.
+
+✅ **O caminho de config pura resolveu — a feature na lib deixou de ser necessária.** O `document_vet`
+expressa a régua: `soft_findings: ['recomendacao_colonoscopia']` + 13 `normality_phrases` com
+boilerplate de laudo de colonoscopia. O termo `colonoscopia` vira achado próprio no laudo de imagem
+e é rebaixado no laudo de colonoscopia, **pelo conteúdo do próprio laudo**.
+
+**Config única**, `full_doc`, janela 6, 7 regex da auditoria, os dois ramos unidos. Os dois configs
+de 09/09 e as três navegações de `dii_colonoscopia` foram removidos.
+
+| | legado | atual `0.2.x` |
+|---|---|---|
+| relevantes encontrados | 127 de 206 | **205 de 206** |
+| marcados errados | 4 | 17 |
+| **F1** | 0,754 | **0,958** |
+| **MCC** | 0,771 | **0,958** |
+
+Medido em **18.480 laudos** de 3 dias, lib pinada em `0.12.3`, com 101 divergências auditadas.
+✅ **E2E em dev:** 31.609 laudos; plataforma × bancada dá **3 decisões diferentes em 17.494 (0,02%)**.
+✅ **`gold_filter` medido nos dois sentidos com custo:** +218 exames, todos `IMG`; `entero` solto
+**descartado** por trazer +3.600 culturas.
+ℹ️ Dos 5 relevantes do legado não marcados, **4 são fuzzy do próprio legado** — o denominador foi
+depurado antes de calcular a perda.
+
+🟡 **Em fecho pelo Leandro (17/09).** Pendência única: **o bug de acesso da view** — é o
+mesmo grant que aparece no PR 7275 e no TI-RADS (`USE CATALOG security` + `EXECUTE` em
+`security.prd.rdsl_decrypt`), tratado como item único nas dívidas transversais.
+
+📄 **Parecer em `_processo/dii-parecer-avaliacao-01.md`** e orientação ao dono em
+`_processo/orientacao-dii-leandro.md`: **ok para abrir o PR, com quatro ajustes**.
+🔴 **O principal é LIGAR a camada semântica e o juiz, não remover o bloco** — `rule_only` é estágio
+de desenvolvimento e nenhuma lista vai ao negócio a partir de perfil parcial. São **três chaves em
+dois arquivos** (`use_embeddings`, `llm_router.enabled`, widget `embedding_enable`), e **a branch
+não traz definição de job** — só 4 arquivos, sem `jobs/definicoes/` nem `jobs/clusters/`, então não
+há onde declarar o widget.
+⚠️ O bloco do juiz está **incompleto** (falta `model`, `uncertainty_band`, `max_input_chars`,
+`prompt_system`, `specialty_context`); `ambiguity_band` é **inerte** em `hybrid`; e
+`similarity_threshold: 0.80` é frouxo contra os **0.92** do `cancer_rim`, que é a referência.
+🔴 **O prompt do juiz sai dos deltas, não de suposição.** Dos 17 FP, **13 são régua** — 8 negação a
+distância, 3 anatomia fora do trato, 2 recomendação de RM; sobram os **4 de referência ao passado**
+mais o que a camada semântica promover, população que não existe em `rule_only`. Ordem: corrigir a
+régua → híbrido sem juiz → isolar as promoções pelo **delta por `id_exame`** (⚠️ `decision_source`
+sai `hybrid` em todos os laudos que passam pela camada, não isola) → escrever o prompt com as
+condições lidas → ligar o juiz e medir o que remove. Procedimento em
+`_processo/orientacao-dii-leandro.md` §1.5, com a matriz de **quatro corridas, uma variável cada**.
+Os outros três: cabeçalho explicando o `document_vet` · remover o `runtime` **no mesmo commit** da
+ligação do juiz (senão o `runtime` vence e o juiz fica desligado em silêncio) · e **uma
+verificação**: `negation.direction_default` declarado como `None` seta `_default = None` em vez de
+cair no `left` da lib, e pode explicar 8 dos 17 FP.
+🔴 **Ligar muda o perfil e invalida as métricas atuais** — remedir na **mesma janela dos 18.480** e
+levar ao negócio só as **discordâncias** contra a corrida `rule_only`.
+
+⚠️ **O gabarito de 206 é derivado da própria comparação** entre as duas réguas. Não invalida, mas o
+F1 é contra esse gabarito — os 96 laudos que o atual marca e o legado não vão para revisão do
+negócio.
+
+---
 
 ## Câncer de cólon — 🟡 LEVANTAMENTO PARA MIGRAÇÃO
 
@@ -530,7 +821,16 @@ contra a esperada — são o padrão que vale copiar.
 `document_vet.enabled`. Contraria a SPEC 27 (§7 diz "dicionário literal e nada mais") **para
 melhor** — registrado no card `299238`.
 
-## Pin da versão por linha — 🟡 HISTÓRIA `301938` ABERTA, AGUARDA REVISÃO
+## Pin da versão por linha — ✅ APLICADO (verificado em 15/09)
+
+✅ **As seis definições de job declaram `"nlp_engine_version": "0.12.3"` — literal, não a variável —
+em `main` e em `hml`.** Verificado em 15/09. Produção rodou a `0.12.3` nas seis linhas.
+**Sai da pauta com o Ops.** A história `301938` — *[NLP Engine] Fixar versão da nlp_engine por linha*
+— está com João Marcelo, em *Em Refinamento*, e vira confirmação.
+ℹ️ O mecanismo escolhido foi o literal na definição do job, sem tocar em `jobs/ambientes/`, que segue
+em `latest`. Era a pergunta A9 da pauta, e a resposta é sim.
+
+### Histórico da divergência
 
 🔴 **Produção roda `latest`, e isso moveu a versão QUATRO vezes em nove dias** — verificado no
 `engine_version` das tabelas de saída em `diamond_fabrica_ia`:
@@ -568,7 +868,9 @@ tem schema em prd** e precisa ser provisionada antes de entrar.
 **Regra proposta:** linha nova adota a versão pinada vigente, salvo especificação explícita **com
 medição** que a justifique.
 
-⚠️ **São QUATRO linhas em produção, não cinco** — só essas têm tabela de saída.
+✅ **São SEIS linhas em produção desde 14/09** — `cancer_rim` e `reumatologia` entraram.
+Em 15/09: hepatologia 12.184 · reumatologia 7.877 · cancer_rim 6.399 · tirads 3.410 ·
+cancer_estomago 669 · transplante_pulmao 257.
 
 ✅ **Feature `298598` (plano de bumps) atualizada** — parava na `0.11.1`. Passa a registrar as 8
 versões entregues, a `0.13.0` com 2 de 6, a ampliação do escopo da `0.14.0` com a contabilidade de
@@ -746,6 +1048,45 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 **P0/P1 sem card, e são nossos:** doc do consumidor + mensagem de erro · vazamento de memória no
 `process()` · lib não emite log no caminho NLP.
 
+## O bloco `runtime` e o contrato — 🟡 PLANO ESCRITO, AGUARDA REVISÃO DO USUÁRIO
+
+📄 **`_processo/alinhamento-configuracao-nlp-2026-09-15.md`** — pedido de acordo com o time de
+plataforma. 🔴 **Nada se altera nas configs antes desse alinhamento**, para o trabalho entrar no
+backlog deles com capacity.
+
+🔴 **O `runtime.llm_router` SOBREPÕE o `nlp.llm_router`** (`ntb_ia_loader.py:104-113`), e é o
+resultado que o motor lê. A SPEC 27 §2.1 e §6.1 afirmam o contrário.
+
+**O que o `runtime` sobrepõe hoje** — 5 chaves em 3 configs; as outras três já são coerentes:
+
+| config | chave | em `nlp` | executa |
+|---|---|---|---|
+| hepatologia | `enabled` | ausente → `False` | **`True`** |
+| hepatologia | `api_key_env` | ausente | `DATABRICKS_TOKEN` |
+| hepatologia | `fallback_policy` | `keep_current` | **`positive_in_band`** |
+| tirads | `enabled` | ausente | `False` |
+| transplante_pulmao | `enabled` | **`False`** | **`True`** |
+
+🔴 **Na hepatologia não é só liga/desliga** — `fallback_policy` decide o comportamento quando a
+chamada ao LLM falha. Medido em 15/09: **156 chamadas ao juiz**, `llm_router_mode: llm` em 12.184
+de 12.184 laudos. No transplante a config declara `False` e o juiz roda.
+
+✅ **O bloco deve sair, por ter perdido a função:** existia para sobreposição via widget, e
+**nenhum dos 15 widgets do runner o alimenta**. Só `runtime.llm_router` é lido — `runtime.profile`
+está em 5 das 6 configs e nunca é consultado.
+
+🔴 **A ordem importa:** declarar o efetivo no `nlp` **antes** de remover o bloco. Inverter desliga o
+juiz na hepatologia e muda a política de falha, sem erro e sem log.
+
+**A SPEC 27 tem CINCO divergências com o código** — `runtime` · `gold_query` do transplante (já
+corrigido) · lookbehind "sem caminho por config" (está em produção) · nomes dos catálogos
+(`diamond_ia_*` contra `diamond_fabrica_ia_*`) · "dicionário literal e nada mais".
+⚠️ **E o `boas-praticas/02` Passo 6 repete o erro** — é o guia que se segue ao criar linha nova, e
+instrui a preencher `runtime` com `enabled: False` "por documentação". Card `299238`.
+
+ℹ️ **O PR 7228 está parado desde 08/09 esperando exatamente esta história** — o retorno registrado
+pede "abrir uma história e levar para o próximo refinamento marcando o que deve ser mudado".
+
 ## Alinhamento com o Ops — pauta consolidada em 2026-09-10
 
 📄 **`_processo/alinhamento-ops-2026-09-10.md`** reúne **19 itens em 7 temas**, cada um com
@@ -829,6 +1170,21 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ## A refinar — anotado, não iniciado
 
+- 🟡 **Estudo: como o LLM é ligado e desligado na lib — BACKLOG LOCAL, sem card (15/09).**
+  Decisão do usuário: **não abrir card agora**; analisar quando possível e então incluir num bump
+  específico ou embutir noutro que mexa em algo próximo na lib.
+  **O que motiva:** o LLM é chamado de **três lugares independentes** — `llm_router_backend.py` (o
+  juiz, 53 ocorrências), `quantitative.py` (extração de medida, 15) e `ordinal_extraction.py`
+  (`llm_fallback`, 8) — e **nove chaves** participam da decisão, espalhadas por até 10 arquivos:
+  `llm_router`, `decision_mode`, `use_embeddings`, `llm_fallback`, `uncertainty_band`,
+  `ambiguity_band`, `relevance_mode`, `api_key_env`, `api_key`.
+  **Sintomas já medidos:** `ambiguity_band` é inerte em `decision_mode: hybrid` · a contabilidade de
+  tokens cobre só o juiz (**221 das 270 chamadas diárias sem registro**) · `api_key` literal vence
+  `api_key_env` · desligar de um lado e religar de outro é possível e silencioso.
+  ⚠️ **Muda contrato** — alinhar antes de implementar, como a régua exige. O resultado do estudo é
+  que decide em qual bump entra.
+
+
 - 🟡 **Expansão léxica por similaridade (fuzzy) na lib — DECISÃO EM ABERTO.** É o par da
   `0.12.2`: sozinha, a correção troca falso positivo por falso negativo nos laudos com texto
   corrompido. Medido com `difflib.SequenceMatcher`, `min_ratio` 0,84 (o do legado):
@@ -853,11 +1209,29 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ## Dívidas transversais
 
+- 🔴 **UM grant bloqueia TRÊS frentes — `USE CATALOG security` + `EXECUTE` em
+  `security.prd.rdsl_decrypt`.** Aparece como pendência no DII (falha da view de exportação em dev),
+  no PR 7275 da ateromatose (*"as cinco colunas saíram CIFRADAS"*), e é candidato a explicar o
+  terceiro caso, medido em 15/09: **a view do TI-RADS entrega `nome_paciente` e `medico_solicitante`
+  em base64 em 89 de 89 linhas**, em prd e em hml, enquanto a da reumatologia entrega em claro.
+  **Não são três pendências — é uma.** Tratar como item único com a plataforma.
+
 - ✅ **`main` sincronizada com a `hml`** (21/08, ambas na `0.9.4`). Estava 167 commits atrás e
   **causou a queda do TI-RADS em produção** — a esteira publica prd a partir da `main`. Débito que
   estava catalogado como "decisão de repositório" e era, na verdade, risco de produção.
-- 🔴 **9 CSVs com texto de laudo** nos commits locais da raiz — bloqueia push de `docs/`, que
-  portanto está **sem backup**.
+- 🔴 **São 16 CSVs com texto de laudo, não 9, e o push da raiz segue bloqueado.**
+  ✅ **Nada vazou:** os 16 **não existem no remoto**; os 3 CSVs que estão lá são fixtures
+  **sintéticas** (`SYN`, `fixture-e2e-001`) e ficam versionadas.
+  ✅ **17/09:** saíram do índice e a regra entrou no `.gitignore` (commit `0c46426`), **por
+  diretório** e não por extensão, para preservar as fixtures.
+  🔴 **Isso NÃO desbloqueia.** Os arquivos estão rastreados dentro de **4 commits antigos**
+  (`22061c7`, `5cd6ee9`, `87f7f3c`, `a69b4bb`), a 74–87 commits do topo. Pushar levaria o PHI.
+  **São 98 commits locais.** Dois caminhos, ambos exigindo decisão: **reescrever os 4 commits**
+  (`git filter-repo`, não instalado — operação destrutiva, confirmação uma a uma), ou **snapshot
+  novo a partir de `origin/main`** (perde a granularidade). ℹ️ O risco da reescrita é baixo: os
+  98 commits nunca foram publicados.
+  ⚠️ **O `.gitignore` da raiz ignora a si mesmo** (primeira linha) — a regra de LGPD vive só
+  nesta máquina e não viaja com o repositório.
 - 🔴 **A base ouro não tem lugar oficial.** Gabarito vive em planilha, e-mail e arquivo
   temporário — sem `spec_version`, sem `dt_anotacao`, sem dono. Custou uma conclusão errada em
   20/08. A sandbox do Datahub (Diego) **não cobre** isso: nosso caso é o inverso, artefato que já
@@ -866,7 +1240,31 @@ que aparecerem, alinhar de uma vez com o `283647`).
   sobre schema e formato, com reuso posterior e treinamento de modelo proprietário no horizonte.
   Enquanto isso os harnesses saíram do diretório temporário do job — que é apagado junto com ele —
   para `Desktop/Rede D'Or/_ferramentas/`, fora do git.
-- 🔴 **OS EMBEDDINGS NÃO FUNCIONAM EM PRODUÇÃO — medido em 10/09.** As três linhas que os declaram
+- ✅ **A CAMADA SEMÂNTICA RODOU COM MODELO REAL PELA PRIMEIRA VEZ — dev, 16/09, `cancer_rim`.**
+  📄 `_processo/diagnostico-embeddings-run-joao-2026-09-16.md`. Branch `feature/embedding` da
+  plataforma (João): o `embedding_model` passa a ser um **Model do Unity Catalog**
+  (`mlops_fabrica_ia.default.st_paraphrase_multilingual_minilm`), resolvido pelo `ConfigLoader`
+  para um path local no driver antes de o config chegar ao motor.
+  **10.000 laudos, `[sentence_transformers]` em 10.000, ZERO fallback.**
+  🟡 **Reportado como "não retorna embedding", e não é falha:** o `cancer_rim` declara
+  `similarity_threshold: 0.92` e o **máximo observado foi 0,9654**, com apenas **2 laudos ≥ 0,92**
+  em 10.000 (11 ≥ 0,90, 85 ≥ 0,85). Não promover era o objetivo declarado do 0,92 — e os
+  candidatos que o comentário da config previa **agora existem**, com score gravado.
+  ⚠️ **Os dados NÃO provam que foi o UC que carregou:** `embedding_model` não é emitido no blob, e
+  em dev o path antigo do Volume também resolve. Quem distingue é a linha de log do driver.
+  🔴 **E a query que circulou estava errada:** o acessor é `$.decision_trail.steps.semantic`, não
+  `$.decision_trail.semantic` — com o caminho errado o campo vem nulo e a leitura inverte.
+  ℹ️ **Não fecha o card `305810`** — ali o problema é o caminho em produção; este run é dev.
+
+- 🔴 **OS EMBEDDINGS NÃO FUNCIONAM EM PRODUÇÃO — remedido em 15/09, e são QUATRO linhas.**
+  hepatologia **12.094 de 12.184 (99,3%)** · cancer_rim **7.763 de 7.892 (98,4%)** ·
+  tirads **3.155 de 3.659 (86,2%)** · cancer_estomago **728 de 728 (100%)**.
+  ✅ **Pré-condição atendida:** a camada semântica foi exercitada em **100% dos laudos** das quatro.
+  🔴 **O `cancer_rim` prova que trocar o literal não resolve:** aponta para `gold_fabrica_ia_hml`
+  desde o PR 7159 e falha igual — é o volume de homologação, e a linha roda em produção.
+  📄 Card `305810` — *[Plataforma NLP] Modelo de embeddings sem caminho válido em produção*, criado
+  em 15/09, com causa raiz escrita. O `298600` ficou com a nossa metade, bloqueado por ele.
+  ℹ️ Medição anterior, de 10/09, com as três linhas que os declaravam:
   rodam em `token_overlap`, e a trilha registra laudo a laudo:
   `"semantic": "... [token_overlap] FALLBACK:FileNotFoundError"`.
 
