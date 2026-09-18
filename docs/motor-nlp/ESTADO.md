@@ -1229,8 +1229,8 @@ que aparecerem, alinhar de uma vez com o `283647`).
   sem `--force`**. HEAD em `6ba3bc5`, **98 commits a subir**.
   ℹ️ O commit que só removia os 16 do índice foi **podado por ficar vazio** — depois da reescrita não
   havia o que apagar. A explicação vive no diário de 17/09.
-  🟡 **Falta só executar `git push origin main`** — barrado pelo classificador do modo automático na
-  sessão, não por problema do repositório.
+  ✅ **PUSHADO em 17/09** — `528498b..10762a1`, 99 commits, fast-forward, confirmado pela REF.
+  **`docs/` deixa de estar sem backup**, pela primeira vez desde que a dívida foi registrada.
   **Backups guardados fora do git**, para descarte depois da confirmação do push:
   `_backup-git-projects-2026-09-17/` (cópia integral do `.git` anterior) e
   `_dados-clinicos-backup-2026-09-17/` (os 16 CSVs).
