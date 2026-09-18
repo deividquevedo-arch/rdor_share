@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-17**.
+> Atualizado em **2026-09-18**.
 
 ---
 
@@ -204,151 +204,91 @@ procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**
 nunca chegam ao motor, contra 36 rebaixados pelo gate. Sem medição e sem card — filtro de entrada
 só se mede rodando.
 
-## `0.13.0` — 🟡 4 DE 6 CARDS, BRANCH PUSHADA SEM PR · ✅ GOLDEN EXECUTADO
+## `0.13.0` — ✅ SEIS DE SEIS CARDS · 🟡 PR 7357 AGUARDA REVISÃO
 
-✅ **Branch `feat/0.13.0-estrutura` pushada em 17/09** — `9313809..0b26b6a`, 8 commits, dez
-gates verdes. **Sem PR** — os dois ADRs aguardam aval.
-✅ **Não-regressão provada, e o golden roda LOCAL** — não precisa de runner no Databricks. Corpus
-sintético, Python puro, uma árvore de trabalho por versão. **Baseline `v0.12.3`**, não a `v0.12.0`
-que a SPEC nomeava (entre as duas saíram três versões com mudança deliberada); SPEC corrigida.
-**Golden de decisão:** 8 laudos × 2 configs × 9 campos, sha256 `e9f9bb52…` idêntico.
-**Golden do clamp (item 4 da SPEC):** 18 entradas degeneradas × 2 funções, idêntico em 36 de 36 —
-**o item 4 fica nesta versão**, a condição de sair era alteração de valor e ela não ocorreu.
-⚠️ O corpus do golden de decisão tem **16 linhas** e não esgota a superfície; quem dimensiona a
-divisão de módulos é o CA5 do `253581` (300 laudos, byte a byte).
-🟡 **`253582` `[P2-16]` — CA5 e CA8 comentados no card; CA2 e CA3 abertos, e nenhum é mecânico:**
-o CA2 pede **renomear** (`_as_float` tem duas definições que são funções *diferentes* — uma extrai
-número de texto com `None` na ambiguidade, a outra faz coerção com default; fundir mudaria
-comportamento); o CA3 descreve uma duplicata de regex que **não existe** no código de hoje.
-🔴 **Falta para fechar:** aval nos dois ADRs · bump do `pyproject` (segue em `0.12.3`) · CA2 e CA3.
+**PR 7357** — `feat/0.13.0-estrutura` → `hml`, `mergeStatus: succeeded`, sem conflito. Descrição com
+matriz de impacto: **nenhum** em API pública, decisão clínica, contrato, configuração, consumidor e
+dependências.
 
-Branch `feat/0.13.0-estrutura`. 🔴 **CORREÇÃO (16/09): a SPEC NÃO estava na `hml`.** O `fa9e7ea`
-é commit da branch `docs/spec-0.13.0-estrutura`, pushada e **nunca mergeada** — e o arquivo também
-não estava na branch de trabalho. Quem fosse implementar não veria a SPEC.
-✅ **Trazida para a `feat/0.13.0-estrutura` em 16/09, já com o escopo corrigido.**
+✅ **Os seis cards fechados e comentados:** `253579` singleton do spaCy · `253580` decomposição do
+`process()` · `253581` divisão do módulo · `253582` clamp e helpers · `253591` e `253593` ADRs.
+✅ **Os dois ADRs ACEITOS em 18/09**, com ressalva registrada nos documentos: *passíveis de revisão
+futura para readequação junto à plataforma*.
 
-🔴 **A SPEC declarava escopo que não vale mais.** Descrevia o item 1 **com streaming** e a matriz
-de impacto dizia *"API pública: breaking — `process()` retorna iterador"*. O streaming saiu para
-bump próprio por decisão do usuário, e isso só existia no `ESTADO.md`. Corrigido: item 1 preserva
-a assinatura, a versão deixa de ser breaking, e o ganho de memória do G6 sai junto com o streaming.
+🔴 **Não-regressão em quatro recortes contra a `v0.12.3`, delta zero em todos.** O principal é o
+golden de corpus de referência — **365 laudos sintéticos × 8 perfis = 2.920 linhas**, payload
+completo, sha256 `238916d0…` idêntico. Virou script versionado: `scripts/golden_300.py`, com
+`make golden` e `make golden-cobertura`.
+⚠️ **A pré-condição é impressa junto com o resultado**, e não é formalidade: duas configurações do
+próprio harness ficaram **inertes em silêncio** antes disso, e o golden passava verde medindo nada
+(`relevant_from` não é chave do bloco ordinal; `llm_router.mode: "hybrid"` não existe — os únicos
+modos são `llm` e `deterministic`, e o desconhecido cai em `deterministic` sem chamar o juiz).
+Cobertura: régua **420** linhas · semântica **1.825** · ordinal **900** · juiz **295**.
 
-✅ **Item 5 (`253591` [P3-25]) — etapa 1 ENCERRADA em 16/09: o aninhamento é INTENCIONAL.**
-`src/nlp_engine/__init__.py` e `src/nlp_engine/nlp_engine/__init__.py` nasceram no **mesmo commit**
-(`ac16e09`, 12/06/2026); ali `monitoring/` e `nlp_engine/` já eram irmãos, e o docstring de topo já
-declarava *"motor de NLP clinico (nlp_engine) e observabilidade (monitoring)"*. Não é `mkdir`
-residual — o pacote de topo é guarda-chuva de distribuição, coerente com a arquitetura declarada.
-**Recomendação: manter**, e a entrega vira o CA3 (documentar), não a migração dos CA4–CA7.
-⚠️ **Falta o CA2: aprovação explícita do responsável técnico da lib.**
+ℹ️ **Dois CAs não fecharam como o critério pedia, e a recusa é a entrega:**
+o **CA2 do `253582`** — os dois `_as_float` **não eram duplicata**: um extrai número de texto e
+recusa ambiguidade com `None`, o outro coage config com default. Viraram `_single_float` e
+`_finite_float`; **a entrega é o nome, não a fusão**.
+o **CA3 do `253582`** — a regex de ponteiro virou constante compilada, mas **compartilhar com o
+`boilerplate.py` foi reprovado por medição**: `"Laudo gerado por sistema especialista."` o footer
+mantém e o boilerplate remove; `"Sistema da radiologia WEBRIS."` é o inverso. Travado em 3 testes.
 
-- ✅ **`253579` [P2-13] singleton do spaCy.** A consolidação já existia; faltava o que o card
-  descreve: **inicialização sem lock, publicando o objeto ANTES do `add_pipe`**. Uma segunda
-  thread recebia pipeline **sem sentencizer**, e o `decision_pipeline` degradava em SILÊNCIO para
-  `full_doc`. Corrigido com double-checked locking + publicação atômica. **5 mutantes mortos**;
-  memória: **−580,2 KB por processo**.
-- ✅ **`253581` [P2-15] divisão do módulo.** 778 → **407** linhas, mais três de 207, 87 e 210.
-  **CA5 provado: 300 laudos, ZERO divergentes, byte-a-byte.**
-  ⚠️ Três desvios declarados: primitivos de frase e `OrdinalMention` foram para o módulo de
-  categoria (evitam ciclo); **o CA2 não fecha ao pé da letra** — pede nenhum arquivo acima de 300
-  linhas e **dez excedem**, `quantitative.py` tem 1.687; os nomes `test_rads_*` do CA6 são
-  anteriores ao rename de 0.9.0.
-✅ **17/09 — a `0.13.0` foi de 2 para 4 dos 6 itens**, e o que falta não é código.
-- **`253580`** [P2-14] — **7 de 8 CAs**. A decomposição já existia (`engine.py` tem 102 linhas,
-  `process()` 11 de corpo); os gaps eram **9 de 12 steps sem teste direto** e 2 docstrings.
-  **22 testes novos**, 3 mutantes verificados. Falta o **CA3**: golden de ≥300 laudos contra a `main`.
-- **`253582`** [P2-16] — CA1, CA4, CA6 e CA7 fechados. Eram **2** implementações de clamp, não 4;
-  **a divergência virou parâmetro** (`_clip01(..., invalido=0.0)`) em vez de ser apagada, e `NaN` é
-  inválido em todos os caminhos. **Impacto zero**, provado por inspeção das 7 configs. ⚠️ CA2
-  (`_as_float`) e CA3 (regex) têm **premissa inválida**: não são duplicatas.
-- **`253591`** e **`253593`** — **ADRs escritos**, em `Status: proposto`. 🟡 **Falta o CA2 dos dois:
-  aprovação explícita do responsável técnico da lib.**
-- 🔵 **Streaming fora**, e agora **na SPEC** — antes a decisão só existia no `ESTADO.md`, e a SPEC
-  ainda declarava a versão como *breaking*.
+**Gate: 1.240 testes, 88,11% por ramo**, sete alvos, `release-check` coerente.
+🟡 **Falta:** merge do 7357 → `main` → publicação no feed de prd. É a cadeia para pinar versão nova.
 
-🔴 **Falta para fechar o bump:** golden contra a `v0.12.0`, seção no `RELEASE.md` e bump no
-`pyproject` (está em `0.12.3`). Gate hoje: **1.237 testes, 88,05%** por ramo.
+## `0.14.0` — 🟡 SPEC ABERTA, MEDIÇÃO FEITA, AGUARDA ALINHAMENTO DE CONTRATO
 
-✅ **PASSE DE CA EM 16/09 — quatro cards da `0.12.x` fechados na árvore.** 📄
-`_processo/passe-de-ca-cards-0.12.x-2026-09-16.md`. `253574` [P2-08] cinco `type: ignore` → zero,
-sem `noqa` · `253592` [P3-26] três links quebrados, decisão A/B registrada e **gate de índice** ·
-`253589` [P2-23] site publicado como artefato de CI · `253594` [P3-28] `detect-private-key`,
-`make hooks-install` e job de CI · `253587` [P2-21] **31 casos de borda de banda**, com dois
-mutantes mortos.
-🔴 **Duas correções à triagem de 15/09**, que amostrava o primeiro critério: o CA1 do `253594`
-estava atendido, e o `253587` tinha **57 de 60** parametrize com ids descritivos — a contagem
-ignorava `pytest.param(..., id=...)`.
-🔴 **`pre-commit` não era dependência declarada** — o `CONTRIBUTING` mandava rodar um comando que
-não existia. Declarado; derruba também o CA2 do `253590`.
-**Gate: 1.202 testes, 87,77% por ramo**, ruff/format/mypy/api-ref/api-surface/doctest verdes.
-✅ **Hooks instalados e os DOIS estágios verdes** — 6 no commit, 10 no push com a cobertura.
-O `pre-commit` entrou nas dependências de dev (não era declarado, e o `CONTRIBUTING` mandava
-rodá-lo), e o `uv.lock` foi regerado no mesmo passo.
-🔴 **CA4 do `253594` fica ABERTO: 9,4s contra o alvo de 5s.** Era 42s; os três checks de projeto
-inteiro (`doctest`, `api-ref-check`, `api-surface-check`, 27,6s somados) foram para o `pre-push`.
-🔴 **O alvo colide com o CA3 do próprio card:** piso do `pre-commit` 2,71s + `detect-private-key`
-(exigido pelo CA3) 1,13s + ruff 0,56s + format ~0,5s + guarda 0,53s = **~5,4s antes de qualquer
-gate de qualidade**. Sem `mypy` dá 6,85s; sem `mypy` e sem `large-files`, 5,20s — nenhuma fecha.
-✅ **O `mypy` FICA no commit** (decisão do usuário): mover não fecha o CA4 e troca 3,65s por
-`amend`/rebase quando o push reprova. Ele verifica o código recém-escrito, não artefato de
-consistência como os três que foram para o push.
-✅ **Decisão: não medir em outra máquina.** O alvo de 5s é exemplo no card; a contraposição é a
-decomposição. ⚠️ Hook de pre-commit **só roda na máquina de quem programa** — Windows corporativo é
-o ambiente real, não extrapolação; o que falta é amostra, e isso não será perseguido.
-ℹ️ O primeiro build dá o número de Linux (o estágio CI roda em PR de qualquer branch e agora
-executa `make hooks`), mas é `--all-files`, **não** a medição do CA4.
-🔴 **E o CA7 do `253589` já estava atendido** — o `site/` era publicado como artefato `docs` desde
-antes. O passo duplicado que eu acrescentei foi removido (`db695da`).
-✅ **O hook de push pagou o custo no primeiro uso:** pegou `ModuleNotFoundError: No module named
-'scripts'` que passava em `python -m pytest` e falharia no CI (`uv run pytest`). Corrigido com
-`pythonpath = ["src", "."]`.
-🟡 Abertos: `253590` CA8 (validação por terceiro, não verificável por quem escreveu) ·
-`253586` [P2-20] fixtures, que é refinamento.
-- 🔵 **`process()` com streaming vira BUMP PRÓPRIO** — decisão do usuário: quebra a API e a
-  plataforma já contorna montando lotes externamente.
+📄 `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`, aberta em 18/09. **O RESEARCH está
+fechado.** O que falta é alinhamento, e é o caminho crítico da versão.
 
-ℹ️ **A fila da lib é nossa.** Nenhum dos seis cards do Ops depende deles para começar; onde o Ops
-é gargalo é em **config** — `waive`, `gold_filter`, pin e índice de dev.
+🔴 **São DUAS vias, e o card `283648` só descreve uma.** Além de o juiz promover, **a camada
+semântica promove e o juiz nunca é consultado**: em `hybrid`, `fl = 0` com
+`semantic_score >= similarity_threshold` vira `fl = 1`, e a arbitragem só ocorre **dentro** da
+banda. **Nenhuma banda fecha as duas** — alargar leva o juiz a ver tudo, estreitar **abre** a via
+semântica. O contorno registrado no card fecha uma e abre a outra.
 
-🟡 **Plano de bumps registrado** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`.
-✅ `0.12.0`–`0.12.3` **entregues** → 🟡 `0.13.0` estrutura (2 de 6) → `0.14.0` **juiz sem evidência
-+ tokens na extração quantitativa** (card `283648`, P1 aberto há 20 dias sem medição registrada;
-o item de tokens é inclusão de 10/09) → `0.15.0` vínculo lesão↔medida.
+✅ **Medido (16/09), janela de 30 dias, seis linhas:** **118 laudos** entregues como relevantes com
+o juiz acionado e **zero span positivo de régua** — **todos na hepatologia**; `cancer_estomago` 0 em
+27, `cancer_rim` 0 em 16. **36 são correntes** (31/08 a 16/09, ~1 por dia útil), com score **0,367 a
+0,566**. 📄 `_processo/medicao-p0-29-juiz-sem-evidencia-2026-09-16.md`.
+🔴 **A causa é aritmética:** o teto analítico de laudo sem achado é **0,597**, e a hepatologia
+declara `uncertainty_band: [0.35, 0.65]` — **o piso está abaixo do teto**. O `cancer_estomago`
+(`[0.60, 0.97]`) e o `cancer_rim` (`[0.75, 0.95]`) dão zero por isso.
+🔴 **Os outros 82 são o incidente do `403`**, e expõem outra coisa: naquele dia **1.371 laudos foram
+entregues pela FALHA**, por `fallback_policy: positive_in_band` declarada no `runtime` contra
+`keep_current` no `nlp` — **e o `runtime` vence**. Dá efeito clínico medido ao bloco `runtime` e
+reforça o card `283644`.
+✅ **Via B medida:** ateromatose `0.2.1` **33 de 44** · `cancer_rim` em dev **2 de 10.000**. O que
+separa os números é o **limiar**, não a régua.
 
-🔴 **O P0-29 tem DUAS VIAS, e a segunda não é alcançável por banda** — ampliação redigida em 17/09,
-**não postada**: 📄 `_processo/ampliacao-card-283648.md`. Além do juiz promover, **a camada semântica
-promove e o juiz nunca é consultado**: em `hybrid`, `fl = 0` com `semantic_score >= threshold` vira
-`fl = 1`, e a arbitragem só ocorre dentro da banda.
-**Medido:** ateromatose `0.2.1` **33 de 44** · cancer_rim em dev **2 em 10.000**.
-**Banda larga** → juiz vê 81,5% dos laudos, custo proibitivo, `match_rate` 96,2% → 87,8%.
-**Banda estreita** → a via semântica passa livre. **O contorno do card fecha uma e abre a outra.**
-⚠️ O card está **sem critério de aceite**; sete propostos no rascunho.
-⚠️ **A hepatologia roda em produção com `[0.35, 0.65]` e o contorno não está aplicado lá** — mas
-**nada disso chega ao negócio**: a linha só acumula na tabela de saída, e os destinatários do
-exchange em prd são time técnico e caixa institucional, não a mesa de navegação (falta o fluxo
-complementar, card `303791`).
-**Então o P0-29 na hepatologia é dívida acumulando, não dano em curso.** Entra na passada única da
-frente, junto com o `embedding_model`, o `fallback_policy` e a segmentação — não precisa de ação
-isolada.
+🔴 **E o custo entrou na conversa (18/09):** a banda governa de **7 a 6.111 chamadas/dia** na mesma
+lib, e uma chamada custa **~100×** o processamento local do laudo. **A banda é a variável dominante
+de custo da plataforma**, não só de qualidade.
 
-✅ **P0-29 MEDIDO em 16/09 — a pré-condição da `0.14.0` está fechada.** Card `283648`.
-📄 `_processo/medicao-p0-29-juiz-sem-evidencia-2026-09-16.md`. Janela de 30 dias, seis linhas:
-**118 laudos entregues como relevantes com o juiz acionado e ZERO span positivo de regra — todos na
-hepatologia.** As outras duas linhas com juiz ligado deram **zero** (cancer_estomago 0 em 27,
-cancer_rim 0 em 16).
-🔴 **36 são correntes** (`llm_router_llm_positive`, 31/08 a **16/09**, ~1 por dia útil, 2 hoje), com
-score **0,367 a 0,566** — abaixo do teto analítico **0,597** de laudo sem achado. A hepatologia
-declara `uncertainty_band: [0.35, 0.65]`: **o piso está abaixo do teto**, então laudo sem achado
-nenhum chega ao juiz. O ca-estômago usa `[0.60, 0.97]` e o ca-rim `[0.75, 0.95]` — daí o zero.
-🔴 **82 são o incidente do 403** (21 e 26/08, `llm_error: http_403`), e expõem outra coisa: naquele
-dia **1.371 laudos foram entregues pela FALHA**, por `fallback_policy: positive_in_band` —
-declarada em `runtime.llm_router` contra `keep_current` no `nlp`, e **o `runtime` vence**.
-✅ Desde 02/09 há **zero falhas em 1.371 chamadas** — o PR 7135 resolveu.
-ℹ️ **Dá efeito clínico medido ao bloco `runtime`** e reforça o card `283644`, sem abrir card novo.
-⚠️ Não diz se os 36 estavam clinicamente certos — ausência de evidência é violação de arquitetura
-de todo modo, mas dimensionar a remoção exige olhar os 36 contra o critério da hepatologia.
+⚠️ **Pré-requisito: dois campos novos exigem alinhamento ANTES de implementar** — tokens na camada
+quantitativa (221 das 270 chamadas de um dia sem registro), e um campo que torne a promoção
+semântica **isolável** (hoje `decision_source` sai `hybrid` para todos os laudos que passam pela
+camada). Anda junto com o card `283647`.
+🔴 **Os dois cards estão com critério de aceite VAZIO.** Sete CAs propostos na SPEC.
+⚠️ **Na hepatologia nada disso chega ao negócio hoje** — a linha acumula e o exchange em prd vai
+para time técnico. **É dívida acumulando, não dano em curso**; entra na passada única da frente.
 
-⚠️ **Branches sem push:** `docs/plano-e-specs-ops` (plano dos 28 cards + SPEC da `0.13.0`) e
-`docs/0.11.1-impacto-medido`. Conteúdo absorvido, **exceto a SPEC da `0.13.0`** — descartar as duas
-implica reescrevê-la.
+🟡 **Plano de bumps** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`. Fila:
+✅ `0.12.x` → ✅ `0.13.0` (PR aberto) → 🟡 `0.14.0` → 🔴 `0.15.0` (card `306034`, **Em Refinamento**,
+sem SPEC) → estrutura de pacote, **sem data e condicionada**.
+⚠️ O comentário postado no `298598` ficou **desatualizado** no mesmo dia: diz "posição em aberto" e
+"propor refinamento do POP", e a conclusão foi **convergir**. Precisa de uma linha corrigindo.
+
+## Resíduos da `0.12.x` — ainda abertos
+
+- 🔴 **CA4 do `253594` `[P3-28]`: 9,4s contra o alvo de 5s.** Era 42s; os três checks de projeto
+  inteiro foram para o `pre-push`. ✅ **Decisão: não medir em outra máquina** — o alvo de 5s é
+  exemplo no card, e o `mypy` **fica** no commit. O que falta é amostra, e não será perseguido.
+- 🟡 **`253590` CA8** — validação por terceiro, não verificável por quem escreveu.
+- 🟡 **`253586` `[P2-20]`** — fixtures compartilhadas; é refinamento.
+
+⚠️ **Branches sem push:** `docs/plano-e-specs-ops` e `docs/0.11.1-impacto-medido`. Conteúdo
+absorvido; descartar não perde mais nada — a SPEC da `0.13.0` já vive na branch de trabalho.
 
 ## Tireoide V2 — ✅ ENTREGUE EM HML
 
@@ -910,6 +850,16 @@ Ops, com a mesma recomendação. Corrigido no documento. O de log concretiza os 
 caráter complementar — os itens de concordância não vão.
 
 ## Plataforma / MLOps
+
+✅ **CUSTO DA LIB MEDIDO em 18/09** — `scripts/medir_custo_por_camada.py`, 365 laudos × 8 perfis,
+mediana de 3 repetições. **Régua pura 20,76 ms/laudo · perfil completo 24,44 ms (+18%) · vazão
+≈48 laudos/s.** Marginal: semântica +3,51 · ordinal +0,33 · juiz com rede estubada +2,65 ms.
+⚠️ As três marginais estão **perto do ruído** (±0,5 ms/laudo) — não afirmar ordem entre elas.
+✅ **A régua é ~85% do custo local, e a lib NÃO é gargalo em lugar nenhum:** os 12.184 laudos
+diários da hepatologia são **≈4 minutos de CPU**.
+🔴 **O que domina é rede, e rede é função da banda.** `[NAO INFORMADO]` seguem a latência com o
+modelo real de embeddings e a do juiz com rede — as duas exigem run no ambiente.
+
 
 🟡 **O pipeline lê o laudo em RTF cru, e existe um irmão em texto limpo** (medido 09/09).
 `exm_laudo_texto` vem de `proced_laudo_exame_original`, derivado de
