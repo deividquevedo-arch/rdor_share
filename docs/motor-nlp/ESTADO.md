@@ -827,6 +827,34 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ✅ **`299111` reumatologia em *Pronto para QA***, comentado com a evidência.
 
+## Laudos em PDF (CDI) e repositório clínico — ✅ LEVANTAMENTO FECHADO EM 18/09, PACOTE PARA SEGUNDA
+
+Segundo projeto, com o Diego (blueprint RIS PACS → OCR → gold) e o Head. Diário em
+`_processo/diario/2026-09-16.md`; guia durável em `_fundacao/guia-repositorio-clinico-gold-v0.md`;
+entregas em `.alt.doc/CDI/` (fora do git; `samples/` tem PHI e nunca sobe).
+
+- ✅ **Blueprint revisado** (`arquitetura-laudos-pdf-rispacs_v2.drawio`) e **proposta de implementação
+  v0.10**: MVP com `ai_parse_document` direto em colonoscopia e endoscopia, destino
+  `tb_gold_mov_exame`, solução própria na fase 2. Aguarda validação do Diego.
+- ✅ **Medição independente da gold inteira, 12 meses** (set/25–ago/26, carga ≤ 18/09 10:55):
+  66,9 M exames; sem laboratório **9.146.113 · 75,6% legíveis · 4,2% recuperáveis · 20,1% perdidos**;
+  agosto sem laboratório **94,4 / 4,1 / 1,6**. Colonoscopia + endoscopia corrente: 91% legíveis, PDF
+  em cinco unidades TASY (~1,3 mil/mês).
+- ✅ **Genie reconciliada.** Dois relatórios dela auditados; no universo que ela usou (integração
+  IMAGEM, 15,35 M) os números batem ao exame (PDF 83.454 = 83.454). O universo dela mistura 7 M de
+  laboratório; Ecocardiograma errado (23 mil × 403 mil). Prompt v3 fechado.
+- ✅ **Duas viradas documentadas:** dez/25–jan/26 ("sem item" 34% → 7%, gold inteira) e 20/07/26
+  (viewer some nas endoscopias). Nenhuma estava registrada em lugar nenhum.
+- 🔴 **Acesso** a `especialistas.pacs_streaming.laudopdf_*` e `diamond_axis_hml` — única forma de
+  saber onde estão os 140 mil laudos do viewer. Pedido ao Head na síntese.
+- 🟡 **Decisões do time (segunda):** divisão de categorias (Genie × referência), escopo da
+  anuscopia, dono para Santa Helena (texto vazio) e WPD/MV (sem item), chave do PDF no Viewershell
+  (não há `num_pedido_integracao` em exame em PDF), cardiologia gráfica como segunda onda
+  (7 mil PDFs/mês, maior fonte atual).
+- 🟡 **Time dos filtros:** o `%endoscopia%` em uso traz ~20 mil linhas/ano de otorrino e faturamento
+  e deixa fora retossigmoidoscopia e CPRE; filtro final v3 no guia. Vale para `gold_filter` de
+  qualquer especialidade: inventariar nos dois sentidos.
+
 ## A refinar — anotado, não iniciado
 
 - 🟡 **Expansão léxica por similaridade (fuzzy) na lib — DECISÃO EM ABERTO.** É o par da
