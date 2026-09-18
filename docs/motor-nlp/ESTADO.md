@@ -1219,19 +1219,24 @@ que aparecerem, alinhar de uma vez com o `283647`).
 - ✅ **`main` sincronizada com a `hml`** (21/08, ambas na `0.9.4`). Estava 167 commits atrás e
   **causou a queda do TI-RADS em produção** — a esteira publica prd a partir da `main`. Débito que
   estava catalogado como "decisão de repositório" e era, na verdade, risco de produção.
-- 🔴 **São 16 CSVs com texto de laudo, não 9, e o push da raiz segue bloqueado.**
-  ✅ **Nada vazou:** os 16 **não existem no remoto**; os 3 CSVs que estão lá são fixtures
-  **sintéticas** (`SYN`, `fixture-e2e-001`) e ficam versionadas.
-  ✅ **17/09:** saíram do índice e a regra entrou no `.gitignore` (commit `0c46426`), **por
-  diretório** e não por extensão, para preservar as fixtures.
-  🔴 **Isso NÃO desbloqueia.** Os arquivos estão rastreados dentro de **4 commits antigos**
-  (`22061c7`, `5cd6ee9`, `87f7f3c`, `a69b4bb`), a 74–87 commits do topo. Pushar levaria o PHI.
-  **São 98 commits locais.** Dois caminhos, ambos exigindo decisão: **reescrever os 4 commits**
-  (`git filter-repo`, não instalado — operação destrutiva, confirmação uma a uma), ou **snapshot
-  novo a partir de `origin/main`** (perde a granularidade). ℹ️ O risco da reescrita é baixo: os
-  98 commits nunca foram publicados.
-  ⚠️ **O `.gitignore` da raiz ignora a si mesmo** (primeira linha) — a regra de LGPD vive só
-  nesta máquina e não viaja com o repositório.
+- ✅ **HISTÓRICO REESCRITO EM 17/09 — o PHI saiu, e o push está liberado.**
+  Autorizado explicitamente pelo usuário; os 98 commits **nunca foram publicados**, então ninguém
+  mais tinha esse histórico.
+  **Verificado depois da reescrita:** zero ocorrências de CSV clínico em qualquer ref · zero objetos
+  alcançáveis · as **3 fixtures sintéticas preservadas** · os 16 arquivos **intactos em disco** ·
+  os 4 commits mantidos com assunto e conteúdo restante (`765ec42`, `17d86c3`, `e4b3dc9`, `99b41a5`).
+  ✅ **`origin/main` inalterado em `528498b` e ainda ancestral do HEAD** — o push é **fast-forward,
+  sem `--force`**. HEAD em `6ba3bc5`, **98 commits a subir**.
+  ℹ️ O commit que só removia os 16 do índice foi **podado por ficar vazio** — depois da reescrita não
+  havia o que apagar. A explicação vive no diário de 17/09.
+  🟡 **Falta só executar `git push origin main`** — barrado pelo classificador do modo automático na
+  sessão, não por problema do repositório.
+  **Backups guardados fora do git**, para descarte depois da confirmação do push:
+  `_backup-git-projects-2026-09-17/` (cópia integral do `.git` anterior) e
+  `_dados-clinicos-backup-2026-09-17/` (os 16 CSVs).
+  ⚠️ **O `.gitignore` da raiz ignora a si mesmo** (primeira linha) — a regra de LGPD vive só nesta
+  máquina e não viaja com o repositório. Item em aberto.
+
 - 🔴 **A base ouro não tem lugar oficial.** Gabarito vive em planilha, e-mail e arquivo
   temporário — sem `spec_version`, sem `dt_anotacao`, sem dono. Custou uma conclusão errada em
   20/08. A sandbox do Datahub (Diego) **não cobre** isso: nosso caso é o inverso, artefato que já
