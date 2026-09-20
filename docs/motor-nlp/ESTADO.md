@@ -1159,6 +1159,24 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ## Dívidas transversais
 
+- 🔴 **GRANT NOVO E BLOQUEANTE — `USE CATALOG` em `mlops_fabrica_ia`** (19/09).
+  O PR 7321 apontou o `embedding_model` de **seis configs** para o Model do Unity Catalog
+  `mlops_fabrica_ia.default.st_paraphrase_multilingual_minilm`. **O caminho funciona** — provado no
+  run de 16/09, 10.000 de 10.000 com `[sentence_transformers]`, com a identidade de quem o criou.
+  **Nós não temos acesso**, e o run em dev falha no passo `config`, antes de o motor existir:
+  `PERMISSION_DENIED: User does not have USE CATALOG on Catalog 'mlops_fabrica_ia'`.
+  ✅ **É grant, não endereço** — provado comparando a mensagem de erro: catálogo inexistente devolve
+  *"Catalog ... does not exist"*; este devolve *"does not have USE CATALOG"*. O catálogo existe no
+  mesmo metastore de hml e prd (`azure:eastus2:cc473134…`).
+  🔴 **Quatro jobs quebram na `hml` às 04:00 de segunda** — `hepatologia`, `cancer_rim`, `tirads` e
+  `cancer_estomago` têm `embedding_enable=true`. `ateromatose` e `cancer_colon` declaram o mesmo
+  Model e ficam **inertes** por `use_embeddings: False`.
+  🟢 **Produção não é afetada:** a `main` está 68 commits atrás e tem **zero** referência ao Model —
+  ainda usa os caminhos de Volume. Verificado: runs normais em prd em 18/09, 4 linhas, `0.12.3`.
+  ⚠️ **O pedido precisa nomear DUAS identidades:** a nossa e a **de serviço que roda os jobs**. A
+  validação de 16/09 foi interativa; identidade de job não herda acesso pessoal.
+  🔴 **Bloqueia a validação da `0.13.0` em dev** — e não é problema da lib.
+
 - 🔴 **UM grant bloqueia TRÊS frentes — `USE CATALOG security` + `EXECUTE` em
   `security.prd.rdsl_decrypt`.** Aparece como pendência no DII (falha da view de exportação em dev),
   no PR 7275 da ateromatose (*"as cinco colunas saíram CIFRADAS"*), e é candidato a explicar o
