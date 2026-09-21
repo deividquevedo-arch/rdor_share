@@ -236,7 +236,7 @@ escrita na própria descrição do PR. Registrado como aconteceu.
 Havia **43.036 pendentes** acumulados em dev, e eles inflavam uma janela de 22.281 para **60 mil**.
 O sintoma é **volume inexplicado, não erro**. É irmão do `298596` e entra no mesmo card.
 
-## `0.14.0` — ✅ EM PRODUÇÃO NOS DOIS FEEDS · ✅ NÃO-REGRESSÃO EM AMBIENTE · 🟡 FALTA O CA5
+## `0.14.0` — ✅ NOS DOIS FEEDS · 🔴 MEDIDA NA COORTE REAL: REMOVE 4 DE 41, E O `CA1` NÃO FECHA
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`. PR **7370** (`→ hml`) e o
 PR `hml → main`, os dois mergeados em 21/09. `hml` em `6c373b5` com a **tag `v0.14.0`**; `main` em
@@ -281,31 +281,61 @@ semântica, 78 pela via do juiz. Perfis sem semântica e sem juiz: **delta zero*
 B; produção usa 0,80 a 0,92. A medição em coorte real (`CA5`, `CA6`, `CA7`) segue pendente.
 
 ✅ **NÃO-REGRESSÃO PROVADA EM AMBIENTE (21/09) — delta zero em 4.172 laudos.**
-📄 `_processo/validacao-0.14.0-em-ambiente-2026-09-21.md`. Executada **por CLI**
+📄 `_processo/validacao-0.14.0-em-ambiente-2026-09-21.md`. `cancer_rim`, 07/08, executada **por CLI**
 (`databricks jobs submit`, run `25032614221567`, cluster `ic-fabrica-ia-dlq`), mesma coorte da
 `0.13.0` — a baseline já estava gravada, então custou **meia corrida**. Zero divergência em onze
-campos; pré-condição `[sentence_transformers]` em 4.172 de 4.172.
+campos; `[sentence_transformers]` em 4.172 de 4.172.
+🟢 **Controle negativo que vale:** **13 promoções `llm_router_llm_positive`** atravessaram a guarda
+**intactas**, todas com `n_positive_spans > 0`. Mas o caminho corrigido **não foi percorrido** nessa
+linha — zero promoções semânticas, zero critérios quantitativos. É controle, não medição.
 
-🔴 **E aqui zero era o ESPERADO — a coorte é controle, não medição da correção.** O caminho
-corrigido não foi percorrido: **zero** laudos com `fl = 1` e `n_positive_spans = 0`, **zero**
-promoções semânticas, **zero** critérios quantitativos. A linha declara
-`similarity_threshold: 0.92` contra máximo observado de **0,9168** e banda `[0.75, 0.95]` contra o
-teto analítico de 0,597 — é a mesma razão do "zero em 16" medido em 16/09.
-🟢 **O que sobra vale como controle negativo:** **13 promoções `llm_router_llm_positive`**
-atravessaram a guarda **intactas**, todas com `n_positive_spans > 0`. A exemção "promoção com
-evidência não é tocada" está correta em dado real.
-⚠️ **Sem essa checagem o zero seria vazio** — indistinguível de um run que não instalou a versão.
+## 🔴 `CA5` MEDIDO NA COORTE QUE CONTÉM A POPULAÇÃO — e o resultado muda a leitura da versão
 
-🔴 **Falta o `CA5`, e ele exige a coorte que CONTÉM a população: hepatologia, 31/08 a 16/09** — os
-**36 casos correntes**. ⚠️ **É run DIRIGIDO, não janela cheia:** são ~200 mil laudos no período e
-`limit_rows` não isola coorte (card `298596`). O desenho parte dos `id_exame` dos 36.
-🔴 **E a contabilidade de tokens da camada quantitativa segue sem prova em ambiente** — o
-`llm_prompt_tokens` visto nos 4.172 é o do **juiz**, que já existia. Provar o item novo exige linha
-com critério quantitativo: TI-RADS ou transplante.
+📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`. A/B **por `id_exame`**, não por
+janela: run `470903865428642`, dois braços sequenciais, notebook de bancada
+`plataform/ntb_ia_bancada_p0_29`, **41 laudos** da hepatologia (eram 36 em 16/09).
+🟢 **Pré-condição: o braço baseline REPRODUZIU o defeito em 41 de 41** — `fl = 1` com
+`n_positive_spans = 0`, juiz chamado em 41, zero erro, modelo semântico real em 41.
 
-⚠️ **Os campos novos foram implementados ANTES do alinhamento de contrato, e isso está declarado.**
-A condição é a decisão de 21/09: **nada se pina até a `0.15.0`**, então nada aparece nas tabelas do
-Ops durante o ciclo, e o alinhamento acontece **uma vez**, no fecho, cobrindo `0.13.0` a `0.15.0`.
+🔴 **A `0.14.0` remove 4 dos 41 — 9,8%. Não 41.** Zero acrescidos.
+
+| grupo | `semantic_score` | o que aconteceu |
+|---|---|---|
+| **37 mantidos** | 0,795 a 0,995 | ≥ `similarity_threshold: 0.78` → **a semântica promoveu**; o juiz confirmou → `juiz_arbitrou` → **a guarda EXEMPTA** |
+| **4 revertidos** | 0,686 a 0,773 | < limiar → **o juiz** levou `fl` de 0 a 1 → `llm_promoted` → **revertidos** |
+
+✅ **O campo novo fez o trabalho dele:** `semantic_promoted` saiu em 37 de 41 e o diagnóstico coube
+em **uma consulta**, sem delta entre runs. É o `CA3`.
+
+🔴 **O `CA1` e o `CA2` da SPEC se contradizem, e a implementação seguiu o `CA2`.** O `CA1` diz
+*"nenhum laudo sai com `fl = 1` e `n_positive_spans = 0`, por nenhuma via"*; o `CA2` diz que a via
+semântica entrega **quando há arbitragem**. Não podem valer juntos.
+⚠️ **E a exemção não foi imposta pelo teste que a motivou.** `test_juiz_responde_e_decide_normalmente`
+(`0.11.0`) verifica que o `decision_source` **não é** `semantic_promotion_unarbitrated` — **não**
+verifica que o laudo é entregue. Um rótulo distinto para *"arbitrado, porém sem evidência de régua"*
+satisfaria o teste **e** reverteria os 37.
+
+🔴 **A pergunta que decide é de RÉGUA CLÍNICA, não de engenharia: similaridade semântica confirmada
+pelo juiz conta como evidência para entregar?**
+- **não conta** — a invariante é *o juiz filtra, nunca cria relevância*, e a tabela do próprio step
+  classifica parecença e opinião do LLM como não-achado. Duas não-evidências somadas seguem não
+  sendo evidência. **Remove 41 de 41.**
+- **conta** — a cascata é régua → semântica **alarga** → juiz **estreita**; reverter esvazia o
+  `decision_mode: hybrid` nas linhas sem casamento léxico. **Remove 4 de 41.**
+
+⚠️ **O número não reproduz produção:** o A/B rodou com **modelo real** de embeddings nos dois braços,
+e a mesma linha em produção cai em `token_overlap` em 99,3% dos laudos — com outro backend os
+`semantic_score` mudam e a partição 37/4 muda junto.
+ℹ️ **Isto também explica o golden:** lá os 24 rebaixados pela via semântica caíram porque os perfis
+do corpus **não têm juiz** para arbitrar. Com juiz ligado, não caem.
+
+**Critérios:** ✅ `CA2` `CA3` `CA5` `CA6` · 🔴 `CA1` **não atendido** como redigido · 🟡 `CA4` em
+medição na `tirads` · 🟡 `CA7` depende da decisão acima.
+
+⚠️ **Artefatos de bancada a apagar quando o card fechar:** notebook
+`plataform/ntb_ia_bancada_p0_29` no workspace, tabelas
+`diamond_fabrica_ia_dev.hepatologia.tb_bancada_p0_29_v0` e
+`diamond_fabrica_ia_dev.tirads.tb_bancada_tokens_v0`.
 
 ## `0.15.0` — 🟡 SPEC ABERTA, DESENHO EM ABERTO DE PROPÓSITO
 
