@@ -236,48 +236,85 @@ escrita na própria descrição do PR. Registrado como aconteceu.
 Havia **43.036 pendentes** acumulados em dev, e eles inflavam uma janela de 22.281 para **60 mil**.
 O sintoma é **volume inexplicado, não erro**. É irmão do `298596` e entra no mesmo card.
 
-## `0.14.0` — 🟡 SPEC ABERTA, MEDIÇÃO FEITA, AGUARDA ALINHAMENTO DE CONTRATO
+## `0.14.0` — ✅ NA `hml`, TAG `v0.14.0` · 🟡 PR `hml → main` AGUARDA MERGE
 
-📄 `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`, aberta em 18/09. **O RESEARCH está
-fechado.** O que falta é alinhamento, e é o caminho crítico da versão.
+📄 SPEC `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`. PR **7370** mergeado na `hml`
+em 21/09; `hml` em `6c373b5`, **tag `v0.14.0`** sobre esse commit, feed `fabrica-ai-hml` com a
+versão. Gate: **1.249 testes, 88,16%** por ramo.
 
-🔴 **São DUAS vias, e o card `283648` só descreve uma.** Além de o juiz promover, **a camada
+**A invariante do `[P0-29]` passou a ser APLICADA, não declarada:** nenhum laudo sai com
+`fl_relevante = 1` e `n_positive_spans = 0`, **por nenhuma via**.
+
+🔴 **Eram DUAS vias e o card `283648` só descrevia uma.** Além de o juiz promover, **a camada
 semântica promove e o juiz nunca é consultado**: em `hybrid`, `fl = 0` com
 `semantic_score >= similarity_threshold` vira `fl = 1`, e a arbitragem só ocorre **dentro** da
-banda. **Nenhuma banda fecha as duas** — alargar leva o juiz a ver tudo, estreitar **abre** a via
-semântica. O contorno registrado no card fecha uma e abre a outra.
+banda. **Nenhuma banda fecha as duas** — estreitar para conter a via A **abre** a via B.
 
-✅ **Medido (16/09), janela de 30 dias, seis linhas:** **118 laudos** entregues como relevantes com
-o juiz acionado e **zero span positivo de régua** — **todos na hepatologia**; `cancer_estomago` 0 em
-27, `cancer_rim` 0 em 16. **36 são correntes** (31/08 a 16/09, ~1 por dia útil), com score **0,367 a
-0,566**. 📄 `_processo/medicao-p0-29-juiz-sem-evidencia-2026-09-16.md`.
-🔴 **A causa é aritmética:** o teto analítico de laudo sem achado é **0,597**, e a hepatologia
-declara `uncertainty_band: [0.35, 0.65]` — **o piso está abaixo do teto**. O `cancer_estomago`
-(`[0.60, 0.97]`) e o `cancer_rim` (`[0.75, 0.95]`) dão zero por isso.
-🔴 **Os outros 82 são o incidente do `403`**, e expõem outra coisa: naquele dia **1.371 laudos foram
-entregues pela FALHA**, por `fallback_policy: positive_in_band` declarada no `runtime` contra
-`keep_current` no `nlp` — **e o `runtime` vence**. Dá efeito clínico medido ao bloco `runtime` e
-reforça o card `283644`.
-✅ **Via B medida:** ateromatose `0.2.1` **33 de 44** · `cancer_rim` em dev **2 de 10.000**. O que
-separa os números é o **limiar**, não a régua.
+✅ **A correção é um STEP próprio — `guard_evidence` —, não extensão da reversão existente.**
+A reversão da `0.11.0` (`decision_pipeline.py:719`) vivia **dentro** do ramo em que o juiz rodou
+**e** condicionada a `llm_error`: cobria *"o juiz foi chamado e falhou"*, não *"o juiz nunca foi
+chamado"*, que é o caso corrente.
+🔴 **E colar a guarda ao juiz teria comportamento diferente nas duas ordens do pipeline:** na ordem
+`legacy` **três promoções rodam depois** dele (`ordinal`, `quantitative`, `semantic`); na `target`
+— **default desde a `v0.6.0`** — o juiz é o penúltimo. A guarda entrou como **penúltimo passo das
+duas ordens**, onde a decisão já está pronta. Invariante de saída se verifica na saída.
+✅ **Arbitragem confirmada SUSTENTA a promoção semântica** — o que se proíbe é a semântica entregar
+sozinha. A primeira versão revertia mesmo com o juiz tendo arbitrado; quem pegou foi um teste da
+`0.11.0`, e a exemção `juiz_arbitrou` é parte do desenho.
+✅ **Promoção com evidência PRÓPRIA é exemptada** — `ordinal_promotion`, `ordinal_only` e
+`quantitative_promote` não dependem de span léxico.
 
-🔴 **E o custo entrou na conversa (18/09):** a banda governa de **7 a 6.111 chamadas/dia** na mesma
-lib, e uma chamada custa **~100×** o processamento local do laudo. **A banda é a variável dominante
-de custo da plataforma**, não só de qualidade.
+✅ **Três campos novos**, e são o que o contrato precisa: `llm_promoted` e `semantic_promoted` no
+topo do payload (tornam a via **isolável sem delta entre runs**) e `llm_prompt_tokens` /
+`llm_completion_tokens` no bloco `quantitative.<criterio>` — **mesmos nomes do caminho do juiz**,
+para quem soma o custo do dia somar **uma** coluna.
+ℹ️ **Provedor sem `usage` deixa os campos AUSENTES, não zero** — zero diria que a chamada não custou.
 
-⚠️ **Pré-requisito: dois campos novos exigem alinhamento ANTES de implementar** — tokens na camada
-quantitativa (221 das 270 chamadas de um dia sem registro), e um campo que torne a promoção
-semântica **isolável** (hoje `decision_source` sai `hybrid` para todos os laudos que passam pela
-camada). Anda junto com o card `283647`.
-🔴 **Os dois cards estão com critério de aceite VAZIO.** Sete CAs propostos na SPEC.
-⚠️ **Na hepatologia nada disso chega ao negócio hoje** — a linha acumula e o exchange em prd vai
-para time técnico. **É dívida acumulando, não dano em curso**; entra na passada única da frente.
+✅ **Impacto medido no golden contra a `v0.13.0`: 102 rebaixados, ZERO acrescidos** — 24 pela via
+semântica, 78 pela via do juiz. Perfis sem semântica e sem juiz: **delta zero**.
+⚠️ **Não é estimativa de produção:** o corpus usa `similarity_threshold` 0,10 para **forçar** a via
+B; produção usa 0,80 a 0,92. A medição em coorte real (`CA5`, `CA6`, `CA7`) segue pendente.
 
-🟡 **Plano de bumps** — card `298598` e `docs/plano-acao-backlog-lib-2026-09.md`. Fila:
-✅ `0.12.x` → ✅ `0.13.0` (PR aberto) → 🟡 `0.14.0` → 🔴 `0.15.0` (card `306034`, **Em Refinamento**,
-sem SPEC) → estrutura de pacote, **sem data e condicionada**.
-⚠️ O comentário postado no `298598` ficou **desatualizado** no mesmo dia: diz "posição em aberto" e
-"propor refinamento do POP", e a conclusão foi **convergir**. Precisa de uma linha corrigindo.
+🔴 **Bloqueio da validação em ambiente:** `fabrica-ai` (feed de **produção**, de onde **dev**
+instala) só tem a `0.13.0`. Enquanto o PR `hml → main` não mergear, um run com
+`nlp_engine_version = 0.14.0` falha com `Could not find a version`.
+
+⚠️ **Os campos novos foram implementados ANTES do alinhamento de contrato, e isso está declarado.**
+A condição é a decisão de 21/09: **nada se pina até a `0.15.0`**, então nada aparece nas tabelas do
+Ops durante o ciclo, e o alinhamento acontece **uma vez**, no fecho, cobrindo `0.13.0` a `0.15.0`.
+
+## `0.15.0` — 🟡 SPEC ABERTA, DESENHO EM ABERTO DE PROPÓSITO
+
+📄 `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine] TI-RADS
+entrega a medida do nódulo errado: não existe vínculo*. É o **defeito 2** do `285305`.
+
+**RESEARCH fechado.** Não existe informação posicional nos dois lados: `parse_extraction` devolve
+**um valor por laudo** indexado pelo nome da medida, `OrdinalMention` **não carrega offset**, e
+`anchor_finding` é **gate de custo**, não vínculo. O gate é documental — responde *"existe uma
+medida que satisfaz o limiar em algum lugar deste laudo?"*.
+
+🔴 **A SPEC não fecha o "como", e é deliberado** — enumera **três caminhos com custo** (extração por
+lesão · vínculo por proximidade · recusar quando ambíguo), porque escolher antes de dimensionar foi
+o erro que produziu o defeito. **O terceiro é o piso, não alternativa:** os outros dois precisam
+dele para o caso em que o vínculo falha.
+🔴 **A pergunta que decide é do NEGÓCIO** (§2.3): o que se prefere receber quando o vínculo não é
+verificável — categoria sem medida, categoria com a medida do laudo e um aviso, ou não receber.
+**Sem ela, qualquer implementação é aposta.**
+⚠️ **A coorte de medição precisa conter laudos MULTILESÃO.** Coorte unilesão dá delta zero e não
+mede nada — foi exatamente por isso que a homologação não pegou o defeito.
+ℹ️ Card irmão `306066` — *TR4 sem medida no laudo de punção* — é o **caso oposto** e toca o mesmo
+gate. **Decidir juntos.**
+
+## 🔴 Nada se pina até a `0.15.0` — decisão de 21/09
+
+Produção segue na **`0.12.3`** durante todo o ciclo de bumps. **Um** alinhamento de contrato com o
+MLOps no fecho, cobrindo `0.13.0` a `0.15.0`, e só então a decisão de pin. Três rodadas de
+alinhamento viram uma, e o risco durante o ciclo é **zero** porque nada é adotado — as seis
+definições de job pinam `0.12.3` literal. 📄 `docs/plano-acao-backlog-lib-2026-09.md` §4.1.
+
+🟡 **Plano de bumps** — card `298598` — *Fabrica IA/NLP Engine - Plano de bumps da biblioteca*.
+Fila: ✅ `0.12.x` → ✅ `0.13.0` (em produção nos dois feeds) → ✅ `0.14.0` (na `hml`) →
+🟡 `0.15.0` (SPEC aberta) → alinhamento de contrato → decisão de pin.
 
 ## Resíduos da `0.12.x` — ainda abertos
 
