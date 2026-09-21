@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-18**.
+> Atualizado em **2026-09-21**.
 
 ---
 
@@ -204,37 +204,37 @@ procedimento é alinhar antes. Memória ampliada para cobrir **chave de config**
 nunca chegam ao motor, contra 36 rebaixados pelo gate. Sem medição e sem card — filtro de entrada
 só se mede rodando.
 
-## `0.13.0` — ✅ SEIS DE SEIS CARDS · 🟡 PR 7357 AGUARDA REVISÃO
+## `0.13.0` — ✅ EM PRODUÇÃO NOS DOIS FEEDS · 🟡 NENHUMA LINHA A EXECUTA AINDA
 
-**PR 7357** — `feat/0.13.0-estrutura` → `hml`, `mergeStatus: succeeded`, sem conflito. Descrição com
-matriz de impacto: **nenhum** em API pública, decisão clínica, contrato, configuração, consumidor e
-dependências.
+✅ **Mergeada e promovida.** PR 7357 (`→ hml`) e **PR 7362 (`hml → main`, 21/09 12:51)**. `main` em
+`243a622`, versão `0.13.0`, tag `v0.13.0` sobre `01c6363` e ancestral da `main`.
+✅ **Publicada nos DOIS feeds** — `fabrica-ai-hml` e **`fabrica-ai` (produção)**.
+🟢 **O gate do feed funcionou nos dois destinos** — era o que falhou na `0.12.2`, quando a
+publicação em prd foi **pulada com deploy verde** porque o gate decidia pela tag (única) e os feeds
+são dois. Os dois ramos agora foram exercitados: `livre` em hml e publicação efetiva em prd.
+**Fecha a lacuna `L3`.**
 
-✅ **Os seis cards fechados e comentados:** `253579` singleton do spaCy · `253580` decomposição do
-`process()` · `253581` divisão do módulo · `253582` clamp e helpers · `253591` e `253593` ADRs.
-✅ **Os dois ADRs ACEITOS em 18/09**, com ressalva registrada nos documentos: *passíveis de revisão
-futura para readequação junto à plataforma*.
+🟡 **Disponível não é em execução:** as seis linhas pinam **`0.12.3` literal** nas definições de
+job. **Nenhuma roda a `0.13.0`**, e por decisão — ver o plano de bumps.
 
-🔴 **Não-regressão em quatro recortes contra a `v0.12.3`, delta zero em todos.** O principal é o
-golden de corpus de referência — **365 laudos sintéticos × 8 perfis = 2.920 linhas**, payload
-completo, sha256 `238916d0…` idêntico. Virou script versionado: `scripts/golden_300.py`, com
-`make golden` e `make golden-cobertura`.
-⚠️ **A pré-condição é impressa junto com o resultado**, e não é formalidade: duas configurações do
-próprio harness ficaram **inertes em silêncio** antes disso, e o golden passava verde medindo nada
-(`relevant_from` não é chave do bloco ordinal; `llm_router.mode: "hybrid"` não existe — os únicos
-modos são `llm` e `deterministic`, e o desconhecido cai em `deterministic` sem chamar o juiz).
-Cobertura: régua **420** linhas · semântica **1.825** · ordinal **900** · juiz **295**.
+✅ **VALIDADA EM AMBIENTE (21/09) — delta zero em 4.172 laudos reais.**
+📄 `_processo/validacao-0.13.0-em-ambiente-2026-09-21.md`. `cancer_rim`, janela de 07/08, dev, mesma
+branch e mesma config dos dois lados; **a única variável foi a versão da lib**. Zero divergência em
+**catorze campos** — seis de decisão e oito da trilha.
+🟢 **Pré-condição: `[sentence_transformers]` em 4.172 de 4.172**, zero `token_overlap`, zero
+`FileNotFoundError`. **Primeira vez que a camada semântica roda com modelo real nesta linha**, e
+primeira vez que o **Model do Unity Catalog** é exercitado em `hml`.
+🟢 **Prova o que o golden local não alcançava:** o singleton do spaCy **sob o driver do Spark** —
+o `253579` corrigiu uma condição de corrida, e `segmentation_coverage` idêntico em 4.172 de 4.172 é
+a evidência de que o pipeline chegou completo a todas as threads.
+⚠️ **A validação rodou DEPOIS do merge** (12:51 → 15:13), não antes, contrariando a recomendação
+escrita na própria descrição do PR. Registrado como aconteceu.
 
-ℹ️ **Dois CAs não fecharam como o critério pedia, e a recusa é a entrega:**
-o **CA2 do `253582`** — os dois `_as_float` **não eram duplicata**: um extrai número de texto e
-recusa ambiguidade com `None`, o outro coage config com default. Viraram `_single_float` e
-`_finite_float`; **a entrega é o nome, não a fusão**.
-o **CA3 do `253582`** — a regex de ponteiro virou constante compilada, mas **compartilhar com o
-`boilerplate.py` foi reprovado por medição**: `"Laudo gerado por sistema especialista."` o footer
-mantém e o boilerplate remove; `"Sistema da radiologia WEBRIS."` é o inverso. Travado em 3 testes.
-
-**Gate: 1.240 testes, 88,11% por ramo**, sete alvos, `release-check` coerente.
-🟡 **Falta:** merge do 7357 → `main` → publicação no feed de prd. É a cadeia para pinar versão nova.
+🔴 **Achado do caminho, e vale card:** o **resgate de pendentes não filtra por data**
+(`nlp_ia_02_input.py`) — lê a tabela de entrada inteira e traz tudo que não está
+`processado = true`, em qualquer janela. `include_pending` tem default `True` e **não tem widget**.
+Havia **43.036 pendentes** acumulados em dev, e eles inflavam uma janela de 22.281 para **60 mil**.
+O sintoma é **volume inexplicado, não erro**. É irmão do `298596` e entra no mesmo card.
 
 ## `0.14.0` — 🟡 SPEC ABERTA, MEDIÇÃO FEITA, AGUARDA ALINHAMENTO DE CONTRATO
 
