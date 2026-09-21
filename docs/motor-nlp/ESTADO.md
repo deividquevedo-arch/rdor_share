@@ -289,7 +289,7 @@ campos; `[sentence_transformers]` em 4.172 de 4.172.
 **intactas**, todas com `n_positive_spans > 0`. Mas o caminho corrigido **não foi percorrido** nessa
 linha — zero promoções semânticas, zero critérios quantitativos. É controle, não medição.
 
-## 🔴 `CA5` MEDIDO NA COORTE QUE CONTÉM A POPULAÇÃO — e o resultado muda a leitura da versão
+## 🔴 `CA5` MEDIDO — e a leitura correta depende de QUANDO os embeddings funcionarem
 
 📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`. A/B **por `id_exame`**, não por
 janela: run `470903865428642`, dois braços sequenciais, notebook de bancada
@@ -345,12 +345,48 @@ estimar outras linhas.**
 **Critérios do `283648`:** ✅ `CA2` `CA3` `CA4` `CA5` `CA6` · 🔴 `CA1` **não atendido** como
 redigido · 🟡 `CA7` depende da decisão de régua.
 
-🔴 **E há uma alavanca de CONFIG antes de qualquer mudança na lib.** Dos 37 mantidos, **29 têm
-`semantic_score` abaixo de 0,92** — o limiar de referência do `cancer_rim`. A hepatologia declara
-**0,78**. Adotar 0,92 levaria a remoção de 4 para **33 de 41 (80,5%) sem tocar a lib**, dentro da
-nossa alçada (POP-IA-08). Mediana dos 37: **0,868**; abaixo de 0,90 são 26; abaixo de 0,95, 35.
-⚠️ **Exige medir a janela inteira, não os 41** — subir o limiar também remove promoções semânticas
-que eram legítimas. Entra na **passada única da hepatologia**, card `303791`.
+## 🔴 A leitura acima lê o estado FUTURO — produção hoje é o inverso
+
+Os mesmos 41, em **produção**, rodaram **`token_overlap` em 41 de 41**, zero com modelo real, com
+`semantic_score` de mediana **0,667** e só **4** acima de 0,78.
+
+| | a semântica promove | a guarda reverte |
+|---|---|---|
+| **produção hoje** (`token_overlap`) | **4** | **~37** |
+| **bancada** (modelo real) | **37** | **4** |
+
+✅ **Então o `CA1` não é dívida corrente — é armadilha que ARMA quando o card `305810` fechar** e os
+embeddings passarem a funcionar. Resolver antes do gatilho existir não tem janela de dano.
+ℹ️ Consistente: em **25.809 laudos** de 15 a 21/09 em produção, **zero** na faixa `[0,78 · 0,92)`.
+
+## ✅ DECISÃO DE RÉGUA (21/09): parecença arbitrada NÃO entrega · limiar vai a `0,92`
+
+**Medido, mesma coorte, modelo real, única variável o limiar** — run `527741631034186`:
+
+| limiar | entregues | `semantic_promoted` | guarda agiu |
+|---|---|---|---|
+| **0,78** (config atual) | **37** | 37 | **4** |
+| **0,92** (referência do `cancer_rim`) | **8** | 8 | **33** |
+
+🟢 **De 4 para 33 removidos — 80,5% — SEM tocar a lib.** A previsão pela distribuição de score
+(29 dos 37 abaixo de 0,92) bateu exatamente com o medido. Config de especialidade é **nossa
+alçada** (POP-IA-08). Entra na **passada única da hepatologia**, card `303791`.
+⚠️ **`similarity_threshold_by_model` VENCE o valor de topo** — a sobreposição teve de removê-lo e
+confirmar com `assert`, senão o run reportaria 0,92 e executaria 0,78, sem sinal nenhum.
+🔴 **O que não foi medido:** quantas promoções semânticas **legítimas** o 0,92 removeria na linha
+inteira. A coorte só contém laudos **sem** evidência de régua. Exige janela completa com modelo
+real — faz sentido **depois** do `305810`.
+
+## 🔴 `emit_as_finding` DESARMA a guarda — não ligar em nenhuma linha
+
+`embeddings.emit_as_finding` (`semantic_expand.py:447`) é **opt-in, default `False`**, e **inerte
+nas sete configs**. Ligá-la **incrementa `n_positive_spans`** (`decision_pipeline.py:590`), e a
+primeira linha da guarda é `if st.fl != 1 or st.n_pos > 0: return` — **a invariante do `[P0-29]`
+fica desligada naquela linha, sem erro e sem log**.
+**Causa:** `n_positive_spans` passaria a significar *evidência de régua **ou** parecença* — a
+distinção que a versão inteira existe para preservar.
+**Condição prévia a qualquer ativação:** a guarda contar span de régua **separado** do emitido pela
+semântica. Decisão do usuário em 21/09: **não testar agora**, por conservadorismo.
 
 ⚠️ **Artefatos de bancada a apagar quando o card fechar:** notebook
 `plataform/ntb_ia_bancada_p0_29` no workspace, tabelas

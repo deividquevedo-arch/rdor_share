@@ -120,3 +120,68 @@ satisfazê-lo.**
 - **Artefato de bancada a apagar quando o card fechar:** notebook
   `plataform/ntb_ia_bancada_p0_29` no workspace e tabela
   `diamond_fabrica_ia_dev.hepatologia.tb_bancada_p0_29_v0`.
+
+---
+
+# ADENDO (mesmo dia) — 🔴 a leitura acima estava lendo o cenário ERRADO
+
+## 9. Produção não roda com modelo de embeddings, e isso INVERTE o resultado
+
+Ao dimensionar a mudança de limiar, o dado apareceu:
+
+| | `semantic_score` dos mesmos 41 | a semântica promove |
+|---|---|---|
+| **produção, hoje** — `token_overlap` em **41 de 41**, zero com modelo real | mediana **0,667** | **4** |
+| **esta bancada** — modelo real em 41 de 41 | 0,795 a 0,995 | **37** |
+
+🔴 **A bancada mediu o estado FUTURO, não o atual.** A ressalva da §8 estava escrita, mas a
+consequência não: ela **inverte** o número.
+
+- **Hoje, como produção executa:** a semântica não alcança o limiar, quem promove é o **juiz**,
+  `llm_promoted` fica verdadeiro e **a guarda reverte ~37 dos 41**. A `0.14.0` é eficaz.
+- **Depois que o card `305810` fechar** e os embeddings passarem a funcionar: a semântica promove,
+  o juiz confirma, e **37 escapam pela exemção**.
+
+✅ **Então o `CA1` não é dívida corrente — é uma armadilha que ARMA quando os embeddings forem
+corrigidos.** Resolver antes do gatilho existir é mais barato e não tem janela de dano.
+ℹ️ Consistente com a contagem em produção: em **25.809 laudos** da semana de 15 a 21/09, **zero**
+na faixa `[0,78 · 0,92)` — com `token_overlap` quase nada alcança 0,78.
+
+## 10. A alavanca de config, medida — limiar `0,78` contra `0,92`
+
+Run `527741631034186`, **mesma coorte de 41**, modelo real, **única variável o limiar**.
+
+| braço | entregues | `semantic_promoted` | guarda agiu |
+|---|---|---|---|
+| **0,78** (config atual) | **37** | 37 | **4** |
+| **0,92** (referência do `cancer_rim`) | **8** | 8 | **33** |
+
+🟢 **De 4 para 33 removidos — 80,5% da população — sem tocar uma linha da lib.**
+A previsão feita pela distribuição de score (29 dos 37 abaixo de 0,92, logo 4 + 29 = 33) bateu
+**exatamente** com o medido. Os 8 restantes têm similaridade ≥ 0,92 e arbitragem confirmada.
+
+⚠️ **Armadilha que quase engoliu a medição:** a config declara
+**`similarity_threshold_by_model`**, que **vence** o valor de topo quando o modelo casa. A
+sobreposição precisou remover esse bloco e confirmar com `assert` — sem isso o run reportaria 0,92
+e executaria 0,78, e o resultado sairia idêntico ao outro braço sem nenhum sinal de erro.
+
+🔴 **O que esta medição NÃO responde:** quantas promoções semânticas **legítimas** o limiar de 0,92
+removeria na linha inteira. A coorte aqui é definida pelo defeito — só contém laudos **sem**
+evidência de régua. Medir a perda exige janela completa **com modelo real**, e isso só faz sentido
+depois do `305810`.
+
+## 11. 🔴 Dívida encontrada: `emit_as_finding` DESARMA a guarda
+
+`embeddings.emit_as_finding` (`semantic_expand.py:447`) é **opt-in, default `False`**, e **inerte
+nas sete configs** — duas declaram `False` explicitamente, cinco não declaram.
+
+**Ligá-la desligaria a invariante do `[P0-29]` na linha**, em silêncio: ela **incrementa
+`n_positive_spans`** (`decision_pipeline.py:590-594`), e a primeira linha da guarda é
+`if st.fl != 1 or st.n_pos > 0: return`. Match semântico vira span positivo, a guarda retorna sem
+agir, e nada registra que isso aconteceu.
+
+**A causa é que `n_positive_spans` passaria a significar duas coisas:** evidência de régua **ou**
+parecença. É exatamente a distinção que esta versão existe para preservar.
+
+**Condição prévia a qualquer ativação:** a guarda precisa contar **span de régua separado** do span
+emitido pela semântica. Enquanto isso não existir, a chave não deve ser ligada em nenhuma linha.
