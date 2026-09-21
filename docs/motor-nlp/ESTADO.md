@@ -329,8 +329,28 @@ e a mesma linha em produção cai em `token_overlap` em 99,3% dos laudos — com
 ℹ️ **Isto também explica o golden:** lá os 24 rebaixados pela via semântica caíram porque os perfis
 do corpus **não têm juiz** para arbitrar. Com juiz ligado, não caem.
 
-**Critérios:** ✅ `CA2` `CA3` `CA5` `CA6` · 🔴 `CA1` **não atendido** como redigido · 🟡 `CA4` em
-medição na `tirads` · 🟡 `CA7` depende da decisão acima.
+✅ **`CA4` FECHADO na `tirads` (run `130126794270375`).**
+📄 `_processo/medicao-ca4-tokens-camada-quantitativa-2026-09-21.md`. 120 laudos, 1.080 critérios
+quantitativos, **162 chamadas ao LLM**: `0.13.0` com **zero** token registrado, `0.14.0` com
+**162 de 162**. Somam 158.141 de prompt e 18.929 de completion — **976,2 e 116,8 por chamada**.
+🟢 **Zero mudança de decisão:** 59 entregues dos dois lados. O item é aditivo, como declarado.
+🟢 **Controle positivo não previsto:** o único laudo com `fl = 1` e `n_positive_spans = 0` nos dois
+braços tem `decision_source: ordinal_promotion` e **a guarda o deixou intacto** — categoria RADS é
+achado clínico declarado, e está na lista de exemções. Nenhuma medição em ambiente tinha tocado
+esse ramo.
+ℹ️ Os 976,2 por chamada ficaram perto dos **1.004,1** do juiz da hepatologia, o que sugere **prompt
+truncado** — o tamanho do laudo não governa a contagem linearmente. **Não serve de base para
+estimar outras linhas.**
+
+**Critérios do `283648`:** ✅ `CA2` `CA3` `CA4` `CA5` `CA6` · 🔴 `CA1` **não atendido** como
+redigido · 🟡 `CA7` depende da decisão de régua.
+
+🔴 **E há uma alavanca de CONFIG antes de qualquer mudança na lib.** Dos 37 mantidos, **29 têm
+`semantic_score` abaixo de 0,92** — o limiar de referência do `cancer_rim`. A hepatologia declara
+**0,78**. Adotar 0,92 levaria a remoção de 4 para **33 de 41 (80,5%) sem tocar a lib**, dentro da
+nossa alçada (POP-IA-08). Mediana dos 37: **0,868**; abaixo de 0,90 são 26; abaixo de 0,95, 35.
+⚠️ **Exige medir a janela inteira, não os 41** — subir o limiar também remove promoções semânticas
+que eram legítimas. Entra na **passada única da hepatologia**, card `303791`.
 
 ⚠️ **Artefatos de bancada a apagar quando o card fechar:** notebook
 `plataform/ntb_ia_bancada_p0_29` no workspace, tabelas
