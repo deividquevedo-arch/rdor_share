@@ -236,11 +236,14 @@ escrita na própria descrição do PR. Registrado como aconteceu.
 Havia **43.036 pendentes** acumulados em dev, e eles inflavam uma janela de 22.281 para **60 mil**.
 O sintoma é **volume inexplicado, não erro**. É irmão do `298596` e entra no mesmo card.
 
-## `0.14.0` — ✅ NA `hml`, TAG `v0.14.0` · 🟡 PR `hml → main` AGUARDA MERGE
+## `0.14.0` — ✅ EM PRODUÇÃO NOS DOIS FEEDS · ✅ NÃO-REGRESSÃO EM AMBIENTE · 🟡 FALTA O CA5
 
-📄 SPEC `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`. PR **7370** mergeado na `hml`
-em 21/09; `hml` em `6c373b5`, **tag `v0.14.0`** sobre esse commit, feed `fabrica-ai-hml` com a
-versão. Gate: **1.249 testes, 88,16%** por ramo.
+📄 SPEC `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`. PR **7370** (`→ hml`) e o
+PR `hml → main`, os dois mergeados em 21/09. `hml` em `6c373b5` com a **tag `v0.14.0`**; `main` em
+`7b06e05`, `version = "0.14.0"`. Gate: **1.249 testes, 88,16%** por ramo.
+✅ **Publicada nos DOIS feeds, verificado no próprio feed e não no deploy verde** —
+`fabrica-ai` (prd) e `fabrica-ai-hml`. **Segunda vez seguida** que o gate por destino funciona nos
+dois ramos.
 
 **A invariante do `[P0-29]` passou a ser APLICADA, não declarada:** nenhum laudo sai com
 `fl_relevante = 1` e `n_positive_spans = 0`, **por nenhuma via**.
@@ -264,10 +267,12 @@ sozinha. A primeira versão revertia mesmo com o juiz tendo arbitrado; quem pego
 ✅ **Promoção com evidência PRÓPRIA é exemptada** — `ordinal_promotion`, `ordinal_only` e
 `quantitative_promote` não dependem de span léxico.
 
-✅ **Três campos novos**, e são o que o contrato precisa: `llm_promoted` e `semantic_promoted` no
-topo do payload (tornam a via **isolável sem delta entre runs**) e `llm_prompt_tokens` /
-`llm_completion_tokens` no bloco `quantitative.<criterio>` — **mesmos nomes do caminho do juiz**,
-para quem soma o custo do dia somar **uma** coluna.
+✅ **Os itens de contrato**, e são o que a plataforma precisa: **`semantic_promoted`** no topo do
+payload — emitido **condicionalmente**, só quando verdadeiro — e `llm_prompt_tokens` /
+`llm_completion_tokens` no bloco `quantitative.<criterio>`, com os **mesmos nomes do caminho do
+juiz**, para quem soma o custo do dia somar **uma** coluna.
+ℹ️ **`llm_promoted` é estado interno, NÃO vai ao payload** — quem torna a via do juiz isolável é o
+`decision_source`, que passa a `llm_promotion_without_rule_evidence` quando a guarda age.
 ℹ️ **Provedor sem `usage` deixa os campos AUSENTES, não zero** — zero diria que a chamada não custou.
 
 ✅ **Impacto medido no golden contra a `v0.13.0`: 102 rebaixados, ZERO acrescidos** — 24 pela via
@@ -275,9 +280,28 @@ semântica, 78 pela via do juiz. Perfis sem semântica e sem juiz: **delta zero*
 ⚠️ **Não é estimativa de produção:** o corpus usa `similarity_threshold` 0,10 para **forçar** a via
 B; produção usa 0,80 a 0,92. A medição em coorte real (`CA5`, `CA6`, `CA7`) segue pendente.
 
-🔴 **Bloqueio da validação em ambiente:** `fabrica-ai` (feed de **produção**, de onde **dev**
-instala) só tem a `0.13.0`. Enquanto o PR `hml → main` não mergear, um run com
-`nlp_engine_version = 0.14.0` falha com `Could not find a version`.
+✅ **NÃO-REGRESSÃO PROVADA EM AMBIENTE (21/09) — delta zero em 4.172 laudos.**
+📄 `_processo/validacao-0.14.0-em-ambiente-2026-09-21.md`. Executada **por CLI**
+(`databricks jobs submit`, run `25032614221567`, cluster `ic-fabrica-ia-dlq`), mesma coorte da
+`0.13.0` — a baseline já estava gravada, então custou **meia corrida**. Zero divergência em onze
+campos; pré-condição `[sentence_transformers]` em 4.172 de 4.172.
+
+🔴 **E aqui zero era o ESPERADO — a coorte é controle, não medição da correção.** O caminho
+corrigido não foi percorrido: **zero** laudos com `fl = 1` e `n_positive_spans = 0`, **zero**
+promoções semânticas, **zero** critérios quantitativos. A linha declara
+`similarity_threshold: 0.92` contra máximo observado de **0,9168** e banda `[0.75, 0.95]` contra o
+teto analítico de 0,597 — é a mesma razão do "zero em 16" medido em 16/09.
+🟢 **O que sobra vale como controle negativo:** **13 promoções `llm_router_llm_positive`**
+atravessaram a guarda **intactas**, todas com `n_positive_spans > 0`. A exemção "promoção com
+evidência não é tocada" está correta em dado real.
+⚠️ **Sem essa checagem o zero seria vazio** — indistinguível de um run que não instalou a versão.
+
+🔴 **Falta o `CA5`, e ele exige a coorte que CONTÉM a população: hepatologia, 31/08 a 16/09** — os
+**36 casos correntes**. ⚠️ **É run DIRIGIDO, não janela cheia:** são ~200 mil laudos no período e
+`limit_rows` não isola coorte (card `298596`). O desenho parte dos `id_exame` dos 36.
+🔴 **E a contabilidade de tokens da camada quantitativa segue sem prova em ambiente** — o
+`llm_prompt_tokens` visto nos 4.172 é o do **juiz**, que já existia. Provar o item novo exige linha
+com critério quantitativo: TI-RADS ou transplante.
 
 ⚠️ **Os campos novos foram implementados ANTES do alinhamento de contrato, e isso está declarado.**
 A condição é a decisão de 21/09: **nada se pina até a `0.15.0`**, então nada aparece nas tabelas do
