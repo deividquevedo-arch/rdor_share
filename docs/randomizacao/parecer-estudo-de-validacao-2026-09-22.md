@@ -1,7 +1,12 @@
 # Parecer — o estudo de validação da randomização
 
-> **O mecanismo está certo e foi verificado de forma independente. O que falta não é o sorteio —
-> é o estudo em volta dele.**
+> **O estudo tinha por finalidade VALIDAR A BIBLIOTECA — e a validou.** O mecanismo foi conferido
+> de forma independente e passa. O que este parecer acrescenta é o que vem **depois** dela.
+>
+> ⚠️ **Correção ao que este documento dizia antes (22/09):** a §2 estava redigida como crítica ao
+> estudo — *"valida o alocador, não o estudo"*. Isso é **injusto**: validar o alocador **era o
+> escopo declarado**, e o próprio relatório lista em *"O que a medição não responde"* as mesmas
+> lacunas que este parecer levantou. Elas são o **próximo passo**, não omissão.
 
 - **Data:** 2026-09-22
 - **Avaliados:** `docs/randomizacao/relatorio_v4.pdf` (backtest de 12 meses) e

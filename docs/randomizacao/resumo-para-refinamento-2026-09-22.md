@@ -1,7 +1,7 @@
 # Randomização — o que levar ao refinamento
 
-> **Uma página.** O sorteio está pronto e verificado. O estudo em volta dele, não.
-> Quatro decisões a tomar, todas com o número que as sustenta.
+> **Uma página.** O estudo do Lucas tinha por finalidade **validar a biblioteca** — e a validou.
+> Este documento acrescenta o que vem **depois** dela: quatro decisões, com o número que as sustenta.
 
 **Data:** 2026-09-22 · **Base:** `relatorio_v4.pdf` (backtest de 12 meses) · `rededor-ai-lib`,
 `docs/features/randomizacao.md` · verificação independente e medições próprias.
@@ -28,13 +28,19 @@ em várias linhas cai no mesmo braço** (evita contaminação).
 
 ---
 
-## 2. 🔴 A crítica central, em uma frase
+## 2. ⚠️ O que foi validado, e o que NÃO estava em escopo
 
-**O estudo valida o ALOCADOR, não o ESTUDO.**
+**O estudo validou a BIBLIOTECA, que era a finalidade dele. E validou.** O requisito `R7` —
+*"os 5% se replicam em qualquer estratificação"* — foi verificado em dado real, em 31 recortes, e
+passou em todos.
 
-O requisito testado — *"os 5% se replicam em qualquer estratificação"* — é **verdadeiro por
-construção**: o SHA-256 torna a alocação independente de qualquer atributo. Testar 31 recortes é
-testar que o SHA-256 funciona. **Ele funciona, e o teste não alcança as falhas que importam.**
+🔴 **A cautela de leitura, e só isso:** *"31 de 31 dentro do acaso"* é resultado sobre o
+**alocador**, não sobre o **estudo clínico**. Quem lê a manchete pode concluir que o estudo está
+validado; o que está validado é o sorteio. **Não é falha do relatório** — ele mesmo declara, na
+seção *"O que a medição não responde"*, que faltam a chave da esteira, a escolha entre 5% e 10%,
+e ética/LGPD/formalização.
+
+**As quatro decisões abaixo são exatamente essa lista, agora com número.**
 
 ---
 
