@@ -185,3 +185,68 @@ parecença. É exatamente a distinção que esta versão existe para preservar.
 
 **Condição prévia a qualquer ativação:** a guarda precisa contar **span de régua separado** do span
 emitido pela semântica. Enquanto isso não existir, a chave não deve ser ligada em nenhuma linha.
+
+---
+
+# ADENDO 2 (22/09) — 🔴 A CAUSA É OUTRA: a régua estava cega por SEGMENTAÇÃO
+
+## 12. O que a medição dos termos casados revelou
+
+O run `222180888862290` persistiu **qual termo da régua casou e com que trecho**. O resultado
+derruba a leitura dos adendos anteriores.
+
+| score | termo da régua | trecho do laudo |
+|---|---|---|
+| **0,995** | `hepatopatia crônica` | **"Hepatopatia crônica"** |
+| 0,948 | `doença hepática` | "- Doença hepática gordurosa" |
+| 0,934 | `doença hepática` | "Doença hepática metabólica" |
+| 0,773 | `circulação colateral` | **"Circulação colateral periesplênica"** |
+| 0,752 | `doença hepática` | "Esteatose hepática" |
+
+🔴 **Não é sinônimo reconhecido por parecença — é o termo LITERAL da régua.** A régua deveria
+tê-lo encontrado por casamento de texto, e não encontrou.
+
+## 13. A causa, provada
+
+| | |
+|---|---|
+| a camada semântica recebe | `st.treated` — **o laudo tratado INTEIRO** (`decision_pipeline.py:558`) |
+| a régua recebe | o texto **segmentado** |
+| dos 44 casos do `[P0-29]` | **44 de 44 têm perda de segmentação** |
+| cobertura mínima observada | **0,006** — a régua viu **0,6%** do laudo |
+
+**A hepatologia é a ÚNICA das sete linhas com `segmentation.mode: auto`** — as outras seis usam
+`full_doc`. E é a única com `similarity_threshold: 0.78`; as demais vão de 0,80 a 0,92.
+
+🟢 **Isso explica a concentração que a medição de 16/09 atribuiu à banda.** A banda explica o juiz
+ser **alcançado** (piso 0,35 abaixo do teto analítico 0,597). Ela **não** explica a ausência de
+evidência — quem explica é a segmentação. As duas são complementares, e a raiz é a segunda.
+
+## 14. As três conclusões que caem
+
+1. 🔴 **Subir o limiar para 0,92 apagaria achado LITERAL.** A recomendação do adendo 1 está
+   **cancelada**. Ela nasceu de analogia com o `cancer_rim`, não de evidência: o que precisava ser
+   olhado era **o que casou**, e não o número.
+2. 🔴 **A guarda da `0.14.0`, aplicada à hepatologia hoje, remove VERDADEIRO POSITIVO** — 2 de 2
+   nesta coorte (`Circulação colateral periesplênica`, `Esteatose hepática`). A lógica da guarda
+   está correta; **a premissa é que falha**: `n_positive_spans = 0` significa *"a régua não achou"*
+   e está sendo lido como *"não há achado no laudo"*. Com 99% do texto descartado, a inferência não
+   se sustenta.
+3. ✅ **O card `300202` deixa de ser higiene e passa a ser a causa raiz do `283648` na hepatologia.**
+
+🟢 **Nada disso causou dano em produção**, porque **nada está pinado** — as seis linhas rodam
+`0.12.3` e a decisão de 21/09 segura o pin até a `0.15.0`. Foi exatamente o que essa decisão comprou.
+
+## 15. A conclusão NÃO transfere para as outras linhas
+
+**Ateromatose usa `full_doc`** (config `0.2.3`), e lá a régua enxerga o documento inteiro. As 33
+promoções semânticas de 44 medidas no `0.2.1`, e o juiz acionado em 6.111 de 7.500 no `0.2.0`,
+são **promoção sem evidência de verdade** — a guarda da `0.14.0` está certa naquele caso.
+ℹ️ A linha já desligou a semântica na `0.2.2`, por decisão registrada.
+
+**Ou seja: a `0.14.0` tem alvo real; ele só não é a hepatologia.**
+
+## 16. Ordem correta da passada única da hepatologia
+
+🔴 **`segmentation.mode: full_doc` PRIMEIRO, guarda de evidência depois.** Invertido, a guarda
+rebaixa o que a régua deveria ter achado, e o efeito seria lido como "a correção funcionou".

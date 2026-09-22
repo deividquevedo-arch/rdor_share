@@ -236,7 +236,7 @@ escrita na própria descrição do PR. Registrado como aconteceu.
 Havia **43.036 pendentes** acumulados em dev, e eles inflavam uma janela de 22.281 para **60 mil**.
 O sintoma é **volume inexplicado, não erro**. É irmão do `298596` e entra no mesmo card.
 
-## `0.14.0` — ✅ NOS DOIS FEEDS · 🔴 MEDIDA NA COORTE REAL: REMOVE 4 DE 41, E O `CA1` NÃO FECHA
+## `0.14.0` — ✅ NOS DOIS FEEDS · ⚠️ NÃO ADOTAR NA HEPATOLOGIA ANTES DO `full_doc`
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.14.0-juiz-nao-cria-relevancia.md`. PR **7370** (`→ hml`) e o
 PR `hml → main`, os dois mergeados em 21/09. `hml` em `6c373b5` com a **tag `v0.14.0`**; `main` em
@@ -289,7 +289,7 @@ campos; `[sentence_transformers]` em 4.172 de 4.172.
 **intactas**, todas com `n_positive_spans > 0`. Mas o caminho corrigido **não foi percorrido** nessa
 linha — zero promoções semânticas, zero critérios quantitativos. É controle, não medição.
 
-## 🔴 `CA5` MEDIDO — e a leitura correta depende de QUANDO os embeddings funcionarem
+## `CA5` MEDIDO — ⚠️ leitura CORRIGIDA em 22/09, ver a seção da causa raiz adiante
 
 📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`. A/B **por `id_exame`**, não por
 janela: run `470903865428642`, dois braços sequenciais, notebook de bancada
@@ -315,8 +315,9 @@ semântica entrega **quando há arbitragem**. Não podem valer juntos.
 verifica que o laudo é entregue. Um rótulo distinto para *"arbitrado, porém sem evidência de régua"*
 satisfaria o teste **e** reverteria os 37.
 
-🔴 **A pergunta que decide é de RÉGUA CLÍNICA, não de engenharia: similaridade semântica confirmada
-pelo juiz conta como evidência para entregar?**
+ℹ️ **A leitura abaixo foi CORRIGIDA em 22/09** — ver a seção da causa raiz. O que segue descreve o
+que foi medido, não a conclusão:
+🔴 **A pergunta que parecia decidir:**
 - **não conta** — a invariante é *o juiz filtra, nunca cria relevância*, e a tabela do próprio step
   classifica parecença e opinião do LLM como não-achado. Duas não-evidências somadas seguem não
   sendo evidência. **Remove 41 de 41.**
@@ -345,53 +346,71 @@ estimar outras linhas.**
 **Critérios do `283648`:** ✅ `CA2` `CA3` `CA4` `CA5` `CA6` · 🔴 `CA1` **não atendido** como
 redigido · 🟡 `CA7` depende da decisão de régua.
 
-## 🔴 A leitura acima lê o estado FUTURO — produção hoje é o inverso
+## 🔴 CAUSA RAIZ CORRIGIDA (22/09) — a régua estava cega por SEGMENTAÇÃO, não por parecença
 
-Os mesmos 41, em **produção**, rodaram **`token_overlap` em 41 de 41**, zero com modelo real, com
-`semantic_score` de mediana **0,667** e só **4** acima de 0,78.
+📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`, adendo 2. O run
+`222180888862290` persistiu **qual termo da régua casou e com que trecho**, e derruba a leitura
+anterior.
 
-| | a semântica promove | a guarda reverte |
+| score | termo da régua | trecho do laudo |
 |---|---|---|
-| **produção hoje** (`token_overlap`) | **4** | **~37** |
-| **bancada** (modelo real) | **37** | **4** |
+| **0,995** | `hepatopatia crônica` | **"Hepatopatia crônica"** |
+| 0,948 | `doença hepática` | "- Doença hepática gordurosa" |
+| 0,773 | `circulação colateral` | **"Circulação colateral periesplênica"** |
+| 0,752 | `doença hepática` | "Esteatose hepática" |
 
-✅ **Então o `CA1` não é dívida corrente — é armadilha que ARMA quando o card `305810` fechar** e os
-embeddings passarem a funcionar. Resolver antes do gatilho existir não tem janela de dano.
-ℹ️ Consistente: em **25.809 laudos** de 15 a 21/09 em produção, **zero** na faixa `[0,78 · 0,92)`.
+🔴 **Não é sinônimo por parecença — é o termo LITERAL da régua**, na parte do laudo que a régua
+não viu.
 
-## ✅ DECISÃO DE RÉGUA (21/09): parecença arbitrada NÃO entrega · limiar vai a `0,92`
+| | |
+|---|---|
+| a camada semântica recebe | `st.treated` — o laudo **INTEIRO** (`decision_pipeline.py:558`) |
+| a régua recebe | o texto **segmentado** |
+| dos 44 casos do `[P0-29]` | **44 de 44 com perda de segmentação** |
+| cobertura mínima | **0,006** — a régua viu **0,6%** do laudo |
 
-**Medido, mesma coorte, modelo real, única variável o limiar** — run `527741631034186`:
+✅ **A hepatologia é a ÚNICA das sete linhas com `mode: auto`** — `cancer_colon`,
+`cancer_estomago`, `cancer_rim`, `reumatologia`, `tirads` e `transplante_pulmao` usam `full_doc`.
+E é a única com `similarity_threshold: 0.78`; as outras vão de 0,80 a 0,92. **Sempre foi a
+segmentação.** A banda explica o juiz ser *alcançado*; não explica a ausência de evidência.
 
-| limiar | entregues | `semantic_promoted` | guarda agiu |
-|---|---|---|---|
-| **0,78** (config atual) | **37** | 37 | **4** |
-| **0,92** (referência do `cancer_rim`) | **8** | 8 | **33** |
+### O que isso cancela
 
-🟢 **De 4 para 33 removidos — 80,5% — SEM tocar a lib.** A previsão pela distribuição de score
-(29 dos 37 abaixo de 0,92) bateu exatamente com o medido. Config de especialidade é **nossa
-alçada** (POP-IA-08). Entra na **passada única da hepatologia**, card `303791`.
-⚠️ **`similarity_threshold_by_model` VENCE o valor de topo** — a sobreposição teve de removê-lo e
-confirmar com `assert`, senão o run reportaria 0,92 e executaria 0,78, sem sinal nenhum.
-🔴 **O que não foi medido:** quantas promoções semânticas **legítimas** o 0,92 removeria na linha
-inteira. A coorte só contém laudos **sem** evidência de régua. Exige janela completa com modelo
-real — faz sentido **depois** do `305810`.
+- 🔴 **Subir o limiar para 0,92 está CANCELADO** — apagaria achado literal. A proposta nasceu de
+  analogia com o `cancer_rim`, não de evidência; o que precisava ser olhado era **o que casou**.
+- 🔴 **A guarda da `0.14.0`, aplicada à hepatologia hoje, remove VERDADEIRO POSITIVO** — 2 de 2
+  nesta coorte. A lógica está certa; **a premissa falha**: `n_positive_spans = 0` quer dizer *"a
+  régua não achou"*, e estava sendo lido como *"não há achado no laudo"*.
+- ✅ **O `300202` deixa de ser higiene e vira a CAUSA RAIZ do `283648` na hepatologia.**
 
-## 🔴 `emit_as_finding` DESARMA a guarda — não ligar em nenhuma linha
+🟢 **Zero dano em produção** — nada está pinado, as seis linhas rodam `0.12.3`, e a decisão de
+21/09 segura o pin até a `0.15.0`. Foi exatamente o que ela comprou.
 
-`embeddings.emit_as_finding` (`semantic_expand.py:447`) é **opt-in, default `False`**, e **inerte
-nas sete configs**. Ligá-la **incrementa `n_positive_spans`** (`decision_pipeline.py:590`), e a
-primeira linha da guarda é `if st.fl != 1 or st.n_pos > 0: return` — **a invariante do `[P0-29]`
-fica desligada naquela linha, sem erro e sem log**.
-**Causa:** `n_positive_spans` passaria a significar *evidência de régua **ou** parecença* — a
-distinção que a versão inteira existe para preservar.
-**Condição prévia a qualquer ativação:** a guarda contar span de régua **separado** do emitido pela
-semântica. Decisão do usuário em 21/09: **não testar agora**, por conservadorismo.
+### 🔴 Ordem da passada única da hepatologia
+
+**`segmentation.mode: full_doc` PRIMEIRO, guarda de evidência depois.** Invertido, a guarda
+rebaixa o que a régua deveria ter achado — e o efeito seria lido como "a correção funcionou".
+
+### A conclusão NÃO transfere — a `0.14.0` tem alvo real
+
+**Ateromatose usa `full_doc`** (config `0.2.3`): lá a régua enxerga o documento inteiro, e as
+**33 promoções semânticas em 44** do `0.2.1`, mais o juiz acionado em **6.111 de 7.500** no `0.2.0`,
+são promoção sem evidência **de verdade**. A guarda está certa naquele caso. A linha já desligou a
+semântica na `0.2.2`.
+
+### `emit_as_finding` — reenquadrado
+
+`embeddings.emit_as_finding` (`semantic_expand.py:447`) é **opt-in, default `False`, inerte nas
+sete configs**. Ele **incrementa `n_positive_spans`** e materializa o termo casado como finding.
+ℹ️ **Não é só um risco à guarda** — é o que faltaria para o achado semântico virar visível e
+mensurável: hoje a promoção sobe `fl` e deixa `findings` **vazio**, então `measure` e `vet` a
+jusante **não enxergam** o achado e o `require_measure` não tem o que conferir.
+⚠️ **Mas com a régua cega ele mascararia o defeito** em vez de corrigi-lo. Ordem: `full_doc`
+primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 
 ⚠️ **Artefatos de bancada a apagar quando o card fechar:** notebook
-`plataform/ntb_ia_bancada_p0_29` no workspace, tabelas
-`diamond_fabrica_ia_dev.hepatologia.tb_bancada_p0_29_v0` e
-`diamond_fabrica_ia_dev.tirads.tb_bancada_tokens_v0`.
+`plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
+`diamond_fabrica_ia_dev`.
 
 ## `0.15.0` — 🟡 SPEC ABERTA, DESENHO EM ABERTO DE PROPÓSITO
 
@@ -521,10 +540,14 @@ fechar.
 
 **Fila acumulada para essa passada única:**
 
-- `300202` — `segmentation.mode: auto`, **única linha assim**, descarta IMPRESSÃO/CONCLUSÃO:
-  `segmentation_coverage` < 1,0 em **3.867 de 4.507**, 3.196 cabeçalhos descartados. Nunca medido;
-  no ca-rim a mesma correção recuperou **+25 laudos em 6 dias**. Exige A/B — sem gabarito clínico
-  não há como arbitrar o delta. **Sem dono e sem CA.**
+- 🔴 **`300202` — `segmentation.mode: auto` é a PRIMEIRA da fila, e virou causa raiz.**
+  Única linha assim; descarta IMPRESSÃO/CONCLUSÃO. `segmentation_coverage` < 1,0 em **3.867 de
+  4.507**, e nos casos do `[P0-29]` a cobertura mínima é **0,006** — a régua vê **0,6%** do laudo.
+  **44 de 44 casos do `283648` são explicados por ela**: o termo literal da régua está no laudo, na
+  parte descartada, e quem o reencontrou foi a camada semântica, que recebe o texto inteiro.
+  No ca-rim a mesma correção recuperou **+25 laudos em 6 dias**.
+  ⚠️ **Tem de vir ANTES da guarda de evidência da `0.14.0`** — invertido, a guarda rebaixa o que a
+  régua deveria ter achado. Exige A/B, e agora com população definida.
 - `embedding_model` — aponta para o Volume do workspace antigo e falha em **99,3%** dos laudos em
   produção (card `305810`).
 - `uncertainty_band: [0.35, 0.65]` — piso abaixo do teto analítico 0,597, causa dos **36** casos
