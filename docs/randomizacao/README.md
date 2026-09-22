@@ -15,6 +15,10 @@ motor**, e é desenho de estudo.
 
 ## Material avaliado
 
+📄 **`resumo-para-refinamento-2026-09-22.md`** — **uma página, para levar ao refinamento.**
+As quatro decisões com o número que as sustenta.
+
+
 📄 **`parecer-estudo-de-validacao-2026-09-22.md`** — avaliação crítica do backtest de 12 meses
 (`relatorio_v4.pdf`) e da doc da biblioteca (`rededor-ai-lib`, `docs/features/randomizacao.md`).
 **Conclusão: o sorteio está pronto, o estudo não.** O mecanismo foi verificado de forma
