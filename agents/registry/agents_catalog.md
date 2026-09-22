@@ -13,6 +13,7 @@ Status: `ativo` | `experimental` | `deprecado`
 | AF-005 | **Git Steward (usage)** | Operações Git seguras; distinguir backup A3Data vs Azure DevOps | `git-steward.mdc`, `01-git-safety.mdc` | — | ativo |
 | AF-006 | **NLP Lib Port Sync** | **Guardião** de `fabrica-ia-lib` (foco `src/fabrica_ia/nlp_engine/`): A3Data vs Azure; transposição, adaptações e paridade funcional | `git-steward.mdc`, `01-git-safety.mdc`, `doc-transmissao-engml-nlp-engine-v0.md` | `agents/definitions/AF-006-nlp-lib-port-sync.md` | ativo |
 | AF-007 | **Levantamento Medido** | Devolver **número + a consulta que o produziu**; não conclui, não recomenda, não escreve em disco | `00-global-project-rules.mdc`, `05-clinical-nlp-rules.mdc`, `07-documentation.mdc` | `agents/definitions/AF-007-levantamento-medido.md` | experimental |
+| AF-008 | **Auditor de Medição** | **Reproduzir** um número antes de ele virar decisão e dizer se sustenta a afirmação; nunca o mesmo agent que mediu | `08-armadilhas-verificadas.mdc`, `06-testing-quality.mdc` | `agents/definitions/AF-008-auditor-de-medicao.md` | experimental |
 
 ## Obsolescência
 

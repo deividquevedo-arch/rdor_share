@@ -33,6 +33,7 @@ Este ficheiro é o **índice canónico** para agents e humanos: aponta para regr
 | `04-python-lib-architecture.mdc` | Três libs, injecção de dict, fronteiras |
 | `05-clinical-nlp-rules.mdc` | NLP clínico — remete à regra canónica `motor-nlp.mdc` |
 | `06-testing-quality.mdc` | Testes, qualidade, PHI |
+| `08-armadilhas-verificadas.mdc` | **O que já enganou, e a verificação que impede** — exit code mascarado, `max()` lexicográfico, zero suspeito, padrão × desvio |
 | `07-documentation.mdc` | Onde e como documentar mudanças |
 
 **Regras de domínio já existentes (não renomear):**

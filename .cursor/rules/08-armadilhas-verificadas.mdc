@@ -1,0 +1,147 @@
+---
+description: 
+alwaysApply: true
+---
+
+<!-- GERADO por .claude/scripts/sync-cursor-rules.py a partir de .claude/rules/. NAO editar aqui: edite a fonte e rode o script. -->
+
+# Armadilhas verificadas — o que já enganou, e a verificação que impede
+
+> **Toda linha aqui custou um erro real, com data.** Não são boas práticas genéricas: são as
+> formas concretas de errar **produzindo resultado plausível**, que é o que torna o erro caro.
+>
+> ⚠️ **O critério de entrada é duro:** só entra o que (a) já aconteceu, (b) falha em silêncio ou
+> parece sucesso, e (c) tem uma verificação de um comando. O resto vira skill, hook ou memória.
+
+---
+
+## 1. 🔴 Exit code mascarado — o erro que deixa passar todos os outros
+
+**`comando | tail -N` devolve o código do `tail`, não do comando.** Então `&&` não protege nada,
+e um gate vermelho vira commit verde.
+
+```bash
+uv run pytest tests/ -q | tail -2 && git commit   # 🔴 commita com teste quebrado
+```
+
+**A verificação:** redirecionar e conferir explicitamente.
+
+```bash
+uv run pytest tests/ -q > /tmp/r.txt 2>&1; echo "EXIT=$?"; tail -2 /tmp/r.txt
+```
+
+📅 **22/09: duas vezes no mesmo dia.** Escondeu dois erros de `ruff` e fez um commit entrar com
+teste vermelho. **Nunca afirmar "verde" a partir de saída canalizada.**
+
+---
+
+## 2. 🔴 `max()` sobre versão é LEXICOGRÁFICO
+
+`"0.9.4" > "0.12.3"` como string. Um `max(engine_version)` numa tabela produz a versão **errada**
+e parece certo.
+
+**A verificação:** agrupar em vez de agregar — `GROUP BY versao` mostra o conjunto real.
+
+📅 **22/09:** produziu um achado falso numa revisão de PR — *"validaram na engine errada"*, quando
+a combinação certa existia. Já estava registrado para `decision_trail` e **repeti em outro campo**.
+
+---
+
+## 3. 🔴 Zero e 100% são suspeitos até prova em contrário
+
+Medição que dá **zero** quase nunca é ausência: é filtro que não casou, acento em literal SQL,
+regex quebrada no caminho `bash → SQL`, ou caminho que nunca rodou.
+
+**A verificação:** antes de reportar zero, rodar o **controle** — a mesma consulta sem o filtro
+suspeito, ou uma fonte independente do mesmo número.
+
+📅 **22/09:** uma regex de separador devolveu zero, outra devolveu 176 "sentenças" em 1.191
+caracteres. **A segunda é mais perigosa**, porque não é zero — é plausível.
+
+---
+
+## 4. 🔴 Padrão da plataforma NÃO é desvio do autor
+
+Antes de apontar uma chave numa revisão de config: **quantas das outras declaram a mesma coisa?**
+
+```bash
+python scripts/e-desvio-ou-padrao.py <chave>
+```
+
+Se a maioria declara igual, **não é desvio** — é padrão, e o lugar é o card acumulador da
+plataforma, não um comentário para quem clonou.
+
+📅 **17/09 e 22/09 — duas vezes.** Na segunda, **quatro** itens de uma revisão caíram: três eram
+padrão em 5 e 6 das 7 configs, e o quarto era alçada de infraestrutura pelo POP-IA-08.
+
+---
+
+## 5. 🔴 Mutante que "sobrevive" pode ser mutação nunca aplicada
+
+Substituição por padrão que não casa **não altera nada**, e a suíte verde parece mutante vivo.
+
+**A verificação:** o script de mutação **afirma** que o padrão foi encontrado e diz **quantos**
+pontos mutou, antes de rodar a suíte.
+
+```python
+assert alvo in fonte, f"padrao nao encontrado: {alvo}"
+print(f"mutacao aplicada em {fonte.count(alvo)} ponto(s)")
+```
+
+📅 **22/09:** um mutante "morto" era mutação não aplicada. **Descartado em vez de contado.**
+
+---
+
+## 6. 🔴 Corpus de teste pequeno faz a guarda degenerar
+
+Janela de agrupamento que cobre o **documento inteiro** não agrupa. Em texto de duas sentenças,
+`±1 sentença` **é** o documento; em texto de uma linha, "a linha" **é** o documento.
+
+**A verificação:** o corpus precisa ter **texto fora da janela**. Se a guarda recusar, a suspeita
+é do corpus antes de ser do código.
+
+📅 **22/09: três corpora meus caíram nisso no mesmo arquivo.** Nas três, o teste estava certo.
+
+---
+
+## 7. 🔴 Nome público novo exige `__all__` no MESMO edit
+
+Função sem `_` que não entra no `__all__` deixa o `import *` incompleto, e o `api_surface.json`
+versionado desatualiza.
+
+**A verificação:** o hook `all-e-superficie` roda no commit. E a pergunta antes de escrever:
+**isto precisa ser público?** Leitor de config, helper de formatação e afins nascem privados.
+
+📅 **22/09: duas vezes.** Uma virou commit com teste vermelho.
+
+---
+
+## 8. 🔴 `C901` se resolve extraindo, não com `noqa`
+
+Complexidade que estoura é sinal de que há uma decisão embutida que merece nome.
+
+📅 **0.12.2:** extraído `_registrar_ancora_ausente`. **0.15.0:** extraído `_gate_met_de`, e o nome
+tornou visível que havia **três** causas de `met=None`, não duas.
+
+---
+
+## 9. 🔴 O que o subagente devolve é reproduzido, não aceito
+
+**A auditoria é REPRODUÇÃO, não segunda opinião.** Rodar a consulta de novo custa segundos; pedir
+a outro agente que "revise" produz concordância.
+
+📅 **22/09:** um levantamento correto sustentou recomendação **errada** — a pergunta é que estava
+errada. E um número de worker era artefato de regex; a ressalva dele estava certa e o número não.
+
+---
+
+## Onde cada coisa vive
+
+| natureza | mecanismo | exemplo |
+|---|---|---|
+| determinístico, no momento do commit | **hook** | `__all__`, chave privada, formato |
+| determinístico, sob demanda | **script em `scripts/`** | `e-desvio-ou-padrao.py` |
+| procedimento de vários passos | **skill** | `revisar-config-especialidade` |
+| exige ler e julgar | **agent** | `AF-008` — auditor de medição |
+| fato durável | **memória** | armadilhas de domínio |
+| restrição curta e sempre válida | **esta regra** | o que está acima |

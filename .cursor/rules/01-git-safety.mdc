@@ -1,0 +1,33 @@
+---
+description: Validação obrigatória antes de alterar repo oficial Rede D'Or; complementa git-steward
+alwaysApply: true
+---
+
+<!-- GERADO por .claude/scripts/sync-cursor-rules.py a partir de .claude/rules/. NAO editar aqui: edite a fonte e rode o script. -->
+
+# Git — segurança e repo oficial
+
+## Complemento obrigatório
+
+A política detalhada de **dois Git** (backup A3Data vs Azure DevOps), comandos, commits e operações destrutivas está em **`git-steward.mdc`**. Esta regra acrescenta apenas o **gate de validação** antes do repositório corporativo.
+
+## Gate — alterações no repo oficial (Azure DevOps / “oficial”)
+
+Antes de **qualquer** commit, push ou PR que vise o repositório **oficial** do produto:
+
+1. **Confirmar contexto:** directorio do `.git`, `git branch --show-current`, `git remote -v` (não assumir que a raiz do workspace é o repo certo).
+2. **Lista explícita** dos ficheiros a incluir e tipo de mudança (feat/fix/docs/chore).
+3. **Risco** em uma linha (breaking change?, dados sensíveis?, alcance CI/CD).
+4. **Mensagem de commit** proposta e referência **Sxx/Txx** quando aplicável.
+5. **Confirmação explícita do utilizador** para seguir (alinha com `git-steward.mdc`).
+
+## Proibições
+
+- Não misturar trabalho experimental com release sem decisão explícita.
+- Não contornar `.gitignore` para segredos.
+- Operações destrutivas: apenas como em `git-steward.mdc` (confirmação explícita).
+
+## Relação com outros ficheiros
+
+- Trabalho primeiro em **sandbox/backup** quando acordado; promoção para DevOps documentada no workflow do time.
+- `cursor.md` — índice; `agents/factory/agent_factory.md` — auditoria de mudanças estruturais quando relevante.

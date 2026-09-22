@@ -1,0 +1,44 @@
+---
+description: Princípios globais do projeto — hierarquia de verdade, SDD, RPI, progressive disclosure, contexto compacto
+---
+
+# Regras globais do projeto
+
+## Hierarquia de verdade
+
+1. Backlog acordado (**Sxx** / **Txx.y**) e documentos canónicos em `docs/motor-nlp/`.
+2. Regras Cursor em `.cursor/rules/` e índice em `cursor.md` (raiz).
+3. Pedidos ad-hoc do chat **não** sobrepoem (1)–(2); desalinhamento implica parar e alinhar com o time.
+
+## Metodologia (resumo)
+
+- **SDD / RPI:** Research (legado, inventário) → Plan (SPEC: inputs, outputs, edge cases, o que **não** faz) → Implement (com testes).
+- **Progressive disclosure:** extrair → tipar → refinar → otimizar; cada camada entrega incremental (PR pequeno).
+- **Compactação de contexto:** preferir remissões a `cursor.md`, `docs/motor-nlp/`, e regras numeradas em vez de colar parágrafos longos no prompt.
+
+## Referência a card: número **e** título, sempre
+
+**Nunca citar um card só pelo número.** `283644` não identifica nada para quem lê — nem em chat,
+nem em documento, nem em commit, nem em comentário de PR. O formato é:
+
+> card `283644` — *[NLP Engine] Juiz LLM ligado por contorno não documentado*
+
+- **Em tabela**, uma coluna para o número e outra para o título; não fundir.
+- **Título pode ser abreviado** quando o do board for longo, desde que o assunto sobreviva. O
+  prefixo `Fabrica IA/NLP Engine -` é ruído e sai; o código `[P2-13]` fica, porque é como o backlog
+  da lib é lido.
+- **Na dúvida sobre o título, consultar o board** — nunca inventar nem reaproveitar a descrição que
+  está no `ESTADO.md`, que é resumo nosso e **já divergiu do título real** (ver
+  `_processo/indice-de-cards.md`).
+- Vale igual para **PR**: número mais o que ele faz, não o número solto.
+
+**Índice número → título:** `docs/motor-nlp/_processo/indice-de-cards.md`.
+
+## Agents (humanos + IA)
+
+- **Responsabilidade única** por agent; evitar “super-agent” genérico.
+- **Agent Factory** (ver `02-agent-factory.mdc`): cria, revisa e audita agents; catálogo em `agents/registry/agents_catalog.md`.
+
+## O que esta regra não faz
+
+- Não substitui `motor-nlp.mdc`, `git-steward.mdc`, nem diretrizes longas em `docs/motor-nlp/`.
