@@ -836,7 +836,7 @@ entregas em `.alt.doc/CDI/` (fora do git; `samples/` tem PHI e nunca sobe).
 - ✅ **Blueprint revisado** (`arquitetura-laudos-pdf-rispacs_v2.drawio`) e **proposta de implementação
   v0.10**: MVP com `ai_parse_document` direto em colonoscopia e endoscopia, destino
   `tb_gold_mov_exame`, solução própria na fase 2. Aguarda validação do Diego.
-- ✅ **Medição independente da gold inteira, 12 meses** (set/25–ago/26, carga ≤ 18/09 10:55):
+- ✅ **Medição independente da gold inteira, 12 meses** (set/25–ago/26, snapshot de 18/09 15:42; reproduzível por `TIMESTAMP AS OF`):
   66,9 M exames; sem laboratório **9.146.113 · 75,6% legíveis · 4,2% recuperáveis · 20,1% perdidos**;
   agosto sem laboratório **94,4 / 4,1 / 1,6**. Colonoscopia + endoscopia corrente: 91% legíveis, PDF
   em cinco unidades TASY (~1,3 mil/mês).
@@ -848,7 +848,7 @@ entregas em `.alt.doc/CDI/` (fora do git; `samples/` tem PHI e nunca sobe).
 - 🔴 **Acesso** a `especialistas.pacs_streaming.laudopdf_*` e `diamond_axis_hml` — única forma de
   saber onde estão os 140 mil laudos do viewer. Pedido ao Head na síntese.
 - 🟡 **Decisões do time (segunda):** divisão de categorias (Genie × referência), escopo da
-  anuscopia, dono para Santa Helena (texto vazio) e WPD/MV (sem item), chave do PDF no Viewershell
+  anuscopia, dono para Santa Helena (texto vazio) e para as unidades com registro sem resultado (Quinta D'Or, Sorocaba, Arthur Ramos, Alphamed; 92% do sem item da gold é TASY), chave do PDF no Viewershell
   (não há `num_pedido_integracao` em exame em PDF), cardiologia gráfica como segunda onda
   (7 mil PDFs/mês, maior fonte atual).
 - 🟡 **Time dos filtros:** o `%endoscopia%` em uso traz ~20 mil linhas/ano de otorrino e faturamento

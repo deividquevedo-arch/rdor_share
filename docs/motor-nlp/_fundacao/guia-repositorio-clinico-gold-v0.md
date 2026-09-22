@@ -1,6 +1,6 @@
 # Guia do repositório clínico — `tb_gold_mov_exame` (v0, 2026-09-18)
 
-> O que aprendemos medindo a gold inteira em 12 meses: onde está o laudo, o que cada família de
+> O que a medição da gold inteira em 12 meses mostrou: onde está o laudo, o que cada família de
 > conteúdo significa, quais colunas enganam, como filtrar exames sem perder nem inflar, e as
 > consultas que reproduzem os números entregues ao Head em 18/09. Vale para qualquer especialidade
 > que leia laudo da gold. Diário em `_processo/diario/2026-09-16.md`.
@@ -14,10 +14,10 @@ duplicadas em 340 mil de colonoscopia e endoscopia; deduplicar por `id_exame` me
 |---|---|---|
 | `id_exame` | chave do exame | contar **exames distintos**, nunca linhas |
 | `dt_dia_exame` | data do exame | janela por ela |
-| `etl_data_atualizacao_carga_gold` | carga | **congelar** (`<= T`) toda medição; carga das 10:55 de 18/09 acrescentou 378 colonoscopias entre duas extrações |
+| `etl_data_atualizacao_carga_gold` | carga | a carga das 10:55 de 18/09 acrescentou 378 colonoscopias entre duas extrações; **não serve para congelar**: exames recarregados depois ganham carga nova e somem do filtro `<= T` (40.517 de agosto entre 18 e 22/09). Congelar com `TIMESTAMP AS OF '<T>'` |
 | `proced_lista_exames` | **array de struct** com `laudo_original`, `laudo_transformado`, `nme_exame`, faixas de referência | exame pode ter **array nulo ou vazio**; o `explode` o elimina. Contar antes |
 | `laudo_transformado` / `laudo_original` (no array) | texto limpo / texto bruto (RTF, HTML) | usar `coalesce(nullif(trim(laudo_transformado), ''), laudo_original)` |
-| `proced_descricao_ajustado`, `dsc_codigo`, `cod_procedimento` | descrição do procedimento (três grafias) | normalizar NBSP `[   ]`; o TUSS vem **dentro** da descrição, `cod_procedimento` não é TUSS puro |
+| `proced_descricao_ajustado`, `dsc_codigo`, `cod_procedimento` | descrição do procedimento (três grafias) | normalizar NBSP `[\u00A0\u2007\u202F]`; o TUSS vem **dentro** da descrição, `cod_procedimento` não é TUSS puro |
 | `etl_tipo_integracao` (= `tp_procedimento` = `nme_categoria`) | LABORATORIO / IMAGEM / ANATOMIA | **não é modalidade**: 45% do IMAGEM é laboratório pela descrição; ANATOMIA tem 400 mil exames de imagem. Mudou de significado em dez/25 |
 | `etl_nome_sistema_origem` | TASY, WPD, SMART, mv_soul, mv, MV SOUL, MV | grafias duplicadas de MV |
 | `num_pedido_integracao` | pedido da integração de resultado | preenchido em 97–99% dos "sistema externo", 43–45% dos legíveis, **0% dos PDF, vazios e sem item**; `''` agrupa 8,6 mil exames, tratar como nulo |
@@ -35,7 +35,7 @@ acento, espaços colapsados). Um exame com vários itens fica com o **mais infor
 
 | ordem | família | regra | o que é de verdade |
 |---|---|---|---|
-| 0 | **sem item** | array nulo ou `size = 0`, contado **antes** do `explode` | registro de atendimento ou faturamento sem integração de resultado; 100% sem pedido. Padrão das unidades WPD e MV e das linhas de procedimento faturado |
+| 0 | **sem item** | array nulo ou `size = 0`, contado **antes** do `explode` | registro de atendimento ou faturamento sem integração de resultado; 100% sem pedido. 92% dele em 12 meses é TASY (11,26 M); WPD 0,97 M; MV ~0. Nas endoscopias, unidades específicas e linhas de procedimento faturado |
 | 1 | **sistema externo** | contém `sistema especialista` | aviso "acesse o viewer / a imagem"; tem mais de 120 caracteres e engana quem classifica por tamanho. Sumiu em 20/07/26 nas endoscopias |
 | 2 | **laudo em PDF** | começa com `laudo em pdf` ou `resultado pdf`, menos de 40 caracteres | o arquivo existe no Viewershell; alvo do CDI |
 | 3 | **anexo** | `laudo em anexo`, `vide laudo`, `pasta anexos`, `proxima pagina`, `outro registro`, `laudo anexado`, menos de 400 | |
@@ -60,14 +60,15 @@ nuclear, TC, RM, US e doppler, radiografia e densitometria, hemodinâmica, neuro
 patológica, outros procedimentos, laboratório (resíduo). O laboratório é 86% do volume e devolve
 número, não laudo: "em branco" ali não é problema.
 
-Números de referência (12 meses set/25–ago/26, carga ≤ 18/09 10:55): gold 66.878.996; sem
+Números de referência (12 meses set/25–ago/26, snapshot de 18/09 15:42): gold 66.878.996; sem
 laboratório 9.146.113 (75,6% legíveis, 4,2% recuperáveis, 20,1% perdidos); agosto sem laboratório
-720.556 (94,4 / 4,1 / 1,6). Se uma remedição com a mesma janela não devolver isso, a diferença é
-método, não dado.
+720.556 (94,4 / 4,1 / 1,6). Uma remedição com `TIMESTAMP AS OF '2026-09-18T15:42:01'` devolve esses números (agosto conferido
+ao exame em 22/09: 5.014.642). Sem time travel, a diferença é recarga, não método. A tabela não declara
+retenção própria; no padrão do Delta o snapshot deixa de ser alcançável poucos dias depois.
 
 ## 4. Filtro de exame para colonoscopia e endoscopia (final v3)
 
-Sobre `exame_nr` = `regexp_replace(lower(coalesce(proced_descricao_ajustado, cast(cod_procedimento as string), '')), '[   ]', ' ')`, e o mesmo para `dsc_codigo_txt` e `cod_procedimento_txt`.
+Sobre `exame_nr` = `regexp_replace(lower(coalesce(proced_descricao_ajustado, cast(cod_procedimento as string), '')), '[\u00A0\u2007\u202F]', ' ')`, e o mesmo para `dsc_codigo_txt` e `cod_procedimento_txt`.
 
 - **Exclusão comum:** `nasoss|naso-?sinus|naso sinus|naso - sinus|nasofibro|nasal|endonasal|sinus|laring|etmoid|adenoid|velo-?palat|epistaxe|septo|rinoss|oximetria|anestesia|microdata|otol|ouvid|urolog|ureter|vesical|coluna|vertebral|artrosc|bronc|hemodinamica`. Não usar `naso` sozinho: "passagem de sonda nasoenteral por endoscopia" é digestiva.
 - **Colonoscopia:** `%colono%` nas três colunas **ou** `colonosc|colonossc|videocolon|ileocolon|retossigmoidosc`; menos a exclusão.
@@ -92,9 +93,8 @@ acrescentar `AND m.etl_tipo_integracao = 'IMAGEM'`.
 ```sql
 WITH d AS (  -- 1. janela + congelamento + dedup
   SELECT m.*, row_number() OVER (PARTITION BY m.id_exame ORDER BY m.etl_data_atualizacao_carga_gold DESC) AS rn
-  FROM gold_corporativo_ia.corporativo.tb_gold_mov_exame m
+  FROM gold_corporativo_ia.corporativo.tb_gold_mov_exame TIMESTAMP AS OF '<T>' m
   WHERE m.dt_dia_exame >= DATE'2026-08-01' AND m.dt_dia_exame < DATE'2026-09-01'
-    AND m.etl_data_atualizacao_carga_gold <= TIMESTAMP'<T>'
 ), b AS (  -- 2. sem item ANTES do explode
   SELECT m.id_exame, <descricao normalizada> AS tipo_exame,
          CASE WHEN m.proced_lista_exames IS NULL OR size(m.proced_lista_exames) = 0 THEN 1 ELSE 0 END AS sem_item,
@@ -116,7 +116,7 @@ SELECT ... FROM e GROUP BY ...
 ```
 
 **Verificações que acompanham qualquer número** (imprimir, não supor):
-`<T>` e `max(etl_data_atualizacao_carga_gold)`; linhas removidas pelo dedup; soma das famílias =
+`<T>` do `TIMESTAMP AS OF` e `max(etl_data_atualizacao_carga_gold)`; linhas removidas pelo dedup; soma das famílias =
 bruto em toda linha; soma dos meses = total; as 20 descrições que entram no filtro e as 20 que a
 exclusão tira; cobertura de `num_pedido_integracao` por família; distribuição de comprimento dos
 "vazios"; proporção de legíveis com termo clínico.
@@ -127,12 +127,15 @@ sistema externo = 62 (33 + 29); colonoscopia 12 m sem item ≈ 26,7 mil; legíve
 
 ## 6. O que a gold mostra sobre o negócio
 
+- **Origem (12 meses):** TASY 48,07 M (71,9%), WPD 10,62 M, SMART 3,99 M, MV 4,20 M em quatro grafias.
+  O "sem item" é 92% TASY; MV praticamente zero. **SMART é só laboratório e parou de alimentar a
+  gold em jul/26** (284 mil exames em junho, 37 em agosto).
 - **Duas viradas:** dez/25–jan/26, gold inteira, "sem item" de 34% para 7% (mudança de integração
   não documentada; mesma data em que o rótulo IMAGEM mudou de significado); 20/07/26, endoscopias,
   marcador do viewer some nas mesmas unidades com o mesmo volume (São Luiz e Brasil Santo André).
 - **Corrente (agosto/26), fora do laboratório:** imagem 97–100% legível; endoscopias 91%; PDF em
   cinco unidades TASY (Tatuapé, Central Sul, Samer, Central Leste 100%; Barra D'Or II misto);
-  Santa Helena 100% vazio; WPD e MV (Quinta D'Or, Sorocaba) sem item.
+  Santa Helena 100% vazio; sem item em Quinta D'Or e Sorocaba (WPD) e Arthur Ramos e Alphamed (TASY).
 - **O maior volume de PDF e "outro sistema" hoje é cardiologia gráfica** (ergométrico 39% PDF,
   MAPA 40%, Holter 30%, ECG 12%: 7 mil dos 11,9 mil PDFs do mês), e obstetrícia aponta para outro
   sistema em 82–99%. Teste ergométrico é o único tipo piorando desde julho.
@@ -166,5 +169,6 @@ sistema externo = 62 (33 + 29); colonoscopia 12 m sem item ≈ 26,7 mil; legíve
 - Regex declaradas: `cdi_grupos.py` (grupos globais), `cdi_categorias_genie.py` (31 categorias da
   Genie), `cdi_familias.py` (50 famílias da planilha de 26/08, 16 fora de tolerância). Copiar para
   `_ferramentas/` antes de o diretório do job ser apagado.
+- Mapa visual: `.alt.doc/CDI/mapa-repositorio-clinico-gold-2026-09-22.drawio`.
 - Operação: `databricks experimental aitools tools query "<sql>" --profile nlp-platform`; um mês por
   consulta, três em paralelo; sete concorrentes arrastam todas.
