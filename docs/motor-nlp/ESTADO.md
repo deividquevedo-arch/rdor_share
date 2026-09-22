@@ -845,6 +845,7 @@ entregas em `.alt.doc/CDI/` (fora do git; `samples/` tem PHI e nunca sobe).
   laboratório; Ecocardiograma errado (23 mil × 403 mil). Prompt v3 fechado.
 - ✅ **Duas viradas documentadas:** dez/25–jan/26 ("sem item" 34% → 7%, gold inteira) e 20/07/26
   (viewer some nas endoscopias). Nenhuma estava registrada em lugar nenhum.
+- 🟡 **Plano de implementação (22/09):** proposta v0.11 (população = só PDF, ~300/semana, 96% em cinco unidades TASY; E0 de chave e acesso) e `plano-execucao-mvp-cdi-v0.md` (7 pré-requisitos até 28/09, 7 histórias por time, 6 blocos até 21/12). **Não há história do CDI no board**: só o card 306762 "[Captação] Refinamento aumento volulme exames", em refinamento, sem dono, com premissa de 63% em PDF e impacto de R$ 18 mi que a medição não sustenta (no modelo de ganho do lake, a parcela de PDF é R$ 2,3 mi de R$ 22,1 mi). Rascunho de comentário para o card aguarda aprovação. Dependência nova: a escrita na `tb_gold_mov_exame` é do job `ia-malha-execucao`, não do CDI.
 - 🔴 **Acesso** a `especialistas.pacs_streaming.laudopdf_*` e `diamond_axis_hml` — única forma de
   saber onde estão os 140 mil laudos do viewer. Pedido ao Head na síntese.
 - 🟡 **Decisões do time (segunda):** divisão de categorias (Genie × referência), escopo da
