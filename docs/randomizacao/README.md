@@ -13,6 +13,16 @@ a mensuração do efeito.
 de configuração da especialidade. A randomização decide **o que acontece depois da decisão do
 motor**, e é desenho de estudo.
 
+## Material avaliado
+
+📄 **`parecer-estudo-de-validacao-2026-09-22.md`** — avaliação crítica do backtest de 12 meses
+(`relatorio_v4.pdf`) e da doc da biblioteca (`rededor-ai-lib`, `docs/features/randomizacao.md`).
+**Conclusão: o sorteio está pronto, o estudo não.** O mecanismo foi verificado de forma
+independente e passa; o que falta é a taxa de casamento do CPF, o desfecho e o cálculo de poder.
+
+🔧 Script reexecutável fora do git: `_ferramentas/verifica-sorteio-randomizacao.py` — reimplementa
+a fórmula em Python puro e testa fração, determinismo, monotonicidade e independência regional.
+
 ## Cards
 
 | card | título | estado |
@@ -25,16 +35,25 @@ motor**, e é desenho de estudo.
 ℹ️ **O `303791` é o card de junção** — ele carrega também a passada única da hepatologia, que é
 frente do motor. Ao trabalhar aqui, não puxar a metade de NLP junto sem decisão explícita.
 
-## 🔴 O que precisa ser respondido ANTES de desenhar
+## 🔴 O que precisa ser respondido ANTES de seguir
 
-1. **Qual é a pergunta do estudo?** Medir o efeito do algoritmo sobre desfecho, sobre conversão
-   financeira, ou sobre carga operacional — são desenhos diferentes e amostras diferentes.
-2. **A unidade de randomização é o paciente, o exame ou a unidade hospitalar?** Randomizar por
-   paciente com a lista chegando por unidade produz contaminação.
-3. **Existe braço de controle, e ele é ético aqui?** Em rastreio, não entregar um achado encontrado
-   tem custo clínico — isso precisa estar escrito e aprovado, não assumido.
-4. **Quem mede, e contra qual base?** A base ouro não tem lugar oficial (dívida registrada no
-   `motor-nlp/ESTADO.md`), e sem isso a mensuração fica sem denominador confiável.
+**Duas das quatro perguntas abertas foram respondidas pelo material avaliado:**
+
+- ✅ **A unidade de randomização é o PACIENTE**, por CPF — e um paciente em várias linhas cai no
+  mesmo braço, o que evita contaminação entre linhas de cuidado.
+- ✅ **O mecanismo é determinístico e auditável**, e subir o controle de 5% para 10% **não realoca
+  ninguém** — verificado.
+
+**Seguem abertas, e agora com o motivo escrito:**
+
+1. 🔴 **Qual é o desfecho, e qual o poder para detectá-lo?** É o que decide 5% ou 10%, e a decisão
+   hoje não tem base. Controle é paciente **encontrado e não navegado** — dobrar tem custo clínico.
+2. 🔴 **Qual a taxa de casamento do CPF, e quem fica de fora?** É o único viés que o hash não
+   protege, porque acontece **antes** dele.
+3. 🔴 **Ética, LGPD e formalização** — o próprio relatório lista como pendente, e isso **precede** a
+   operação.
+4. ⚠️ **Três divergências** entre o relatório e a doc da biblioteca — chave, branch e o elo com a
+   tabela de massa. Ver §4 do parecer.
 
 ## O que NÃO entra aqui
 
