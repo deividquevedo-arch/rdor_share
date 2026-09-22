@@ -37,12 +37,24 @@ def _valor_declarado(texto: str, chave: str) -> str | None:
 
     Aceita as formas que aparecem nos arquivos do projeto: ``'chave': valor`` em Python e
     ``"chave": valor`` em JSON. Pega o primeiro literal — lista, número, booleano ou string.
+
+    🔴 **22/09: a primeira versão não reconhecia BLOCO.** O padrão só casava escalar e lista,
+    então ``'runtime': {`` devolvia ``None`` e o script respondia *"ninguém declara"* para uma
+    chave que as SETE configs declaram. É a resposta exatamente invertida, na classe de chave
+    que mais aparece em revisão — ``runtime``, ``llm_router``, ``embeddings``,
+    ``findings_policy``, ``segmentation`` são todos blocos.
+
+    Bloco devolve o literal ``{bloco}``: o script diz que a chave EXISTE e não finge comparar
+    conteúdo de dicionário, que não é o que ele mede.
     """
     padrao = re.compile(
-        rf"""['"]{re.escape(chave)}['"]\s*:\s*(\[[^\]]*\]|['"][^'"]*['"]|[A-Za-z0-9_.+-]+)"""
+        rf"""['"]{re.escape(chave)}['"]\s*:\s*([{{]|\[[^\]]*\]|['"][^'"]*['"]|[A-Za-z0-9_.+-]+)"""
     )
     m = padrao.search(texto)
-    return m.group(1).strip() if m else None
+    if not m:
+        return None
+    bruto = m.group(1).strip()
+    return "{bloco}" if bruto == "{" else bruto
 
 
 def _arquivos(usar_jobs: bool) -> list[Path]:

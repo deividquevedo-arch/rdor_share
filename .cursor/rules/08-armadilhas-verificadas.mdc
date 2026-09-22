@@ -145,3 +145,27 @@ errada. E um número de worker era artefato de regex; a ressalva dele estava cer
 | exige ler e julgar | **agent** | `AF-008` — auditor de medição |
 | fato durável | **memória** | armadilhas de domínio |
 | restrição curta e sempre válida | **esta regra** | o que está acima |
+
+## 10. O validador que responde o INVERSO — e a classe de chave é justo a que importa
+
+📅 **22/09.** `e-desvio-ou-padrao.py` foi escrito para impedir que padrão da plataforma fosse
+cobrado de um autor. Perguntado sobre `runtime`, respondeu **"NINGUÉM declara"**. As **sete**
+configs declaram.
+
+**Causa:** o padrão só casava escalar e lista. `'runtime': {` — abertura de **bloco** — não casava
+nada e devolvia `None`. E bloco é exatamente a classe de chave que revisão de config discute:
+`runtime`, `llm_router`, `embeddings`, `findings_policy`, `segmentation`.
+
+🔴 **O validador teria produzido a cobrança errada com a autoridade de uma medição.** Pior que não
+ter validador.
+
+**O que pegou:** o gatilho *"o número é zero"* do `AF-008` — zero quase nunca é ausência. O
+controle foi um `grep` cru pelo nome da chave.
+
+**O que ficou no script:** o padrão aceita `{` e devolve `{bloco}`; e quando ninguém declara, ele
+confere o texto cru antes de responder — se o nome aparece e o parser não extraiu, ele diz
+**`PARSER FALHOU`** e sai com código 2, em vez de responder.
+
+**A regra geral:** ferramenta de verificação precisa de **controle negativo E positivo** rodados
+no dia em que é escrita. Os três desta: chave inexistente → *ninguém declara*; chave escalar
+conhecida → *padrão*; chave-bloco conhecida → *padrão*.
