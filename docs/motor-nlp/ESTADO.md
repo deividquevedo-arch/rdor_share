@@ -416,7 +416,18 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*. Branch
-`feat/0.15.0-vinculo-lesao-medida`, criada de `origin/hml`. **1.290 testes, exit 0.**
+`feat/0.15.0-vinculo-lesao-medida`, criada de `origin/hml`.
+✅ **BUMPADA em 22/09** — `pyproject` e `uv.lock` em `0.15.0`, `RELEASE.md` com a seção aberta e a
+da `0.14.0` fechada. Gate de sete alvos: **1.293 testes, 88,46% por ramo**, `release-check`
+coerente. **Nada pushado.**
+
+🔴 **O contrato não alcançava os campos novos, e não por descuido:** `quantitative` era
+`dict[str, Any]`, então o teste de contrato comparava só chaves de **topo** e nunca descia. Os
+campos de token da `0.14.0` entraram por esse buraco sem verificação. `QuantitativeCriterionBlock`
+declara os **29** campos do bloco; o teste varre **unilesão e multilesão**, e o mutante foi
+conferido morto.
+⚠️ **O `release-check` acusou SETE referências de versão defasadas** em `README`,
+`IMPLEMENTATION-DATABRICKS` e `REFERENCIA-PARAMETROS` — corrigidas. O bump não é uma linha.
 
 **A régua, em duas linhas:** todo nódulo entregue vem com a dimensão e a classificação **que são
 dele**; exceção única é o laudo de punção, onde qualquer TR4 vale sem tamanho.
