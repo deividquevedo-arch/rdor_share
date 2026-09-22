@@ -412,27 +412,58 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.0` — 🟡 SPEC ABERTA, DESENHO EM ABERTO DE PROPÓSITO
+## `0.15.0` — ✅ IMPLEMENTADA E COM GOLDEN · 🟡 FALTA A MEDIÇÃO EM COORTE REAL
 
-📄 `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine] TI-RADS
-entrega a medida do nódulo errado: não existe vínculo*. É o **defeito 2** do `285305`.
+📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
+TI-RADS entrega a medida do nódulo errado: não existe vínculo*. Branch
+`feat/0.15.0-vinculo-lesao-medida`, criada de `origin/hml`. **1.290 testes, exit 0.**
 
-**RESEARCH fechado.** Não existe informação posicional nos dois lados: `parse_extraction` devolve
-**um valor por laudo** indexado pelo nome da medida, `OrdinalMention` **não carrega offset**, e
-`anchor_finding` é **gate de custo**, não vínculo. O gate é documental — responde *"existe uma
-medida que satisfaz o limiar em algum lugar deste laudo?"*.
+**A régua, em duas linhas:** todo nódulo entregue vem com a dimensão e a classificação **que são
+dele**; exceção única é o laudo de punção, onde qualquer TR4 vale sem tamanho.
 
-🔴 **A SPEC não fecha o "como", e é deliberado** — enumera **três caminhos com custo** (extração por
-lesão · vínculo por proximidade · recusar quando ambíguo), porque escolher antes de dimensionar foi
-o erro que produziu o defeito. **O terceiro é o piso, não alternativa:** os outros dois precisam
-dele para o caso em que o vínculo falha.
-🔴 **A pergunta que decide é do NEGÓCIO** (§2.3): o que se prefere receber quando o vínculo não é
-verificável — categoria sem medida, categoria com a medida do laudo e um aviso, ou não receber.
-**Sem ela, qualquer implementação é aposta.**
-⚠️ **A coorte de medição precisa conter laudos MULTILESÃO.** Coorte unilesão dá delta zero e não
-mede nada — foi exatamente por isso que a homologação não pegou o defeito.
-ℹ️ Card irmão `306066` — *TR4 sem medida no laudo de punção* — é o **caso oposto** e toca o mesmo
-gate. **Decidir juntos.**
+🔴 **O tamanho do defeito, medido em 13.264 laudos reais:** **2.729 dos 4.771 com nódulo têm mais
+de um (57%)**, máximo de 15 num laudo. **408 entregas em 15 dias** carregam uma medida num laudo
+com mais de um nódulo e mais de uma categoria — **~27 por dia**, vínculo não verificado em nenhuma.
+ℹ️ O registro anterior falava em *"2 dos 7 de um arquivo"*. A ordem de grandeza é outra.
+
+### O que foi entregue
+
+| passo | |
+|---|---|
+| `OrdinalMention` ganha `start`/`end` | a posição já existia no ponto de construção e era **descartada** |
+| `lesion_linking.py` localiza a medida no texto | o `evidence` do LLM é string livre **sem âncora**; o do `value_text` é o documento inteiro |
+| agrupamento por **LINHA** | 1.464 contra 1.081 da sentença — **68% dos laudos são lista com marcador**, e numa lista cada item é uma lesão |
+| o gate julga a medida **da lesão** | injetada antes de `evaluate_criterion`, sem tocar em quem julga |
+| a janela é **parâmetro** (`nlp.lesion_linking.janela`) | `CA7` — o número é do TI-RADS, outra linha terá outro ótimo |
+
+🔴 **A guarda que impede a degeneração silenciosa:** unidade que cobre o documento inteiro **não
+agrupa** — ela É o documento. Sem ela o vínculo volta a ser documental devolvendo `vinculo="linha"`
+como se tivesse verificado. Atinge os **31% de laudos em prosa corrida**. Só apareceu porque um
+teste falhou.
+
+### 🔴 "Não afirmar" NÃO é "rebaixar"
+
+Com `require_measure` e `met is None` o código **rebaixa**, salvo se a causa for `llm_error`
+(exceção da `0.11.0`). **Vínculo ausente é uma SEGUNDA causa da mesma natureza:** o laudo **diz** o
+tamanho, a lib é que não soube de qual lesão. O ramo virou `_gate_met_de` e trata **três** causas.
+**Converter limitação do parser em negativa clínica custaria um paciente com TR4.**
+
+### ✅ Golden contra a `v0.14.0` — delta enumerado
+
+📄 `_processo/golden-0.15.0-delta-contra-v0.14.0-2026-09-22.md`.
+**7 laudos mudam, todos multilesão, todos `1 → 0`, ZERO acrescidos.** Os quatro perfis sem camada
+ordinal ficam **byte a byte idênticos**; os 310 blobs que mudam nos demais são **puramente
+aditivos** (só `start`/`end`), conferido e não suposto.
+🔴 **O golden tinha um PONTO CEGO e ele foi fechado:** não emitia nenhuma chave de `quantitative`
+nem `measure_lesion_*`. Comparar daria idêntico **por medição vazia**. Entraram 10 laudos
+multilesão e 2 perfis quantitativos, que **discriminam o parâmetro de janela**.
+
+🟡 **Falta o `CA4`/`CA5`: medição em coorte REAL.** População dimensionada: **2.729 multilesão** e
+**2.042 unilesão** de controle, em 15 dias de TI-RADS.
+
+⚠️ **Contrato muda** — `measure_lesion_linked`, `measure_lesion_window`, `measure_lesion_skipped`,
+`require_measure_sem_vinculo` e os offsets em `ordinal_mentions`. `REFERENCIA-PARAMETROS.md` e
+`GUIA-ORDINAL.md` atualizados **nos mesmos commits**. Alinhamento no fecho do ciclo.
 
 ## 🔴 Nada se pina até a `0.15.0` — decisão de 21/09
 
