@@ -61,7 +61,9 @@ depois: category, confidence, end, matched_text, negated, source, start, system
 | `multi-cinco-lesoes` | mesmo caso, num laudo com cinco lesões |
 | `multi-sentenca-vizinha` | 🔴 **muda só no perfil 9** — ver abaixo |
 
-**Todos `fl_relevante: 1 → 0`. Nenhum `0 → 1`.** É o `CA6`: a mudança só remove.
+**Todos `fl_relevante: 1 → 0`. Nenhum `0 → 1`.** A mudança só remove.
+⚠️ **Isto não corresponde a nenhum `CA` da SPEC** — o registro anterior citava o `CA6`, que é a
+**adjudicação clínica do agrupamento**, e nenhum golden a alcança.
 
 ### 🟢 Os dois perfis DISCRIMINAM a janela — e é isso que prova o piso
 
