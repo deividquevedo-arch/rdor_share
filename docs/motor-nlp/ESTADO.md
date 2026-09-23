@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-21**.
+> Atualizado em **2026-09-23**.
 
 ---
 
@@ -412,69 +412,82 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.0` — ✅ IMPLEMENTADA E COM GOLDEN · 🟡 FALTA A MEDIÇÃO EM COORTE REAL
+## `0.15.x` — ✅ TRÊS VERSÕES NOS DOIS FEEDS · 🔴 SÓ A `0.15.2` É ADOTÁVEL
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
-TI-RADS entrega a medida do nódulo errado: não existe vínculo*. Branch
-`feat/0.15.0-vinculo-lesao-medida`, criada de `origin/hml`.
-✅ **BUMPADA em 22/09** — `pyproject` e `uv.lock` em `0.15.0`, `RELEASE.md` com a seção aberta e a
-da `0.14.0` fechada. Gate de sete alvos: **1.293 testes, 88,46% por ramo**, `release-check`
-coerente. **Nada pushado.**
+TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
 
-🔴 **O contrato não alcançava os campos novos, e não por descuido:** `quantitative` era
-`dict[str, Any]`, então o teste de contrato comparava só chaves de **topo** e nunca descia. Os
-campos de token da `0.14.0` entraram por esse buraco sem verificação. `QuantitativeCriterionBlock`
-declara os **29** campos do bloco; o teste varre **unilesão e multilesão**, e o mutante foi
-conferido morto.
-⚠️ **O `release-check` acusou SETE referências de versão defasadas** em `README`,
-`IMPLEMENTATION-DATABRICKS` e `REFERENCIA-PARAMETROS` — corrigidas. O bump não é uma linha.
+| versão | tag | estado |
+|---|---|---|
+| `0.15.0` | `c4b4cae` | 🔴 **nove defeitos.** Não pinar |
+| `0.15.1` | `6cc3e20` | 🔴 **sete dos nove ainda presentes.** Não pinar |
+| **`0.15.2`** | **`38e6857`** | ✅ **a única adotável da série** |
+
+🔴 **O feed é IMUTÁVEL: as três ficam lá para sempre.** Quando a decisão de pin chegar, `0.15.0` e
+`0.15.1` **não podem ser candidatas**. Está escrito no `RELEASE.md` e nos PRs.
 
 **A régua, em duas linhas:** todo nódulo entregue vem com a dimensão e a classificação **que são
 dele**; exceção única é o laudo de punção, onde qualquer TR4 vale sem tamanho.
 
-🔴 **O tamanho do defeito, medido em 13.264 laudos reais:** **2.729 dos 4.771 com nódulo têm mais
-de um (57%)**, máximo de 15 num laudo. **408 entregas em 15 dias** carregam uma medida num laudo
-com mais de um nódulo e mais de uma categoria — **~27 por dia**, vínculo não verificado em nenhuma.
-ℹ️ O registro anterior falava em *"2 dos 7 de um arquivo"*. A ordem de grandeza é outra.
+🔴 **Tamanho do defeito original, em 13.264 laudos reais:** 2.729 dos 4.771 com nódulo têm mais de
+um (57%). **408 entregas em 15 dias** carregam medida de laudo multilesão sem vínculo verificado.
 
-### O que foi entregue
+### 🔴 A `0.15.1` foi publicada e SERIA um desastre — 64 entregas falsas em 15 dias
 
-| passo | |
+A/B em coorte real (TI-RADS, 08–22/09, 14.939 laudos, dois braços de 121 min): **117 rebaixados e
+65 PROMOVIDOS**. Adjudicação por leitura: **rebaixamentos 5/5 corretos, promoções 5/5 FALSAS**.
+
+**A causa dominante é a LEGENDA do ACR** — a linha `TR4 (4-6 pontos) … PAAF: ≥ 1,5 cm` tem
+categoria **e** medida, e o vínculo por linha casa as duas. 48 das 65.
+🔴 **E a lib já calculava quais menções são legenda** (`legend_indices`, desde a `0.10.1`). **O
+vínculo consumiu a lista crua.** Não era lógica errada: era reuso errado.
+
+### ✅ `0.15.2` — validada contra 775 laudos REAIS, nove defeitos corrigidos
+
+📄 `_processo/investigacao-vinculo-lesao-medida-2026-09-23.md`. Seis estratos: os que mudaram no
+A/B, estruturado, legenda, PAAF, controle de TR4 e controle geral.
+
+🟢 **O que torna a medição possível sem depender do ambiente:** os valores que o extrator LLM **de
+fato devolveu** ficaram gravados no braço `0.14.0`. O harness os **reproduz**; os dois modos rodam
+**no mesmo processo**, com a config real `0.8.0-tirads`.
+🟢 **Fidelidade: 773 de 775 (99,7%)** — o modo "sem vínculo" reproduz o `fl` gravado.
+
+| | |
 |---|---|
-| `OrdinalMention` ganha `start`/`end` | a posição já existia no ponto de construção e era **descartada** |
-| `lesion_linking.py` localiza a medida no texto | o `evidence` do LLM é string livre **sem âncora**; o do `value_text` é o documento inteiro |
-| agrupamento por **LINHA** | 1.464 contra 1.081 da sentença — **68% dos laudos são lista com marcador**, e numa lista cada item é uma lesão |
-| o gate julga a medida **da lesão** | injetada antes de `evaluate_criterion`, sem tocar em quem julga |
-| a janela é **parâmetro** (`nlp.lesion_linking.janela`) | `CA7` — o número é do TI-RADS, outra linha terá outro ótimo |
+| promoções falsas **eliminadas** | **64 de 64** |
+| promoções **novas** | **0** |
+| rebaixamentos mantidos | **107 de 111** (os 4 têm **cisto TR4 ≥ 1 cm**; o gate protege certo) |
+| contra a `0.14.0` | **123 rebaixados, ZERO promovidos** |
+| golden contra a `v0.14.0` | 8 rebaixados, zero promovidos, seis caminhos exercitados |
 
-🔴 **A guarda que impede a degeneração silenciosa:** unidade que cobre o documento inteiro **não
-agrupa** — ela É o documento. Sem ela o vínculo volta a ser documental devolvendo `vinculo="linha"`
-como se tivesse verificado. Atinge os **31% de laudos em prosa corrida**. Só apareceu porque um
-teste falhou.
+**Os nove:** fusão de linhas independentes · `Localização` como biometria · 🔴 **`VR: < 30 cm/s`
+lido como 30 cm** (existe desde a `0.15.0`) · bloco engolindo a legenda · ponto inicial · linha de
+recomendação · biometria fundida em sentença · `categoria_ausente` votando a favor · **menção de
+categoria sem dono de achado**.
 
-### 🔴 "Não afirmar" NÃO é "rebaixar"
+🔴 **Os dois últimos são o gate COORDENADO**, que só rebaixa quando **todos** os critérios dão
+`False`. `Cistos colóides … 1,2 cm. **ACR TI-RADS: 1**` fazia o critério do cisto proteger um
+nódulo **TR4 de 0,7 cm**. A régua é *"TR4 só aprova com nódulo/cisto ≥ 1 cm"* — **da lesão TR4**.
 
-Com `require_measure` e `met is None` o código **rebaixa**, salvo se a causa for `llm_error`
-(exceção da `0.11.0`). **Vínculo ausente é uma SEGUNDA causa da mesma natureza:** o laudo **diz** o
-tamanho, a lib é que não soube de qual lesão. O ramo virou `_gate_met_de` e trata **três** causas.
-**Converter limitação do parser em negativa clínica custaria um paciente com TR4.**
+✅ **Três correções foram REMOVIDAS por redundância**, com os 8 laudos reais como oráculo de
+mutação: 4 mortos, 3 sobreviveram. Sobreviver ali é código sem propósito demonstrado.
 
-### ✅ Golden contra a `v0.14.0` — delta enumerado
+Gate de sete alvos: **1.307 testes, 88,29% por ramo**, **11 mutantes mortos**.
 
-📄 `_processo/golden-0.15.0-delta-contra-v0.14.0-2026-09-22.md`.
-**7 laudos mudam, todos multilesão, todos `1 → 0`, ZERO acrescidos.** Os quatro perfis sem camada
-ordinal ficam **byte a byte idênticos**; os 310 blobs que mudam nos demais são **puramente
-aditivos** (só `start`/`end`), conferido e não suposto.
-🔴 **O golden tinha um PONTO CEGO e ele foi fechado:** não emitia nenhuma chave de `quantitative`
-nem `measure_lesion_*`. Comparar daria idêntico **por medição vazia**. Entraram 10 laudos
-multilesão e 2 perfis quantitativos, que **discriminam o parâmetro de janela**.
+### 🔴 O resíduo, e o que fecha a classe
 
-🟡 **Falta o `CA4`/`CA5`: medição em coorte REAL.** População dimensionada: **2.729 multilesão** e
-**2.042 unilesão** de controle, em 15 dias de TI-RADS.
+Dos **16 rebaixamentos novos**, 4 adjudicados: **2 corretos, 2 errados** — e as duas causas **não
+são do vínculo**: categoria numa linha de conclusão, e o emissor que escreve `Imagens ovaladas`,
+sinônimo que **nem a âncora nem a própria régua** cobrem. **Doze seguem sem adjudicação.**
 
-⚠️ **Contrato muda** — `measure_lesion_linked`, `measure_lesion_window`, `measure_lesion_skipped`,
-`require_measure_sem_vinculo` e os offsets em `ordinal_mentions`. `REFERENCIA-PARAMETROS.md` e
-`GUIA-ORDINAL.md` atualizados **nos mesmos commits**. Alinhamento no fecho do ciclo.
+🔴 **A recomendação, e é trabalho de lib:** o vínculo usa `anchor.text` como **segundo vocabulário
+de lesão**, e ele diverge da régua. A lib já calcula os spans dos achados e os **DESCARTA**
+(`process_rule_based` devolve só contagens). Expô-los é a mesma correção que a `0.15.0` fez com o
+`OrdinalMention`.
+
+🟡 **`CA4`/`CA5` em coorte real pelo runner** — run `260243524255126`, em curso em 23/09.
+🔴 **`CA6` por terceiro segue aberto** — a adjudicação foi de quem escreveu o código, e foi ela que
+achou os nove defeitos.
 
 ## 🔴 Nada se pina até a `0.15.0` — decisão de 21/09
 
@@ -797,6 +810,29 @@ Logic App está **hardcoded** em `runs/ntb_ia_onedrive.py`. O primeiro é da fer
 `tools/data_exchange` e mexer altera o nome do arquivo de **todas** as linhas — não entra de carona
 num PR de coluna.
 
+## 🔴 TRÊS LINHAS DO LEGADO PARARAM E NÃO FORAM SUBSTITUÍDAS
+
+Medido em 23/09 no schema `diamond_fabrica_ia.legado`, que espelha as saídas do legado.
+**Só UMA linha do legado rodou hoje**, e é a única que roda nos dois lugares.
+
+| linha | legado | plataforma | estado |
+|---|---|---|---|
+| **ateromatose** | **893 laudos hoje** | **670 hoje (hml)** | 🔴 **DUPLICIDADE** |
+| **DII** | parou em **02/09** | PR 7383 aberto | 🔴 **21 dias sem processar** |
+| **doenças biliares** | parou em **02/09** | sem tabela | 🔴 **ninguém processa** |
+| **neuroimunologia** | parou em **24/08** | sem tabela | 🔴 **ninguém processa** |
+| reumatologia | parou em 02/09 | 3.466 hoje (prd) | ✅ migrada, legado desligado |
+| cancer_colon | parou em 01/09 | 365 hoje (hml) | 🟡 em migração |
+
+🔴 **Isso é lacuna de cobertura clínica, não dívida técnica.** Se o negócio espera receber dessas
+linhas, não está recebendo — e ninguém reportou.
+🟡 **A ateromatose rodando nos dois** é o cenário do PR 7275, mergeado em 18/09. Volumes e taxas
+diferentes (1,3% × 6,1%), então não é a mesma coorte. **Confirmar com o Lucas** se a duplicidade é
+deliberada e tem prazo.
+
+⚠️ **O levantamento usa o espelho, e o workspace antigo está com token expirado** — não
+reautenticado. Se o legado gravar onde não é espelhado, este quadro não veria.
+
 ## Migração dos algoritmos legados — 🟡 DUAS NESTA SEMANA
 
 **Nossa fila (14/09):** `doencas_biliares` e `neuroimunologia` **até 18/09**, depois **nódulo
@@ -842,7 +878,32 @@ nomes de tabela e um punhado de termos. **Uma extração serve as duas**, e tamb
   precisam ser provisionados pelo time da Fábrica, em **dev e prd**. Na reumatologia a ausência em
   prd virou bloqueio na hora de promover.
 
-## DII — ✅ MEDIDO E VALIDADO, AGUARDA OK PARA PR
+## DII — 🟡 PR 7383 ABERTO, APROVADO COM TRÊS AJUSTES
+
+✅ **PR `7383` aberto em 22/09** — `[DOENCA_INFLAMATORIA_INTESTINAL] Migrar a regua legada para a
+plataforma: config 0.2.2, navegacao e job`. Alvo `hml`, **6 arquivos, 1.090 adições, ZERO
+deleções**, `mergeStatus: succeeded`, merge-base na ponta da `hml`. Revisor: Deivid, sem voto.
+
+✅ **Parecer entregue em 23/09: aprovar.** Nenhum bloqueante. Três ajustes: confirmar o
+`id_linha_navegacao` com o João · remover as citações a `contexto/dii/…` (quatro arquivos que **não
+existem** na árvore) · vincular o card `298553`.
+
+🔴 **TRÊS APONTAMENTOS MEUS CAÍRAM ao conferir o código dele:**
+1. **`descriptografia`** — ele removeu e está certo: a view já entrega em claro
+   (`nlp_ia_06_view.py:37-41`; `boas-praticas/10` §2.5 diz *"não há bloco de config para isso"*).
+   🔴 **Quem carrega config morta é `reumatologia` e `tumor_osseo`** — item nosso.
+2. **`ambiguity_band` dentro de `embeddings`** — é onde `config_loader.py:129` lê. Correto.
+3. **`runtime`** — eu tinha **pedido que ele removesse**, na orientação escrita. As **7 configs**
+   declaram, e a decisão de 15/09 é não mexer antes do alinhamento. **A orientação estava errada.**
+   Não peço reversão: ele fez na ordem certa (declarou `enabled: False` antes de remover).
+
+🔴 **Condição de promoção a prd, não deste PR:** o perfil é `rule_only`, e *nenhuma lista vai ao
+negócio a partir de perfil parcial*. Em hml só ele recebe; em prd são 5 destinatários.
+
+⚠️ **E a dependência que ele declara mudou:** ele planeja ligar semântica e juiz *"depois que a
+`0.15.0` estabilizar"*. **Ela não estabilizou** — nove defeitos, e a série tem três versões no feed.
+
+### Medição anterior, que segue válida
 
 Branch `doenca_inflamatoria_intestinal/feature/migracao-config-motor` (`3e6362e`), config
 **`0.2.1-doenca_inflamatoria_intestinal`**, sem conflito com a `hml`. Dono: Leandro.
@@ -921,6 +982,36 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
   prefixo `cancer_`.
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
+## Randomização — ✅ MÉTODO VALIDADO · 🟡 DECISÃO DE PERCENTUAL FECHADA EM 23/09
+
+📄 `docs/randomizacao/` — parecer, resumo para refinamento e as ferramentas reexecutáveis.
+
+✅ **O sorteio foi verificado de forma independente**, reimplementado em Python puro sobre
+**1.000.000 de CPFs**: entrega 4,9907% no corte de 5% · subir de 5% para 10% **não realoca
+ninguém** · determinístico · independente de atributo (maior |z| = 2,13). **Não há razão para mexer.**
+
+✅ **DECISÃO: 10%, estudo ÚNICO e AGREGADO.** Medido em 23/09 sobre a saída de produção:
+
+| | |
+|---|---|
+| rollout onda 1 | ca_estomago · cancer_rim · reumatologia · tirads · transplante_pulmao |
+| pacientes encaminhados/ano | **19.077** (52,3/dia) |
+| controle a 10% | **1.908** (~5,2/dia) — detecta **14%** |
+| controle a 5% | 954 — detecta 19% |
+
+🔴 **Nenhuma linha isolada conclui sozinha:** a maior, o TI-RADS, detecta **18% mesmo com 10%**. As
+outras precisariam de efeitos de 31% a 84%. **Isso precisa estar na ata** — se alguém esperar
+resultado por linha, a expectativa está errada desde o desenho.
+ℹ️ A recomendação anterior de 5% foi calculada sobre os **91.773 agregados do backtest**; estas
+cinco linhas entregam 19.077. **A base mudou, a recomendação mudou com ela.**
+
+⚠️ **Condição operacional:** **12,8% dos CPFs começam com zero**, o *"erro número um em produção"*
+da própria biblioteca. Monitorar a taxa de casamento desde o dia 1.
+🔴 **Precede a operação: ética, LGPD e formalização.** Braço de controle é paciente **encontrado e
+deliberadamente não navegado** — decisão institucional, não técnica.
+🟡 Onda 2 — `cancer_colon`, `ateromatose`, `tumor_osseo`, `dii` — **ainda sem tabela de saída em
+produção**; quando entrarem, o poder melhora sem custo de desenho.
+
 ## Contexto do paciente — card 280008
 
 Estudo e desenho **concluídos** (doc macro, drawio, nota de review, 2 comentários no card).
@@ -977,6 +1068,12 @@ melhor** — registrado no card `299238`.
 
 ✅ **As seis definições de job declaram `"nlp_engine_version": "0.12.3"` — literal, não a variável —
 em `main` e em `hml`.** Verificado em 15/09. Produção rodou a `0.12.3` nas seis linhas.
+✅ **RECONFIRMADO em 23/09 na execução real:** `engine_version = 0.12.3` em **15.329 de 15.329
+laudos**, nas seis linhas. Nenhuma pegou a `0.13.0`, a `0.14.0` nem a `0.15.x`.
+🔴 **MAS o `cancer_colon` declara `${nlp_engine_version}`, não o literal** — e por isso rodou
+**`0.15.1` em hml em 23/09**, `0.14.0` em 22/09 e `0.12.3` em 21/09. **A versão mudou três vezes em
+três dias.** É o `latest` movendo a linha sozinho, em forma nova. Uma linha no
+`cancer-colon-batch.json`, alçada nossa (POP-IA-08). **Sem card.**
 **Sai da pauta com o Ops.** A história `301938` — *[NLP Engine] Fixar versão da nlp_engine por linha*
 — está com João Marcelo, em *Em Refinamento*, e vira confirmação.
 ℹ️ O mecanismo escolhido foi o literal na definição do job, sem tocar em `jobs/ambientes/`, que segue
@@ -1371,7 +1468,18 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ## Dívidas transversais
 
-- 🔴 **GRANT NOVO E BLOQUEANTE — `USE CATALOG` em `mlops_fabrica_ia`** (19/09).
+- ✅ **GRANT `USE CATALOG` em `mlops_fabrica_ia` CONCEDIDO** — verificado em 23/09: o catálogo
+  responde, não dá mais `PERMISSION_DENIED`. Destrava a camada semântica em dev e hml.
+  🟢 **E o efeito é medido: HML roda 100% com modelo real.** Em 23/09, **65.306 laudos em quatro
+  linhas, ZERO `token_overlap`** — `tumor_osseo` 53.805, `cancer_rim` 4.991, `hepatologia` 4.858,
+  `tirads` 1.652.
+  🔴 **PRODUÇÃO continua em fallback, com a MESMA `config_version`:** `cancer_estomago` 100%,
+  `hepatologia` 99,4%, `cancer_rim` 98,5%, `tirads` 85,4%. **Isola a causa: não é a lib nem o
+  modelo, é o caminho por ambiente.** É o card `305810`, em *Pronto para QA* com o João.
+  ⚠️ **Ordem de grandeza que pede explicação:** a hepatologia entregou **864 relevantes em hml**
+  contra **68 em prd** no mesmo dia, com a mesma config. Coortes diferentes — mas não conferido.
+
+- 🟡 **Histórico do grant (19/09), mantido para rastreabilidade:**
   O PR 7321 apontou o `embedding_model` de **seis configs** para o Model do Unity Catalog
   `mlops_fabrica_ia.default.st_paraphrase_multilingual_minilm`. **O caminho funciona** — provado no
   run de 16/09, 10.000 de 10.000 com `[sentence_transformers]`, com a identidade de quem o criou.
