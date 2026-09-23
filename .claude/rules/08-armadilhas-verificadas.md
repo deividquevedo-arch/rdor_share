@@ -162,3 +162,33 @@ confere o texto cru antes de responder — se o nome aparece e o parser não ext
 **A regra geral:** ferramenta de verificação precisa de **controle negativo E positivo** rodados
 no dia em que é escrita. Os três desta: chave inexistente → *ninguém declara*; chave escalar
 conhecida → *padrão*; chave-bloco conhecida → *padrão*.
+
+## 11. 🔴 Medir o ESPELHO e afirmar sobre a FONTE
+
+📅 **23/09, duas vezes no mesmo dia, com o mesmo sintoma.**
+
+1. Consultei `diamond_fabrica_ia.legado` — **espelho** do legado no catálogo novo — e afirmei que
+   *"três linhas do legado pararam e não foram substituídas"*. O legado de verdade vive no
+   `hive_metastore` do workspace antigo, o **lake 1**, que eu **não consultei**. Pode ter sido só
+   o espelho que deixou de ser alimentado.
+2. Usei `ordinal_mentions.start` para classificar menções em **produção**. O campo **não existe
+   lá** — os offsets entraram na `0.15.0` e prd roda `0.12.3`. Em Spark `null < x` é `null`, o
+   filtro devolveu zero para todos, e a leitura **inverteu**.
+
+🔴 **O espelho não avisa que parou, e o campo ausente não avisa que falta.** Nos dois casos o
+número saiu, era plausível, e ninguém reclamou.
+
+**As duas perguntas, antes de afirmar:**
+
+| | |
+|---|---|
+| **De onde vem este dado?** | é a fonte, uma cópia, uma view, um espelho alimentado por um job? |
+| **A versão que gravou isto emite este campo?** | campo novo não existe em linha que roda versão antiga |
+
+**A verificação:** um **controle positivo na mesma consulta** — algo que só apareceria se a fonte
+estivesse viva e o campo preenchido. Um `count(*)` do total, um `max(data)`, um
+`sum(campo IS NOT NULL)`. Se o controle vier vazio, a leitura não vale.
+
+⚠️ **E vale para o contrário também:** afirmar que *"não há"* a partir de um espelho desatualizado
+é o mesmo erro com o sinal trocado. **Ausência de sinal não é sinal de ausência** — e num espelho,
+menos ainda.
