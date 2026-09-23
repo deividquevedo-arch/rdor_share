@@ -810,28 +810,37 @@ Logic App está **hardcoded** em `runs/ntb_ia_onedrive.py`. O primeiro é da fer
 `tools/data_exchange` e mexer altera o nome do arquivo de **todas** as linhas — não entra de carona
 num PR de coluna.
 
-## 🔴 TRÊS LINHAS DO LEGADO PARARAM E NÃO FORAM SUBSTITUÍDAS
+## ⚠️ O ESPELHO DO LEGADO PAROU — e isso NÃO prova que o legado parou
 
-Medido em 23/09 no schema `diamond_fabrica_ia.legado`, que espelha as saídas do legado.
-**Só UMA linha do legado rodou hoje**, e é a única que roda nos dois lugares.
+Medido em 23/09 no schema `diamond_fabrica_ia.legado`, do catálogo novo.
 
-| linha | legado | plataforma | estado |
-|---|---|---|---|
-| **ateromatose** | **893 laudos hoje** | **670 hoje (hml)** | 🔴 **DUPLICIDADE** |
-| **DII** | parou em **02/09** | PR 7383 aberto | 🔴 **21 dias sem processar** |
-| **doenças biliares** | parou em **02/09** | sem tabela | 🔴 **ninguém processa** |
-| **neuroimunologia** | parou em **24/08** | sem tabela | 🔴 **ninguém processa** |
-| reumatologia | parou em 02/09 | 3.466 hoje (prd) | ✅ migrada, legado desligado |
-| cancer_colon | parou em 01/09 | 365 hoje (hml) | 🟡 em migração |
+🔴 **O que foi medido é o ESPELHO, não a fonte.** O legado de verdade vive no
+**`hive_metastore` do workspace antigo — o "lake 1"** —, e **não foi consultado**: o perfil
+`adb-2013197995950192` está com **refresh token inválido**, e o `hive_metastore` visível do
+workspace novo é o dele, não o do lake 1.
 
-🔴 **Isso é lacuna de cobertura clínica, não dívida técnica.** Se o negócio espera receber dessas
-linhas, não está recebendo — e ninguém reportou.
-🟡 **A ateromatose rodando nos dois** é o cenário do PR 7275, mergeado em 18/09. Volumes e taxas
-diferentes (1,3% × 6,1%), então não é a mesma coorte. **Confirmar com o Lucas** se a duplicidade é
-deliberada e tem prazo.
+| linha | última no espelho | plataforma |
+|---|---|---|
+| **ateromatose** | **893 laudos em 23/09** | **670 em 23/09 (hml)** |
+| DII | 02/09 | PR 7383 aberto |
+| doenças biliares | 02/09 | sem tabela |
+| neuroimunologia | 24/08 | sem tabela |
+| reumatologia | 02/09 | 3.466 (prd) — migrada, legado desligado |
+| cancer_colon | 01/09 | 365 (hml) — em migração |
 
-⚠️ **O levantamento usa o espelho, e o workspace antigo está com token expirado** — não
-reautenticado. Se o legado gravar onde não é espelhado, este quadro não veria.
+⚠️ **Duas leituras possíveis, e o dado não separa:**
+1. as linhas pararam de processar — **lacuna de cobertura clínica**; ou
+2. seguem rodando no lake 1 e **só o espelho deixou de ser alimentado** — dívida de observabilidade.
+
+🔴 **Não afirmar a primeira sem checar a segunda.** A versão anterior desta seção afirmava
+*"três linhas pararam e não foram substituídas"*, e isso **não está provado**.
+
+**O que fecha:** reautenticar o perfil do workspace antigo
+(`databricks auth login --profile adb-2013197995950192`) e consultar `hive_metastore.ia`.
+
+🟡 **O que se sustenta sem o lake 1:** a **ateromatose aparece nos dois lados no mesmo dia**, com
+volumes e taxas diferentes (1,3% × 6,1%). É o cenário do PR 7275, mergeado em 18/09. **Confirmar
+com o Lucas** se a duplicidade é deliberada e tem prazo.
 
 ## Migração dos algoritmos legados — 🟡 DUAS NESTA SEMANA
 
