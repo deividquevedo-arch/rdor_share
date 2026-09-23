@@ -412,7 +412,7 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.x` — ✅ TRÊS VERSÕES NOS DOIS FEEDS · 🔴 SÓ A `0.15.2` É ADOTÁVEL
+## `0.15.x` — 🔴 TRÊS VERSÕES NOS FEEDS, **NENHUMA ADOTÁVEL** · A `0.15.3` É OBRIGATÓRIA
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
@@ -421,7 +421,7 @@ TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
 |---|---|---|
 | `0.15.0` | `c4b4cae` | 🔴 **nove defeitos.** Não pinar |
 | `0.15.1` | `6cc3e20` | 🔴 **sete dos nove ainda presentes.** Não pinar |
-| **`0.15.2`** | **`38e6857`** | ✅ **a única adotável da série** |
+| **`0.15.2`** | **`38e6857`** | 🔴 rebaixa TR4 real por `categoria_ausente` — 73 em 14.710 |
 
 🔴 **O feed é IMUTÁVEL: as três ficam lá para sempre.** Quando a decisão de pin chegar, `0.15.0` e
 `0.15.1` **não podem ser candidatas**. Está escrito no `RELEASE.md` e nos PRs.
@@ -474,20 +474,58 @@ mutação: 4 mortos, 3 sobreviveram. Sobreviver ali é código sem propósito de
 
 Gate de sete alvos: **1.307 testes, 88,29% por ramo**, **11 mutantes mortos**.
 
-### 🔴 O resíduo, e o que fecha a classe
+### ✅ `CA4`/`CA5` FECHADOS EM COORTE REAL — e a coorte reprovou a `0.15.2`
 
-Dos **16 rebaixamentos novos**, 4 adjudicados: **2 corretos, 2 errados** — e as duas causas **não
-são do vínculo**: categoria numa linha de conclusão, e o emissor que escreve `Imagens ovaladas`,
-sinônimo que **nem a âncora nem a própria régua** cobrem. **Doze seguem sem adjudicação.**
+📄 run `260243524255126` (TERMINATED SUCCESS, ~131 min), TI-RADS em dev, `0.14.0` × `0.15.2` no
+mesmo processo. **14.710 laudos pareados por `id_exame`** — os dois braços rodaram em dias
+diferentes, então 1.558 órfãos ficaram **fora** do delta, não somados a ele.
+🟢 **Pré-condição perfeita:** zero campo novo no braço baseline · **1.288** com vínculo estabelecido ·
+1.225 com **duas ou mais** candidatas · 287 `categoria_ausente` · 9 `sem_medida_no_laudo`.
 
-🔴 **A recomendação, e é trabalho de lib:** o vínculo usa `anchor.text` como **segundo vocabulário
-de lesão**, e ele diverge da régua. A lib já calcula os spans dos achados e os **DESCARTA**
+🔴 **194 rebaixados, ZERO promovidos — e 73 deles são um DEFEITO NOVO, não a correção.**
+
+| via do rebaixamento | laudos | veredito |
+|---|---|---|
+| vínculo estabelecido, medida da lesão < 1 cm | **121** | ✅ é a correção do card `306034` |
+| `measure_lesion_skipped: categoria_ausente` | **73** | 🔴 **defeito da `0.15.2`** |
+
+**Os dois números que estavam abertos, fechados:**
+- **`CA5`** — dos 34 rebaixados "unilesão por menção", **33 têm dois ou mais nódulos no texto**
+  (multilesão de fato). **Um só é unilesão de verdade**, e é rebaixamento **errado**.
+- **Causa não atribuída: ZERO.** Os 194 se repartem integralmente nas duas vias acima.
+
+### 🔴 `categoria_ausente` REBAIXA, e é a terceira vez que a mesma classe passa
+
+`quantitative.py:1640-1643` grava **`met = False`** quando nenhuma lesão é vinculada à categoria.
+Mas *"nenhuma lesão foi vinculada"* carrega **dois sentidos opostos**: a lesão não existe (a
+categoria veio da legenda), ou **a lesão existe e o parser não soube nomeá-la**.
+
+Medido nas linhas que carregam a categoria, nos 73: **44 têm a categoria numa linha que também
+traz a medida** — o vínculo deveria ter funcionado ali. Casos textuais lidos:
+`medindo 1,1 x 1,7 cm. ACR TI-RADS 4.` · `N4 - Nódulo … 2,3 x 1,6 x 1,4 cm. (TI-RADS - TR:4)` ·
+`Formação quase totalmente sólida … 1,6 x 1,2 cm. (TI-RADS 4)`. **São TR4 reais acima de 1 cm.**
+
+🔴 **É a mesma classe da `0.12.2` (âncora ausente) e da `0.15.0` (vínculo ausente), pela terceira
+vez.** O `_gate_met_de` enumera na própria docstring **três** causas de `met is None` e protege
+duas. `categoria_ausente` é a **quarta**, da mesma natureza, e nem chega lá — grava `False` antes.
+
+✅ **A correção é de uma linha, e o precedente já está escrito:** `met = None` em vez de `False`,
+com marcador próprio, para o gate coordenado proteger. Não ressuscita o defeito 8 — ali o problema
+era o extrator votar `True` com a medida do documento inteiro; `None` não vota nos dois sentidos.
+⚠️ **Sem isso a série não fecha:** a `0.15.2` troca falso positivo por **falso negativo no laudo de
+maior suspeição clínica**, que é exatamente o que a SPEC da `0.15.0` proíbe.
+
+🔴 **Nenhuma das três `0.15.x` é pinável, e o feed é imutável.** A `0.15.3` é obrigatória para o
+ciclo de bumps fechar.
+
+🔴 **A recomendação de fundo segue de pé, e é trabalho de lib:** o vínculo usa `anchor.text` como
+**segundo vocabulário de lesão**, e ele diverge da régua — nenhum dos dois cobre `Formação` nem
+`Imagens ovaladas`. A lib já calcula os spans dos achados e os **DESCARTA**
 (`process_rule_based` devolve só contagens). Expô-los é a mesma correção que a `0.15.0` fez com o
 `OrdinalMention`.
 
-🟡 **`CA4`/`CA5` em coorte real pelo runner** — run `260243524255126`, em curso em 23/09.
 🔴 **`CA6` por terceiro segue aberto** — a adjudicação foi de quem escreveu o código, e foi ela que
-achou os nove defeitos.
+achou os nove defeitos da `0.15.1` **e** este décimo.
 
 ## 🔴 Nada se pina até a `0.15.0` — decisão de 21/09
 
