@@ -62,6 +62,62 @@
 
 ---
 
+## 6. 🔴 Só para PR de linha NOVA
+
+Os blocos acima valem para qualquer PR. Estes só aparecem quando a especialidade está **entrando**,
+e cada um custou um bloqueio real.
+
+### Antes de olhar o diff: o PR foi precedido de run?
+
+- [ ] 🔴 **Houve execução ponta a ponta em dev, com envio?** Validação local prova a **régua** e não
+      toca runner, `gold_filter`, `column_map`, view nem envio. Na reumatologia, **seis bloqueios só
+      apareceram rodando**. PR de linha nova sem run é PR sem evidência.
+- [ ] **A paridade foi medida contra a saída GRAVADA do legado**, não contra a régua lida.
+- [ ] ⚠️ **A fonte do legado é a branch `hml` do repositório legado**, nunca a cópia local — a cópia
+      costuma estar meses atrás, e a primeira tentativa da reumatologia usou a errada.
+
+### Filtro de entrada
+
+- [ ] 🔴 **O `gold_filter` foi medido nos DOIS sentidos, com custo?** `match_rate` só mede o que
+      **chega** ao motor: filtro que perde exame não aparece em métrica de paridade nenhuma.
+- [ ] ⚠️ **Ele lê `proced_descricao`, não o laudo.** Palavra-chave escrita supondo o texto do laudo
+      perde exame em silêncio — no ca-estômago deixava de fora **124 legíveis/dia** contra 106 que trazia.
+
+### Definição de job
+
+- [ ] 🔴 **`nlp_engine_version` é o LITERAL, não `${nlp_engine_version}`.** Com a variável a linha
+      troca de versão sozinha — o `cancer_colon` variou três vezes em três dias.
+- [ ] 🔴 **A task de `api_*` declara `disabled`.** Sem isso, a execução em homologação **posta
+      inferência no sistema real de Navegação**. Verificável em um comando: comparar com as outras
+      definições, que declaram.
+- [ ] **`pause_status`** coerente com as demais — é padrão, não escolha do autor.
+
+### Arquivos de navegação e exchange
+
+- [ ] **Os três ambientes no mesmo PR.** Prd ficar para trás já entregou a coluna de achado **vazia
+      em 100% das linhas**.
+- [ ] **`id_linha_navegacao`** confirmado com quem opera o destino, não inferido do nome.
+- [ ] ⚠️ **`descriptografia` é bloco morto** — a view já entrega em claro. Cobrar sua presença é
+      apontamento errado; encontrá-lo numa linha antiga é item do repositório, não deste PR.
+
+### Régua e configuração da linha nova
+
+- [ ] 🔴 **`segmentation.mode` não se clona de outra linha sem medir.** `auto` descarta
+      IMPRESSÃO/CONCLUSÃO: na hepatologia são **86% dos laudos** com cobertura abaixo de 1,0.
+- [ ] 🔴 **Vocabulário estrangeiro no dicionário de órgãos compartilhado.** Régua migrada costuma
+      carregar termos de outra especialidade — no notebook do biliar, `colon` aparece **77 vezes**.
+      Remover muda resultado: **medir, não limpar no olho**.
+- [ ] **Perfil de entrega** — ver bloco 3. `rule_only` não vai ao negócio.
+
+### O que depende de terceiro e **não** entra no PR
+
+- [ ] **Schema provisionado** em dev, hml e prd — é do time da Fábrica, por fluxo próprio. Na
+      reumatologia a ausência em prd virou bloqueio na hora de promover, e **sinalizar isso na
+      descrição do PR é o lugar errado**.
+- [ ] **Grants** (`USE CATALOG`, `EXECUTE` em função de decriptação) — mesma coisa.
+
+---
+
 ## O que NÃO entra numa revisão de PR
 
 | item | onde vai |
