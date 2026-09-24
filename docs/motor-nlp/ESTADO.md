@@ -412,7 +412,7 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.x` — 🔴 TRÊS VERSÕES NOS FEEDS, **NENHUMA ADOTÁVEL** · A `0.15.3` É OBRIGATÓRIA
+## `0.15.x` — 🔴 TRÊS NOS FEEDS, NENHUMA ADOTÁVEL · ✅ `0.15.3` IMPLEMENTADA, NÃO PUSHADA
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
@@ -509,14 +509,40 @@ traz a medida** — o vínculo deveria ter funcionado ali. Casos textuais lidos:
 vez.** O `_gate_met_de` enumera na própria docstring **três** causas de `met is None` e protege
 duas. `categoria_ausente` é a **quarta**, da mesma natureza, e nem chega lá — grava `False` antes.
 
-✅ **A correção é de uma linha, e o precedente já está escrito:** `met = None` em vez de `False`,
-com marcador próprio, para o gate coordenado proteger. Não ressuscita o defeito 8 — ali o problema
-era o extrator votar `True` com a medida do documento inteiro; `None` não vota nos dois sentidos.
-⚠️ **Sem isso a série não fecha:** a `0.15.2` troca falso positivo por **falso negativo no laudo de
-maior suspeição clínica**, que é exatamente o que a SPEC da `0.15.0` proíbe.
+### ✅ `0.15.3` IMPLEMENTADA (23/09) — branch `fix/0.15.3-categoria-ausente-nao-rebaixa`
 
-🔴 **Nenhuma das três `0.15.x` é pinável, e o feed é imutável.** A `0.15.3` é obrigatória para o
-ciclo de bumps fechar.
+📄 SPEC `nlp-engine-lib/docs/spec-0.15.3-categoria-orfa.md`. Commit `3cc3884`, **não pushado**.
+Gate de sete alvos: **1.311 testes, 88,30% por ramo**, `release-check` coerente.
+
+🔴 **`met = None` cego NÃO servia** — ressuscitaria o defeito 8 da `0.15.2`. São **TRÊS** estados:
+
+| estado | efeito |
+|---|---|
+| a categoria gateada **nem aparece** no laudo | **rebaixa** — não há nada a atribuir |
+| aparece e **outro critério** a atribuiu | **rebaixa** — ausência verificada nesta espécie |
+| aparece e **ninguém** a atribuiu | **protege** — limite do parser |
+
+🔴 **O primeiro estado foi achado pelo GOLDEN, e a primeira versão da correção não o tinha:**
+protegia laudo cujo `TR4` nem existia e entregava nódulo de 0,4 cm — **6 em 754**.
+
+✅ **Golden contra a `v0.15.2`, mesmo script dos dois lados: UMA decisão muda**, e é o laudo de
+categoria órfã (`0 → 1`). **Zero rebaixados.** Os oito perfis sem camada quantitativa ficam byte a
+byte idênticos; os 30 blobs que mudam trazem **só os dois marcadores novos**, com zero valor
+preexistente alterado — conferido, não suposto. **6 mutantes, 6 mortos.**
+
+🔴 **O golden tinha DOIS pontos cegos, os dois fechados:** não havia laudo de categoria órfã no
+corpus, e **o perfil quantitativo declarava a âncora sem `text`**, enquanto produção declara
+`'text': r'n[oó]dul'`. Sem o `text` o recorte por região fica desligado e o caminho nunca rodava —
+**perfil mais fraco que o real não mede**.
+
+⚠️ **Contrato:** `require_measure_categoria_orfa` e `require_measure_categoria_ausente`;
+`met` passa de `False` a `None` nos blocos protegidos. `REFERENCIA-PARAMETROS` atualizada no
+mesmo commit.
+🟡 **Falta a medição em coorte real** — o espelho da `0.15.2`: os 121 por vínculo estabelecido
+permanecem, e os 73 por `categoria_ausente` são reavaliados.
+
+🔴 **Nenhuma das três `0.15.x` publicadas é pinável, e o feed é imutável.** A `0.15.3` é o que
+fecha o ciclo de bumps.
 
 🔴 **A recomendação de fundo segue de pé, e é trabalho de lib:** o vínculo usa `anchor.text` como
 **segundo vocabulário de lesão**, e ele diverge da régua — nenhum dos dois cobre `Formação` nem
