@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-23**.
+> Atualizado em **2026-09-24**.
 
 ---
 
@@ -412,7 +412,7 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.x` — ✅ `0.15.3` NOS DOIS FEEDS · 🔴 SEM TAG · 🟡 FALTA A COORTE REAL
+## `0.15.x` — ✅ `0.15.3` NOS DOIS FEEDS E TAGUEADA · 🟡 FALTA A COORTE REAL
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
@@ -516,8 +516,11 @@ duas. `categoria_ausente` é a **quarta**, da mesma natureza, e nem chega lá �
 ✅ **Publicada nos DOIS feeds, verificado no próprio feed** (API de packaging), não no deploy
 verde. Builds 8686 e 8687, os dois `succeeded`. 🟢 **Terceira vez seguida** que o gate por destino
 funciona nos dois ramos.
-🔴 **A tag `v0.15.3` NÃO existe**, nem local nem no remoto — a esteira publica no merge e a tag é
-manual. Acusado pelo `release-check`. Criar sobre `e7b6355`, que é o commit que gerou a wheel.
+✅ **Tag `v0.15.3` criada e pushada em 24/09** — `4614613`, anotada, sobre **`54e3a8c`** (merge do
+PR 7397 na `hml`), confirmada pela REF. ⚠️ A indicação anterior de `e7b6355` estava errada: a
+convenção do repositório é a tag apontar para o **merge na `hml`**, não para a promoção à `main` —
+`v0.15.1` → `6cc3e20`, `v0.15.2` → `38e6857`. A esteira publica no merge e a tag é **manual**;
+quem acusou a falta foi o `release-check`.
 Gate contra a árvore **mergeada** (`git diff` de código vazio contra a `main`): **1.311 testes,
 88,30% por ramo**, e o `release-check` só reprova na tag.
 
