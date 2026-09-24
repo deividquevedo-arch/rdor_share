@@ -220,3 +220,138 @@ A §6 pedia *"medir a taxa de casamento do CPF"*. **A medição foi feita e não
 **O pedido muda de forma:** não é mais *"meçam"*, é **"digam o denominador que vocês já tiveram"**.
 Quem rodou o backtest partiu de uma população de 91.773 e precisou de CPF para ela. **Quantos ficaram
 de fora, e de quais unidades?**
+
+
+---
+
+# ADENDO 2 — o percentual, e por que subir e descer não são simétricos (24/09)
+
+Fecha o item 2 da §5 (*"declarar o desfecho e calcular o poder — é o que decide 5% ou 10%"*).
+
+## 12. A biblioteca é aplicável — e o que isso quer dizer, exatamente
+
+| propriedade | verificado | como |
+|---|---|---|
+| fração entregue bate com a pedida | **4,9907%** no corte de 5%; **9,9998%** no de 10% | 1.000.000 de CPFs sintéticos |
+| determinístico | a mesma pessoa cai sempre no mesmo braço | reexecução do sorteio |
+| independente de atributo | maior \|z\| = **2,13** entre as 10 regiões | dígito regional do CPF |
+| monótono | subir de 5% para 10% **não realoca ninguém** | conjunto de 5% contido no de 10% |
+
+**Reimplementada em Python puro, de forma independente da que roda em produção.** Não é leitura do
+código: é a fórmula da doc reproduzida e confrontada com o que ela afirma.
+
+✅ **Nada a corrigir no mecanismo.** É superior ao padrão usual de `rand()` com semente, porque
+dispensa guardar a alocação — ela é recalculável a qualquer momento a partir do CPF.
+
+🔴 **O que a biblioteca NÃO cobre, e segue valendo do parecer original:** ela aloca quem tem CPF.
+**12,8% dos CPFs começam com zero** e viram armadilha de tipagem, e a taxa de casamento na
+população real da captação **continua sem denominador declarado** (§7 a §11). O hash é imune a
+viés; a porta de entrada dele não é.
+
+## 13. A análise que define o percentual
+
+**População da onda 1** — `ca_estomago`, `cancer_rim`, `reumatologia`, `tirads`,
+`transplante_pulmao` —, medida sobre a saída de produção: **19.077 pacientes encaminhados/ano**
+(52,3/dia).
+
+Com α de 5% bilateral e poder de 80%, a precisão relativa é `(z_α + z_β) × √(1/n_c + 1/n_i)`:
+
+| fração | controle | intervenção | precisão relativa | contra o 10% |
+|---|---|---|---|---|
+| 2% | 382 | 18.695 | 0,1448 | 2,14× pior |
+| **5%** | **954** | 18.123 | **0,0931** | **1,38× pior** |
+| 7,5% | 1.431 | 17.646 | 0,0770 | 1,14× pior |
+| **10%** | **1.908** | 17.169 | **0,0676** | **referência** |
+| 20% | 3.815 | 15.262 | 0,0507 | 0,75× (25% melhor) |
+
+**As três leituras que decidem:**
+
+1. 🔴 **5% exige um efeito 37,6% MAIOR que 10%** para ter a mesma chance de ser detectado. Não é
+   "um pouco pior": é a diferença entre enxergar e não enxergar um ganho real de tamanho médio.
+2. 🟢 **Dobrar de 10% para 20% melhora só 25%.** A curva achata — não há motivo para ir além de
+   10%, e o custo (pacientes não navegados) dobra.
+3. ℹ️ **7,5% fica a 14% do 10%.** Se o limite for ético e não estatístico, é o meio-termo que
+   quase não perde poder.
+
+⚠️ **Os números de 14% e 19% que circularam dependem de uma premissa não medida.** Eles saem de um
+coeficiente de variação implícito de **≈ 2,05** no desfecho. **O desfecho não está declarado em
+nenhum dos dois documentos** (§2.3), então a variabilidade dele é suposição.
+✅ **O que NÃO depende dessa premissa é a comparação entre as opções** — os fatores 1,38× e 0,75×
+saem só dos tamanhos de amostra. **A escolha entre 5% e 10% está sustentada; o valor absoluto do
+efeito detectável, não.**
+
+🔴 **Nenhuma linha isolada conclui sozinha.** A maior delas, o TI-RADS, detecta **18% mesmo com
+10%**. O estudo tem de ser **único e agregado** — se alguém esperar resultado por linha de cuidado,
+a expectativa está errada desde o desenho, e isso precisa estar na ata.
+
+## 14. 🔴 Dá para voltar de 10% para 5%? A resposta é sim e não, e a distinção importa
+
+**Tecnicamente, sim — é um número no `WHERE`.** Medido nos mesmos 1.000.000 de CPFs:
+
+| movimento | saem do controle | entram no controle |
+|---|---|---|
+| 5% → 10% | **0** | 50.091 |
+| 10% → 5% | **50.091** | **0** |
+
+O corte é **monótono**: subir só acrescenta, descer só remove. Não há realocação cruzada em
+nenhuma das direções, e ninguém troca de braço "por sorteio".
+
+🔴 **Metodologicamente, não.** E a razão não é o sorteio — é o que já aconteceu com as pessoas:
+
+- **Subindo**, os 954 do controle inicial seguem intactos. Os que entram depois têm janela de
+  observação menor, o que faz do estudo um desenho **escalonado** — tratável, desde que a análise
+  seja por data de entrada.
+- **Descendo**, 954 pessoas que já passaram um período **deliberadamente não navegadas** voltam a
+  ser navegadas. Viram um **crossover não planejado**: o desfecho delas deixa de ser atribuível a
+  um braço só, e elas são metade do controle.
+
+⚠️ **A frase certa não é *"não dá para voltar"*, é *"voltar não desfaz"*.** A não-navegação já
+ocorreu e não se reverte mudando um flag. Quem descer tem três saídas, todas piores que não ter
+subido: descartar esses pacientes da análise (perde metade do controle), tratá-los como censurados
+na data da troca (perde a janela longa), ou manter o desenho e aceitar contaminação.
+
+## 15. Os dois caminhos
+
+### Caminho A — começar em 5% e subir para 10% depois de validar
+
+| | |
+|---|---|
+| 🟢 a favor | expõe metade das pessoas enquanto o operacional ainda não foi provado; a subida **não realoca ninguém**, então o controle inicial é preservado |
+| 🟢 | permite medir a taxa de casamento do CPF **em operação real** antes de comprometer 10% |
+| 🔴 contra | o estudo vira **escalonado**: dois grupos com janelas diferentes, e a análise precisa prever isso desde o protocolo |
+| 🔴 | enquanto estiver em 5%, o poder é o de 5% — se a decisão for tomada nesse período, ela precisa de um efeito **37,6% maior** |
+| ⚠️ | exige definir **agora** o gatilho objetivo da subida (qual métrica, qual valor, quem decide), senão o 5% vira permanente por inércia |
+
+### Caminho B — começar já em 10%
+
+| | |
+|---|---|
+| 🟢 a favor | poder pleno desde o primeiro dia; janela de observação **uniforme**; análise mais simples |
+| 🟢 | não há segunda rodada de aprovação ética para a mudança de fração |
+| 🔴 contra | **a decisão é de mão única na prática** — descer depois contamina metade do controle |
+| 🔴 | dobra a exposição antes de o operacional estar provado; se a taxa de casamento do CPF for ruim, a perda é sobre 1.908 pessoas e não 954 |
+
+## 16. Recomendação
+
+**Caminho B — 10% desde o início —, com duas condições.**
+
+O argumento que decide: **o risco do caminho A não é menor, é adiado**. Os 954 do controle de 5%
+já são pacientes encontrados e não navegados; a diferença entre A e B não é *"expor ou não"*, é
+*quantos* e *com que poder*. E A carrega um custo que B não tem — o desenho escalonado — em troca
+de uma reversibilidade que, como a §14 mostra, **não existe de verdade**.
+
+**As duas condições, e nenhuma é opcional:**
+
+1. 🔴 **Ética, LGPD e formalização ANTES do primeiro paciente.** Braço de controle é paciente
+   encontrado e deliberadamente não navegado. É decisão institucional, não técnica, e precede a
+   operação — o próprio relatório já a lista como pendente.
+2. 🔴 **O desfecho declarado e o denominador do CPF respondido** antes de ligar. Sem desfecho não
+   há poder calculável (o CV de 2,05 é suposição), e sem a taxa de casamento não se sabe quem o
+   estudo perde de vista. São os itens 1 e 2 da §5, e **seguem abertos**.
+
+🟡 **Se a alçada ética limitar a exposição inicial, 7,5% é o meio-termo defensável** — perde só
+14% de precisão contra o 10%, e preserva a monotonicidade para subir depois.
+
+📄 Verificação reexecutável: `_ferramentas/verifica-sorteio-randomizacao.py` — reimplementa a
+fórmula, confere fração, determinismo, independência regional e **as duas direções da mudança de
+corte**.

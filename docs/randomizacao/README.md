@@ -50,8 +50,11 @@ frente do motor. Ao trabalhar aqui, não puxar a metade de NLP junto sem decisã
 
 **Seguem abertas, e agora com o motivo escrito:**
 
-1. 🔴 **Qual é o desfecho, e qual o poder para detectá-lo?** É o que decide 5% ou 10%, e a decisão
-   hoje não tem base. Controle é paciente **encontrado e não navegado** — dobrar tem custo clínico.
+1. 🟡 **Qual é o desfecho?** O **poder foi calculado** (adendo 2 do parecer) e sustenta a escolha
+   entre 5% e 10%: **5% exige efeito 37,6% maior**, e dobrar de 10% para 20% só melhora 25%.
+   ⚠️ **Mas o desfecho segue sem declaração**, então o efeito detectável em valor absoluto
+   (os 14% / 19% que circularam) depende de um CV suposto de ≈ 2,05. **A comparação entre as
+   opções não depende disso; o número absoluto depende.**
 2. 🔴 **Qual a taxa de casamento do CPF, e quem fica de fora?** É o único viés que o hash não
    protege, porque acontece **antes** dele.
 3. 🔴 **Ética, LGPD e formalização** — o próprio relatório lista como pendente, e isso **precede** a
@@ -65,7 +68,22 @@ frente do motor. Ao trabalhar aqui, não puxar a metade de NLP junto sem decisã
 - Decisão de versão da lib, pin e contrato — `docs/motor-nlp/ESTADO.md`.
 - Filtro de entrada (`gold_filter`) — é config da especialidade.
 
-## Estado
+## Estado — 2026-09-24
 
-Nada produzido. Quando houver, o estado desta frente vive **aqui**, não no `ESTADO.md` do motor —
-são frentes distintas e misturá-las foi o que já tornou aquele documento difícil de ler.
+✅ **Parecer fechado**, com dois adendos. O mecanismo está validado e **não há nada a corrigir
+nele**; o que falta é tudo em volta.
+
+🔴 **Recomendação: começar já em 10%**, com duas condições que não são opcionais — ética/LGPD/
+formalização antes do primeiro paciente, e o desfecho declarado mais o denominador do CPF
+respondido antes de ligar.
+
+**A assimetria que sustenta a recomendação:** subir de 5% para 10% **não realoca ninguém**; descer
+de 10% para 5% devolve à navegação metade do controle, que **já passou um período sem ser
+navegado**. Tecnicamente as duas direções são um número no `WHERE` — **voltar não é impossível,
+voltar não desfaz**. Ver §14 do parecer.
+
+🟡 Se a alçada ética limitar a exposição inicial, **7,5%** perde só 14% de precisão contra o 10% e
+preserva a monotonicidade.
+
+O estado desta frente vive **aqui**, não no `ESTADO.md` do motor — são frentes distintas e
+misturá-las foi o que já tornou aquele documento difícil de ler.
