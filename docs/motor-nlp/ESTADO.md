@@ -412,7 +412,7 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.x` — ✅ `0.15.3` NOS DOIS FEEDS E TAGUEADA · 🟡 FALTA A COORTE REAL
+## `0.15.x` — ✅ `0.15.3` VALIDADA EM COORTE REAL · 🟡 `0.15.4` PRONTA, NÃO PUSHADA
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
@@ -551,8 +551,50 @@ mesmo commit.
 🟡 **Falta a medição em coorte real** — o espelho da `0.15.2`: os 121 por vínculo estabelecido
 permanecem, e os 73 por `categoria_ausente` são reavaliados.
 
-🔴 **Nenhuma das três `0.15.x` publicadas é pinável, e o feed é imutável.** A `0.15.3` é o que
-fecha o ciclo de bumps.
+🔴 **Nenhuma das `0.15.x` publicadas é pinável, e o feed é imutável.**
+
+### ✅ `0.15.3` VALIDADA EM COORTE REAL — acertou o alvo, e revelou o próprio defeito
+
+📄 run `109956348322922` (TERMINATED SUCCESS, 134 min), TI-RADS em dev, **16.014 pares**.
+✅ **150 promovidos, ZERO rebaixados**, 150 de 150 com marcador, **zero sem causa declarada**, e
+**zero divergência** no caminho do vínculo estabelecido.
+✅ **A três versões, em 14.658 trios:** os **121** rebaixamentos do card `306034` seguem de pé
+(**121 de 121**, zero regressões) e os **73** indevidos foram **recuperados integralmente**.
+A partição `121 / 73` reproduz **exatamente** a medida no A/B original.
+
+🔴 **Mas 65 das promoções são defeito da própria `0.15.3`.** A guarda de órfandade protegia mesmo
+quando o laudo já refutava: das 143 órfãs com braço de comparação, **76 protegem com razão (E)**,
+**65 têm o máximo do documento abaixo do limiar (F, maior observado 0,98 cm)** e **2 não medem
+nada (F2)**. **Quase metade da classe.**
+
+### 🟡 `0.15.4` — IMPLEMENTADA, NÃO PUSHADA
+
+📄 SPEC `nlp-engine-lib/docs/spec-0.15.4-refutacao-independe-da-atribuicao.md`. Branch
+`fix/0.15.4-refutacao-independe-da-atribuicao`, commit `5c408c9`, da `hml`.
+
+**A regra que faltava já existia desde a `0.15.1`:** *se o maior nódulo do laudo não alcança o
+limiar, nenhuma alcança*. O erro foi tratá-la como propriedade **daquele ramo** em vez de
+propriedade **da decisão** — o mesmo padrão que a `0.14.0` já tinha nomeado.
+
+✅ **Feita por RPI/SDD, e é o que muda:** parte de uma **tabela de estados completa com contagem
+medida em cada célula**. As duas que deram zero (`D` erro de infra, `H` critério composto) estão
+declaradas como **sem população nesta coorte**, cobertas por teste — célula sem contagem é célula
+não verificada.
+
+| evidência | |
+|---|---|
+| golden contra a `v0.15.3` | **ZERO promovidos**, 4 rebaixados — só `F` e `F2`, nos dois perfis |
+| perfis sem camada quantitativa | byte a byte idênticos |
+| oráculo de mutação | **12 mutantes, 12 mortos** (6 novos + os 6 da `0.15.3`) |
+| gate de sete alvos | **1.315 testes, 88,32% por ramo**, `release-check` coerente |
+
+⚠️ **Contrato:** `measure_lesion_maximo_documento`. Não é higiene — a `0.15.3` apagava o valor
+**antes de persistir**, e por isso o payload não distinguia `E` de `F`: **o defeito era invisível
+na saída, não só no código.**
+
+🔴 **Dois erros meus no caminho, os dois pegos por instrumento e não por leitura:** um mutante
+sobreviveu porque o caso de teste não discriminava, e **um golden foi gerado enquanto o oráculo de
+mutação reescrevia a fonte** — resultado plausível, contra código nenhum. Armadilha 12 registrada.
 
 🔴 **A recomendação de fundo segue de pé, e é trabalho de lib:** o vínculo usa `anchor.text` como
 **segundo vocabulário de lesão**, e ele diverge da régua — nenhum dos dois cobre `Formação` nem

@@ -192,3 +192,21 @@ estivesse viva e o campo preenchido. Um `count(*)` do total, um `max(data)`, um
 ⚠️ **E vale para o contrário também:** afirmar que *"não há"* a partir de um espelho desatualizado
 é o mesmo erro com o sinal trocado. **Ausência de sinal não é sinal de ausência** — e num espelho,
 menos ainda.
+
+
+## 12. 🔴 O oráculo de mutação reescreve a fonte — nada pode ler o repo enquanto ele roda
+
+📅 **24/09.** O script de mutação altera `quantitative.py`, roda a suíte e restaura no `finally`.
+Rodei o **golden em paralelo** com ele. O golden leu a árvore **com um mutante ativo** e produziu
+um payload que não corresponde a código nenhum — nem ao original, nem ao corrigido.
+
+🔴 **O resultado era plausível:** deu 2 promoções e 4 rebaixamentos, número pequeno e na ordem de
+grandeza esperada. Só caiu quando o blob de um laudo contradisse o que a função devolvia ao ser
+instrumentada — `orfa=False` no código, `require_measure_categoria_orfa: true` no payload.
+
+**A verificação:** nada que leia o repositório roda em paralelo com o oráculo. Se um `run_in_background`
+estiver ativo, o golden espera. E, ao suspeitar de um payload, **instrumentar a função** e comparar
+com o que ela de fato devolve — foi o único passo que separou as duas hipóteses.
+
+⚠️ Vale para qualquer ferramenta que mute a árvore de trabalho: mutação, `git stash`, troca de
+branch, `worktree` apontando para o mesmo diretório.
