@@ -412,7 +412,7 @@ primeiro. Decisão de 21/09 mantida: **não ativar agora**.
 `plataform/ntb_ia_bancada_p0_29` no workspace e as tabelas `tb_bancada_*` em
 `diamond_fabrica_ia_dev`.
 
-## `0.15.x` — 🔴 TRÊS NOS FEEDS, NENHUMA ADOTÁVEL · ✅ `0.15.3` IMPLEMENTADA, NÃO PUSHADA
+## `0.15.x` — ✅ `0.15.3` NOS DOIS FEEDS · 🔴 SEM TAG · 🟡 FALTA A COORTE REAL
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.0-vinculo-lesao-medida.md`. Card `306034` — *[NLP Engine]
 TI-RADS entrega a medida do nódulo errado: não existe vínculo*.
@@ -509,10 +509,17 @@ traz a medida** — o vínculo deveria ter funcionado ali. Casos textuais lidos:
 vez.** O `_gate_met_de` enumera na própria docstring **três** causas de `met is None` e protege
 duas. `categoria_ausente` é a **quarta**, da mesma natureza, e nem chega lá — grava `False` antes.
 
-### ✅ `0.15.3` IMPLEMENTADA (23/09) — branch `fix/0.15.3-categoria-ausente-nao-rebaixa`
+### ✅ `0.15.3` EM PRODUÇÃO NOS DOIS FEEDS (23/09) · 🔴 SEM TAG
 
-📄 SPEC `nlp-engine-lib/docs/spec-0.15.3-categoria-orfa.md`. Commit `3cc3884`, **não pushado**.
-Gate de sete alvos: **1.311 testes, 88,30% por ramo**, `release-check` coerente.
+📄 SPEC `nlp-engine-lib/docs/spec-0.15.3-categoria-orfa.md`. PRs **7397** (`→ hml`) e **7398**
+(`hml → main`), os dois mergeados. `hml` em `54e3a8c`, `main` em `e7b6355`, as duas em `0.15.3`.
+✅ **Publicada nos DOIS feeds, verificado no próprio feed** (API de packaging), não no deploy
+verde. Builds 8686 e 8687, os dois `succeeded`. 🟢 **Terceira vez seguida** que o gate por destino
+funciona nos dois ramos.
+🔴 **A tag `v0.15.3` NÃO existe**, nem local nem no remoto — a esteira publica no merge e a tag é
+manual. Acusado pelo `release-check`. Criar sobre `e7b6355`, que é o commit que gerou a wheel.
+Gate contra a árvore **mergeada** (`git diff` de código vazio contra a `main`): **1.311 testes,
+88,30% por ramo**, e o `release-check` só reprova na tag.
 
 🔴 **`met = None` cego NÃO servia** — ressuscitaria o defeito 8 da `0.15.2`. São **TRÊS** estados:
 
