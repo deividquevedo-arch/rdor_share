@@ -567,7 +567,7 @@ quando o laudo já refutava: das 143 órfãs com braço de comparação, **76 pr
 **65 têm o máximo do documento abaixo do limiar (F, maior observado 0,98 cm)** e **2 não medem
 nada (F2)**. **Quase metade da classe.**
 
-### 🟡 `0.15.4` — IMPLEMENTADA, NÃO PUSHADA
+### ✅ `0.15.4` EM PRODUÇÃO NOS DOIS FEEDS, TAGUEADA E VALIDADA EM COORTE REAL
 
 📄 SPEC `nlp-engine-lib/docs/spec-0.15.4-refutacao-independe-da-atribuicao.md`. Branch
 `fix/0.15.4-refutacao-independe-da-atribuicao`, commit `5c408c9`, da `hml`.
@@ -595,6 +595,30 @@ na saída, não só no código.**
 🔴 **Dois erros meus no caminho, os dois pegos por instrumento e não por leitura:** um mutante
 sobreviveu porque o caso de teste não discriminava, e **um golden foi gerado enquanto o oráculo de
 mutação reescrevia a fonte** — resultado plausível, contra código nenhum. Armadilha 12 registrada.
+
+✅ **ENTREGUE:** PRs **7399** (`→ hml`) e **7401** (`hml → main`), `main` em `cd79880`, build 8698
+`succeeded`. **Publicada nos DOIS feeds, verificado no próprio feed.** Tag **`v0.15.4`**
+(`7641671`) sobre `0718868`, o merge na `hml` — confirmada pela REF.
+
+✅ **`CA8` FECHADO — run `879276610970353`, 133 min, 16.021 pares:**
+
+| | |
+|---|---|
+| **promovidos `0 → 1`** | **ZERO** |
+| rebaixados | **70**, e **zero** fora da classe de órfãs |
+| os **121** do card `306034` | **121 ainda rebaixados, 0 regressões** |
+| célula `E` (protege com razão) | **78** seguem entregues |
+| células `F`/`F2` | **65** passam a rebaixar |
+| controle do vínculo | **0** divergências |
+
+🟢 **78 + 65 = 143, a partição fecha.** A taxa cai de 874 para 804 relevantes — exatamente os 70.
+🟢 **`engine_version = 0.15.4` em 16.021 de 16.021**, mesma config dos dois lados.
+ℹ️ Previsto `E`=76 / `F`+`F2`=67; medido 78 / 65. A previsão usava o braço `0.14.0` como **proxy**
+do máximo; dois laudos caíram do outro lado da fronteira. Variância do extrator, não de regra.
+
+🔴 **Três afirmações erradas minhas durante o deploy:** disse que o gatilho `individualCI` não
+tinha disparado. Tinha — em **1 segundo**; o build levava 24 min e eu julguei aos 8. O
+`az pipelines build list` **só devolve concluídos** por padrão. Memória gravada.
 
 🔴 **A recomendação de fundo segue de pé, e é trabalho de lib:** o vínculo usa `anchor.text` como
 **segundo vocabulário de lesão**, e ele diverge da régua — nenhum dos dois cobre `Formação` nem
