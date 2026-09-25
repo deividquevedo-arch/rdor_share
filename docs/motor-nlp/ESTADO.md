@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-24**.
+> Atualizado em **2026-09-25**.
 
 ---
 
@@ -599,6 +599,44 @@ mutação reescrevia a fonte** — resultado plausível, contra código nenhum. 
 ✅ **ENTREGUE:** PRs **7399** (`→ hml`) e **7401** (`hml → main`), `main` em `cd79880`, build 8698
 `succeeded`. **Publicada nos DOIS feeds, verificado no próprio feed.** Tag **`v0.15.4`**
 (`7641671`) sobre `0718868`, o merge na `hml` — confirmada pela REF.
+
+### ✅ DELTA PONTA A PONTA MEDIDO — `0.12.3` × `0.15.4`, a coorte inteira
+
+Run `866752815785087` (134 min). A versão **que roda em produção** executada sobre a mesma janela e
+config da `0.15.4`. **Não há trecho estimado nem encadeamento de medições vizinhas.**
+
+| 16.021 pares | |
+|---|---|
+| **rebaixados** | **133** |
+| **promovidos** | **ZERO** |
+| taxa | 5,85% → 5,02% |
+| **`findings` diferente** | **277** — 165 perderam a medida, 108 mudaram, 4 ganharam |
+
+ℹ️ Os **277** são o número que o navegador de fato lê, e não existia em lugar nenhum antes.
+
+📄 **Documento de entrega para o Ops publicado** — organizado por *o que muda para quem consome*.
+Destaque: **o campo da medida pode vir vazio onde antes vinha preenchido** (165 laudos), e é o
+único ajuste do lado do consumidor.
+🔴 **Contrato de ENTRADA levantado (faltava):** só **`nlp.lesion_linking.janela`** é chave nova, e é
+opcional. A **`waive`** já existe na `0.12.3` e nenhuma config a declara — inerte, mas muda o
+processo do Ops se for ligada, e a config que a ativaria está segurada.
+
+### 🔴 Documentação da plataforma desatualizada — verificado no repo
+
+`specs/27-config-especialidade` afirma *"Nada neste pipeline lê `runtime`"*, e
+`ntb_ia_loader.py:105-109` **lê e sobrescreve** o `nlp.llm_router`. O `boas-praticas/02` Passo 6
+repete (*"sem efeito técnico"*). Três documentos usam **`0.9.4`** como referência. E há **zero**
+menções aos 14 campos novos. Card `299238` é o acumulador.
+
+### 🔴 `cancer_colon` — os DOIS problemas, e é a única
+
+```
+cancer-colon-batch   api_cancer_  NAO DECLARA disabled   ${nlp_engine_version}
+as outras seis       api_*        declara                0.12.3
+```
+
+Sem `disabled`, rodar em homologação **posta inferência no sistema real de Navegação**. Alçada
+nossa, uma linha em `cancer-colon-batch.json`.
 
 ✅ **`CA8` FECHADO — run `879276610970353`, 133 min, 16.021 pares:**
 
