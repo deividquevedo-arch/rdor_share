@@ -1663,8 +1663,24 @@ que aparecerem, alinhar de uma vez com o `283647`).
   🔴 **PRODUÇÃO continua em fallback, com a MESMA `config_version`:** `cancer_estomago` 100%,
   `hepatologia` 99,4%, `cancer_rim` 98,5%, `tirads` 85,4%. **Isola a causa: não é a lib nem o
   modelo, é o caminho por ambiente.** É o card `305810`, em *Pronto para QA* com o João.
-  ⚠️ **Ordem de grandeza que pede explicação:** a hepatologia entregou **864 relevantes em hml**
-  contra **68 em prd** no mesmo dia, com a mesma config. Coortes diferentes — mas não conferido.
+  🔴 **CONFERIDO EM 25/09, e NÃO eram coortes diferentes — é o MESMO LOTE.**
+
+  | | PRD | HML |
+  |---|---|---|
+  | config | `0.1.13-hep-emb-volume` | **idêntica** |
+  | engine | `0.12.3` | **idêntica** |
+  | laudos | 4.538 | **4.538** |
+  | relevantes | **61** | **911** |
+  | `token_overlap` | **4.494 (99,0%)** | **0 (0,0%)** |
+
+  **A única variável é a camada semântica.** Produção entrega **6,7%** do que a mesma configuração
+  produz com os embeddings funcionando. O `305810` deixa de ser risco de infraestrutura e passa a
+  ter consequência medida.
+  ⚠️ **Isso NÃO estabelece que os 911 estão certos.** A hepatologia é justamente a linha com a
+  régua cega por segmentação (`300202`), e boa parte do que a semântica promove ali é **o termo
+  literal da régua na parte do laudo que ela não vê**. Qual das duas pontas está clinicamente
+  correta segue **sem gabarito** — o que está provado é que os dois ambientes rodam perfis
+  diferentes, e só um foi homologado.
 
 - 🟡 **Histórico do grant (19/09), mantido para rastreabilidade:**
   O PR 7321 apontou o `embedding_model` de **seis configs** para o Model do Unity Catalog
