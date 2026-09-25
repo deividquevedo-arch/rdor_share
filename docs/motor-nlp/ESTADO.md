@@ -941,6 +941,62 @@ achado; 12 dos 35 casos de 25/08) · achado de outra doença (fratura de escafoi
 - 🔴 **Schema `reumatologia` só existe em `dev`.** É do time da Fábrica criar; sinalizado ao Ops
   junto com o PR, por procedimento próprio — **não** vai na descrição do PR.
 
+## 🔴 Reumatologia — O FILTRO DE ENTRADA PERDE 18,6%, E 14% DISSO É DEFEITO (25/09)
+
+Medido replicando **os dois filtros sobre a mesma gold**, `id_exame` distinto, 30 dias
+(25/08–23/09). Não é comparação de tabela de saída — é o recorte que cada filtro faz na fonte.
+
+| recorte | exames | /dia útil |
+|---|---|---|
+| legado **com** região craniana | 151.986 | ~6.400 |
+| legado **sem** craniana (régua pós-PR 6893) | **95.294** | ~4.100 |
+| **plataforma hoje** | **77.554** | ~3.400 |
+| plataforma com o escape corrigido | 80.104 | ~3.500 |
+
+🟢 **Os −49% contra o legado completo são 37% DECISÃO:** a região craniana (`crânio`, `cabeça`,
+`face`, `intracranian`, `mastoid`) vale **56.692 exames** e foi removida de propósito no PR 6893.
+
+🔴 **Contra a régua vigente: −18,6%**, ou **17.740 exames em 30 dias (~591/dia)**.
+
+### 🔴 O defeito, e ele explica a diferença para o que foi homologado
+
+O `` do regex do `gold_filter` vira **BACKSPACE** no literal SQL, não *word boundary* — o termo
+`p[eé]s?` **não casa nada**. Medido: **2.550 exames em 30 dias (+3,29%)**.
+
+| | razão contra o legado sem crânio |
+|---|---|
+| plataforma **hoje** | **81,4%** |
+| plataforma com escape corrigido | **84,06%** |
+| **documentado na migração** | **84,3%** |
+
+**O número homologado só se reproduz com o escape funcionando.** Produção está **2,7 pontos abaixo
+do que foi medido e aprovado**, e a correção é **uma barra a mais** no literal.
+ℹ️ Mesma classe da memória `regex-em-config-armadilhas-de-escape`, agora com custo medido.
+
+### O resto do −18,6%, e é decisão registrada
+
+A plataforma filtra sobre **uma** coluna (`proced_descricao`); o legado sobre **três**
+(`proced_descricao_ajustado`, `dsc_codigo`, `cod_procedimento`) unidas por `OR`. E o
+`UPPER(trim(tp_procedimento)) IN ('IMG','IMA')` **não é reproduzido** — divergência 5 do cabeçalho
+da config. Decisões registradas, **nunca medidas** até agora.
+⚠️ Também sumiram na tradução as exclusões `paaf`, `punção`, `biop`, `bióp`, que o legado tinha.
+
+### ⚠️ Rastreabilidade: o SQL de produção do legado NÃO existe localmente
+
+O commit `7293729` não está em repo nenhum da máquina, e a documentação do projeto cita **dois
+commits diferentes** (`7293729` e `b200286`) para a mesma referência. O que há é a versão de
+**maio/2026** (anterior ao PR 6893) e a tradução em regex. A medição cerca o intervalo usando a
+versão de maio **com e sem** a craniana. Para auditar o original: clonar
+`IAAzureDatabricksReumatologia` do Azure DevOps.
+
+### Sobre a queda de ENTREGA, medida antes
+
+85 → 47 pacientes em 7 dias (−44,7%). **37 dos 39 perdidos chegaram ao motor e não foram
+marcados** (régua); **2 nunca chegaram** (filtro). A homologação prevê a remoção de falso
+positivo, mas **estes 39 não foram adjudicados** — numa leitura de 6, três são claramente FP e
+**dois têm erosão óssea descrita em protocolo de artropatia inflamatória**. Pede adjudicação
+clínica.
+
 ## Reumatologia — ✅ EM PRODUÇÃO · 🟡 PR DO EXCHANGE AGUARDA OPS
 
 ✅ **A linha entrou em produção e o legado foi desligado.** Schema `reumatologia` provisionado em
