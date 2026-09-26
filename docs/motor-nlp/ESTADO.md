@@ -8,6 +8,36 @@
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
 > Atualizado em **2026-09-25**.
+>
+> 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
+> e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
+> do projeto. Este documento é o **retrato**, não o histórico.
+
+---
+
+## 🏖️ FÉRIAS — 26/09 a 12/10, retorno em 13/10/2026
+
+O que fica **parado por decisão**, não por esquecimento. Nada abaixo precisa de ação de terceiro
+para permanecer seguro: produção segue nas seis linhas com a `0.12.3` pinada, e nenhum pin muda.
+
+| pendência | estado | quem |
+|---|---|---|
+| PR da config `0.2.0-reumatologia` | branch pushada, **PR não aberto** | nós, na volta |
+| adjudicação clínica dos 37 só-legado da reumatologia | artefatos prontos, fora do git | médico |
+| `305875` — avalizar a chave `waive` | **Novo, sem responsável** | Ops |
+| promoção das 4 linhas de HML para PRD | PR `hml → main` + schema em prd | nós + Fábrica |
+| PR 7428 (neuroimunologia) | aprovado; falta work item e revisores | Leandro |
+| próstata e doenças biliares | **SPECs escritas**, start na sprint | Leandro |
+
+🔴 **Cards em *Comprometido* para o retorno:** `358081` — *[NLP Engine] Pinar a 0.15.4 e fechar os
+defeitos que o pin destrava* · `358082` — *[Plataforma NLP] Alinhar contrato de entrada e saida e a
+SPEC 27 com o time de Ops*. Os dois, mais o `306066`, carregam a tag de board **`v0.15.4`** e estão
+vinculados entre si — o motivo de bloqueio é o mesmo.
+
+⚠️ **Riscos vivos durante a ausência, todos já conhecidos e nenhum novo:** a hepatologia em produção
+entrega **6,7%** do que a mesma config produz com embeddings funcionando (`305810`) · o
+`cancer_colon` roda `${nlp_engine_version}` e pode trocar de versão sozinho · a reumatologia em
+produção está **2,7 pontos abaixo** do filtro homologado, pelo escape do `\b`.
 
 ---
 
@@ -1082,6 +1112,51 @@ constam da lista de região.
 
 ✅ **Acrescentar `corpo inteiro` e `pelve` recupera ~275 exames (~9/dia) sem tocar no runner.**
 
+### ✅ CORREÇÃO ESCRITA E PUSHADA — config `0.2.0-reumatologia` · 🟡 PR NÃO ABERTO
+
+Branch `reumatologia/fix/filtro-e-regua`, commits `1c869d3` e `9321cce`, **confirmada pela REF**.
+**O PR não foi aberto** — fica para 13/10.
+
+| mudança | medido em 30 dias |
+|---|---|
+| escape do `\b` corrigido | **+2.550 (+3,29%)** |
+| `corpo inteiro` no vocabulário de região | +431 |
+| `car[oó]t[ií]d` / `art[eé]ri` / `venos` excluídos | −372 |
+| `paaf`, `pun[cç][aã]o`, `bi[oó]ps` devolvidos | −78 |
+| **líquido** | **+2.531** — 77.554 → **80.085** |
+
+Régua: **`artropatia inflamatoria`** acrescentada a `artrite_reumatoide` — recupera 4 dos 37.
+
+🔴 **`pelve` NÃO entrou.** Mede ~110 exames, mas a primeira estimativa isolada deu **+33.228** e só
+caiu ao medir junto com o resto do filtro. Fica como recomendação medida, **não** como mudança
+aplicada — correção e ampliação não entram no mesmo PR.
+
+⚠️ **A cadeia do escape tem quatro elos:** fonte `.py` com quatro barras → valor Python com duas →
+literal SQL → regex `\b`. Errar qualquer um é **silencioso**.
+
+### ✅ O RELATÓRIO 1:1 PARA O HEAD — legado × motor
+
+📄 `reumatologia/resumo-migracao-legado-x-motor-2026-09-25.docx`. Base: **16.986 laudos únicos**
+que os dois lados processaram na mesma janela.
+
+| | legado | motor |
+|---|---|---|
+| laudos entregues | **95** | **80** |
+| pacientes | 84 | 66 |
+| por dia | 13,6 | 11,4 |
+
+**Concordam em 58. Discordam em 59** — 37 só o legado, 22 só o motor.
+Dos **37**: **24 falso positivo**, **11 achado real**, 2 sem veredito. Dos **22**: 19 pelo termo
+novo, 1 falso positivo nosso, 2 sem explicação.
+
+⚠️ **Três números meus caíram por mistura de unidade ou de base** — exames somados contra laudos
+únicos no funil, uma estimativa com regra ajustada em outra população, e um 52 que era 53.
+**Refazer a cadeia numa unidade só** foi o que fechou.
+
+✅ **O legado está DESLIGADO na fonte, não só no espelho** — verificado em
+`hive_metastore.ia.tb_diamond_mod_reumatologia_saida` no lake 1, com o perfil reautenticado:
+último exame 31/08, última execução 02/09, 792.660 linhas, idêntico ao espelho.
+
 ## Reumatologia — ✅ EM PRODUÇÃO · 🟡 PR DO EXCHANGE AGUARDA OPS
 
 ✅ **A linha entrou em produção e o legado foi desligado.** Schema `reumatologia` provisionado em
@@ -1255,6 +1330,41 @@ nomes de tabela e um punhado de termos. **Uma extração serve as duas**, e tamb
 - 🔴 **Dependência de terceiro com prazo:** os schemas `doencas_biliares` e `neuroimunologia`
   precisam ser provisionados pelo time da Fábrica, em **dev e prd**. Na reumatologia a ausência em
   prd virou bloqueio na hora de promover.
+
+## Neuroimunologia — ✅ PR 7428 APROVADO (25/09), aguarda work item e revisores
+
+PR **`7428`** (Leandro), alvo `hml`. **Reavaliado depois da correção dele e aprovado, sem
+bloqueante.** O ponto levantado na primeira passada — misturar **11 divergências lidas
+clinicamente** com **6 projetadas pela régua** — foi resolvido por inteiro na descrição revisada.
+
+Pendências, do lado dele: vincular o work item `299110` e atribuir revisores.
+
+🔴 **Condição de PROMOÇÃO a prd, não deste PR:** a linha precisa da camada semântica para levar o
+score à banda do juiz — **0,74 sem ela** —, e isso depende do card `305810` — *[Plataforma NLP]
+Modelo de embeddings sem caminho válido em produção*. Perfil parcial não entrega lista ao negócio.
+
+ℹ️ É a primeira das três que o Leandro toca em sequência: **neuroimunologia → próstata → doenças
+biliares**. As duas seguintes já têm SPEC escrita.
+
+## Board — consolidação de 25/09 para o retorno
+
+**Fechados:** `306034` · `283648` · `298598` · `283644` · `300202` · `283647` · `299238`.
+
+**Abertos em *Comprometido (Sprint Backlog)*, com a tag de board `v0.15.4`:**
+
+| card | tipo | o que carrega |
+|---|---|---|
+| `358081` — *[NLP Engine] Pinar a 0.15.4 e fechar os defeitos que o pin destrava* | Defect | pin · `runtime` · segmentação da hepatologia |
+| `358082` — *[Plataforma NLP] Alinhar contrato de entrada e saida e a SPEC 27 com o time de Ops* | User Story | contrato · SPEC 27 · o aval do `305875` |
+
+🔗 **Vinculados entre si e ao `306066`** — *[NLP Engine] TI-RADS rebaixa o laudo de puncao com TR4
+sem medida* —, porque o motivo de bloqueio é o mesmo. O `305875` (*Avalizar a chave `waive`…*)
+ficou ligado ao `358082`, que é onde o aval vive.
+🔴 **O `305875` segue `Novo` e sem responsável**, e é ele que destrava o `306066`.
+
+⚠️ **Dois aprendizados de board, verificados:** `Task` **não aparece** no kanban de Stories — o
+`358082` nasceu Task e virou User Story por `System.WorkItemType`; e a coluna *Comprometido* não se
+alcança escrevendo o campo de Kanban, alcança-se pondo o **estado** em `Planejado`.
 
 ## DII — 🟡 PR 7383 ABERTO, APROVADO COM TRÊS AJUSTES
 
