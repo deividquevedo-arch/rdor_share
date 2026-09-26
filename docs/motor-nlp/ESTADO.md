@@ -960,8 +960,8 @@ Medido replicando **os dois filtros sobre a mesma gold**, `id_exame` distinto, 3
 
 ### 🔴 O defeito, e ele explica a diferença para o que foi homologado
 
-O `` do regex do `gold_filter` vira **BACKSPACE** no literal SQL, não *word boundary* — o termo
-`p[eé]s?` **não casa nada**. Medido: **2.550 exames em 30 dias (+3,29%)**.
+O `\b` do regex do `gold_filter` vira **BACKSPACE** no literal SQL, não *word boundary* — o termo
+`\bp[eé]s?\b` **não casa nada**. Medido: **2.550 exames em 30 dias (+3,29%)**.
 
 | | razão contra o legado sem crânio |
 |---|---|
@@ -981,21 +981,106 @@ A plataforma filtra sobre **uma** coluna (`proced_descricao`); o legado sobre **
 da config. Decisões registradas, **nunca medidas** até agora.
 ⚠️ Também sumiram na tradução as exclusões `paaf`, `punção`, `biop`, `bióp`, que o legado tinha.
 
-### ⚠️ Rastreabilidade: o SQL de produção do legado NÃO existe localmente
+### ✅ Rastreabilidade RESOLVIDA — repositório canônico clonado (25/09)
 
-O commit `7293729` não está em repo nenhum da máquina, e a documentação do projeto cita **dois
-commits diferentes** (`7293729` e `b200286`) para a mesma referência. O que há é a versão de
-**maio/2026** (anterior ao PR 6893) e a tradução em regex. A medição cerca o intervalo usando a
-versão de maio **com e sem** a craniana. Para auditar o original: clonar
-`IAAzureDatabricksReumatologia` do Azure DevOps.
+`IAAzureDatabricksReumatologia` clonado do Azure DevOps para `Projects/` (não rastreado).
+ℹ️ **Os dois commits citados na documentação não divergiam:** `7293729` é a **ponta da `hml`** e
+`b200286` é o **pai** — o merge do PR 6893.
+🟢 **O `CONFIG` da `hml@7293729` é byte a byte igual à cópia de maio/2026.** A única diferença em
+todo o notebook é o caminho do modelo de embeddings (PR 7210, fix de SSL). O Data Card lista os
+mesmos termos. **A régua está confirmada por três fontes independentes.**
 
-### Sobre a queda de ENTREGA, medida antes
+### 🔴 CAUSA RAIZ DA QUEDA DE ENTREGA: vocabulário idêntico, CAMADA removida
 
-85 → 47 pacientes em 7 dias (−44,7%). **37 dos 39 perdidos chegaram ao motor e não foram
-marcados** (régua); **2 nunca chegaram** (filtro). A homologação prevê a remoção de falso
-positivo, mas **estes 39 não foram adjudicados** — numa leitura de 6, três são claramente FP e
-**dois têm erosão óssea descrita em protocolo de artropatia inflamatória**. Pede adjudicação
-clínica.
+85 → 47 pacientes em 7 dias (−44,7%). Pareado por `id_exame`, 25–31/08: **17.881 exames,
+99,54% de concordância**, **82 `1 -> 0`** e **1 `0 -> 1`**.
+Dos 82: `artrite reumatoide` 73 · `sacroileite` 7 · `espondilite`+`psoriasica` 2.
+
+🔴 **A explicação por negação CAIU.** Os 82 têm **zero span positivo E zero span negado** — a régua
+nova não leu e recusou, **não encontrou nada**. Controle: o campo existe em 18.502 de 18.502, com
+75 laudos com span positivo e 20 com negado na mesma janela.
+🔴 **O único `0 -> 1` é falso positivo NOSSO** — `reumatoide` casou na linha de **indicação
+clínica**, num laudo que nega erosão, sinovite e tenossinovite.
+
+**O que o legado de fato busca** (os termos são SEMENTES, não literais):
+
+```
+candidatos = noun_chunks + n-gramas 1..3 do PRÓPRIO laudo
+portão lexical: >=2 tokens e >=1 token OU raiz em comum com as sementes
+score = 0.75 * embedding(MiniLM multilingual) + 0.25 * fuzzy(SequenceMatcher)
+entra se score >= 0.65, até 24 termos novos por semente
+```
+
+Portão lexical reproduzido sobre os 82 laudos reais:
+
+| termo do laudo | laudos | vira | pela semente |
+|---|---|---|---|
+| `erosao ossea` | **40** | `artrite_reumatoide` e `sacroileite` | `erosoes osseas marginais` |
+| `erosoes osseas` | **28** | idem | idem |
+| `edema osseo` | 24 | `sacroileite` | `edema osseo sacroiliaco` |
+| `estruturas osseas` | **19** | `artrite_reumatoide` | `erosoes osseas marginais` |
+| `osteofitos marginais` | **13** | `espondilite` e `artrite_psoriasica` | `sindesmofito marginal` |
+| `lesoes elementares avaliadas` | **12** | `nodulo_reumatoide` | `lesao nodular reumatoide` |
+
+🔴 **`osteofitos marginais` (degenerativo) vira espondilite (inflamatório)** pelo token `marginal`;
+**`lesoes elementares avaliadas`** é o cabeçalho metodológico já apontado na homologação, e entra
+pelo token `lesao`; **`estruturas osseas`** é boilerplate.
+⚠️ O portão lexical é **necessário, não suficiente** — quem decide é o score ≥ 0,65, ainda não
+reproduzido (sem `sentence_transformers` no ambiente).
+
+**A plataforma roda `use_embeddings: False` e `llm_router.enabled: False`** — casamento literal.
+Dispara em **75 de 18.502 laudos (0,4%)**. **A migração não estreitou o vocabulário: removeu o
+motor que o alargava.** E a linha está **em produção com perfil parcial**, contra a régua de que
+nenhuma lista vai ao negócio a partir de `rule_only`.
+
+🔴 **Os 82 são 40 LAUDOS DISTINTOS em 36 pacientes** — há duplicação de `id_exame` sobre o mesmo
+texto, mesma data e mesmo paciente (três blocos de **12x**). Toda triagem tem de ser sobre texto
+distinto; sobre os 82 crus, o grupo "sem achado" aparece inflado 25 contra 3.
+
+**Triagem sobre os 40 distintos** (negação à esquerda do termo):
+
+| grupo | laudos | pacientes |
+|---|---|---|
+| erosão / sinovite / sacroileíte **afirmativa** | **25** | **24** |
+| só derrame / edema ósseo / sindesmófito | 9 | 8 |
+| **só tenossinovite** — termo AUSENTE da régua nova | 3 | 2 |
+| nenhum achado afirmativo | **3** | 3 |
+
+🔴 **Só 3 de 40 não têm nada afirmativo.** A hipótese "o legado era quase todo falso positivo"
+**não se sustenta**: a precisão declarada dele é 76%, o que preveria ~10 FP em 40, e o que se vê
+é 3 vazios mais 9 inespecíficos. **O peso vai para perda de recall real.**
+
+🔴 **Pendente e decisivo: adjudicação clínica dos 82.** Artefatos com laudo completo e coluna de
+veredito em `Desktop/Rede D'Or/reumato-laudos-25a31-08-2026.csv` (fora do git).
+
+### ⚠️ O Data Card está desatualizado em três pontos
+
+`Downloads/Data+Card+-+Reumatologia.docx`. ✅ Seeds, achados, tabelas, periodicidade e endpoint
+conferem com o código.
+🔴 **Escopo:** descreve `crânio`, que o PR 6893 removeu em 23/07/2026.
+🔴 **Métricas:** acurácia 93%, recall 100%, precisão 76%, F1 0,86 — todas de **26/01/2026**, seis
+meses antes do PR 6893.
+🔴 **Não menciona a expansão semântica** — apresenta seeds e palavras-chave como se fossem o que é
+procurado. **É a premissa com que a migração foi feita e homologada.**
+
+### ✅ `IN ('IMG','IMA')` é INERTE · 🔴 a perda está na COLUNA ÚNICA, e é vocabulário
+
+Dos **77.554** exames que a plataforma traz em 30 dias, **77.554 (100%) já são `IMG`/`IMA`**.
+Não reproduzir a cláusula custa **zero nos dois sentidos** — **divergência 5 fechada**.
+
+🔴 **A divergência 4 perde 470 exames em 30 dias (~15,7/dia)**, todos `IMG`/`IMA` — mas a causa
+não é o número de colunas, **é vocabulário**: as palavras estão em `proced_descricao`, só não
+constam da lista de região.
+
+| grupo | exames | veredito |
+|---|---|---|
+| corpo inteiro / esqueleto ósseo | **165** | 🔴 falta `corpo inteiro` (só há `corpo total`) |
+| pelve | **110** | 🔴 falta `pelve` (só há `bacia`); a sacroilíaca está ali |
+| outros (inclui `pé`) | 108 | a triar |
+| craniana | 59 | ❌ removida de propósito no PR 6893 |
+| procedimento guiado | 28 | ❌ não é laudo diagnóstico |
+
+✅ **Acrescentar `corpo inteiro` e `pelve` recupera ~275 exames (~9/dia) sem tocar no runner.**
 
 ## Reumatologia — ✅ EM PRODUÇÃO · 🟡 PR DO EXCHANGE AGUARDA OPS
 
@@ -1076,10 +1161,60 @@ workspace novo é o dele, não o do lake 1.
 volumes e taxas diferentes (1,3% × 6,1%). É o cenário do PR 7275, mergeado em 18/09. **Confirmar
 com o Lucas** se a duplicidade é deliberada e tem prazo.
 
+## 🔴 QUATRO LINHAS PARADAS EM HML — medido em 25/09
+
+Verificado nos dois catálogos, tabela de saída por linha. As quatro **rodaram em 25/09** e param ali.
+
+| linha | laudos em HML | relevantes | em PRD |
+|---|---|---|---|
+| **doenca_inflamatoria_intestinal** | 71.784 | 789 | 🔴 não existe |
+| **tumor_osseo** | 58.831 | 661 | 🔴 não existe |
+| **ateromatose_coronariana** | 17.719 | 821 | 🔴 não existe |
+| **cancer_colon** | 9.839 | 671 | 🔴 não existe |
+
+✅ **As quatro estão COMPLETAS na `hml`** — config, `jobs/definicoes`, `jobs/clusters` e as três
+navegações (dev, hml, **prd**). A `main` tem **só as seis de produção**. Falta **um PR `hml → main`**
+e o **schema em prd**, que é do time da Fábrica.
+
+⚠️ **A nota anterior de que `cancer_colon` era a única sem `disabled` estava errada.** Conferido nas
+dez definições: as **seis que já estão em PRD** declaram `disabled` nas duas tasks de exchange; as
+que ainda não estão declaram zero — e isso é a **regra documentada** no próprio
+`tumor-osseo-batch.json` (*"linha nova nasce sem `disabled`; ADICIONAR no dia da promoção"*). O
+`doenca_inflamatoria_intestinal` já tem na task `api_`, que é a que posta na Navegação real.
+🔴 **O desvio real do `cancer_colon` é outro e continua de pé:** `"${nlp_engine_version}"` em vez do
+literal, e foi por isso que rodou `0.15.1`, `0.14.0` e `0.12.3` em três dias.
+
+⚠️ **Ao promover, a checagem é a mesma das seis:** acrescentar `disabled` nas tasks de exchange
+**no mesmo commit**, senão homologação passa a postar na Navegação real.
+
+ℹ️ **`reumatologia` não tem schema em HML** — está só em prd. Não bloqueia nada hoje, mas tira a
+linha de qualquer validação em homologação.
+
 ## Migração dos algoritmos legados — 🟡 DUAS NESTA SEMANA
 
 **Nossa fila (14/09):** `doencas_biliares` e `neuroimunologia` **até 18/09**, depois **nódulo
 pulmonar**, **endometriose** e **birads**. ℹ️ **Ateromatose saiu da nossa fila — está com o Lucas.**
+
+✅ **SPECs de PRÓSTATA e DOENÇAS BILIARES escritas em 25/09**, para o Leandro dar o start na sprint
+seguinte. 📄 `prostata/spec-migracao-prostata-pirads-v0.md` e
+`doencas_biliares/spec-migracao-doencas-biliares-v0.md`.
+
+| | próstata (PI-RADS) | doenças biliares |
+|---|---|---|
+| universo medido (30 d) | **896 RM de próstata**, 30/dia | **97.818**, 3.261/dia |
+| régua | categoria ordinal, **zero léxico** | 6 categorias, 41 termos |
+| trabalho de lib | **nenhum** — `systems` é 100% config | nenhum |
+| já medido | bancada 06/26: **98,99%** de concordância, MCC **0,968** | — |
+
+🔴 **A próstata é a linha mais barata da fila e a maior alavanca por esforço:** o legado dela é da
+geração **anterior** ao `CONFIG` — regex puro, sem `organs` e sem `findings` —, e **apaga a legenda
+cortando 385 caracteres fixos** depois de um marcador. É exatamente o que a
+`aggregation_legend_filter` faz de forma genérica desde a `0.10.1`.
+🟢 **Filtro do legado medido: recall de 84,3%** (1.067 de 1.265 exames que citam PI-RADS em 30 dias).
+O termo que sustenta isso é `pelve` — rende só 3,7% sozinho, mas é por onde entra o laudo de próstata
+descrito como pelve. **Faltam ~198 em 30 dias**, e é a primeira medição a refazer.
+🔴 **As biliares são 3.261 exames/dia — segunda maior linha da fábrica**, atrás só da hepatologia.
+Cluster, custo de LLM e tempo de run se decidem **antes** de começar.
 
 🟢 **PRs 7321 (João) e 7275 (Lucas) APROVADOS — falta só o merge, nesta ordem: João, depois
 Lucas.** Decisão do usuário em 17/09: **não postar comentário nem ampliação por hora**. O
