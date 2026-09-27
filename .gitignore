@@ -1,0 +1,39 @@
+# Regras de exclusão deste repositório.
+#
+# ⚠️ Este arquivo É VERSIONADO desde 27/09/2026. Antes ele ignorava a si mesmo (a primeira
+# linha era `.gitignore`), e o efeito era que a proteção de LGPD abaixo vivia só na máquina
+# de quem a escreveu — não viajava com o clone. Quem clonasse não tinha nenhuma das regras.
+
+# ── Rascunho pessoal, não é documentação ─────────────────────────────────────
+# Regras por NOME, então valem em qualquer profundidade — inclusive depois de
+# os arquivos terem sido movidos para docs/motor-nlp/_arquivo/rascunhos/.
+znotes.md
+prep-conversa-mleng.md
+onepager-sprint-v0.md
+onepager-decisoes-config-deploy-v0.md
+resumo-alinhamento-engml-v0.md
+resumo-decisoes-config-deploy-v0.md
+
+# Cópia de trabalho antiga, mantida fora do controle de versão
+old(first)
+
+# ── LGPD: dado clínico nunca é versionado ────────────────────────────────────
+# Gabarito, homologação e resíduo de revisão carregam texto de laudo e id_exame.
+# O destino deles é o LAKE, não o repositório (decisão de 02/09/2026).
+# Fixture de teste é SINTÉTICA e segue versionada — por isso a regra é por diretório.
+docs/motor-nlp/**/dados/
+*.csv
+!plataform/nlp_engine/tests/fixtures/*.csv
+*.xlsx
+*.xls
+*.parquet
+*.jsonl
+
+# Blob de `decision_trail` carrega trecho de laudo no campo `evidence`.
+# Achado em 27/09/2026: dois desses arquivos estavam na árvore, untracked, e `.json`
+# não constava daqui — era um `git add` de distância de serem publicados.
+caso_*.json
+
+# ── Cache de bytecode Python ─────────────────────────────────────────────────
+__pycache__/
+*.pyc
