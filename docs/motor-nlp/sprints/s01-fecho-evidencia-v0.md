@@ -6,7 +6,7 @@ Registo no repositorio para alinhar com o board; o fecho formal continua no task
 
 - `ruff check .` sem erros em `plataform/nlp_engine`.
 - `pytest tests -q --ignore=tests/local` (ou `pytest tests` na CI): todos os testes S01 a verde.
-- Mapeamento **T01.1–T01.5** para ficheiros de teste: ver tabela em [plataform/nlp_engine/README.md](../../plataform/nlp_engine/README.md).
+- Mapeamento **T01.1–T01.5** para ficheiros de teste: ver tabela em [plataform/nlp_engine/README.md](../../../plataform/nlp_engine/README.md).
 
 ## Opcional (maquina local, sem PHI no Git)
 

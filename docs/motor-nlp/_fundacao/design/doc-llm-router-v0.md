@@ -168,4 +168,4 @@ Se `base_url`/`model` estiverem vazios, todas as chamadas falham cedo → `llm_r
 ## Governação
 
 - Implementação alinhada a backlog acordado (história/task no board). PHI proibido em testes e logs.
-- **História de referência:** **S12b — LLM fallback seletivo** (`T12b.x` em [`anexo03-historias-e-tasks-v0.md`](anexo03-historias-e-tasks-v0.md)): router opcional, gatilho por incerteza, fallback seguro, observabilidade e validação em bancada.
+- **História de referência:** **S12b — LLM fallback seletivo** (`T12b.x` em [`anexo03-historias-e-tasks-v0.md`](../anexos/anexo03-historias-e-tasks-v0.md)): router opcional, gatilho por incerteza, fallback seguro, observabilidade e validação em bancada.

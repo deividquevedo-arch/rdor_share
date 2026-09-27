@@ -1,6 +1,6 @@
 # SPEC — Portagem evolução motor `nlp_engine` → `fabrica_ia.nlp_engine` (lib)
 
-**Backlog:** S02 (T02.1–T02.5, T02.4a), alinhado a [anexo03-historias-e-tasks-v0.md](anexo03-historias-e-tasks-v0.md).  
+**Backlog:** S02 (T02.1–T02.5, T02.4a), alinhado a [anexo03-historias-e-tasks-v0.md](../anexos/anexo03-historias-e-tasks-v0.md).  
 **Contrato:** [doc-contrato-engine-rule-based-v0.md](doc-contrato-engine-rule-based-v0.md).  
 **Validação:** [doc-validacao-paridade-databricks-v0.md](doc-validacao-paridade-databricks-v0.md).
 

@@ -31,6 +31,6 @@ for row in out_rows:
 
 ## Proximo passo (T02.4b definitivo)
 
-Migrar validacao para `monitoring.quality_guard` quando o repo existir, mantendo o mesmo contrato de entrada (`dict` linha) e lista de erros — ver [notas/t02-4-quality-guard-monitoring-v0.md](notas/t02-4-quality-guard-monitoring-v0.md).
+Migrar validacao para `monitoring.quality_guard` quando o repo existir, mantendo o mesmo contrato de entrada (`dict` linha) e lista de erros — ver [notas/t02-4-quality-guard-monitoring-v0.md](../../sprints/t02-4-quality-guard-monitoring-v0.md).
 
 **Owner:** EngML / monitoring (data alvo a fechar no board).

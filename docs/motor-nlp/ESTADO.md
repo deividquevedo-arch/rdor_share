@@ -248,7 +248,7 @@ são dois. Os dois ramos agora foram exercitados: `livre` em hml e publicação 
 job. **Nenhuma roda a `0.13.0`**, e por decisão — ver o plano de bumps.
 
 ✅ **VALIDADA EM AMBIENTE (21/09) — delta zero em 4.172 laudos reais.**
-📄 `_processo/validacao-0.13.0-em-ambiente-2026-09-21.md`. `cancer_rim`, janela de 07/08, dev, mesma
+📄 `_processo/medicoes/validacao-0.13.0-em-ambiente-2026-09-21.md`. `cancer_rim`, janela de 07/08, dev, mesma
 branch e mesma config dos dois lados; **a única variável foi a versão da lib**. Zero divergência em
 **catorze campos** — seis de decisão e oito da trilha.
 🟢 **Pré-condição: `[sentence_transformers]` em 4.172 de 4.172**, zero `token_overlap`, zero
@@ -311,7 +311,7 @@ semântica, 78 pela via do juiz. Perfis sem semântica e sem juiz: **delta zero*
 B; produção usa 0,80 a 0,92. A medição em coorte real (`CA5`, `CA6`, `CA7`) segue pendente.
 
 ✅ **NÃO-REGRESSÃO PROVADA EM AMBIENTE (21/09) — delta zero em 4.172 laudos.**
-📄 `_processo/validacao-0.14.0-em-ambiente-2026-09-21.md`. `cancer_rim`, 07/08, executada **por CLI**
+📄 `_processo/medicoes/validacao-0.14.0-em-ambiente-2026-09-21.md`. `cancer_rim`, 07/08, executada **por CLI**
 (`databricks jobs submit`, run `25032614221567`, cluster `ic-fabrica-ia-dlq`), mesma coorte da
 `0.13.0` — a baseline já estava gravada, então custou **meia corrida**. Zero divergência em onze
 campos; `[sentence_transformers]` em 4.172 de 4.172.
@@ -321,7 +321,7 @@ linha — zero promoções semânticas, zero critérios quantitativos. É contro
 
 ## `CA5` MEDIDO — ⚠️ leitura CORRIGIDA em 22/09, ver a seção da causa raiz adiante
 
-📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`. A/B **por `id_exame`**, não por
+📄 `_processo/medicoes/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`. A/B **por `id_exame`**, não por
 janela: run `470903865428642`, dois braços sequenciais, notebook de bancada
 `plataform/ntb_ia_bancada_p0_29`, **41 laudos** da hepatologia (eram 36 em 16/09).
 🟢 **Pré-condição: o braço baseline REPRODUZIU o defeito em 41 de 41** — `fl = 1` com
@@ -361,7 +361,7 @@ e a mesma linha em produção cai em `token_overlap` em 99,3% dos laudos — com
 do corpus **não têm juiz** para arbitrar. Com juiz ligado, não caem.
 
 ✅ **`CA4` FECHADO na `tirads` (run `130126794270375`).**
-📄 `_processo/medicao-ca4-tokens-camada-quantitativa-2026-09-21.md`. 120 laudos, 1.080 critérios
+📄 `_processo/medicoes/medicao-ca4-tokens-camada-quantitativa-2026-09-21.md`. 120 laudos, 1.080 critérios
 quantitativos, **162 chamadas ao LLM**: `0.13.0` com **zero** token registrado, `0.14.0` com
 **162 de 162**. Somam 158.141 de prompt e 18.929 de completion — **976,2 e 116,8 por chamada**.
 🟢 **Zero mudança de decisão:** 59 entregues dos dois lados. O item é aditivo, como declarado.
@@ -378,7 +378,7 @@ redigido · 🟡 `CA7` depende da decisão de régua.
 
 ## 🔴 CAUSA RAIZ CORRIGIDA (22/09) — a régua estava cega por SEGMENTAÇÃO, não por parecença
 
-📄 `_processo/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`, adendo 2. O run
+📄 `_processo/medicoes/medicao-ca5-p0-29-coorte-dirigida-2026-09-21.md`, adendo 2. O run
 `222180888862290` persistiu **qual termo da régua casou e com que trecho**, e derruba a leitura
 anterior.
 
@@ -474,7 +474,7 @@ vínculo consumiu a lista crua.** Não era lógica errada: era reuso errado.
 
 ### ✅ `0.15.2` — validada contra 775 laudos REAIS, nove defeitos corrigidos
 
-📄 `_processo/investigacao-vinculo-lesao-medida-2026-09-23.md`. Seis estratos: os que mudaram no
+📄 `_processo/medicoes/investigacao-vinculo-lesao-medida-2026-09-23.md`. Seis estratos: os que mudaram no
 A/B, estruturado, legenda, PAAF, controle de TR4 e controle geral.
 
 🟢 **O que torna a medição possível sem depender do ambiente:** os valores que o extrator LLM **de
@@ -821,7 +821,7 @@ fechar.
 
 ## Câncer de estômago — ✅ EM PRODUÇÃO · 🔴 O FILTRO DE ENTRADA PERDE 55% DAS ENDOSCOPIAS
 
-📄 `_processo/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`. Medido em 17/09 sobre
+📄 `_processo/medicoes/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`. Medido em 17/09 sobre
 `gold_corporativo_ia.corporativo.tb_gold_mov_exame`, janela de 12 meses (27/08/2025 a 26/08/2026).
 
 🔴 **O `gold_filter` deixa de fora mais laudo legível do que traz: 124/dia contra 106/dia.**
@@ -873,7 +873,7 @@ ano** (0,6/dia) — precisão da ampliação **99,72%**. Seguem fora 43.641 exam
 corpus estreito) e a taxa de 3,97% de produção. **Próximo passo: um dia em dev com o filtro novo**,
 medindo volume, chamadas ao juiz, taxa e tempo de run. **Sem card** — alçada da especialidade.
 📄 `cancer_estomago/medicao-ganho-gold-filter-2026-09-17.md` e
-`_processo/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`.
+`_processo/medicoes/medicao-endoscopia-colonoscopia-repositorio-2026-09-17.md`.
 
 ℹ️ **Zero chamadas ao juiz**, por duas causas distintas: 145 laudos abaixo do piso da banda
 `[0,60; 0,97]`, e 1 dentro da banda que saiu `skipped_deterministic` porque o `quantitative_gate`
@@ -1293,12 +1293,12 @@ Cluster, custo de LLM e tempo de run se decidem **antes** de começar.
 
 🟢 **PRs 7321 (João) e 7275 (Lucas) APROVADOS — falta só o merge, nesta ordem: João, depois
 Lucas.** Decisão do usuário em 17/09: **não postar comentário nem ampliação por hora**. O
-comentário de aprovação do 7275 está redigido em `_processo/comentario-pr-7275-aprovacao.md` e
+comentário de aprovação do 7275 está redigido em `_processo/revisoes-pr/comentario-pr-7275-aprovacao.md` e
 **não foi publicado**. Sem card de `pause_status` por hora — refina depois.
 
 ✅ **PR 7275 — TERCEIRA REVISÃO em 17/09: aprovado, com uma condição de ordem.** Ponta `7901021`,
 config `0.2.3`. Sete commits novos, `0.2.0` → `0.2.3`, **com medição**. 📄
-`_processo/auditoria-pr-7275-terceira-revisao.md`.
+`_processo/revisoes-pr/auditoria-pr-7275-terceira-revisao.md`.
 🔴 **Dois achados dele viram evidência para o `283648`:** o `0.2.0` mostrou o juiz chamado em
 **6.111 de 7.500 (81,5%), todos sem achado** — o P0-29 numa segunda linha; e o `0.2.1` mostrou a
 **semântica promovendo 33 de 44 sem passar pelo juiz**, via que a banda não alcança.
@@ -1313,8 +1313,8 @@ tempo, e não confia na última régua do legado. Orientação: **rodar o e2e em
 congelada, adjudicar os divergentes e julgar plausibilidade** — não perseguir alvo numérico; e
 `pause_status` igual ao da reumatologia.
 
-ℹ️ Histórico das duas primeiras revisões e das orientações: `_processo/auditoria-pr-7275-ateromatose.md`
-e `_processo/orientacao-pr-7275-ateromatose.md`.
+ℹ️ Histórico das duas primeiras revisões e das orientações: `_processo/revisoes-pr/auditoria-pr-7275-ateromatose.md`
+e `_processo/revisoes-pr/orientacao-pr-7275-ateromatose.md`.
 
 Padrão a reaproveitar, produzido pela reumatologia: clonar a branch `hml` do repo legado (nunca a
 cópia local), gerar a config programaticamente do `CONFIG`, e medir paridade contra a saída gravada.
@@ -1422,8 +1422,8 @@ depurado antes de calcular a perda.
 mesmo grant que aparece no PR 7275 e no TI-RADS (`USE CATALOG security` + `EXECUTE` em
 `security.prd.rdsl_decrypt`), tratado como item único nas dívidas transversais.
 
-📄 **Parecer em `_processo/dii-parecer-avaliacao-01.md`** e orientação ao dono em
-`_processo/orientacao-dii-leandro.md`: **ok para abrir o PR, com quatro ajustes**.
+📄 **Parecer em `dii/dii-parecer-avaliacao-01.md`** e orientação ao dono em
+`dii/orientacao-dii-leandro.md`: **ok para abrir o PR, com quatro ajustes**.
 🔴 **O principal é LIGAR a camada semântica e o juiz, não remover o bloco** — `rule_only` é estágio
 de desenvolvimento e nenhuma lista vai ao negócio a partir de perfil parcial. São **três chaves em
 dois arquivos** (`use_embeddings`, `llm_router.enabled`, widget `embedding_enable`), e **a branch
@@ -1438,7 +1438,7 @@ mais o que a camada semântica promover, população que não existe em `rule_on
 régua → híbrido sem juiz → isolar as promoções pelo **delta por `id_exame`** (⚠️ `decision_source`
 sai `hybrid` em todos os laudos que passam pela camada, não isola) → escrever o prompt com as
 condições lidas → ligar o juiz e medir o que remove. Procedimento em
-`_processo/orientacao-dii-leandro.md` §1.5, com a matriz de **quatro corridas, uma variável cada**.
+`dii/orientacao-dii-leandro.md` §1.5, com a matriz de **quatro corridas, uma variável cada**.
 Os outros três: cabeçalho explicando o `document_vet` · remover o `runtime` **no mesmo commit** da
 ligação do juiz (senão o `runtime` vence e o juiz fica desligado em silêncio) · e **uma
 verificação**: `negation.direction_default` declarado como `None` seta `_default = None` em vez de
@@ -1615,7 +1615,7 @@ tokens, e os **três desvios do plano** (`0.11.2`, `0.12.2`, `0.12.3` entraram p
 
 ## PR 7234 — NPS na esteira da fábrica (Lucas) — 🟡 REVISADO, COMENTÁRIO NÃO POSTADO
 
-📄 **`_processo/revisao-pr-7234-nps.md`** — três passadas mais o cruzamento com a revisão de Ops.
+📄 **`_processo/revisoes-pr/revisao-pr-7234-nps.md`** — três passadas mais o cruzamento com a revisão de Ops.
 Repositório `IAAzureDatabricksNPS`, branch `nps/feature/esteira-fabrica`.
 
 🔴 **Um bloqueante, de uma linha:** `nps/src/eval/acuracia.py` levanta `NameError` na primeira
@@ -1749,7 +1749,7 @@ a coorte a remedir fica sempre fora do teto. O run fecha **com sucesso sem tocar
 ## Alinhamento com a plataforma — 2026-08-21
 
 Duas agendas (42min + 2h24) depois da queda do TI-RADS em produção. **Mapa completo em**
-[`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`](_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md)
+[`_fundacao/design/mapa-gaps-lib-plataforma-2026-08-21.md`](_fundacao/design/mapa-gaps-lib-plataforma-2026-08-21.md)
 — 15 gaps com dono, prioridade e solução.
 
 🔴 **A validação em dev de versão que só existe na `hml` é IMPOSSÍVEL hoje** (medido 09/09, ao
@@ -1797,7 +1797,7 @@ conversa sobre fixar versão por especialidade — o mecanismo agora existe.
 
 ## O bloco `runtime` e o contrato — 🟡 PLANO ESCRITO, AGUARDA REVISÃO DO USUÁRIO
 
-📄 **`_processo/alinhamento-configuracao-nlp-2026-09-15.md`** — pedido de acordo com o time de
+📄 **`_processo/alinhamentos/alinhamento-configuracao-nlp-2026-09-15.md`** — pedido de acordo com o time de
 plataforma. 🔴 **Nada se altera nas configs antes desse alinhamento**, para o trabalho entrar no
 backlog deles com capacity.
 
@@ -1836,7 +1836,7 @@ pede "abrir uma história e levar para o próximo refinamento marcando o que dev
 
 ## Alinhamento com o Ops — pauta consolidada em 2026-09-10
 
-📄 **`_processo/alinhamento-ops-2026-09-10.md`** reúne **19 itens em 7 temas**, cada um com
+📄 **`_processo/alinhamentos/alinhamento-ops-2026-09-10.md`** reúne **19 itens em 7 temas**, cada um com
 evidência medida, o que se pede e quem decide. **Três bloqueiam trabalho hoje:** o índice
 `fabrica-ai-hml` em dev, o pin por especialidade, e o aval dos campos novos de contrato.
 
@@ -1880,7 +1880,7 @@ pauta com o Ops.
 - **POP-IA-04 (Bibliotecas Python)** declara **layout flat, sem `src/`**, com a `rededor-ai-lib` como
   referência canônica. 🟡 **A `nlp-engine-lib` usa `src/`** — divergência a declarar por nós.
 
-📄 **`_processo/pauta-minima-ops.md`** — 9 itens, só o que está aberto e depende do Ops. A pauta
+📄 **`_processo/alinhamentos/pauta-minima-ops.md`** — 9 itens, só o que está aberto e depende do Ops. A pauta
 longa (`alinhamento-ops-2026-09-10.md`) vira documento de apoio com a evidência completa.
 
 ## Cards — quadro em 2026-09-08 (tarde)
@@ -2038,7 +2038,7 @@ que aparecerem, alinhar de uma vez com o `283647`).
   Enquanto isso os harnesses saíram do diretório temporário do job — que é apagado junto com ele —
   para `Desktop/Rede D'Or/_ferramentas/`, fora do git.
 - ✅ **A CAMADA SEMÂNTICA RODOU COM MODELO REAL PELA PRIMEIRA VEZ — dev, 16/09, `cancer_rim`.**
-  📄 `_processo/diagnostico-embeddings-run-joao-2026-09-16.md`. Branch `feature/embedding` da
+  📄 `_processo/medicoes/diagnostico-embeddings-run-joao-2026-09-16.md`. Branch `feature/embedding` da
   plataforma (João): o `embedding_model` passa a ser um **Model do Unity Catalog**
   (`mlops_fabrica_ia.default.st_paraphrase_multilingual_minilm`), resolvido pelo `ConfigLoader`
   para um path local no driver antes de o config chegar ao motor.

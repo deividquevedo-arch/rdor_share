@@ -1,10 +1,10 @@
 # S06b — Deep-dive motor vs legado Pulmão (Grupo 1b)
 
-**Backlog:** S06b T06.6 / T06.7; gaps F2 vs **S09** em [`anexo03-historias-e-tasks-v0.md`](../anexo03-historias-e-tasks-v0.md).
+**Backlog:** S06b T06.6 / T06.7; gaps F2 vs **S09** em [`anexo03-historias-e-tasks-v0.md`](../_fundacao/anexos/anexo03-historias-e-tasks-v0.md).
 
 ## 1. Classificação no legado (fonte do produto)
 
-Pulmão está no **Grupo 1b** (*Embeddings + regras*) na taxonomia consolidada — ver secção 6 de [`07-relatorio-final-v0.4-plataforma-nlp-clinica.md`](../07-relatorio-final-v0.4-plataforma-nlp-clinica.md). O relatório cita **MiniLM** como exemplo; o notebook de predição referenciado abaixo usa **`paraphrase-multilingual-mpnet-base-v2`** (SentenceTransformers).
+Pulmão está no **Grupo 1b** (*Embeddings + regras*) na taxonomia consolidada — ver secção 6 de [`07-relatorio-final-v0.4-plataforma-nlp-clinica.md`](../_fundacao/discovery/07-relatorio-final-v0.4-plataforma-nlp-clinica.md). O relatório cita **MiniLM** como exemplo; o notebook de predição referenciado abaixo usa **`paraphrase-multilingual-mpnet-base-v2`** (SentenceTransformers).
 
 ## 2. RPI resumido — notebook legado (`algoritmos/pulmao/pulmao/model/ntb_ia_predicao.ipynb`)
 
@@ -38,7 +38,7 @@ Registar escolha no PR / acta; sem isto, métricas de match não têm interpreta
 
 ## 5. Próxima fase (embeddings) — S09
 
-Encapsular componente de embeddings, flag YAML e calibração: ver **S09 — Componente de embeddings (MiniLM)** (nota: alinhar modelo a **mpnet** do notebook, se for o alvo) em [`anexo03` § Fase 2](../anexo03-historias-e-tasks-v0.md). Não tratar gap semântico como *bug* silencioso do MVP rule-based.
+Encapsular componente de embeddings, flag YAML e calibração: ver **S09 — Componente de embeddings (MiniLM)** (nota: alinhar modelo a **mpnet** do notebook, se for o alvo) em [`anexo03` § Fase 2](../_fundacao/anexos/anexo03-historias-e-tasks-v0.md). Não tratar gap semântico como *bug* silencioso do MVP rule-based.
 
 ## 6. Ligar à evidência numérica
 

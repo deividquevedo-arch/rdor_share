@@ -3,7 +3,7 @@
 **Objetivo:** acompanhar MR / FP / FN e decisões em corridas repetíveis.  
 **Bancada:** `query_hepato_validate.csv` (local), `max_rows=2000`, mesmo YAML base por corrida salvo nota.
 
-**Seguir — protocolo FP classe 3 (reduzir FP gold `3`, um eixo por iter):** ver [`fp-class3-baseline-freeze-v0.md`](fp-class3-baseline-freeze-v0.md) e matriz [`../../../plataform/nlp_engine/configs/hepatologia/scenarios/strategy_matrix_fp_class3_tuning.yaml`](../../../plataform/nlp_engine/configs/hepatologia/scenarios/strategy_matrix_fp_class3_tuning.yaml).
+**Seguir — protocolo FP classe 3 (reduzir FP gold `3`, um eixo por iter):** ver [`fp-class3-baseline-freeze-v0.md`](../tireoide/checkpoints/fp-class3-baseline-freeze-v0.md) e matriz [`../../../plataform/nlp_engine/configs/hepatologia/scenarios/strategy_matrix_fp_class3_tuning.yaml`](../../../plataform/nlp_engine/configs/hepatologia/scenarios/strategy_matrix_fp_class3_tuning.yaml).
 
 Ordem sugerida: **F1 semântica** (`fp3_f1_semantic_thr080`) → smoke 500 → full 2000; depois F2, F3, F4 conforme gates.
 

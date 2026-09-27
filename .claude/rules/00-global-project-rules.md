@@ -29,10 +29,10 @@ nem em documento, nem em commit, nem em comentário de PR. O formato é:
   da lib é lido.
 - **Na dúvida sobre o título, consultar o board** — nunca inventar nem reaproveitar a descrição que
   está no `ESTADO.md`, que é resumo nosso e **já divergiu do título real** (ver
-  `_processo/indice-de-cards.md`).
+  `_processo/cards/indice-de-cards.md`).
 - Vale igual para **PR**: número mais o que ele faz, não o número solto.
 
-**Índice número → título:** `docs/motor-nlp/_processo/indice-de-cards.md`.
+**Índice número → título:** `docs/motor-nlp/_processo/cards/indice-de-cards.md`.
 
 ## Agents (humanos + IA)
 

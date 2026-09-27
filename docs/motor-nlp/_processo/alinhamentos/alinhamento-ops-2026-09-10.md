@@ -26,7 +26,7 @@ Dois itens que destravam quase todo o resto.
 ## 0.1 Equalizar a ata de 21/08
 
 **Evidência.** `_processo/atas/` está vazio. De 21/08 existem a transcrição bruta da ferramenta e o
-`_fundacao/mapa-gaps-lib-plataforma-2026-08-21.md`, que é documento **de um lado só**. Nenhum
+`_fundacao/design/mapa-gaps-lib-plataforma-2026-08-21.md`, que é documento **de um lado só**. Nenhum
 registro acordado entre os dois times diz o que ficou decidido.
 
 **Consequência observada.** "O que foi combinado" é contestável, e foi contestado na definição do

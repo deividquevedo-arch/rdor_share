@@ -34,7 +34,7 @@ na memória. Estado na memória apodrece e passa a enganar.
 | **câncer de rim** | em prd | [[diagnostico-config-cancer-rim]] |
 | **reumatologia** | em prd, **filtro e régua corrigidos, PR não aberto** | [[spec-migracao-reumatologia-v0]] · [[briefing-migracao-reumatologia-v0]] |
 | **transplante de pulmão** | em prd, entrega zero | [[spec-negocio-transplante-pulmao-v1]] · [[checkpoint-pulmao-v1-2026-07-14]] |
-| **DII** | em hml, PR 7383 mergeado | [[dii-metricas-legado-x-atual]] · [[motor-nlp/_processo/dii-direcionamento-pos-medicao\|direcionamento ao Leandro]] |
+| **DII** | em hml, PR 7383 mergeado | [[dii-metricas-legado-x-atual]] · [[motor-nlp/dii/dii-direcionamento-pos-medicao\|direcionamento ao Leandro]] |
 | **ateromatose · tumor ósseo · câncer de cólon** | **em hml, paradas** | ver [[ESTADO]] |
 | **neuroimunologia** | PR 7428 aprovado | ver [[ESTADO]] |
 | **próstata (PI-RADS)** | 🟡 SPEC escrita, não iniciada | [[spec-migracao-prostata-pirads-v0]] |
@@ -79,16 +79,38 @@ na memória. Estado na memória apodrece e passa a enganar.
 
 ## Estrutura das pastas
 
+> Reorganizada em **27/09/2026**. Antes, `_processo/` tinha 53 arquivos soltos e `_fundacao/` 64.
+
 | pasta | conteúdo |
 |---|---|
-| `_fundacao/` | discovery, diretrizes, anexos, arquitetura, contratos — a base, pouco volátil |
-| `_processo/` | medições, auditorias, pareceres, atas e o **diário por dia** |
-| `_versoes-estaveis/` | cópias de config fora do repo da plataforma, com [[PONTEIRO-versoes-estaveis]] |
+| **`_fundacao/`** | a base, pouco volátil — subdividida por natureza |
+| ├ `discovery/` | os documentos `01`–`07` que originaram o motor |
+| ├ `diretrizes/` | RPI, arquitetura pré-código, libs, config e governança |
+| ├ `anexos/` | `anexo01`–`anexo04` |
+| ├ `design/` | specs de engine, modelos de decisão, contratos, estudos |
+| ├ `propostas/` | o que foi proposto e ainda não virou decisão |
+| ├ `notas/` | notas técnicas pontuais |
+| ├ `templates/` | modelos para SPEC de especialidade e briefing |
+| └ `checkpoints/` | retratos de momento, datados |
+| **`_processo/`** | o que aconteceu — subdividido por natureza |
+| ├ `diario/` | **um arquivo por dia**, o histórico |
+| ├ `medicoes/` | medição, validação, golden, investigação, diagnóstico |
+| ├ `revisoes-pr/` | auditoria, parecer e comentário de PR |
+| ├ `alinhamentos/` | pauta, alinhamento e pedido ao Ops e à plataforma |
+| ├ `cards/` | índice de cards, triagem e passe de critérios |
+| └ `atas/` | ata depois da reunião |
+| **`_arquivo/`** | 🗄️ rascunho, duplicata e material superado — **preservado, fora do caminho** |
+| **`_versoes-estaveis/`** | cópias de config fora do repo da plataforma, com [[PONTEIRO-versoes-estaveis]] |
 | `checklists/` | checklists executáveis |
 | `rads/`, `sprints/` | extração ordinal e evidências de sprint |
-| uma pasta por linha | `hepatologia/`, `tireoide/`, `reumatologia/`, `prostata/`, … |
+| uma pasta por linha | `hepatologia/`, `tireoide/`, `reumatologia/`, `dii/`, `prostata/`, … |
 
----
+⚠️ **`_arquivo/` é congelado.** O que está lá não é mantido nem tem link corrigido — é registro de
+que existiu, não documento vivo.
+
+🔴 **Dado clínico não entra aqui.** Em 27/09 dois blobs com texto de laudo (`caso_15*.json`) foram
+retirados da árvore para `Desktop/Rede D'Or/_dados-clinicos-fora-do-git/`. O `.gitignore` cobre
+`*.csv`, `*.xlsx` e `**/dados/`, mas **não cobria `.json`**.
 
 ## Convenções
 

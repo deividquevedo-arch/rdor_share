@@ -1,6 +1,6 @@
 # Contrato minimo — motor rule-based (`ClinicalNlpEngine`) v0
 
-**Historia:** S02 (T02.1–T02.5, T02.4a local). **Relacionado:** [doc-contrato-runtime-config-especialidade-v0.md](doc-contrato-runtime-config-especialidade-v0.md), [notas/t02-4-quality-guard-monitoring-v0.md](notas/t02-4-quality-guard-monitoring-v0.md).
+**Historia:** S02 (T02.1–T02.5, T02.4a local). **Relacionado:** [doc-contrato-runtime-config-especialidade-v0.md](doc-contrato-runtime-config-especialidade-v0.md), [notas/t02-4-quality-guard-monitoring-v0.md](../../sprints/t02-4-quality-guard-monitoring-v0.md).
 
 **Objetivo:** especificar entrada, dict `nlp` e saida para testes, invariantes e validacao em lote, sem PHI.
 

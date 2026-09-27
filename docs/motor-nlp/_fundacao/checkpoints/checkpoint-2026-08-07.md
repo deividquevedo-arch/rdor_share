@@ -134,9 +134,9 @@ aberto em `nlp-engine-lib/docs/REFERENCIA-PARAMETROS.md`.
 | documento | para |
 |---|---|
 | `cancer_estomago/justificativa-lote3-revisao-regua.md` | PO + negócio |
-| `_fundacao/pedido-mlops-schemas-plataforma-nova.md` | MLOps |
-| `_fundacao/proposta-padrao-versionamento-config.md` | time da Fábrica de IA |
-| `_fundacao/notas-plataforma-nlp-mlops.md` | MLOps (já postado) |
+| `_fundacao/design/pedido-mlops-schemas-plataforma-nova.md` | MLOps |
+| `_fundacao/propostas/proposta-padrao-versionamento-config.md` | time da Fábrica de IA |
+| `_fundacao/notas/notas-plataforma-nlp-mlops.md` | MLOps (já postado) |
 | `tireoide/entrega-mlops-tirads-v1.md` | MLOps — **atualizar com a validação 0.8.0** |
 
 ⚠️ O pedido de schemas pode ter perdido parte da validade: o João indicou que a infra provisiona.

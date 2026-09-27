@@ -4,7 +4,7 @@
 > Levantado em **14/09/2026** (inventário do legado) e **25/09/2026** (filtro e volumetria).
 > Dono proposto: **Leandro**.
 >
-> Research completo: `docs/motor-nlp/_processo/migracao-biliares-e-neuro-inventario.md`.
+> Research completo: `docs/motor-nlp/doencas_biliares/migracao-biliares-e-neuro-inventario.md`.
 > Card guarda-chuva: `303791` — *Plano de Migração algoritmos final*.
 
 ---

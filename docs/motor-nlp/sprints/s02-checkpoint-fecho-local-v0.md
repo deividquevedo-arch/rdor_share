@@ -9,7 +9,7 @@ Checkpoint de desenvolvimento local para S02 apos ajuste robusto do matcher.
 
 ## Coerencia com SPEC T02.2
 
-Referencia: [spec-rule-engine-t022-v0.md](../spec-rule-engine-t022-v0.md)
+Referencia: [spec-rule-engine-t022-v0.md](../_fundacao/design/spec-rule-engine-t022-v0.md)
 
 - `rule_engine` agrega spans por 3 caminhos: `findings` por token normalizado, `findings_regex` e `Matcher` spaCy.
 - Dedupe aplicado por `(categoria, start, end)` antes de negação/proximidade.
@@ -18,7 +18,7 @@ Referencia: [spec-rule-engine-t022-v0.md](../spec-rule-engine-t022-v0.md)
 
 ## Coerencia com SPEC T02.3
 
-Referencia: [spec-scoring-t023-v0.md](../spec-scoring-t023-v0.md)
+Referencia: [spec-scoring-t023-v0.md](../_fundacao/design/spec-scoring-t023-v0.md)
 
 - Politicas `v1_bins_legacy` (default) e `v2_density` implementadas.
 - `normalize_score_policy` faz fallback seguro para default.
@@ -26,7 +26,7 @@ Referencia: [spec-scoring-t023-v0.md](../spec-scoring-t023-v0.md)
 
 ## Contrato de saida (doc runtime)
 
-Referencia: [doc-contrato-runtime-config-especialidade-v0.md](../doc-contrato-runtime-config-especialidade-v0.md)
+Referencia: [doc-contrato-runtime-config-especialidade-v0.md](../_fundacao/design/doc-contrato-runtime-config-especialidade-v0.md)
 
 Campos minimos presentes no `process`:
 
