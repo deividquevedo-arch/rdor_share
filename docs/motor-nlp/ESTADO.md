@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-25**.
+> Atualizado em **2026-09-28**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -2026,8 +2026,45 @@ que aparecerem, alinhar de uma vez com o `283647`).
   **Backups guardados fora do git**, para descarte depois da confirmação do push:
   `_backup-git-projects-2026-09-17/` (cópia integral do `.git` anterior) e
   `_dados-clinicos-backup-2026-09-17/` (os 16 CSVs).
-  ⚠️ **O `.gitignore` da raiz ignora a si mesmo** (primeira linha) — a regra de LGPD vive só nesta
-  máquina e não viaja com o repositório. Item em aberto.
+  ✅ **DÍVIDA FECHADA em 27/09: o `.gitignore` passou a ser versionado** (`389a56b`, pushado e
+  confirmado pela REF). A primeira linha dele era `.gitignore`, então ele se excluía — e o efeito
+  é que **as regras de LGPD viviam só nesta máquina**: quem clonasse não recebia nenhuma proteção.
+  Conferido com **onze controles**, positivos e negativos: CSV de gabarito ignorado · a exceção da
+  fixture sintética **continua rastreável**, então não ficou larga · `caso_*.json` ignorado ·
+  `README`, `ESTADO` e o `.docx` do relatório rastreáveis. **Os mesmos 29 ignorados de antes**, e
+  nenhum arquivo já rastreado passou a ser ignorado.
+  ℹ️ `old(first)` parecia padrão morto e **não era** — é diretório vivo, conferido antes de mexer.
+  ⚠️ `znotes.md` e `prep-conversa-mleng.md` seguem ignorados **mesmo depois de mudarem de pasta**,
+  porque a regra é por nome e casa em qualquer profundidade. Ou seja,
+  `_processo/../_arquivo/rascunhos/` está parcialmente fora do controle de versão — coerente com a
+  natureza do que há lá, mas não é óbvio ao olhar a pasta.
+
+- ✅ **`docs/motor-nlp/` REORGANIZADA em 27/09** (`1d2bce1`). O `_processo/` tinha **53 arquivos
+  soltos** e o `_fundacao/` **64**, sem subdivisão. **119 arquivos movidos por `git mv`** — 66
+  renomeações detectadas, histórico preservado, **237 `.md` antes e 237 depois**.
+  `_fundacao/` passou a ter `discovery`, `diretrizes`, `anexos`, `design`, `propostas`, `notas`,
+  `templates` e `checkpoints`; `_processo/` ganhou `medicoes`, `revisoes-pr`, `alinhamentos` e
+  `cards` ao lado de `diario` e `atas`. Rascunho e duplicata foram para **`_arquivo/`**, que é
+  **congelado** — não se mantém nem se corrige link lá dentro.
+  ✅ **Seis duplicatas resolvidas, todas preservadas:** as duas cópias de `pauta-minima-ops` eram
+  idênticas entre si · as duas de `alinhamento-ops-2026-09-10` são rascunhos de 10/09 · a cópia do
+  checklist é anterior à formatação · e três arquivos do DII existiam em duas pastas, ficando os de
+  `_processo/`, que eram mais novos **e** rastreados, agora em `dii/`.
+  ✅ **49 caminhos reescritos e 29 links markdown consertados.** Parte já estava quebrada antes do
+  movimento. Validado com controle negativo; o que sobra quebrado está todo em `_arquivo/`.
+  📄 Índice navegável em `docs/motor-nlp/README.md` — 43 wikilinks, todos resolvendo.
+
+- 🔴 **ACHADO DE LGPD em 27/09, e a regra tinha um buraco:** `caso_15.4_fl1.json` e `caso_15-4.json`
+  estavam na árvore carregando **texto de laudo real** no campo `evidence` do `decision_trail`
+  (*"São identificados quatro nódulos destacando-se: Lobo direito: - N1: terço médio…"*). Estavam
+  untracked, mas **`.json` não constava do `.gitignore`** — que cobria `*.csv`, `*.xlsx` e
+  `**/dados/`. Era **um `git add` de distância** de serem publicados.
+  ✅ Retirados para `Desktop/Rede D'Or/_dados-clinicos-fora-do-git/` e `caso_*.json` acrescentado à
+  regra. **Verificado: zero ocorrências em todo o histórico do remoto**, com controle positivo
+  provando que a busca funciona.
+  ⚠️ **A lição é de classe:** a regra de LGPD era por extensão conhecida, e blob de saída do motor
+  é um formato que ninguém tinha previsto. Ao criar artefato de depuração, perguntar **o que o
+  campo `evidence` carrega** antes de gravar em disco dentro do repositório.
 
 - 🔴 **A base ouro não tem lugar oficial.** Gabarito vive em planilha, e-mail e arquivo
   temporário — sem `spec_version`, sem `dt_anotacao`, sem dono. Custou uma conclusão errada em
