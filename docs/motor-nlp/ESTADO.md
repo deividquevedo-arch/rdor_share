@@ -17,6 +17,9 @@
 
 ## 🏖️ FÉRIAS — 26/09 a 12/10, retorno em 13/10/2026
 
+📄 **Comece por [[RETOMADA-2026-10-13]]** — os primeiros trinta minutos, o que espera você e o
+que espera terceiros, em ordem de custo de adiar.
+
 O que fica **parado por decisão**, não por esquecimento. Nada abaixo precisa de ação de terceiro
 para permanecer seguro: produção segue nas seis linhas com a `0.12.3` pinada, e nenhum pin muda.
 
