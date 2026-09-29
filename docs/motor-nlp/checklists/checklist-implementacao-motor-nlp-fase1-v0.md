@@ -21,7 +21,7 @@
 | 7 | **Testes** | [ ] | pytest; sem PHI; cenarios minimo: valido, invalido, negacao, YAML se aplicavel |
 | 8 | **Validacao** | [ ] | AC da historia (anexo03) + checklist review estrutural (diretriz Tech Lead) |
 
-Ao fechar a etapa **Validacao** (linha 8), preencher criterios de paridade, timing de smoke no Databricks e referencia legado na matriz sugestiva: [`doc-validacao-paridade-databricks-v0.md`](../doc-validacao-paridade-databricks-v0.md).
+Ao fechar a etapa **Validacao** (linha 8), preencher criterios de paridade, timing de smoke no Databricks e referencia legado na matriz sugestiva: [`doc-validacao-paridade-databricks-v0.md`](../_fundacao/design/doc-validacao-paridade-databricks-v0.md).
 
 **Pular camadas:** nao. **Funcao publica pequena:** use linhas F.1-F.4 na secao 4.
 

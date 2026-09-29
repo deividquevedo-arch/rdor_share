@@ -4,8 +4,8 @@
 
 ## Contexto
 
-- [anexo03](../anexo03-historias-e-tasks-v0.md) lista **T02.4** como validacao do output contra schema esperado.
-- [anexo02](../anexo02-arquitetura-motor-nlp-v0.md) define tres libs: `nlp_engine`, `data_manage`, `monitoring`, sem imports cruzados.
+- [anexo03](../_fundacao/anexos/anexo03-historias-e-tasks-v0.md) lista **T02.4** como validacao do output contra schema esperado.
+- [anexo02](../_fundacao/anexos/anexo02-arquitetura-motor-nlp-v0.md) define tres libs: `nlp_engine`, `data_manage`, `monitoring`, sem imports cruzados.
 
 ## Decisao recomendada (ate revisao do time)
 
@@ -40,4 +40,4 @@ Validacao estrutural minima do JSON em `exm_laudo_resultado`: [`validate_exm_lau
 
 ## T02.4b — caminho composition root (ate existir `monitoring`)
 
-Implementacao documentada e operacional: [doc-quality-guard-t024b-composition-v0.md](../doc-quality-guard-t024b-composition-v0.md). Scripts: `audit_engine_from_csv.py --validate-output-invariants`, `validate_local_samples.py --validate-output-invariants`.
+Implementacao documentada e operacional: [doc-quality-guard-t024b-composition-v0.md](../_fundacao/design/doc-quality-guard-t024b-composition-v0.md). Scripts: `audit_engine_from_csv.py --validate-output-invariants`, `validate_local_samples.py --validate-output-invariants`.

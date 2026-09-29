@@ -32,7 +32,7 @@ Ficheiros gerados:
 - `hepatologia_standard_input.csv`
 - `hepatologia_standard_expected.csv`
 
-Regra de chave `id_exame` (igual Pulmão): ver nota [s06b-amostra-padrao-pulmao-v0.md](s06b-amostra-padrao-pulmao-v0.md).
+Regra de chave `id_exame` (igual Pulmão): ver nota [s06b-amostra-padrao-pulmao-v0.md](../pulmao/s06b-amostra-padrao-pulmao-v0.md).
 
 ## Cadeia: audit + compare
 

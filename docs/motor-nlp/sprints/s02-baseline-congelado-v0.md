@@ -22,6 +22,6 @@ Documento criado na iteracao do plano **Execucao segura S02**; atualizar quando 
 
 ## Artefactos SDD relacionados
 
-- SPEC rule engine: [spec-rule-engine-t022-v0.md](../spec-rule-engine-t022-v0.md)
-- SPEC scoring: [spec-scoring-t023-v0.md](../spec-scoring-t023-v0.md)
+- SPEC rule engine: [spec-rule-engine-t022-v0.md](../_fundacao/design/spec-rule-engine-t022-v0.md)
+- SPEC scoring: [spec-scoring-t023-v0.md](../_fundacao/design/spec-scoring-t023-v0.md)
 - Gate C (paridade local): [s02-gate-c-paridade-v0.md](s02-gate-c-paridade-v0.md)

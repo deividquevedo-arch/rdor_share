@@ -36,7 +36,7 @@ Sem números nesta tabela, cada camada corre risco de “afinar à cabeça”.
 | **2** | `fallback` + `ambiguity_band` | Melhor ponto vs campeão L1 |
 | **3** | Campeão L1/L2 + **um** knob S3 ou S4 | MR parcial + FP/FN dentro dos limites |
 | **4** | `findings` / `findings_regex` (RPI) | Ver secção 5 |
-| **5** | Gate motor (opcional) | Ver [`doc-gate-embedding-rule-min-v0.md`](../doc-gate-embedding-rule-min-v0.md) |
+| **5** | Gate motor (opcional) | Ver [`doc-gate-embedding-rule-min-v0.md`](../_fundacao/design/doc-gate-embedding-rule-min-v0.md) |
 
 ### Tabela de evidência (preencher a cada corrida)
 
@@ -79,4 +79,4 @@ Saída: `_local_samples/exports/hepatologia_diamond_bench/hepatologia_strategy_m
 
 ## 6. Camada 5 — motor
 
-Se MR ≥ 0,80 **não** for atingível só com YAML dentro dos limites: SPEC em [`doc-gate-embedding-rule-min-v0.md`](../doc-gate-embedding-rule-min-v0.md) + task no board.
+Se MR ≥ 0,80 **não** for atingível só com YAML dentro dos limites: SPEC em [`doc-gate-embedding-rule-min-v0.md`](../_fundacao/design/doc-gate-embedding-rule-min-v0.md) + task no board.

@@ -2,7 +2,7 @@
 
 **Objetivo:** comandos reprodutiveis e registo de resultados para validar o motor vs proxy de legado (HML `laudo_tratado`) e para auditar saida do engine em lote.
 
-**Contrato motor rule-based (entrada / `nlp` / saida):** [doc-contrato-engine-rule-based-v0.md](../doc-contrato-engine-rule-based-v0.md). Gate pos-process: `audit_engine_from_csv.py --validate-output-invariants` / `validate_local_samples.py --validate-output-invariants`.
+**Contrato motor rule-based (entrada / `nlp` / saida):** [doc-contrato-engine-rule-based-v0.md](../_fundacao/design/doc-contrato-engine-rule-based-v0.md). Gate pos-process: `audit_engine_from_csv.py --validate-output-invariants` / `validate_local_samples.py --validate-output-invariants`.
 
 **Sem PHI no Git:** CSVs reais apenas em [`plataform/nlp_engine/_local_samples/`](../../plataform/nlp_engine/) (gitignored).
 
@@ -12,7 +12,7 @@
 
 ### Opcao A — pytest (mesmo codigo que CI local opcional)
 
-A partir de `plataform/nlp_engine` (ver [README da lib](../../plataform/nlp_engine/README.md)):
+A partir de `plataform/nlp_engine` (ver [README da lib](../../../plataform/nlp_engine/README.md)):
 
 ```powershell
 $env:NLP_HML_LAUDOS_CSV = (Resolve-Path "tests\fixtures\hml_parity_minimal.csv").Path

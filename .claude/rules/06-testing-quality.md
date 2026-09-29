@@ -1,0 +1,63 @@
+---
+description: Testes e qualidade — pytest, cenários sintéticos, ausência de PHI, alinhamento ao motor NLP
+paths:
+  - "**/tests/**/*.py"
+  - "**/test_*.py"
+  - "**/conftest.py"
+---
+
+# Testes e qualidade
+
+## Base
+
+- **pytest** com dados **sintéticos**; nunca texto clínico real ou identificável.
+- Cobrir: input válido/inválido, negação quando aplicável, config YAML válido/inválido.
+- **Um ficheiro de teste por módulo de negócio** (convenção do projecto), salvo acordo em contrário.
+
+## O que conta como teste
+
+> **Teste verde não prova nada.** Ele pode passar porque o código está certo, ou porque não olha
+> para o lugar onde o código erra. Suíte que só exercita o caminho feliz mede cobertura, não risco.
+
+**Antes de declarar um teste pronto, responder: qual falha ele impede?** Se a resposta for
+"confirma que funciona", é cobertura — conta como caminho feliz, não como garantia.
+
+### As três exigências
+
+**1. Matar o mutante.** Para cada comportamento novo, um teste que **falha** se a implementação
+degenerar: devolver constante, colapsar valores distintos, ignorar um parâmetro. Se dá para
+trocar a função por `return "x"` e a suíte continuar verde, o teste não testa.
+
+**2. Testar a recusa, não só a aceitação.** Validador existe para **rejeitar**. Alargar uma
+allowlist e cobrir apenas os valores novos deixa o trabalho dele descoberto — e o próximo que
+substituir o `frozenset` por "aceita tudo" passa em todos os testes.
+
+**3. Verificar o artefato, não o repositório.** Arquivo no disco não prova arquivo no wheel.
+Dependência no `pyproject` não prova dependência instalada. Teste de empacotamento inspeciona o
+que foi construído.
+
+### Quando a mudança promete não alterar comportamento
+
+**A promessa precisa de teste, não de afirmação.** Refactor, mudança de empacotamento ou campo
+aditivo exigem **não-regressão explícita**: mesma entrada, saída comparada campo a campo, exceto
+o que a mudança adiciona. Sem isso, "não muda comportamento" é opinião.
+
+⚠️ **Contexto conhecido:** código gerado por IA tende a produzir testes que passam, em vez de
+testes que atacam. As três exigências acima existem por causa disso e valem para código escrito
+por pessoa ou por agente, sem distinção.
+
+## Qualidade de código
+
+- Funções pequenas, nomes descritivos; revisão estrutural (acoplamento, contratos).
+- **Código limpo antes de código que passa.** Não ajustar implementação para satisfazer teste
+  fraco; corrigir o teste.
+- Alinhamento a **`motor-nlp.mdc`** para escopo (não expandir testes para features fora do backlog).
+
+## O que não fazer
+
+- `eval()`, `exec()`, downloads NLTK indiscriminados no CI.
+- Depender de serviços externos não acordados para testes unitários de rotina.
+
+## Remissões
+
+- Pormenores: `motor-nlp.mdc` (secção Testes), `docs/motor-nlp/checklists/`.

@@ -1,0 +1,31 @@
+---
+description: Arquitectura das libs Python — três libs independentes, injecção de dict, fronteiras claras
+globs: nlp-engine-lib/**/*.py
+alwaysApply: false
+---
+
+<!-- GERADO por .claude/scripts/sync-cursor-rules.py a partir de .claude/rules/. NAO editar aqui: edite a fonte e rode o script. -->
+
+# Libs Python — arquitectura
+
+## Modelo
+
+- **Três libs independentes:** `nlp_engine`, `data_manage` (ou `data_manager` conforme repo), `monitoring`.
+- **Sem imports cruzados** entre libs; comunicação via `dict` / DataFrame conforme contratos.
+- **Composition root:** notebook (ou serviço equivalente) é o único sítio que compõe as libs e injeta configuração.
+
+## Configuração
+
+- Variacao entre especialidades via **YAML / dict**, não via forks de código por especialidade quando evitável.
+- Versões **`config_version`** e **`engine_version`** nos outputs conforme contrato do domínio.
+
+## Implementação
+
+- Funções curtas, type hints em API pública, feature flags via config dict.
+- Compatibilidade para trás (semver) para APIs públicas das libs.
+
+## Remissões
+
+- Detalhe clínico e NLP: `motor-nlp.mdc` e `05-clinical-nlp-rules.mdc`.
+- Testes: `06-testing-quality.mdc`.
+- Diagramas e pilares: `docs/motor-nlp/diretriz-arquitetura-pre-codigo-v0.md`, `anexo02-arquitetura-motor-nlp-v0.md`.

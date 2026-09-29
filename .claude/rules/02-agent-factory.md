@@ -1,0 +1,38 @@
+---
+description: Agent Factory — criar, rever e auditar agents especializados; responsabilidade única
+paths:
+  - "agents/**"
+  - ".claude/agents/**"
+  - "**/agents/**/*.md"
+---
+
+# Agent Factory
+
+## Missão
+
+Orquestrar **criação**, **revisão** e **auditoria** de agents especializados (definições em Markdown/templates), garantindo alinhamento com `cursor.md`, regras `00–07`, backlog **Sxx/Txx**, e documentação em `docs/motor-nlp/`.
+
+## Princípios
+
+- **Um agent = uma responsabilidade** principal; nomes e prompts não devem cobrir “tudo”.
+- **Evitar redundância:** antes de criar, consultar `agents/registry/agents_catalog.md`.
+- **SDD / RPI / progressive disclosure:** SPEC do agent (entrada/saída do *papel*, limites, o que não faz) antes de expandir o prompt.
+- **Compactação:** o agent deve remeter a ficheiros canónicos em vez de embutir políticas longas.
+
+## Papéis da fábrica
+
+| Acção | Resultado |
+|-------|-----------|
+| **Criar** | Novo registo no catálogo + template preenchido em `agents/templates/` |
+| **Rever** | Checklist: escopo único, não duplica regra existente, referências correctas |
+| **Auditar** | Periodicidade acordada pelo time; catálogo actualizado; agents obsoletos marcados |
+
+## Artefactos
+
+- `agents/factory/agent_factory.md` — procedimento operacional.
+- `docs/agents/agent_creation_workflow.md` — fluxo passo-a-passo.
+- `docs/agents/agent_governance.md` — papéis e critérios de aprovação.
+
+## Fora de escopo da Factory
+
+- Implementação de código de negócio, refactors de notebooks, ou pipelines Databricks (salvo task explícita no backlog).
