@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-09-28**.
+> Atualizado em **2026-10-14**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -15,32 +15,27 @@
 
 ---
 
-## 🏖️ FÉRIAS — 26/09 a 12/10, retorno em 13/10/2026
+## 🔁 RETORNO 13/10 — retrato medido depois da sprint ausente
 
-📄 **Comece por [[RETOMADA-2026-10-13]]** — os primeiros trinta minutos, o que espera você e o
-que espera terceiros, em ordem de custo de adiar.
+📄 História completa em `_processo/diario/2026-10-13.md`. O bloco de férias saiu; o documento
+`_processo/RETOMADA-2026-10-13.md` fica como registro do que se esperava em 28/09.
 
-O que fica **parado por decisão**, não por esquecimento. Nada abaixo precisa de ação de terceiro
-para permanecer seguro: produção segue nas seis linhas com a `0.12.3` pinada, e nenhum pin muda.
+**Produção: 13 linhas, todas produzindo até 13/10.** As seis de antes, mais `ateromatose_coronariana`,
+`cancer_colon`, `doenca_inflamatoria_intestinal`, `neuroimunologia`, `tumor_osseo` (desde 29/09),
+`doencas_biliares` e `pirads` (desde 12/10). Deploys da `main` da plataforma: 28/09 · **09/10** · 13/10.
 
-| pendência | estado | quem |
-|---|---|---|
-| PR da config `0.2.0-reumatologia` | branch pushada, **PR não aberto** | nós, na volta |
-| adjudicação clínica dos 37 só-legado da reumatologia | artefatos prontos, fora do git | médico |
-| `305875` — avalizar a chave `waive` | **Novo, sem responsável** | Ops |
-| promoção das 4 linhas de HML para PRD | PR `hml → main` + schema em prd | nós + Fábrica |
-| PR 7428 (neuroimunologia) | aprovado; falta work item e revisores | Leandro |
-| próstata e doenças biliares | **SPECs escritas**, start na sprint | Leandro |
+| frente | estado em 13/10 |
+|---|---|
+| 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
+| 🟢 embeddings em prd (`305810`, `298600`) | **resolvido e medido:** 28.958 laudos 10–13/10, zero `FileNotFoundError`. Os dois cards podem fechar |
+| 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
+| 🟡 randomização | 5% em **duas** linhas, prd desde **12/10**. Decisão de 23/09 era 10% em cinco |
+| 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
+| 🟡 migração | quatro cards de plano para a mesma coisa; os de linha não fecham sem envio à Central |
+| ⚪ lib | **zero commits desde 28/09** |
 
-🔴 **Cards em *Comprometido* para o retorno:** `358081` — *[NLP Engine] Pinar a 0.15.4 e fechar os
-defeitos que o pin destrava* · `358082` — *[Plataforma NLP] Alinhar contrato de entrada e saida e a
-SPEC 27 com o time de Ops*. Os dois, mais o `306066`, carregam a tag de board **`v0.15.4`** e estão
-vinculados entre si — o motivo de bloqueio é o mesmo.
-
-⚠️ **Riscos vivos durante a ausência, todos já conhecidos e nenhum novo:** a hepatologia em produção
-entrega **6,7%** do que a mesma config produz com embeddings funcionando (`305810`) · o
-`cancer_colon` roda `${nlp_engine_version}` e pode trocar de versão sozinho · a reumatologia em
-produção está **2,7 pontos abaixo** do filtro homologado, pelo escape do `\b`.
+**Seus cards fora da sprint desde 01/10:** `358081`, `358082` e `306066` em *Pronto para
+Compromisso (DoR)*. O `305875` — *Avalizar a chave `waive`…* — está no seu nome.
 
 ---
 
@@ -1115,7 +1110,9 @@ constam da lista de região.
 
 ✅ **Acrescentar `corpo inteiro` e `pelve` recupera ~275 exames (~9/dia) sem tocar no runner.**
 
-### ✅ CORREÇÃO ESCRITA E PUSHADA — config `0.2.0-reumatologia` · 🟡 PR NÃO ABERTO
+### ✅ CORREÇÃO EM PRODUÇÃO — config `0.2.0-reumatologia` desde 29/09
+
+✅ **PR 7431**, aberto pelo Diego em 28/09 a partir da branch abaixo, mergeado e em prd desde 29/09 — 41.713 laudos até 13/10, `0.2.0-reumatologia` na `main`.
 
 Branch `reumatologia/fix/filtro-e-regua`, commits `1c869d3` e `9321cce`, **confirmada pela REF**.
 **O PR não foi aberto** — fica para 13/10.
@@ -1239,7 +1236,9 @@ workspace novo é o dele, não o do lake 1.
 volumes e taxas diferentes (1,3% × 6,1%). É o cenário do PR 7275, mergeado em 18/09. **Confirmar
 com o Lucas** se a duplicidade é deliberada e tem prazo.
 
-## 🔴 QUATRO LINHAS PARADAS EM HML — medido em 25/09
+## ✅ QUATRO LINHAS PARADAS EM HML — PROMOVIDAS (deploy de 28/09)
+
+✅ **Resolvido em 28/09:** as quatro entraram em prd e produzem desde 29/09, junto com `neuroimunologia`. O texto abaixo é o retrato de 25/09.
 
 Verificado nos dois catálogos, tabela de saída por linha. As quatro **rodaram em 25/09** e param ali.
 
@@ -1268,7 +1267,14 @@ literal, e foi por isso que rodou `0.15.1`, `0.14.0` e `0.12.3` em três dias.
 ℹ️ **`reumatologia` não tem schema em HML** — está só em prd. Não bloqueia nada hoje, mas tira a
 linha de qualquer validação em homologação.
 
-## Migração dos algoritmos legados — 🟡 DUAS NESTA SEMANA
+## Migração dos algoritmos legados — 🟢 SETE LINHAS NOVAS EM PRD · 🔴 PLANO EM QUATRO CARDS
+
+✅ **Na sprint ausente:** neuroimunologia, ateromatose, DII, cólon e tumor ósseo em prd desde 29/09; **próstata e doenças biliares desde 12/10**, as duas a partir das SPECs de 25/09.
+🔴 **Quatro cards para o mesmo plano:** `303791` (descrição parada em 25/09), `360225` (sem dono, o único com critério de inventário + arquitetura + datas), `256372` e `179298`.
+🔴 **Os cards de linha em Pronto para QA têm critério inatingível hoje:** "pronto para envios para a Central de Captação", e desde 12/10 nenhum job envia para a Central.
+🟡 **Falta migrar**, pela lista do incidente: Mama, Nódulo Pulmonar e Fígado em três fluxos.
+🟡 `360625`: neuro, cólon e ateromatose enviando do legado em HML e de prd ao mesmo tempo.
+
 
 **Nossa fila (14/09):** `doencas_biliares` e `neuroimunologia` **até 18/09**, depois **nódulo
 pulmonar**, **endometriose** e **birads**. ℹ️ **Ateromatose saiu da nossa fila — está com o Lucas.**
@@ -1473,7 +1479,15 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
   prefixo `cancer_`.
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
-## Randomização — ✅ MÉTODO VALIDADO · 🟡 DECISÃO DE PERCENTUAL FECHADA EM 23/09
+## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🔴 5% EM DUAS LINHAS, CONTRA 10% EM CINCO
+
+**Configurado** (`plataform/config/randomization/ntb_ia_randomizacao_config.py`): `fracao_controle: 0.05`, `sem_chave: navegar`, só **reumatologia** e **TI-RADS**.
+**Medido em 13/10:** prd desde **12/10** (não 28/09 como diz o critério do `321370` — o código só chegou a prd no deploy de 09/10); hml desde 30/09 e 07/10. **21 de 528 no controle, 4,0%**, compatível com 5%.
+🔴 **A transição para 10% e as outras três linhas da onda 1 não têm data nem dono.** O `321370` declara 5% como fase de teste; o `303629` pede ~10%. Subir é seguro; descer não tem volta.
+🔴 O `358477` — *Relatório das 2 semanas de teste controlado* — tinha **2 dias** de prd em 13/10.
+⚠️ `tb_mov_randomizacao_intervencao` guarda PII e laudo integral em `mlops_fabrica_ia.operacao`, por desenho; a formalização de LGPD não foi verificada.
+
+**Histórico da decisão (23/09):**
 
 📄 `docs/randomizacao/` — parecer, resumo para refinamento e as ferramentas reexecutáveis.
 
@@ -1555,7 +1569,12 @@ contra a esperada — são o padrão que vale copiar.
 `document_vet.enabled`. Contraria a SPEC 27 (§7 diz "dicionário literal e nada mais") **para
 melhor** — registrado no card `299238`.
 
-## Pin da versão por linha — ✅ APLICADO (verificado em 15/09)
+## Pin da versão por linha — 🔴 `cancer_colon` EM `0.15.4` EM PRODUÇÃO
+
+🔴 **Medido em 13/10:** 12 das 13 linhas declaram `0.12.3` literal e rodam `0.12.3`. O `cancer_colon` declara `${nlp_engine_version}` e roda **`0.15.4` em prd desde 29/09** — 12.792 laudos. É a única linha de produção na série 0.15, sem medição contra `0.12.3` nessa linha e sem o alinhamento de contrato.
+🔴 O `301938` — *Fixar versão da nlp_engine por linha* — está em Pronto para Review com o critério ("sem `latest`, `engine_version` igual ao declarado, linha a linha") falhando nessa linha.
+🟡 **O escopo do pin passou de 6 para 13 linhas**, e a `0.15.4` só tem medição ponta a ponta no TI-RADS. Com os embeddings funcionando em prd, o efeito da guarda da `0.14` também muda.
+
 
 ✅ **As seis definições de job declaram `"nlp_engine_version": "0.12.3"` — literal, não a variável —
 em `main` e em `hml`.** Verificado em 15/09. Produção rodou a `0.12.3` nas seis linhas.
@@ -1918,7 +1937,13 @@ que aparecerem, alinhar de uma vez com o `283647`).
 
 ✅ **`299111` reumatologia em *Pronto para QA***, comentado com a evidência.
 
-## Laudos em PDF (CDI) e repositório clínico — 🟡 PROPOSTA v0.13 PRONTA PARA O TIME, NADA INICIADO
+## Laudos em PDF (CDI) e repositório clínico — 🔴 OCR VIROU CARD, NADA DE CÓDIGO
+
+**Board (13/10):** épico `363078` (Natan) → feature `358783` (Novo, sem dono) → `358863` *Conexão API RIS/PACS (Viewershell)* (Phelipe, em desenvolvimento) → `358879` (Phelipe, **Bloqueado**).
+🔴 **Zero PR ou commit de OCR.** A sprint do Phelipe foi o NPS (18 PRs).
+🔴 **Os "56 mil PDFs" da feature são ~53.431 laudos que apontam para o viewer + ~3.494 PDF** (colonoscopia, 12 meses). Os 24–29% de legibilidade são do estoque; no fluxo de ago–set a colonoscopia está 91,7% legível. Card e proposta v0.13 têm escopos diferentes e não reconciliados.
+🔴 **10 commits desta frente na raiz, não pushados.** O `306762` foi encerrado.
+
 
 Casa da frente: `docs/cdi/README.md`. Guia do repositório clínico: `docs/cdi/guia-repositorio-clinico-gold-v0.md`.
 Diários: seções "Frente CDI" em `_processo/diario/2026-09-16.md`, `2026-09-22.md` e `2026-09-25.md`.
@@ -2131,7 +2156,8 @@ Entregas em `.alt.doc/CDI/`, fora do git (`samples/` tem PHI e nunca sobe).
   `$.decision_trail.semantic` — com o caminho errado o campo vem nulo e a leitura inverte.
   ℹ️ **Não fecha o card `305810`** — ali o problema é o caminho em produção; este run é dev.
 
-- 🔴 **OS EMBEDDINGS NÃO FUNCIONAM EM PRODUÇÃO — remedido em 15/09, e são QUATRO linhas.**
+- ✅ **RESOLVIDO E MEDIDO EM 13/10:** de 10 a 13/10, hepatologia 12.134 · cancer_rim 12.422 · tirads 3.773 · cancer_estomago 629 — **100% `sentence_transformers`, zero `token_overlap`, zero `FileNotFoundError`**, todos exercitando a camada. Nenhuma config declara mais caminho literal; nove usam o Model do UC. **`305810` e `298600` podem fechar.** O histórico abaixo fica como registro.
+- 🔴 **OS EMBEDDINGS NÃO FUNCIONAVAM EM PRODUÇÃO — remedido em 15/09, e eram QUATRO linhas.**
   hepatologia **12.094 de 12.184 (99,3%)** · cancer_rim **7.763 de 7.892 (98,4%)** ·
   tirads **3.155 de 3.659 (86,2%)** · cancer_estomago **728 de 728 (100%)**.
   ✅ **Pré-condição atendida:** a camada semântica foi exercitada em **100% dos laudos** das quatro.
