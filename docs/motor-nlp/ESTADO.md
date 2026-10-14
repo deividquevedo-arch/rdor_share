@@ -27,11 +27,12 @@
 | frente | estado em 13/10 |
 |---|---|
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
-| 🟢 embeddings em prd (`305810`, `298600`) | **resolvido e medido:** 28.958 laudos 10–13/10, zero `FileNotFoundError`. Os dois cards podem fechar |
+| 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
 | 🟡 randomização | 5% em **duas** linhas, prd desde **12/10**. Decisão de 23/09 era 10% em cinco |
 | 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
-| 🟡 migração | quatro cards de plano para a mesma coisa; os de linha não fecham sem envio à Central |
+| 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
+| 🟡 legado restante | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
 | ⚪ lib | **zero commits desde 28/09** |
 
 **Seus cards fora da sprint desde 01/10:** `358081`, `358082` e `306066` em *Pronto para
@@ -1273,6 +1274,19 @@ linha de qualquer validação em homologação.
 🔴 **Quatro cards para o mesmo plano:** `303791` (descrição parada em 25/09), `360225` (sem dono, o único com critério de inventário + arquitetura + datas), `256372` e `179298`.
 🔴 **Os cards de linha em Pronto para QA têm critério inatingível hoje:** "pronto para envios para a Central de Captação", e desde 12/10 nenhum job envia para a Central.
 🟡 **Falta migrar**, pela lista do incidente: Mama, Nódulo Pulmonar e Fígado em três fluxos.
+📄 **Auditoria ponta a ponta (14/10)** — mama, nódulo pulmonar, nefro e ciclo da hepato:
+`_processo/medicoes/auditoria-legado-quatro-linhas-2026-10-14.md`. **Mama** é config pura de
+`ordinal_extraction`, e o esforço está no envio (Mule). 🔴 **Nefro não é NLP** — calcula clearance
+a partir da creatinina, tem **duas implementações** em repositórios diferentes, e o código de envio
+não aparece em nenhuma delas. **Nódulo** precisa de extração por lesão que a lib não tem.
+✅ **Verificado no workspace antigo em 14/10: as quatro rodam TODO DIA** (44 de 44 dias desde
+01/09), de Repos na branch `hml`, disparadas por um orquestrador **sem acesso** para nós. O espelho
+`diamond_fabrica_ia.legado` é que parou em 05/09 para elas. A nefro que roda é a do
+`IAAzureDatabricksRim` (a versão em UC parou em 13/05); a hepato roda **sem** a correção de
+duplicidade do PR 6646; o nódulo falhou em 12 e 13/10.
+📄 **Mapa de migração v0** — componente → destino → alçada → bloqueio, ordem e critério de corte:
+`_fundacao/propostas/mapa-migracao-legado-quatro-linhas-v0.md`. **Onda 1:** retorno + navegação da
+hepato (plataforma) e régua da mama (config pura). Seis decisões listadas no §6.
 🟡 `360625`: neuro, cólon e ateromatose enviando do legado em HML e de prd ao mesmo tempo.
 
 
@@ -2156,7 +2170,7 @@ Entregas em `.alt.doc/CDI/`, fora do git (`samples/` tem PHI e nunca sobe).
   `$.decision_trail.semantic` — com o caminho errado o campo vem nulo e a leitura inverte.
   ℹ️ **Não fecha o card `305810`** — ali o problema é o caminho em produção; este run é dev.
 
-- ✅ **RESOLVIDO E MEDIDO EM 13/10:** de 10 a 13/10, hepatologia 12.134 · cancer_rim 12.422 · tirads 3.773 · cancer_estomago 629 — **100% `sentence_transformers`, zero `token_overlap`, zero `FileNotFoundError`**, todos exercitando a camada. Nenhuma config declara mais caminho literal; nove usam o Model do UC. **`305810` e `298600` podem fechar.** O histórico abaixo fica como registro.
+- ✅ **RESOLVIDO E MEDIDO EM 13/10:** de 10 a 13/10, hepatologia 12.134 · cancer_rim 12.422 · tirads 3.773 · cancer_estomago 629 — **100% `sentence_transformers`, zero `token_overlap`, zero `FileNotFoundError`**, todos exercitando a camada. Nenhuma config declara mais caminho literal; nove usam o Model do UC. **`305810` e `298600` encerrados em 14/10**, com a evidência comentada nos dois. O histórico abaixo fica como registro.
 - 🔴 **OS EMBEDDINGS NÃO FUNCIONAVAM EM PRODUÇÃO — remedido em 15/09, e eram QUATRO linhas.**
   hepatologia **12.094 de 12.184 (99,3%)** · cancer_rim **7.763 de 7.892 (98,4%)** ·
   tirads **3.155 de 3.659 (86,2%)** · cancer_estomago **728 de 728 (100%)**.
