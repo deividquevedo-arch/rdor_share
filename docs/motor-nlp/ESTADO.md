@@ -1287,6 +1287,8 @@ duplicidade do PR 6646; o nódulo falhou em 12 e 13/10.
 📄 **Mapa de migração v0** — componente → destino → alçada → bloqueio, ordem e critério de corte:
 `_fundacao/propostas/mapa-migracao-legado-quatro-linhas-v0.md`. **Onda 1:** retorno + navegação da
 hepato (plataforma) e régua da mama (config pura). Seis decisões listadas no §6.
+📄 **Inventário completo (14/10)** — jobs, clusters, parâmetros, entradas, configs `/mnt`, modelos,
+secrets, tabelas em uso e contratos de entrega: `_processo/medicoes/inventario-legado-quatro-linhas-2026-10-14.md`.
 🟡 `360625`: neuro, cólon e ateromatose enviando do legado em HML e de prd ao mesmo tempo.
 
 

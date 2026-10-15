@@ -92,7 +92,7 @@ entrada de mama (43.222) bate com as linhas gravadas na saída no mesmo período
 | **saída** | categoria de **todo** exame (−1 a 6) | lista de nódulos com atributos | valor de clearance | relevância |
 | **destino** | API Mule — Portal de Acolhimento | Salesforce | **não está no código** | e-mail, três etapas |
 | **retorno** | `fl_integracao_concluida` | — | — | planilha do board médico |
-| **config fora do repo** | 1 JSON em `/mnt` | **14 CSV** em `/mnt` | nenhuma | JSONs em `/mnt` |
+| **config fora do repo** | 1 JSON em `/mnt` | **13 CSV** em `/mnt` | nenhuma | JSONs em `/mnt` |
 | **plataforma suporta o envio?** | 🔴 não | 🔴 não | 🔴 indefinido | 🟡 só a 1ª etapa |
 
 🔴 **Nenhuma das quatro envia para a Central de Captação.** A plataforma tem o envio à Central
@@ -232,7 +232,7 @@ O job tem só `modelo` e `monitoramento` — **nenhuma tarefa de envio**.
 
 ### Régua
 **Não é classificação binária — é extração estruturada.** spaCy `pt_core_news_lg` com
-`EntityRuler`, padrões montados a partir de **14 CSV em
+`EntityRuler`, padrões montados a partir de **13 CSV em
 `/mnt/trusted/datalake/ia/projetos/pulmao/config/<amb>/`**:
 
 | dicionário | o que carrega |
@@ -357,7 +357,7 @@ Fechados em 14/10, no workspace antigo:
 Abertos:
 
 3. **O orquestrador** que dispara as quatro — sem acesso. Dono, agenda e definição.
-4. **O conteúdo das configs em `/mnt/`** — os 14 CSV do nódulo, os JSON de navegação da hepato,
+4. **O conteúdo das configs em `/mnt/`** — os 13 CSV do nódulo, os JSON de navegação da hepato,
    `configCorrecaoDuplicidade.json` do BI-RADS.
 5. **Quem lê** `vw_gold_creatinina` para enviar, e a tabela Salesforce do nódulo — o histórico de
    consultas (`system.query`) também é sem acesso.

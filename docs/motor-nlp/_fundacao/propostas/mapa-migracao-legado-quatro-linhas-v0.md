@@ -113,11 +113,11 @@ plataforma é construído em volta do `nlp_engine`; **nenhum dos seis arquivos s
 |---|---|---|---|
 | filtro TC/RM de tórax, 3 colunas, 30 dias por liberação | `gold_filter` | DS | 🟡 mesma medição da mama |
 | idade do cadastro | contrato de entrada do motor não tem | Plat | 🔴 |
-| spaCy + `EntityRuler` com **14 CSV** | parte vira `findings`/`exclude`/negação; o resto não tem destino | DS | 🔴 inventariar os 14 CSV (P4) |
+| spaCy + `EntityRuler` com **13 CSV** | parte vira `findings`/`exclude`/negação; o resto não tem destino | DS | 🔴 inventariar os 13 CSV (P4) |
 | **extração por nódulo** (tamanho, localização, caracterização, risco) | lib tem categoria, medida e vínculo medida↔lesão (`lesion_linking`, 0.15); **não** tem atributos por lesão | DS (lib) | 🔴 trabalho de lib |
 | **evolução** (surgimento, progressão, estabilidade…) e **conduta** | zero na lib | DS (lib) | 🔴 trabalho de lib |
 | saída em lista de lesões (`saida_salesforce`, 37 colunas) | plataforma entrega `fl_relevante` + `findings` | Plat + Neg | 🔴 |
-| Salesforce | sem adaptador | Plat | 🔴 |
+| Salesforce **lê a tabela** de entrega (o legado não envia) | tabela de entrega no mesmo contrato | Plat + Neg | 🔴 confirmar quem lê |
 
 **A pergunta que define o tamanho:** das 37 colunas do Salesforce, **quais o destino usa de fato**?
 Se for "nódulo ≥ X mm com risco", cabe em `findings` + critério `dimensional` + `lesion_linking` —
