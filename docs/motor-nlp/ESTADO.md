@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-14**.
+> Atualizado em **2026-10-15**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -29,10 +29,10 @@
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
 | 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
-| 🟡 randomização | 5% em **duas** linhas, prd desde **12/10**. Decisão de 23/09 era 10% em cinco |
+| 🎯 **randomização — FOCO desde 15/10** | 5% em reumato e TI-RADS, prd desde 12/10; estável e aderente à base (ver seção). História `303629` (Monique) em `Novo`, sem dono |
 | 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
 | 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
-| 🟡 legado restante | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
+| ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
 | ⚪ lib | **zero commits desde 28/09** |
 
 **Seus cards fora da sprint desde 01/10:** `358081`, `358082` e `306066` em *Pronto para
@@ -1496,6 +1496,14 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
 ## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🔴 5% EM DUAS LINHAS, CONTRA 10% EM CINCO
+
+**Medido em 15/10** (`mlops_fabrica_ia.operacao`):
+- base `tb_mov_randomizacao_controle` com **1.000.000.000** de CPFs, **50.001.012 controle (5,0001%)**;
+- prd 12–15/10: reumato 62 registros / 4 controle · TI-RADS 165 / 7 · **11 de 227 (4,85%)**, **zero controle enviado**, zero sem CPF;
+- **zero CPF com mais de um grupo**; 28 CPFs em mais de um dia, todos estáveis; **618 de 618** registros iguais à base;
+- **CA04 (mesmo CPF em linhas diferentes) sem população** — nenhum CPF apareceu nas duas linhas;
+- envios API e OneDrive leem só a view `_intervencao`, fail-closed — as tasks `353629`/`353630` seguem `Novo` no board, atrás do código.
+🔴 **A história `303629` diverge dela mesma e da implementação:** descrição diz 50 mi em 1 bi (5%), CA01/CA13 dizem 10%; CA09 pede consulta sem gravação, e a operação grava log por CPF e linha (pedido nos critérios do Diego).
 
 **Configurado** (`plataform/config/randomization/ntb_ia_randomizacao_config.py`): `fracao_controle: 0.05`, `sem_chave: navegar`, só **reumatologia** e **TI-RADS**.
 **Medido em 13/10:** prd desde **12/10** (não 28/09 como diz o critério do `321370` — o código só chegou a prd no deploy de 09/10); hml desde 30/09 e 07/10. **21 de 528 no controle, 4,0%**, compatível com 5%.

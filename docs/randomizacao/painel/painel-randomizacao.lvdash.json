@@ -1,0 +1,1753 @@
+{
+ "datasets": [
+  {
+   "name": "atencao",
+   "displayName": "Atenção diária",
+   "queryLines": [
+    "WITH log AS (SELECT * FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd'),\n",
+    "ativas AS (SELECT nm_especialidade AS linha, min(to_date(dt_execucao_modelo)) AS ini FROM log GROUP BY 1),\n",
+    "dias AS (\n",
+    "  SELECT linha, dia FROM (SELECT linha, explode(sequence(ini, current_date())) AS dia FROM ativas)\n",
+    "  WHERE dayofweek(dia) BETWEEN 2 AND 6\n",
+    "),\n",
+    "rel AS (\n",
+    "  SELECT nm_especialidade AS linha, to_date(dt_execucao_modelo) AS dia,\n",
+    "         max_by(st_execucao, dh_registro) AS st,\n",
+    "         max_by(coalesce(ds_etapas_falha, ''), dh_registro) AS falhas,\n",
+    "         max_by(qt_exportados, dh_registro) AS exportados,\n",
+    "         max_by(qt_controle, dh_registro) AS controle,\n",
+    "         max_by(qt_intervencao, dh_registro) AS navegacao,\n",
+    "         max_by(qt_sem_chave, dh_registro) AS sem_cpf\n",
+    "  FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_relatorio WHERE tp_ambiente = 'prd' GROUP BY 1, 2\n",
+    "),\n",
+    "lg AS (\n",
+    "  SELECT nm_especialidade AS linha, to_date(dt_execucao_modelo) AS dia, count(*) AS registros,\n",
+    "         sum(CASE WHEN tp_grupo = 'controle' AND fl_enviado THEN 1 ELSE 0 END) AS controle_enviado\n",
+    "  FROM log GROUP BY 1, 2\n",
+    "),\n",
+    "base AS (\n",
+    "  SELECT d.linha, d.dia, r.st, r.falhas, r.exportados, r.controle, r.navegacao, r.sem_cpf,\n",
+    "         l.registros, coalesce(l.controle_enviado, 0) AS controle_enviado,\n",
+    "         CASE WHEN r.linha IS NULL THEN 1 ELSE 0 END AS chk_sem_execucao,\n",
+    "         CASE WHEN r.st <> 'SUCESSO' OR r.falhas <> '' THEN 1 ELSE 0 END AS chk_falha,\n",
+    "         CASE WHEN r.exportados <> coalesce(r.controle,0) + coalesce(r.navegacao,0) + coalesce(r.sem_cpf,0) THEN 1 ELSE 0 END AS chk_conservacao,\n",
+    "         CASE WHEN coalesce(l.registros,0) <> coalesce(r.controle,0) + coalesce(r.navegacao,0) THEN 1 ELSE 0 END AS chk_log_x_relatorio,\n",
+    "         CASE WHEN coalesce(l.controle_enviado,0) > 0 THEN 1 ELSE 0 END AS chk_controle_enviado\n",
+    "  FROM dias d LEFT JOIN rel r ON r.linha = d.linha AND r.dia = d.dia\n",
+    "              LEFT JOIN lg l ON l.linha = d.linha AND l.dia = d.dia\n",
+    ")\n",
+    "SELECT *,\n",
+    "  CASE WHEN chk_sem_execucao = 1 AND dia = current_date() THEN 'PENDENTE'\n",
+    "       WHEN chk_sem_execucao + chk_falha + chk_conservacao + chk_log_x_relatorio + chk_controle_enviado > 0 THEN 'ALERTA'\n",
+    "       ELSE 'OK' END AS status,\n",
+    "  CASE WHEN NOT (chk_sem_execucao = 1 AND dia = current_date())\n",
+    "        AND chk_sem_execucao + chk_falha + chk_conservacao + chk_log_x_relatorio + chk_controle_enviado > 0\n",
+    "       THEN 1 ELSE 0 END AS fl_alerta\n",
+    "FROM base\n"
+   ]
+  },
+  {
+   "name": "proporcao",
+   "displayName": "Proporção acumulada",
+   "queryLines": [
+    "WITH b AS (SELECT avg(CASE WHEN tp_grupo = 'controle' THEN 1.0 ELSE 0.0 END) AS p FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_controle),\n",
+    "pac AS (\n",
+    "  SELECT nm_especialidade AS linha, num_cpf, max(tp_grupo) AS grupo\n",
+    "  FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' GROUP BY 1, 2\n",
+    "),\n",
+    "agg AS (\n",
+    "  SELECT linha, count(*) AS n, sum(CASE WHEN grupo = 'controle' THEN 1 ELSE 0 END) AS k FROM pac GROUP BY linha\n",
+    "  UNION ALL\n",
+    "  SELECT 'TOTAL', count(*), sum(CASE WHEN grupo = 'controle' THEN 1 ELSE 0 END) FROM pac\n",
+    ")\n",
+    "SELECT a.linha, a.n AS pacientes, a.k AS pacientes_controle,\n",
+    "       round(a.k / a.n, 4) AS fracao_observada, round(b.p, 4) AS fracao_base,\n",
+    "       round((a.k - a.n * b.p) / sqrt(a.n * b.p * (1 - b.p)), 2) AS z,\n",
+    "       CASE WHEN abs((a.k - a.n * b.p) / sqrt(a.n * b.p * (1 - b.p))) > 3 THEN 'ALERTA' ELSE 'OK' END AS status\n",
+    "FROM agg a CROSS JOIN b\n"
+   ]
+  },
+  {
+   "name": "integridade",
+   "displayName": "Integridade",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd')\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l) AS registros_total,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS cpf_com_dois_grupos,\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN mlops_fabrica_ia.operacao.tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS divergentes_da_base\n"
+   ]
+  },
+  {
+   "name": "grupos",
+   "displayName": "Grupos por linha",
+   "queryLines": [
+    "SELECT nm_especialidade AS linha, tp_grupo AS grupo, count(*) AS exames, count(DISTINCT num_cpf) AS pacientes,\n",
+    "       sum(CASE WHEN fl_enviado THEN 1 ELSE 0 END) AS exames_enviados,\n",
+    "       min(to_date(dt_execucao_modelo)) AS primeiro_dia, max(to_date(dt_execucao_modelo)) AS ultimo_dia\n",
+    "FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd'\n",
+    "GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "funil",
+   "displayName": "Funil por linha e dia",
+   "queryLines": [
+    "SELECT nm_especialidade AS linha, to_date(dt_execucao_modelo) AS dia,\n",
+    "       max_by(qt_entrada, dh_registro) AS exames_entrada,\n",
+    "       max_by(qt_saida, dh_registro) AS exames_processados,\n",
+    "       max_by(qt_relevantes, dh_registro) AS exames_relevantes,\n",
+    "       max_by(qt_exportados, dh_registro) AS exames_elegiveis_envio,\n",
+    "       max_by(qt_controle, dh_registro) AS exames_controle,\n",
+    "       max_by(qt_intervencao, dh_registro) AS exames_navegacao,\n",
+    "       max_by(qt_sem_chave, dh_registro) AS exames_sem_cpf\n",
+    "FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_relatorio WHERE tp_ambiente = 'prd'\n",
+    "GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "contaminacao",
+   "displayName": "Contaminação",
+   "queryLines": [
+    "WITH g AS (\n",
+    "  SELECT nm_especialidade AS linha, tp_grupo AS grupo, cast(id_paciente AS string) AS idp,\n",
+    "         min(to_date(dt_execucao_modelo)) AS dt_rand\n",
+    "  FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' GROUP BY 1, 2, 3\n",
+    "),\n",
+    "rel AS (\n",
+    "  SELECT 'ateromatose_coronariana' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.ateromatose_coronariana.tb_mod_diamond_ateromatose_coronariana_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'cancer_colon' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_colon.tb_mod_diamond_cancer_colon_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'cancer_estomago' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_estomago.tb_mod_diamond_cancer_estomago_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'cancer_rim' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_rim.tb_mod_diamond_cancer_rim_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'doenca_inflamatoria_intestinal' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.doenca_inflamatoria_intestinal.tb_mod_diamond_doenca_inflamatoria_intestinal_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'doencas_biliares' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.doencas_biliares.tb_mod_diamond_doencas_biliares_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'hepatologia' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.hepatologia.tb_mod_diamond_hepatologia_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'neuroimunologia' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.neuroimunologia.tb_mod_diamond_neuroimunologia_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'pirads' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.pirads.tb_mod_diamond_pirads_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'transplante_pulmao' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.transplante_pulmao.tb_mod_diamond_transplante_pulmao_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'tumor_osseo' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.tumor_osseo.tb_mod_diamond_tumor_osseo_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'reumatologia' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.reumatologia.tb_mod_diamond_reumatologia_saida_v0 WHERE fl_relevante = 1\n",
+    "  UNION ALL SELECT 'tirads' AS linha, cast(id_paciente AS string) AS idp, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.tirads.tb_mod_diamond_tirads_saida_v0 WHERE fl_relevante = 1\n",
+    ")\n",
+    "SELECT g.linha, g.grupo, count(DISTINCT g.idp) AS pacientes_randomizados,\n",
+    "       count(DISTINCT CASE WHEN r.linha IS NOT NULL THEN g.idp END) AS relevantes_em_outra_linha\n",
+    "FROM g LEFT JOIN rel r ON r.idp = g.idp AND r.linha <> g.linha AND r.dia >= g.dt_rand\n",
+    "GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "vg_resumo",
+   "displayName": "Visão geral — resumo por linha",
+   "queryLines": [
+    "WITH ini AS (\n",
+    "  SELECT nm_especialidade AS linha, min(to_date(dt_execucao_modelo)) AS d0\n",
+    "  FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' GROUP BY 1\n",
+    "),\n",
+    "s AS (\n",
+    "  SELECT 'ateromatose_coronariana' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.ateromatose_coronariana.tb_mod_diamond_ateromatose_coronariana_saida_v0\n",
+    "  UNION ALL SELECT 'cancer_colon' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_colon.tb_mod_diamond_cancer_colon_saida_v0\n",
+    "  UNION ALL SELECT 'cancer_estomago' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_estomago.tb_mod_diamond_cancer_estomago_saida_v0\n",
+    "  UNION ALL SELECT 'cancer_rim' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.cancer_rim.tb_mod_diamond_cancer_rim_saida_v0\n",
+    "  UNION ALL SELECT 'doenca_inflamatoria_intestinal' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.doenca_inflamatoria_intestinal.tb_mod_diamond_doenca_inflamatoria_intestinal_saida_v0\n",
+    "  UNION ALL SELECT 'doencas_biliares' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.doencas_biliares.tb_mod_diamond_doencas_biliares_saida_v0\n",
+    "  UNION ALL SELECT 'hepatologia' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.hepatologia.tb_mod_diamond_hepatologia_saida_v0\n",
+    "  UNION ALL SELECT 'neuroimunologia' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.neuroimunologia.tb_mod_diamond_neuroimunologia_saida_v0\n",
+    "  UNION ALL SELECT 'pirads' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.pirads.tb_mod_diamond_pirads_saida_v0\n",
+    "  UNION ALL SELECT 'transplante_pulmao' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.transplante_pulmao.tb_mod_diamond_transplante_pulmao_saida_v0\n",
+    "  UNION ALL SELECT 'tumor_osseo' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.tumor_osseo.tb_mod_diamond_tumor_osseo_saida_v0\n",
+    "  UNION ALL SELECT 'reumatologia' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.reumatologia.tb_mod_diamond_reumatologia_saida_v0\n",
+    "  UNION ALL SELECT 'tirads' AS linha, cast(id_paciente AS string) AS idp, fl_relevante, to_date(dt_execucao_modelo) AS dia FROM diamond_fabrica_ia.tirads.tb_mod_diamond_tirads_saida_v0\n",
+    "),\n",
+    "proc AS (\n",
+    "  SELECT s.linha, count(DISTINCT s.idp) AS analisados,\n",
+    "         count(DISTINCT CASE WHEN s.fl_relevante = 1 THEN s.idp END) AS relevantes\n",
+    "  FROM s JOIN ini i ON i.linha = s.linha AND s.dia >= i.d0 GROUP BY 1\n",
+    "),\n",
+    "g AS (\n",
+    "  SELECT nm_especialidade AS linha, count(DISTINCT num_cpf) AS randomizados,\n",
+    "         count(DISTINCT CASE WHEN tp_grupo = 'controle' THEN num_cpf END) AS controle,\n",
+    "         count(DISTINCT CASE WHEN tp_grupo = 'intervencao' THEN num_cpf END) AS navegacao\n",
+    "  FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' GROUP BY 1\n",
+    ")\n",
+    "SELECT p.linha, i.d0 AS inicio, p.analisados, p.relevantes, g.randomizados, g.controle, g.navegacao,\n",
+    "       round(100.0 * g.controle / g.randomizados, 1) AS pct_controle\n",
+    "FROM proc p JOIN g ON g.linha = p.linha JOIN ini i ON i.linha = p.linha\n"
+   ]
+  },
+  {
+   "name": "vg_grupos",
+   "displayName": "Visão geral — grupos por linha",
+   "queryLines": [
+    "SELECT nm_especialidade AS linha,\n",
+    "       CASE WHEN tp_grupo = 'controle' THEN 'Controle' ELSE 'Navegação' END AS grupo,\n",
+    "       count(DISTINCT num_cpf) AS pacientes\n",
+    "FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd'\n",
+    "GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "vg_dia",
+   "displayName": "Visão geral — grupos por dia",
+   "queryLines": [
+    "SELECT nm_especialidade AS linha, to_date(dt_execucao_modelo) AS dia,\n",
+    "       CASE WHEN tp_grupo = 'controle' THEN 'Controle' ELSE 'Navegação' END AS grupo,\n",
+    "       count(DISTINCT num_cpf) AS pacientes\n",
+    "FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log WHERE tp_ambiente = 'prd'\n",
+    "GROUP BY 1, 2, 3\n"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "name": "visao_geral",
+   "displayName": "Visão geral",
+   "layout": [
+    {
+     "widget": {
+      "name": "vg_cabecalho",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## Randomização — visão geral\n",
+        "Pacientes das linhas randomizadas, em produção, desde o primeiro dia de randomização de cada linha. **Navegação** = enviado às enfermeiras navegadoras · **Controle** = identificado, registrado e não enviado, para comparação. A mesma pessoa conta uma vez por linha."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 9,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_f_linha",
+      "queries": [
+       {
+        "name": "filtro_linha_vg_resumo",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_vg_grupos",
+        "query": {
+         "datasetName": "vg_grupos",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_vg_dia",
+        "query": {
+         "datasetName": "vg_dia",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-multi-select",
+       "frame": {
+        "showTitle": true,
+        "title": "Linha de cuidado"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_vg_resumo"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_vg_grupos"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_vg_dia"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 0,
+      "width": 3,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_f_dia",
+      "queries": [
+       {
+        "name": "filtro_dia_vg_dia",
+        "query": {
+         "datasetName": "vg_dia",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "dia_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-date-range-picker",
+       "frame": {
+        "showTitle": true,
+        "title": "Período (gráfico diário)"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "dia",
+          "queryName": "filtro_dia_vg_dia"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 1,
+      "width": 3,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_analisados",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "sum(analisados)",
+           "expression": "SUM(`analisados`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes analisados pelo algoritmo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(analisados)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_relevantes",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "sum(relevantes)",
+           "expression": "SUM(`relevantes`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Com achado relevante"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(relevantes)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 2,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_randomizados",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "sum(randomizados)",
+           "expression": "SUM(`randomizados`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Randomizados"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(randomizados)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_navegacao",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "sum(navegacao)",
+           "expression": "SUM(`navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(navegacao)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_controle",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "sum(controle)",
+           "expression": "SUM(`controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(controle)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_k_pct",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "pct_controle_total",
+           "expression": "ROUND(SUM(`controle`) * 100.0 / SUM(`randomizados`), 1)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "% no controle"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "pct_controle_total",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 10,
+      "y": 2,
+      "width": 2,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_b_linha",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_grupos",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "sum(pacientes)",
+           "expression": "SUM(`pacientes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Controle × navegação por linha (pacientes)"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "displayName": "linha",
+         "scale": {
+          "type": "categorical"
+         }
+        },
+        "y": {
+         "fieldName": "sum(pacientes)",
+         "displayName": "pacientes",
+         "scale": {
+          "type": "quantitative"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0E6E74"
+           },
+           {
+            "value": "Controle",
+            "color": "#E0A030"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       },
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 5,
+      "width": 5,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_b_dia",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_dia",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "sum(pacientes)",
+           "expression": "SUM(`pacientes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Controle × navegação por dia (pacientes)"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "displayName": "dia",
+         "scale": {
+          "type": "temporal"
+         }
+        },
+        "y": {
+         "fieldName": "sum(pacientes)",
+         "displayName": "pacientes",
+         "scale": {
+          "type": "quantitative"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0E6E74"
+           },
+           {
+            "value": "Controle",
+            "color": "#E0A030"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       },
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 5,
+      "y": 5,
+      "width": 7,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "vg_t_resumo",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "vg_resumo",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "inicio",
+           "expression": "`inicio`"
+          },
+          {
+           "name": "analisados",
+           "expression": "`analisados`"
+          },
+          {
+           "name": "relevantes",
+           "expression": "`relevantes`"
+          },
+          {
+           "name": "randomizados",
+           "expression": "`randomizados`"
+          },
+          {
+           "name": "navegacao",
+           "expression": "`navegacao`"
+          },
+          {
+           "name": "controle",
+           "expression": "`controle`"
+          },
+          {
+           "name": "pct_controle",
+           "expression": "`pct_controle`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Resumo por linha"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "inicio"
+         },
+         {
+          "fieldName": "analisados"
+         },
+         {
+          "fieldName": "relevantes"
+         },
+         {
+          "fieldName": "randomizados"
+         },
+         {
+          "fieldName": "navegacao"
+         },
+         {
+          "fieldName": "controle"
+         },
+         {
+          "fieldName": "pct_controle"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 12,
+      "width": 12,
+      "height": 4
+     }
+    }
+   ]
+  },
+  {
+   "name": "atencao",
+   "displayName": "Primeira linha de atenção",
+   "layout": [
+    {
+     "widget": {
+      "name": "cabecalho",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## Randomização — primeira linha de atenção\n",
+        "Produção. Checagens diárias por linha randomizada (seg–sex, após 08:00). **ALERTA** = alguma checagem obrigatória falhou · **PENDENTE** = hoje, job ainda sem registro."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 8,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "f_linha",
+      "queries": [
+       {
+        "name": "filtro_linha_atencao",
+        "query": {
+         "datasetName": "atencao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_proporcao",
+        "query": {
+         "datasetName": "proporcao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_grupos",
+        "query": {
+         "datasetName": "grupos",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_funil",
+        "query": {
+         "datasetName": "funil",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_linha_contaminacao",
+        "query": {
+         "datasetName": "contaminacao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "linha_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-multi-select",
+       "frame": {
+        "showTitle": true,
+        "title": "Linha de cuidado"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_atencao"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_proporcao"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_grupos"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_funil"
+         },
+         {
+          "fieldName": "linha",
+          "queryName": "filtro_linha_contaminacao"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 0,
+      "width": 4,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "f_dia",
+      "queries": [
+       {
+        "name": "filtro_dia_atencao",
+        "query": {
+         "datasetName": "atencao",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "dia_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "filtro_dia_funil",
+        "query": {
+         "datasetName": "funil",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "dia_associativity",
+           "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-date-range-picker",
+       "frame": {
+        "showTitle": true,
+        "title": "Período"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "dia",
+          "queryName": "filtro_dia_atencao"
+         },
+         {
+          "fieldName": "dia",
+          "queryName": "filtro_dia_funil"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 1,
+      "width": 4,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_alertas",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "atencao",
+         "fields": [
+          {
+           "name": "sum(fl_alerta)",
+           "expression": "SUM(`fl_alerta`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Dias-linha em ALERTA"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(fl_alerta)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 3,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "k_dois_grupos",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "integridade",
+         "fields": [
+          {
+           "name": "sum(cpf_com_dois_grupos)",
+           "expression": "SUM(`cpf_com_dois_grupos`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "CPF com dois grupos"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(cpf_com_dois_grupos)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 2,
+      "width": 3,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_enviado",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "integridade",
+         "fields": [
+          {
+           "name": "sum(controle_enviado)",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Controle enviado"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(controle_enviado)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 2,
+      "width": 3,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "k_divergentes",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "integridade",
+         "fields": [
+          {
+           "name": "sum(divergentes_da_base)",
+           "expression": "SUM(`divergentes_da_base`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Divergentes da base"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "sum(divergentes_da_base)",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 2,
+      "width": 3,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "t_atencao",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "atencao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "status",
+           "expression": "`status`"
+          },
+          {
+           "name": "st",
+           "expression": "`st`"
+          },
+          {
+           "name": "exportados",
+           "expression": "`exportados`"
+          },
+          {
+           "name": "controle",
+           "expression": "`controle`"
+          },
+          {
+           "name": "navegacao",
+           "expression": "`navegacao`"
+          },
+          {
+           "name": "sem_cpf",
+           "expression": "`sem_cpf`"
+          },
+          {
+           "name": "registros",
+           "expression": "`registros`"
+          },
+          {
+           "name": "chk_sem_execucao",
+           "expression": "`chk_sem_execucao`"
+          },
+          {
+           "name": "chk_falha",
+           "expression": "`chk_falha`"
+          },
+          {
+           "name": "chk_conservacao",
+           "expression": "`chk_conservacao`"
+          },
+          {
+           "name": "chk_log_x_relatorio",
+           "expression": "`chk_log_x_relatorio`"
+          },
+          {
+           "name": "chk_controle_enviado",
+           "expression": "`chk_controle_enviado`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Atenção diária — status por linha e dia útil"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "dia"
+         },
+         {
+          "fieldName": "status"
+         },
+         {
+          "fieldName": "st"
+         },
+         {
+          "fieldName": "exportados"
+         },
+         {
+          "fieldName": "controle"
+         },
+         {
+          "fieldName": "navegacao"
+         },
+         {
+          "fieldName": "sem_cpf"
+         },
+         {
+          "fieldName": "registros"
+         },
+         {
+          "fieldName": "chk_sem_execucao"
+         },
+         {
+          "fieldName": "chk_falha"
+         },
+         {
+          "fieldName": "chk_conservacao"
+         },
+         {
+          "fieldName": "chk_log_x_relatorio"
+         },
+         {
+          "fieldName": "chk_controle_enviado"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 8
+     }
+    },
+    {
+     "widget": {
+      "name": "t_proporcao",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "proporcao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "pacientes",
+           "expression": "`pacientes`"
+          },
+          {
+           "name": "pacientes_controle",
+           "expression": "`pacientes_controle`"
+          },
+          {
+           "name": "fracao_observada",
+           "expression": "`fracao_observada`"
+          },
+          {
+           "name": "fracao_base",
+           "expression": "`fracao_base`"
+          },
+          {
+           "name": "z",
+           "expression": "`z`"
+          },
+          {
+           "name": "status",
+           "expression": "`status`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Proporção de controle acumulada (por paciente) — ALERTA se |z| > 3"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "pacientes"
+         },
+         {
+          "fieldName": "pacientes_controle"
+         },
+         {
+          "fieldName": "fracao_observada"
+         },
+         {
+          "fieldName": "fracao_base"
+         },
+         {
+          "fieldName": "z"
+         },
+         {
+          "fieldName": "status"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 12,
+      "width": 6,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "t_grupos",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "grupos",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "exames",
+           "expression": "`exames`"
+          },
+          {
+           "name": "pacientes",
+           "expression": "`pacientes`"
+          },
+          {
+           "name": "exames_enviados",
+           "expression": "`exames_enviados`"
+          },
+          {
+           "name": "primeiro_dia",
+           "expression": "`primeiro_dia`"
+          },
+          {
+           "name": "ultimo_dia",
+           "expression": "`ultimo_dia`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupos por linha — desde o início"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "grupo"
+         },
+         {
+          "fieldName": "exames"
+         },
+         {
+          "fieldName": "pacientes"
+         },
+         {
+          "fieldName": "exames_enviados"
+         },
+         {
+          "fieldName": "primeiro_dia"
+         },
+         {
+          "fieldName": "ultimo_dia"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 12,
+      "width": 6,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "t_contaminacao",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "contaminacao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "pacientes_randomizados",
+           "expression": "`pacientes_randomizados`"
+          },
+          {
+           "name": "relevantes_em_outra_linha",
+           "expression": "`relevantes_em_outra_linha`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Contaminação — randomizados relevantes em outra linha (informativo)"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "grupo"
+         },
+         {
+          "fieldName": "pacientes_randomizados"
+         },
+         {
+          "fieldName": "relevantes_em_outra_linha"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 17,
+      "width": 6,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "t_integridade",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "integridade",
+         "fields": [
+          {
+           "name": "registros_total",
+           "expression": "`registros_total`"
+          },
+          {
+           "name": "cpf_com_dois_grupos",
+           "expression": "`cpf_com_dois_grupos`"
+          },
+          {
+           "name": "controle_enviado",
+           "expression": "`controle_enviado`"
+          },
+          {
+           "name": "divergentes_da_base",
+           "expression": "`divergentes_da_base`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Integridade — totais (devem ser zero, exceto o total)"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "registros_total"
+         },
+         {
+          "fieldName": "cpf_com_dois_grupos"
+         },
+         {
+          "fieldName": "controle_enviado"
+         },
+         {
+          "fieldName": "divergentes_da_base"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 17,
+      "width": 6,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "t_funil",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "funil",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "exames_entrada",
+           "expression": "`exames_entrada`"
+          },
+          {
+           "name": "exames_processados",
+           "expression": "`exames_processados`"
+          },
+          {
+           "name": "exames_relevantes",
+           "expression": "`exames_relevantes`"
+          },
+          {
+           "name": "exames_elegiveis_envio",
+           "expression": "`exames_elegiveis_envio`"
+          },
+          {
+           "name": "exames_controle",
+           "expression": "`exames_controle`"
+          },
+          {
+           "name": "exames_navegacao",
+           "expression": "`exames_navegacao`"
+          },
+          {
+           "name": "exames_sem_cpf",
+           "expression": "`exames_sem_cpf`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Funil por linha e dia — todas as linhas em produção (informativo)"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "dia"
+         },
+         {
+          "fieldName": "exames_entrada"
+         },
+         {
+          "fieldName": "exames_processados"
+         },
+         {
+          "fieldName": "exames_relevantes"
+         },
+         {
+          "fieldName": "exames_elegiveis_envio"
+         },
+         {
+          "fieldName": "exames_controle"
+         },
+         {
+          "fieldName": "exames_navegacao"
+         },
+         {
+          "fieldName": "exames_sem_cpf"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 22,
+      "width": 12,
+      "height": 9
+     }
+    }
+   ]
+  }
+ ]
+}
