@@ -207,7 +207,7 @@ def escrever(a, uteis, p, por, tot_r, tot_c, z, crit):
              f"**{fmt(sum(v['navegacao'] for v in por.values()))}** | **{fmt(tot_c)}** | **{fmt(pct_t, 1)}%** | | |")
     L += ["", "> Paciente conta uma vez por linha. *Analisados* e *relevantes* vêm da saída do motor no período; "
               "*randomizados* são os elegíveis ao envio (após deduplicação e validações), que é onde o sorteio se aplica.",
-          "> A proporção de controle só é avaliada no **agregado da onda**: por linha, o número de controles em 10 dias úteis "
+          "> A proporção de controle só é avaliada no **agregado da onda**: por linha, o número de controles no período "
           "é pequeno demais para leitura isolada.", ""]
     L += ["## Navegação por regional (pacientes enviados)", ""]
     for l, v in por.items():
@@ -225,7 +225,7 @@ def escrever(a, uteis, p, por, tot_r, tot_c, z, crit):
               "Quanto mais linhas randomizadas, menor esse efeito, porque o grupo é do CPF e vale para todas.", "",
           "## O que este relatório não mede", "",
           "- **Impacto financeiro.** Exige o desfecho (consumo) com janela completa — a fonte tem ~2 semanas de atraso — "
-          "e acúmulo de pacientes por meses. É a fase 2 do método.",
+          "e acúmulo de pacientes por meses. É a fase 3 do método (uplift), depois do de acordo e com a linha em PRD.",
           "- **Acerto clínico da régua.** A régua de cada linha já foi homologada; este relatório avalia a randomização "
           "e a operação, não o laudo.", ""]
     nome = f"relatorio-onda{a.onda}-{a.ambiente}-{a.inicio}_{a.fim}.md"
