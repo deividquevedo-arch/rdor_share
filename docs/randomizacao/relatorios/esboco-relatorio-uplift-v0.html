@@ -1,0 +1,116 @@
+<title>Uplift da captação — esboço</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f4f7f7;--surface:#fff;--fg:#14262a;--muted:#55696d;--line:#d6e0e2;--accent:#0e6e74;--accent-soft:#e0efef;
+--nav:#0e6e74;--ctrl:#c07a12;--ctrl-soft:#f6ecd9;--ok:#2f7d4f;--ok-soft:#e3f2e8;--bad:#a6382f;--bad-soft:#f6e3e1;
+--f-d:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;--f-b:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+--f-m:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f181b;--surface:#152227;--fg:#e3ecee;--muted:#93a8ad;
+--line:#2a3b41;--accent:#5cc2c6;--accent-soft:#16363a;--nav:#5cc2c6;--ctrl:#e2b05c;--ctrl-soft:#3a2f14;--ok:#7fcf9c;--ok-soft:#163223;
+--bad:#ec8f86;--bad-soft:#3d1d1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f181b;--surface:#152227;--fg:#e3ecee;--muted:#93a8ad;--line:#2a3b41;--accent:#5cc2c6;
+--accent-soft:#16363a;--nav:#5cc2c6;--ctrl:#e2b05c;--ctrl-soft:#3a2f14;--ok:#7fcf9c;--ok-soft:#163223;--bad:#ec8f86;--bad-soft:#3d1d1a;color-scheme:dark}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-b)}
+.wrap{max-width:1040px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));
+padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
+header{display:flex;flex-direction:column;gap:8px;border-bottom:2px solid var(--fg);padding-bottom:18px}
+.eyebrow{font:500 12px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(28px,4.6vw,40px)/1.08 var(--f-d);margin:0;text-wrap:balance}
+h2{font:600 21px/1.2 var(--f-d);margin:0 0 12px}
+.meta{font:400 13px/1.5 var(--f-m);color:var(--muted)}
+section{display:flex;flex-direction:column}
+.verdict{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{font:600 14px/1 var(--f-m);padding:8px 12px;border-radius:999px}
+.ok{background:var(--ok-soft);color:var(--ok)}.bad{background:var(--bad-soft);color:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .k{font:500 12px/1.3 var(--f-m);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font:600 30px/1.1 var(--f-d);font-variant-numeric:tabular-nums}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.nav .v{color:var(--nav)}.kpi.ctrl .v{color:var(--ctrl)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:600 11.5px/1.3 var(--f-m);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+td.n{font-family:var(--f-m);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+th.n{text-align:right}
+tr.total td{font-weight:600;background:var(--accent-soft)}
+.pill{font:500 12px/1 var(--f-m);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line);min-width:120px}
+.bar span{display:block;height:100%}
+.note{font-size:13.5px;color:var(--muted);max-width:80ch;margin-top:10px}
+.prop{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.prop .row{display:flex;gap:28px;flex-wrap:wrap}
+.prop .lbl{font:500 12px/1.3 var(--f-m);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.prop .val{font:600 24px/1.1 var(--f-d);font-variant-numeric:tabular-nums}
+ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+footer{font:400 12.5px/1.6 var(--f-m);color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+.draft{background:var(--ctrl-soft);color:var(--ctrl);font:600 12px/1 var(--f-m);padding:6px 10px;border-radius:999px;
+letter-spacing:.06em;text-transform:uppercase;align-self:flex-start}
+.formula{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+padding:16px 18px;font:500 16px/1.5 var(--f-b)}
+.formula code{font:600 15px var(--f-m)}
+.ph{color:var(--muted);font-style:italic}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3{font:600 16px/1.25 var(--f-d);margin:0}
+.chk{list-style:none;padding:0}
+.chk li{display:flex;gap:10px}
+.st{font:600 11.5px/1 var(--f-m);padding:4px 8px;border-radius:999px;white-space:nowrap;align-self:flex-start}
+.st.ok{background:var(--ok-soft);color:var(--ok)}.st.pend{background:var(--ctrl-soft);color:var(--ctrl)}
+</style>
+<div class="wrap">
+<header>
+<span class="draft">Esboço · sem desfecho ainda</span>
+<span class="eyebrow">Fábrica de IA · Captação · Fase 3 — uplift</span>
+<h1>Uplift da captação — relatório por onda</h1>
+<span class="meta">Estrutura do relatório mensal. Os campos de resultado ficam vazios até o consumo com janela completa estar disponível; a primeira leitura de 30 dias da onda 1 é possível a partir de meados de novembro.</span>
+</header>
+<section><h2>1. O que se mede</h2>
+<div class="formula"><strong>Uplift</strong> = consumo per capita do grupo <strong>navegação</strong> − consumo per capita do grupo <strong>controle</strong>, no mesmo período e na mesma janela.</div>
+<div class="grid2" style="margin-top:14px">
+<div class="card"><h3>Por intenção de tratar</h3><p>Compara-se o grupo <strong>sorteado</strong>, não quem a navegadora conseguiu contatar. É o que mantém os grupos comparáveis.</p></div>
+<div class="card"><h3>Janelas pré-registradas</h3><p>30, 90 e 180 dias depois do sorteio. Paciente cuja janela ainda não fechou não entra na conta daquela janela.</p></div>
+<div class="card"><h3>Total e específico</h3><p><strong>Total</strong>: todo consumo na Rede. <strong>Específico</strong>: consumo nos procedimentos da linha de cuidado.</p></div>
+<div class="card"><h3>Onda agregada</h3><p>A conclusão é da onda. A abertura por linha é descritiva: por linha, o número de controles só sustenta efeitos grandes.</p></div>
+</div></section>
+<section><h2>2. População do estudo — onda 1</h2>
+<div class="kpis">
+<div class="kpi"><span class="k">Sorteados</span><span class="v">256</span><span class="s">PRD, 12–16/10</span></div>
+<div class="kpi nav"><span class="k">Navegação</span><span class="v">245</span></div>
+<div class="kpi ctrl"><span class="k">Controle</span><span class="v">11</span></div>
+<div class="kpi"><span class="k">Controle/mês (estimado)</span><span class="v">54</span><span class="s">a 5% de fração</span></div>
+</div>
+<p class="note">Entram no estudo os pacientes sorteados em unidades do escopo de navegação. O escopo atual vale desde 14/10; os sorteados em 12 e 13/10 em unidades fora dele ficam fora da análise principal.</p></section>
+<section><h2>3. Resultado por janela</h2>
+<div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)"><span><i style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--nav);margin-right:6px;vertical-align:-1px"></i>consumo per capita — navegação</span><span><i style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--ctrl);margin-right:6px;vertical-align:-1px"></i>consumo per capita — controle</span></div>
+<div class="tbl" style="padding:12px 14px;margin:8px 0 12px"><svg viewBox="0 0 760 240" role="img" aria-label="Gráfico de uplift por janela, aguardando desfecho"><line x1="40" y1="206" x2="750" y2="206" style="stroke:var(--line)"/><rect x="128.3" y="120.5" width="28" height="85.5" rx="3" style="fill:none;stroke:var(--nav);stroke-width:1.5;stroke-dasharray:4 3"/><rect x="160.3" y="92.0" width="28" height="114.0" rx="3" style="fill:none;stroke:var(--ctrl);stroke-width:1.5;stroke-dasharray:4 3"/><text x="158.3" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">30 dias</text><rect x="365.0" y="133.8" width="28" height="72.2" rx="3" style="fill:none;stroke:var(--nav);stroke-width:1.5;stroke-dasharray:4 3"/><rect x="397.0" y="107.2" width="28" height="98.8" rx="3" style="fill:none;stroke:var(--ctrl);stroke-width:1.5;stroke-dasharray:4 3"/><text x="395.0" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">90 dias</text><rect x="601.7" y="149.0" width="28" height="57.0" rx="3" style="fill:none;stroke:var(--nav);stroke-width:1.5;stroke-dasharray:4 3"/><rect x="633.7" y="122.4" width="28" height="83.6" rx="3" style="fill:none;stroke:var(--ctrl);stroke-width:1.5;stroke-dasharray:4 3"/><text x="631.7" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">180 dias</text><rect x="230.0" y="90.0" width="300" height="40" rx="8" style="fill:var(--surface);stroke:var(--line)"/><text x="380.0" y="115.0" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12.5" style="fill:var(--fg)" font-weight="600">aguardando desfecho — sem valores</text></svg></div>
+<div class="tbl"><table style="min-width:900px"><thead><tr><th>Linha</th><th>Conversão — navegação</th><th>Conversão — controle</th><th>Per capita — navegação</th><th>Per capita — controle</th><th>Uplift (IC 95%)</th><th>Probabilidade de ganho</th></tr></thead><tbody><tr><td>Reumatologia</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr><tr><td>Tireoide (TI-RADS)</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr><tr class="total"><td>Onda 1</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr></tbody></table></div>
+<p class="note">Uma tabela por janela (30, 90, 180 dias) e por tipo de consumo (total, específico). <strong>Conversão</strong> = pacientes com algum consumo na janela ÷ pacientes do grupo. <strong>Probabilidade de ganho</strong> = chance de o uplift ser maior que zero.</p></section>
+<section><h2>4. Os grupos são comparáveis?</h2>
+<div class="tbl"><table style="min-width:640px"><thead><tr><th>Característica (antes do sorteio)</th><th>Navegação</th><th>Controle</th><th>Diferença padronizada</th></tr></thead><tbody><tr><td>Consumo per capita nos 180 dias anteriores</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr><tr><td>Idade média</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr><tr><td>% sexo feminino</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr><tr><td>Distribuição por regional</td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td><td><span class="ph">aguardando desfecho</span></td></tr></tbody></table></div>
+<p class="note">O sorteio garante equilíbrio em média, mas com poucos controles as diferenças por acaso são grandes. O uplift é ajustado pelo consumo anterior ao sorteio, o que reduz esse ruído.</p></section>
+<section><h2>5. Quando o resultado fica legível</h2>
+<div class="tbl" style="padding:12px 14px;margin-bottom:12px"><svg viewBox="0 0 760 260" role="img" aria-label="Controles acumulados por mês, 5% e 10%"><line x1="54" y1="226.0" x2="690" y2="226.0" style="stroke:var(--line)"/><text x="48" y="230.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">0</text><line x1="54" y1="173.5" x2="690" y2="173.5" style="stroke:var(--line)"/><text x="48" y="177.5" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">500</text><line x1="54" y1="121.0" x2="690" y2="121.0" style="stroke:var(--line)"/><text x="48" y="125.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">1.000</text><line x1="54" y1="68.5" x2="690" y2="68.5" style="stroke:var(--line)"/><text x="48" y="72.5" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">1.500</text><line x1="54" y1="16.0" x2="690" y2="16.0" style="stroke:var(--line)"/><text x="48" y="20.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">2.000</text><text x="54.0" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 1</text><text x="111.8" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 2</text><text x="169.6" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 3</text><text x="227.5" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 4</text><text x="285.3" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 5</text><text x="343.1" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 6</text><text x="400.9" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 7</text><text x="458.7" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 8</text><text x="516.5" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 9</text><text x="574.4" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 10</text><text x="632.2" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 11</text><text x="690.0" y="248" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)">mês 12</text><polyline points="54.0,220.4 111.8,214.7 169.6,209.1 227.5,203.4 285.3,197.8 343.1,192.1 400.9,186.5 458.7,180.8 516.5,175.2 574.4,169.6 632.2,163.9 690.0,158.3" style="fill:none;stroke:var(--ctrl);stroke-width:2.5"/><circle cx="54.0" cy="220.4" r="3.5" style="fill:var(--ctrl)"/><circle cx="111.8" cy="214.7" r="3.5" style="fill:var(--ctrl)"/><circle cx="169.6" cy="209.1" r="3.5" style="fill:var(--ctrl)"/><circle cx="227.5" cy="203.4" r="3.5" style="fill:var(--ctrl)"/><circle cx="285.3" cy="197.8" r="3.5" style="fill:var(--ctrl)"/><circle cx="343.1" cy="192.1" r="3.5" style="fill:var(--ctrl)"/><circle cx="400.9" cy="186.5" r="3.5" style="fill:var(--ctrl)"/><circle cx="458.7" cy="180.8" r="3.5" style="fill:var(--ctrl)"/><circle cx="516.5" cy="175.2" r="3.5" style="fill:var(--ctrl)"/><circle cx="574.4" cy="169.6" r="3.5" style="fill:var(--ctrl)"/><circle cx="632.2" cy="163.9" r="3.5" style="fill:var(--ctrl)"/><circle cx="690.0" cy="158.3" r="3.5" style="fill:var(--ctrl)"/><text x="698.0" y="162.3" font-family="IBM Plex Sans, sans-serif" font-size="12.5" style="fill:var(--fg)" style="fill:var(--ctrl)" font-weight="600">5% · 645</text><polyline points="54.0,214.7 111.8,203.4 169.6,192.1 227.5,180.8 285.3,169.6 343.1,158.3 400.9,147.0 458.7,135.7 516.5,124.4 574.4,113.1 632.2,101.8 690.0,90.5" style="fill:none;stroke:var(--accent);stroke-width:2.5"/><circle cx="54.0" cy="214.7" r="3.5" style="fill:var(--accent)"/><circle cx="111.8" cy="203.4" r="3.5" style="fill:var(--accent)"/><circle cx="169.6" cy="192.1" r="3.5" style="fill:var(--accent)"/><circle cx="227.5" cy="180.8" r="3.5" style="fill:var(--accent)"/><circle cx="285.3" cy="169.6" r="3.5" style="fill:var(--accent)"/><circle cx="343.1" cy="158.3" r="3.5" style="fill:var(--accent)"/><circle cx="400.9" cy="147.0" r="3.5" style="fill:var(--accent)"/><circle cx="458.7" cy="135.7" r="3.5" style="fill:var(--accent)"/><circle cx="516.5" cy="124.4" r="3.5" style="fill:var(--accent)"/><circle cx="574.4" cy="113.1" r="3.5" style="fill:var(--accent)"/><circle cx="632.2" cy="101.8" r="3.5" style="fill:var(--accent)"/><circle cx="690.0" cy="90.5" r="3.5" style="fill:var(--accent)"/><text x="698.0" y="94.5" font-family="IBM Plex Sans, sans-serif" font-size="12.5" style="fill:var(--fg)" style="fill:var(--accent)" font-weight="600">10% · 1.290</text></svg></div>
+<div class="tbl"><table style="min-width:420px"><thead><tr><th>Acumulado</th><th class="n">Controles a 5%</th><th class="n">Controles a 10%</th></tr></thead><tbody><tr><td>mês 1</td><td class="n">54</td><td class="n">108</td></tr><tr><td>mês 3</td><td class="n">161</td><td class="n">323</td></tr><tr><td>mês 6</td><td class="n">323</td><td class="n">645</td></tr><tr><td>mês 9</td><td class="n">484</td><td class="n">968</td></tr><tr><td>mês 12</td><td class="n">645</td><td class="n">1.290</td></tr></tbody></table></div>
+<p class="note">Projeção da onda 1 sozinha, pelo volume de 12–16/10 (cerca de 51 elegíveis por dia útil). Com 5%, o mesmo número de controles leva o dobro do tempo que com 10%. As ondas 2 e 3 somam controles a partir de 17/11 e 24/11 e encurtam esse prazo. O efeito mínimo detectável em valor absoluto depende da variabilidade do desfecho, que só se conhece com os dados de consumo.</p></section>
+<section><h2>6. O que pode distorcer a leitura</h2><ul>
+<li><strong>Contaminação:</strong> paciente de controle que também é relevante em linha ainda não randomizada pode ser navegado por ela. Reportado com e sem esses pacientes.</li>
+<li><strong>Unidades sem navegadora:</strong> fora do escopo, o efeito é zero por construção. A análise usa só unidades do escopo vigente.</li>
+<li><strong>Atraso da fonte de consumo:</strong> cerca de duas semanas. Só entra quem tem a janela inteira observada.</li>
+<li><strong>Paciente sem CPF:</strong> vai para a navegação e fica fora da análise.</li>
+</ul></section>
+<section><h2>7. Pré-condições da primeira leitura</h2>
+<ul class="chk">
+<li><span class="st ok">OK</span><span><strong>Linhas da onda em produção, randomizadas</strong> — onda 1 desde 12/10</span></li>
+<li><span class="st pend">PENDENTE</span><span><strong>De acordo do negócio</strong> — previsto para 23/10</span></li>
+<li><span class="st pend">PENDENTE</span><span><strong>Desfecho declarado por escrito (total, específico) e janelas registradas</strong> — a definir com o negócio</span></li>
+<li><span class="st ok">OK</span><span><strong>Chave de cruzamento com o consumo</strong> — CPF; 85,5% dos sorteados casam com a base de consumo</span></li>
+<li><span class="st ok">OK</span><span><strong>Escopo de unidades com navegação</strong> — 103 unidades, vigente desde 14/10</span></li>
+<li><span class="st pend">PENDENTE</span><span><strong>Janela de 30 dias completa na fonte de consumo</strong> — a partir de meados de novembro</span></li>
+</ul></section>
+<footer>Esboço gerado em 2026-10-16 por gerar_esboco_uplift.py · números agregados · nenhum resultado de uplift calculado.</footer>
+</div>

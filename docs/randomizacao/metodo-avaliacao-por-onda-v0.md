@@ -13,10 +13,12 @@ tags: [randomizacao, metodo, ondas, captacao]
 | etapa do cronograma | DoD | o que se avalia | quem |
 |---|---|---|---|
 | **DEV** | PR para HML | job da linha com as tasks de randomização e relatório; linha ativa na config da `hml` | DS da linha |
-| **HML SHADOW** (10 dias úteis) | dados acumulados para gerar o relatório | operação diária, integridade da randomização, volume e carga — **sem envio ao negócio** | Tech Lead DS |
-| **RELATÓRIO E IMPACTO** | impacto informado ao negócio | relatório da onda: veredito dos critérios, volume por linha, pacientes retidos no controle, carga de navegação por regional | negócio da Captação |
-| **DE ACORDO** | de acordo do Targa | aceite de que a linha passa a reter a fração de controle | Targa |
-| **PRD** | linha em produção com envios já randomizados | o mesmo relatório, em PRD, na primeira semana | DS da linha + Tech Leads |
+| **HML SHADOW** (10 dias úteis) | dados acumulados para gerar o relatório | operação diária, integridade da randomização, volume e carga — **sem envio ao negócio** | Tech Lead (homologação) |
+| **RELATÓRIO E IMPACTO** | impacto nos envios informado ao negócio | relatório da onda: veredito dos critérios, volume por linha, pacientes retidos no controle, carga de navegação por regional | Tech Lead (relatório) |
+| **DE ACORDO** | de acordo do negócio (Targa) | aceite de que a linha passa a reter a fração de controle | responsável de negócio da Captação |
+| **PRD** | linha em produção com envios já randomizados | o mesmo relatório, em PRD, na primeira semana | DS da linha · aprovação do Tech Lead |
+
+Papéis conforme a apresentação *[IA] Randomização — Apresentação do Projeto v2*, slide 3, onde estão os nomes; o dono de cada etapa fica registrado no card da onda.
 
 **"Impacto" nesta etapa é operacional, não financeiro.** O relatório informa **o que muda para o
 negócio** — quantos pacientes por dia seguem para a navegação, quantos ficam no controle, em que

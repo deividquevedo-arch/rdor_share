@@ -1,0 +1,116 @@
+<title>Randomização — onda 1 (original)</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f4f7f7;--surface:#fff;--fg:#14262a;--muted:#55696d;--line:#d6e0e2;--accent:#0e6e74;--accent-soft:#e0efef;
+--nav:#0e6e74;--ctrl:#c07a12;--ctrl-soft:#f6ecd9;--ok:#2f7d4f;--ok-soft:#e3f2e8;--bad:#a6382f;--bad-soft:#f6e3e1;
+--f-d:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;--f-b:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+--f-m:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f181b;--surface:#152227;--fg:#e3ecee;--muted:#93a8ad;
+--line:#2a3b41;--accent:#5cc2c6;--accent-soft:#16363a;--nav:#5cc2c6;--ctrl:#e2b05c;--ctrl-soft:#3a2f14;--ok:#7fcf9c;--ok-soft:#163223;
+--bad:#ec8f86;--bad-soft:#3d1d1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f181b;--surface:#152227;--fg:#e3ecee;--muted:#93a8ad;--line:#2a3b41;--accent:#5cc2c6;
+--accent-soft:#16363a;--nav:#5cc2c6;--ctrl:#e2b05c;--ctrl-soft:#3a2f14;--ok:#7fcf9c;--ok-soft:#163223;--bad:#ec8f86;--bad-soft:#3d1d1a;color-scheme:dark}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-b)}
+.wrap{max-width:1040px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));
+padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
+header{display:flex;flex-direction:column;gap:8px;border-bottom:2px solid var(--fg);padding-bottom:18px}
+.eyebrow{font:500 12px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(28px,4.6vw,40px)/1.08 var(--f-d);margin:0;text-wrap:balance}
+h2{font:600 21px/1.2 var(--f-d);margin:0 0 12px}
+.meta{font:400 13px/1.5 var(--f-m);color:var(--muted)}
+section{display:flex;flex-direction:column}
+.verdict{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.badge{font:600 14px/1 var(--f-m);padding:8px 12px;border-radius:999px}
+.ok{background:var(--ok-soft);color:var(--ok)}.bad{background:var(--bad-soft);color:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .k{font:500 12px/1.3 var(--f-m);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font:600 30px/1.1 var(--f-d);font-variant-numeric:tabular-nums}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.nav .v{color:var(--nav)}.kpi.ctrl .v{color:var(--ctrl)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:600 11.5px/1.3 var(--f-m);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+td.n{font-family:var(--f-m);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+th.n{text-align:right}
+tr.total td{font-weight:600;background:var(--accent-soft)}
+.pill{font:500 12px/1 var(--f-m);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line);min-width:120px}
+.bar span{display:block;height:100%}
+.note{font-size:13.5px;color:var(--muted);max-width:80ch;margin-top:10px}
+.prop{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.prop .row{display:flex;gap:28px;flex-wrap:wrap}
+.prop .lbl{font:500 12px/1.3 var(--f-m);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.prop .val{font:600 24px/1.1 var(--f-d);font-variant-numeric:tabular-nums}
+ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+footer{font:400 12.5px/1.6 var(--f-m);color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+<div class="wrap">
+<header>
+<span class="eyebrow">Fábrica de IA · Captação · versão original</span>
+<h1>Randomização — relatório da onda 1</h1>
+<span class="meta">PRD · 2026-10-12 a 2026-10-16 (5 dias úteis) · Reumatologia, Tireoide (TI-RADS) · fração de controle vigente 5,0%</span>
+</header>
+<section><h2>Pacientes no período</h2>
+<div class="kpis">
+<div class="kpi"><span class="k">Analisados pelo algoritmo</span><span class="v">15.733</span></div>
+<div class="kpi"><span class="k">Relevantes</span><span class="v">340</span></div>
+<div class="kpi"><span class="k">Randomizados</span><span class="v">256</span></div>
+<div class="kpi nav"><span class="k">Navegação</span><span class="v">245</span><span class="s">enviados às navegadoras</span></div>
+<div class="kpi ctrl"><span class="k">Controle</span><span class="v">11</span><span class="s">registrados, não enviados</span></div>
+</div>
+</section>
+<section><h2>Critérios de aceite</h2>
+<div class="verdict">
+<span class="badge ok">APTA</span></div>
+<div class="tbl" style="margin-top:12px"><table><thead><tr><th>Critério</th><th>Resultado</th><th>Status</th></tr></thead><tbody>
+<tr><td>Execução — Reumatologia</td><td>5 de 5 dias úteis; falhas: nenhuma</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Sem CPF — Reumatologia</td><td>0,0% dos elegíveis</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Execução — Tireoide (TI-RADS)</td><td>5 de 5 dias úteis; falhas: nenhuma</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Sem CPF — Tireoide (TI-RADS)</td><td>0,0% dos elegíveis</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Controle enviado (onda)</td><td>0 registros</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>CPF com dois grupos (onda)</td><td>0 em 284 registros</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Aderência à base (onda)</td><td>0 divergentes</td><td><span class="pill ok">OK</span></td></tr>
+<tr><td>Proporção de controle (onda)</td><td>z = -0,52 sobre 256 pacientes</td><td><span class="pill ok">OK</span></td></tr>
+</tbody></table></div></section>
+<section><h2>Por linha de cuidado</h2>
+<div class="tbl"><table style="min-width:900px"><thead><tr>
+<th>Linha</th>
+<th class="n">Analisados</th>
+<th class="n">Relevantes</th>
+<th class="n">Randomizados</th>
+<th class="n">Navegação</th>
+<th class="n">Controle</th>
+<th class="n">% controle</th>
+<th class="n">Navegação/dia útil</th>
+<th class="n">Controle/mês (projeção)</th>
+</tr></thead><tbody>
+<tr><td>Reumatologia</td><td class="n">10.623</td><td class="n">60</td><td class="n">52</td><td class="n">48</td><td class="n">4</td><td class="n">7,7%</td><td class="n">9,6</td><td class="n">16,8</td></tr>
+<tr><td>Tireoide (TI-RADS)</td><td class="n">5.110</td><td class="n">280</td><td class="n">204</td><td class="n">197</td><td class="n">7</td><td class="n">3,4%</td><td class="n">39,4</td><td class="n">29,4</td></tr>
+<tr class="total"><td>Onda 1</td><td class="n">15.733</td><td class="n">340</td><td class="n">256</td><td class="n">245</td><td class="n">11</td><td class="n">4,3%</td><td class="n"></td><td class="n"></td></tr>
+</tbody></table></div>
+<p class="note">Projeção mensal = controles observados por dia útil × 21. Com poucos dias, oscila muito.</p>
+</section>
+<section><h2>Navegação por regional (pacientes enviados)</h2>
+<ul>
+<li><strong>Reumatologia:</strong> SP 26 · PE 11 · RJ 6 · DF 4 · PR 1</li>
+<li><strong>Tireoide (TI-RADS):</strong> SP 130 · RJ 39 · PE 19 · PR 5 · BA 2 · SE 1 · MG 1</li>
+</ul>
+</section>
+<section><h2>Contaminação entre linhas (informativo)</h2>
+<div class="tbl"><table style="min-width:520px"><thead><tr><th>Linha</th><th>Grupo</th><th class="n">Pacientes</th><th class="n">Também relevantes em outra linha</th></tr></thead><tbody>
+<tr><td>Reumatologia</td><td>Controle</td><td class="n">4</td><td class="n">0</td></tr>
+<tr><td>Reumatologia</td><td>Navegação</td><td class="n">48</td><td class="n">1</td></tr>
+<tr><td>Tireoide (TI-RADS)</td><td>Controle</td><td class="n">7</td><td class="n">0</td></tr>
+<tr><td>Tireoide (TI-RADS)</td><td>Navegação</td><td class="n">197</td><td class="n">23</td></tr>
+</tbody></table></div>
+<p class="note">Paciente de controle relevante numa linha não randomizada pode ser navegado por ela. Quanto mais linhas randomizadas, menor esse efeito: o grupo é do CPF e vale para todas.</p></section>
+<section><h2>O que este relatório não mede</h2><ul>
+<li><strong>Impacto financeiro (uplift).</strong> Medido depois, com a linha em produção e após o de acordo, quando houver desfecho de consumo com janela completa.</li>
+<li><strong>Acerto clínico da régua.</strong> Este relatório avalia a randomização e a operação, não o laudo.</li>
+</ul></section>
+<footer>Gerado em 2026-10-16 por gerar_relatorio_onda.py · números agregados, nenhum dado de paciente · fonte: mlops_fabrica_ia.operacao e saídas do motor.</footer>
+</div>
