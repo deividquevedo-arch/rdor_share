@@ -474,6 +474,99 @@ def svg_barras_h(itens, cor="var(--nav)"):
     return "".join(p)
 
 
+# Horizonte do uplift — premissas medidas em 19/10/2026 (docs/randomizacao/horizonte-uplift-por-linha-v0.md)
+CV_CONSUMO = 3.5        # coeficiente de variação do consumo em 30 dias, sem o 1% mais alto
+CONV_BASE = 0.58        # % de pacientes relevantes que consomem em 30 dias
+Z_PODER = 1.959964 + 0.841621   # IC 95% e poder de 80%
+
+
+def meses_conv(d, f, vol):
+    return Z_PODER ** 2 * CONV_BASE * (1 - CONV_BASE) / d ** 2 * (1 / f + 1 / (1 - f)) / vol
+
+
+def meses_valor(mde, f, vol):
+    return (Z_PODER * CV_CONSUMO / mde) ** 2 * (1 / f + 1 / (1 - f)) / vol
+
+
+def volume_mensal(a, desde):
+    """Pacientes sorteados por mês desde o escopo atual até o dado mais recente (projeção, não a janela do relatório)."""
+    lst = ", ".join(f"'{l}'" for l in a.linhas)
+    r = consulta(f"""
+      SELECT nm_especialidade linha, count(DISTINCT num_cpf) pacientes, count(DISTINCT to_date(dt_execucao_modelo)) dias,
+             max(to_date(dt_execucao_modelo)) ate
+      FROM {OP}.tb_mov_randomizacao_log
+      WHERE tp_ambiente = '{a.ambiente}' AND nm_especialidade IN ({lst})
+        AND to_date(dt_execucao_modelo) >= '{desde}'
+      GROUP BY 1""", a.perfil)
+    a.horizonte_periodo = (desde, max((x["ate"] for x in r), default=desde))
+    vol = {x["linha"]: n(x["pacientes"]) / max(n(x["dias"]), 1) * DIAS_UTEIS_MES for x in r}
+    vol["onda"] = sum(vol.values())
+    return vol
+
+
+def svg_horizonte(cenarios):
+    """cenarios: [(rótulo, meses_5, meses_10)] — barras horizontais pareadas, escala comum."""
+    W, L, R = 760, 200, 70
+    H = 10 + 46 * len(cenarios)
+    vmax = max(max(m5, m10) for _, m5, m10 in cenarios) or 1
+    p = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="Meses até o resultado com 5% e 10% de controle">']
+    for i, (rot, m5, m10) in enumerate(cenarios):
+        y = 8 + 46 * i
+        p.append(f'<text x="{L - 10}" y="{y + 19}" text-anchor="end" {LBL}>{rot}</text>')
+        for k, (m, cor) in enumerate(((m5, "var(--ctrl)"), (m10, "var(--nav)"))):
+            yy = y + k * 18
+            w = (W - L - R) * m / vmax
+            p.append(f'<rect x="{L}" y="{yy}" width="{w:.1f}" height="15" rx="3" style="fill:{cor}"/>')
+            p.append(f'<text x="{L + w + 6:.1f}" y="{yy + 12}" {TXT} style="fill:var(--fg)">'
+                     f'{fmt(m, 0)} {"mês" if round(m) == 1 else "meses"}</text>')
+    p.append("</svg>")
+    return "".join(p)
+
+
+def secao_horizonte(a, vol):
+    o = vol["onda"]
+    graf = [("conversão +10 p.p.", meses_conv(.10, .05, o), meses_conv(.10, .10, o)),
+            ("conversão +8 p.p.", meses_conv(.08, .05, o), meses_conv(.08, .10, o)),
+            ("conversão +5 p.p.", meses_conv(.05, .05, o), meses_conv(.05, .10, o)),
+            ("consumo em R$ +30%", meses_valor(.30, .05, o), meses_valor(.30, .10, o))]
+    alvos = [("conversão +10 p.p.", lambda f, v: meses_conv(.10, f, v)),
+             ("conversão +8 p.p.", lambda f, v: meses_conv(.08, f, v)),
+             ("conversão +5 p.p.", lambda f, v: meses_conv(.05, f, v)),
+             ("consumo em R$ +30%", lambda f, v: meses_valor(.30, f, v)),
+             ("consumo em R$ +20%", lambda f, v: meses_valor(.20, f, v))]
+    cols = [("onda", f"Onda {a.onda}")] + [(l, NOMES.get(l, l)) for l in a.linhas]
+    H = ["<section><h2>Quando teremos o resultado de uplift</h2>",
+         '<p class="note" style="margin:0 0 10px">Meses de operação para um resultado confiável (intervalo de 95%, '
+         "poder de 80%), conforme o tamanho do ganho que se quer enxergar. <strong>Com 10% de controle, o resultado sai "
+         "na metade do tempo de 5%.</strong></p>",
+         legenda(("5% de controle", "var(--ctrl)"), ("10% de controle", "var(--nav)")),
+         f'<div class="tbl" style="padding:12px 14px;margin:8px 0 12px"><div class="note" style="margin:0 0 6px">'
+         f"Onda {a.onda} — meses de acúmulo</div>" + svg_horizonte(graf) + "</div>",
+         '<div class="tbl"><table style="min-width:760px"><thead><tr><th>Ganho a detectar</th>']
+    H += [f'<th{NUM}>{nome}<br><span class="note" style="margin:0">5% · 10%</span></th>' for _, nome in cols]
+    H += ["</tr></thead><tbody>"]
+    for rot, fn in alvos:
+        H.append("<tr><td>" + rot + "</td>" + "".join(
+            f"<td{NUM}>{fmt(fn(.05, vol[k]), 0)} · <strong>{fmt(fn(.10, vol[k]), 0)}</strong></td>" if vol.get(k) else
+            f"<td{NUM}>—</td>" for k, _ in cols) + "</tr>")
+    H += ["</tbody></table></div>",
+          '<p class="note"><strong>Somar a esse prazo</strong> a janela de observação (90 dias depois do último sorteado) e '
+          "o atraso da base de consumo (cerca de 2 semanas). Exemplo: conversão +8 p.p. com 10% na onda → "
+          f"{fmt(meses_conv(.08, .10, o), 0)} meses de acúmulo + 90 dias + 2 semanas ≈ "
+          f"{fmt(meses_conv(.08, .10, o) + 3.5, 1)} meses até o primeiro resultado confiável.</p>",
+          '<p class="note"><strong>Por que conversão como indicador principal:</strong> o consumo em R$ tem cauda muito longa '
+          "(mediana de cerca de R$ 130 e média de R$ 1.900 a R$ 3.500 em 30 dias), e esse ruído esconde ganhos de 20% por "
+          "anos. A conversão (voltou ou não a consumir) varia pouco e responde em meses. <strong>Por linha isolada, só a "
+          "tireoide tem volume</strong>; a leitura é pela onda, e as ondas 2 e 3 encurtam o prazo ao somar pacientes.</p>",
+          '<p class="note"><strong>Base do cálculo:</strong> pacientes sorteados por dia útil desde o escopo atual de '
+          f"unidades, de {a.horizonte_periodo[0][8:10]}/{a.horizonte_periodo[0][5:7]} a "
+          f"{a.horizonte_periodo[1][8:10]}/{a.horizonte_periodo[1][5:7]} ({', '.join(f'{nome} {fmt(vol[k], 0)}/mês' for k, nome in cols if vol.get(k))}); variação do consumo "
+          "medida em pacientes relevantes com exame até 30/08 e consumo nos 30 dias seguintes "
+          f"(coeficiente de variação {fmt(CV_CONSUMO, 1)}, conversão base {fmt(100 * CONV_BASE, 0)}%). Com a janela de "
+          "90 dias completa, a estimativa será refeita.</p></section>"]
+    return H
+
+
 def legenda(*itens):
     return ('<div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)">' +
             "".join(f'<span><i style="display:inline-block;width:11px;height:11px;border-radius:3px;'
@@ -681,6 +774,8 @@ def escrever_html(a, uteis, p, por, tot_r, tot_c, z, crit, versao):
     H += ["</tbody></table></div>",
           '<p class="note">Paciente de controle relevante numa linha não randomizada pode ser navegado por ela. '
           "Quanto mais linhas randomizadas, menor esse efeito: o grupo é do CPF e vale para todas.</p></section>"]
+    if ajustada and getattr(a, "vol_horizonte", None):
+        H += secao_horizonte(a, a.vol_horizonte)
     H += ["<section><h2>O que este relatório não mede</h2><ul>",
           "<li><strong>Impacto financeiro (uplift).</strong> Medido depois, com a linha em produção e após o de acordo, "
           "quando houver desfecho de consumo com janela completa.</li>",
@@ -688,7 +783,8 @@ def escrever_html(a, uteis, p, por, tot_r, tot_c, z, crit, versao):
           "</ul></section>",
           f'<footer>Gerado em {dt.date.today().isoformat()} por gerar_relatorio_onda.py · números agregados, '
           "nenhum dado de paciente · fonte: mlops_fabrica_ia.operacao e saídas do motor.</footer>", "</div>"]
-    nome = f"relatorio-onda{a.onda}-{a.ambiente}-{a.inicio}_{a.fim}-{versao}.html"
+    suf = f"-{a.sufixo}" if getattr(a, "sufixo", "") else ""
+    nome = f"relatorio-onda{a.onda}-{a.ambiente}-{a.inicio}_{a.fim}-{versao}{suf}.html"
     destino = Path(a.saida) / nome
     destino.write_text("\n".join(H), encoding="utf-8")
     return destino
@@ -706,16 +802,23 @@ def main():
     ap.add_argument("--repo", default=str(Path(__file__).resolve().parents[3] / "fabrica-ia-nlp-platform"),
                     help="clone do fabrica-ia-nlp-platform (escopo de unidades da navegação)")
     ap.add_argument("--saida", default=str(Path(__file__).parent.parent / "relatorios"))
+    ap.add_argument("--horizonte", action="store_true", help="inclui a seção 'Quando teremos o resultado de uplift'")
+    ap.add_argument("--sufixo", default="", help="nova versão (ex.: v2): grava só a ajustada, com sufixo, sem tocar nas anteriores")
     a = ap.parse_args()
     Path(a.saida).mkdir(parents=True, exist_ok=True)
     dados = coletar(a)
     uteis, p, por, tot_r, tot_c, z = avaliar(a, *dados)
     crit = criterios(a, dados[2], por, tot_r, z)
-    destino, ok = escrever(a, uteis, p, por, tot_r, tot_c, z, crit)
-    print(f"{destino.name}: {'APTA' if ok else 'COM PENDENCIAS'} · {int(tot_r)} randomizados · {int(tot_c)} controle")
+    if not a.sufixo:   # versão nova não regrava o markdown da versão anterior
+        destino, ok = escrever(a, uteis, p, por, tot_r, tot_c, z, crit)
+        print(f"{destino.name}: {'APTA' if ok else 'COM PENDENCIAS'} · {int(tot_r)} randomizados · {int(tot_c)} controle")
     if a.html:
         a.funil = funil_exames(a)
-        for versao in ("original", "ajustada"):
+        if a.horizonte:
+            datas = [f["escopo_desde"] for f in a.funil.values() if f.get("escopo_desde")]
+            desde = max([a.inicio] + datas)
+            a.vol_horizonte = volume_mensal(a, desde)
+        for versao in (("ajustada",) if a.sufixo else ("original", "ajustada")):
             print(escrever_html(a, uteis, p, por, tot_r, tot_c, z, crit, versao).name)
 
 
