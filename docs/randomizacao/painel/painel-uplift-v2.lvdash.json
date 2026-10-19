@@ -1,0 +1,1186 @@
+{
+ "datasets": [
+  {
+   "name": "resumo",
+   "displayName": "Resumo por linha e janela",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j), u AS (SELECT linha, grupo, janela, valor, dias_ate_1o_consumo FROM b UNION ALL SELECT 'Onda 1', grupo, janela, valor, dias_ate_1o_consumo FROM b),\n",
+    "g AS (\n",
+    "  SELECT linha, janela,\n",
+    "         count_if(grupo = 'Navegação') AS n_nav, count_if(grupo = 'Controle') AS n_ctrl,\n",
+    "         avg(CASE WHEN grupo = 'Navegação' THEN CASE WHEN valor > 0 THEN 1.0 ELSE 0.0 END END) AS conv_nav,\n",
+    "         avg(CASE WHEN grupo = 'Controle'  THEN CASE WHEN valor > 0 THEN 1.0 ELSE 0.0 END END) AS conv_ctrl,\n",
+    "         avg(CASE WHEN grupo = 'Navegação' THEN valor END) AS percap_nav,\n",
+    "         avg(CASE WHEN grupo = 'Controle'  THEN valor END) AS percap_ctrl,\n",
+    "         var_samp(CASE WHEN grupo = 'Navegação' THEN valor END) AS var_nav,\n",
+    "         var_samp(CASE WHEN grupo = 'Controle'  THEN valor END) AS var_ctrl\n",
+    "  FROM u GROUP BY 1, 2),\n",
+    "e AS (SELECT *, percap_nav - percap_ctrl AS uplift, sqrt(var_nav / n_nav + var_ctrl / n_ctrl) AS ep FROM g),\n",
+    "z AS (SELECT *, uplift / ep AS z, 1 / (1 + 0.2316419 * abs(uplift / ep)) AS t FROM e),\n",
+    "p AS (SELECT *, 0.3989423 * exp(-z * z / 2) * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))) AS pd FROM z)\n",
+    "SELECT linha, janela, n_nav, n_ctrl, conv_nav, conv_ctrl, conv_nav - conv_ctrl AS conv_dif,\n",
+    "       round(percap_nav, 2) AS percap_nav, round(percap_ctrl, 2) AS percap_ctrl,\n",
+    "       round(uplift, 2) AS uplift, round(uplift - 1.96 * ep, 2) AS ic_inf, round(uplift + 1.96 * ep, 2) AS ic_sup,\n",
+    "       uplift / percap_ctrl AS uplift_pct, round(uplift * n_nav, 0) AS uplift_total,\n",
+    "       CASE WHEN z >= 0 THEN 1 - pd ELSE pd END AS prob_ganho,\n",
+    "       CASE WHEN uplift - 1.96 * ep > 0 THEN 'ganho claro' ELSE 'ainda não dá para afirmar' END AS leitura\n",
+    "FROM p\n"
+   ]
+  },
+  {
+   "name": "box",
+   "displayName": "Pacientes que consumiram (90 dias)",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j)\n",
+    "SELECT grupo, round(valor, 2) AS consumo FROM b WHERE janela = 90 AND valor > 0 AND valor < 6000\n"
+   ]
+  },
+  {
+   "name": "quartis",
+   "displayName": "Quartis (90 dias)",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j), u AS (SELECT linha, grupo, janela, valor, dias_ate_1o_consumo FROM b UNION ALL SELECT 'Onda 1', grupo, janela, valor, dias_ate_1o_consumo FROM b)\n",
+    "SELECT linha, grupo, count(*) AS consumiram,\n",
+    "       round(percentile(valor, 0.25), 0) AS q1, round(percentile(valor, 0.5), 0) AS mediana,\n",
+    "       round(avg(valor), 0) AS media, round(percentile(valor, 0.75), 0) AS q3,\n",
+    "       round(stddev(valor), 0) AS desvio\n",
+    "FROM u WHERE janela = 90 AND valor > 0 GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "densidade",
+   "displayName": "Distribuição por faixa (90 dias)",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j),\n",
+    "f AS (SELECT grupo, least(floor(valor / 100), 49) AS faixa FROM b WHERE janela = 90 AND valor > 0),\n",
+    "c AS (SELECT grupo, faixa, count(*) AS n FROM f GROUP BY 1, 2),\n",
+    "t AS (SELECT grupo, sum(n) AS tot FROM c GROUP BY 1),\n",
+    "s AS (SELECT c.grupo, c.faixa, c.n / t.tot AS pct FROM c JOIN t USING (grupo))\n",
+    "SELECT grupo, (faixa * 100 + 50) AS consumo_rs,\n",
+    "       avg(pct) OVER (PARTITION BY grupo ORDER BY faixa ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING) AS pct_do_grupo\n",
+    "FROM s\n"
+   ]
+  },
+  {
+   "name": "conversao",
+   "displayName": "Conversão por dia",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j), d AS (SELECT explode(sequence(0, 180, 5)) AS dia)\n",
+    "SELECT b.grupo, d.dia, avg(CASE WHEN b.dias_ate_1o_consumo <= d.dia THEN 1.0 ELSE 0.0 END) AS pct_convertidos\n",
+    "FROM b CROSS JOIN d WHERE b.janela = 180 GROUP BY 1, 2\n"
+   ]
+  },
+  {
+   "name": "semana",
+   "displayName": "Consumo acumulado por semana",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(sequence(0, 182, 7)) AS janela) j),\n",
+    "g AS (SELECT cast(janela / 7 AS INT) AS semana,\n",
+    "             avg(CASE WHEN grupo = 'Navegação' THEN valor END) AS nav,\n",
+    "             avg(CASE WHEN grupo = 'Controle' THEN valor END) AS ctrl\n",
+    "      FROM b GROUP BY 1)\n",
+    "SELECT semana, 'Navegação' AS serie, round(nav, 2) AS consumo FROM g\n",
+    "UNION ALL SELECT semana, 'Controle', round(ctrl, 2) FROM g\n",
+    "UNION ALL SELECT semana, 'Uplift (diferença)', round(nav - ctrl, 2) FROM g\n"
+   ]
+  },
+  {
+   "name": "conv_bar",
+   "displayName": "Conversão em 90 dias",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j)\n",
+    "SELECT grupo, avg(CASE WHEN valor > 0 THEN 1.0 ELSE 0.0 END) AS pct_convertidos FROM b WHERE janela = 90 GROUP BY 1\n"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "name": "uplift_demo",
+   "displayName": "Uplift — demonstração",
+   "layout": [
+    {
+     "widget": {
+      "name": "aviso",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**⚠️ DADOS SIMULADOS** — demonstração do formato do painel de uplift. Nenhum número é resultado real. Onda 1 (Reumatologia + Tireoide) · janela de 90 dias · ~12 meses com 10% de controle."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_uplift",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(CASE WHEN linha = 'Onda 1' AND janela = 90 THEN `uplift` END)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo a mais por paciente",
+        "showDescription": true,
+        "description": "Navegação − controle, por paciente sorteado, em 90 dias"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0,
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(CASE WHEN linha = 'Onda 1' AND janela = 90 THEN `uplift_pct` END)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Ganho sobre o controle",
+        "showDescription": true,
+        "description": "Quanto a navegação consome a mais, em %"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0,
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_conv",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(CASE WHEN linha = 'Onda 1' AND janela = 90 THEN `conv_dif` END)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Conversão a mais",
+        "showDescription": true,
+        "description": "Diferença no % de pacientes que voltam a consumir"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0,
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_prob",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(CASE WHEN linha = 'Onda 1' AND janela = 90 THEN `prob_ganho` END)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Probabilidade de ganho",
+        "showDescription": true,
+        "description": "Chance de o ganho ser maior que zero"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0,
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_box",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "box",
+         "fields": [
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "consumo",
+           "expression": "`consumo`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "box",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo de quem voltou — navegação × controle",
+        "showDescription": true,
+        "description": "Caixa = 50% centrais · linha = mediana · pontos = valores fora da caixa"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "grupo",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "consumo",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": "Consumo em 90 dias"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 7,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "t_quartis",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "quartis",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "consumiram",
+           "expression": "`consumiram`"
+          },
+          {
+           "name": "q1",
+           "expression": "`q1`"
+          },
+          {
+           "name": "mediana",
+           "expression": "`mediana`"
+          },
+          {
+           "name": "media",
+           "expression": "`media`"
+          },
+          {
+           "name": "q3",
+           "expression": "`q3`"
+          },
+          {
+           "name": "desvio",
+           "expression": "`desvio`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Resumo estatístico — quem voltou em 90 dias"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "grupo"
+         },
+         {
+          "fieldName": "consumiram"
+         },
+         {
+          "fieldName": "q1"
+         },
+         {
+          "fieldName": "mediana"
+         },
+         {
+          "fieldName": "media"
+         },
+         {
+          "fieldName": "q3"
+         },
+         {
+          "fieldName": "desvio"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 4,
+      "width": 5,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dens",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "densidade",
+         "fields": [
+          {
+           "name": "consumo_rs",
+           "expression": "`consumo_rs`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_do_grupo`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuições sobrepostas — a navegação se desloca para a direita",
+        "showDescription": true,
+        "description": "% de cada grupo por faixa de consumo (R$ 100), curva suavizada"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "consumo_rs",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Consumo em 90 dias (R$)"
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": "% do grupo"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 11,
+      "width": 6,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_conv",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "conversao",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_convertidos`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "Mais pacientes voltam — e voltam antes",
+        "showDescription": true,
+        "description": "% do grupo que já teve algum consumo, por dia após o sorteio"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Dias após o sorteio"
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": "% que já consumiu"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 11,
+      "width": 6,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_semana",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "semana",
+         "fields": [
+          {
+           "name": "semana",
+           "expression": "`semana`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`consumo`)"
+          },
+          {
+           "name": "serie",
+           "expression": "`serie`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "O ganho se abre cedo e cresce semana a semana",
+        "showDescription": true,
+        "description": "Consumo acumulado por paciente sorteado (zero para quem não consumiu); verde = diferença"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "semana",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Semanas desde o sorteio"
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": "Consumo acumulado por paciente"
+         }
+        },
+        "color": {
+         "fieldName": "serie",
+         "displayName": "serie",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           },
+           {
+            "value": "Uplift (diferença)",
+            "color": "#2A8A50"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 18,
+      "width": 8,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_convbar",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "conv_bar",
+         "fields": [
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_convertidos`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "% que voltou em 90 dias"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "grupo",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 18,
+      "width": 4,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_linha",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(CASE WHEN janela = 90 THEN `uplift` END)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo a mais por paciente — onda e linhas",
+        "showDescription": true,
+        "description": "A decisão é pela onda; por linha é descritivo"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 25,
+      "width": 5,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "t_linha",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "resumo",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "janela",
+           "expression": "`janela`"
+          },
+          {
+           "name": "uplift",
+           "expression": "`uplift`"
+          },
+          {
+           "name": "ic_inf",
+           "expression": "`ic_inf`"
+          },
+          {
+           "name": "ic_sup",
+           "expression": "`ic_sup`"
+          },
+          {
+           "name": "prob_ganho",
+           "expression": "`prob_ganho`"
+          },
+          {
+           "name": "leitura",
+           "expression": "`leitura`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Uplift com intervalo de 95% — por linha e janela"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "janela"
+         },
+         {
+          "fieldName": "uplift"
+         },
+         {
+          "fieldName": "ic_inf"
+         },
+         {
+          "fieldName": "ic_sup"
+         },
+         {
+          "fieldName": "prob_ganho"
+         },
+         {
+          "fieldName": "leitura"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 5,
+      "y": 25,
+      "width": 7,
+      "height": 6
+     }
+    }
+   ]
+  }
+ ]
+}

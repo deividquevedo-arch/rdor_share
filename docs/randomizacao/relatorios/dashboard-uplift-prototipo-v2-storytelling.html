@@ -1,0 +1,415 @@
+<title>Uplift da Captação — protótipo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: narrativa vertical em atos (resposta → confiança → causa → tempo → lugar → ação); cada ato é uma faixa com título-mensagem e um ou dois gráficos */
+:root{
+  --bg:#f2f5f6; --surface:#ffffff; --fg:#13262b; --muted:#66787c; --line:#d7e0e2; --grid:#e8eeef;
+  --nav:#0b7a80; --nav-soft:rgba(11,122,128,.16); --ctrl:#9aa6a9; --ctrl-soft:rgba(154,166,169,.22);
+  --gain:#2a8a50; --gain-soft:rgba(42,138,80,.14); --warn-bg:#fff3d6; --warn-fg:#7a5600;
+  --f-d:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-b:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-m:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1719; --surface:#142125; --fg:#e4edef; --muted:#8fa3a8; --line:#26393e; --grid:#1c2d31;
+  --nav:#4fc4c9; --nav-soft:rgba(79,196,201,.18); --ctrl:#6f7f83; --ctrl-soft:rgba(111,127,131,.25);
+  --gain:#7fd39f; --gain-soft:rgba(127,211,159,.14); --warn-bg:#3a2e12; --warn-fg:#f0cd7a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1719; --surface:#142125; --fg:#e4edef; --muted:#8fa3a8; --line:#26393e; --grid:#1c2d31;
+  --nav:#4fc4c9; --nav-soft:rgba(79,196,201,.18); --ctrl:#6f7f83; --ctrl-soft:rgba(111,127,131,.25);
+  --gain:#7fd39f; --gain-soft:rgba(127,211,159,.14); --warn-bg:#3a2e12; --warn-fg:#f0cd7a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-b)}
+.wrap{max-width:1120px;margin:0 auto;padding-block:20px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+.warn{background:var(--warn-bg);color:var(--warn-fg);border-radius:8px;padding:9px 14px;font:600 13px/1.4 var(--f-b)}
+.warn b{font-family:var(--f-m);letter-spacing:.06em;margin-right:6px}
+.top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.eyebrow{font:500 12px var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ctrls{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:500 13px var(--f-b);color:var(--muted);background:transparent;border:0;padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--nav);outline-offset:-2px}
+.hero{display:flex;flex-direction:column;gap:10px;padding-block:6px 4px}
+.hero h1{font:700 clamp(30px,5vw,50px)/1.04 var(--f-d);margin:0;max-width:22ch;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gain)}
+.hero .dek{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:62ch;margin:0}
+.big3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:6px}
+.big{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.big .k{font:500 12px var(--f-m);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.big .v{font:700 36px/1 var(--f-d);font-variant-numeric:tabular-nums}
+.big .s{font-size:13px;color:var(--muted)}
+.big.g .v{color:var(--gain)}
+.act{display:flex;flex-direction:column;gap:12px}
+.act-h{display:flex;gap:14px;align-items:baseline}
+.act-n{font:600 12px var(--f-m);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.act h2{font:700 clamp(21px,2.6vw,27px)/1.15 var(--f-d);margin:0;text-wrap:balance}
+.act .lead{margin:0;color:var(--muted);max-width:72ch}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.row{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.card h3{font:600 16px/1.25 var(--f-d);margin:0}
+.card .cap{font-size:12.5px;color:var(--muted);margin:0}
+svg{display:block;width:100%;height:auto}
+.next{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--fg);border-radius:0 12px 12px 0;padding:16px 18px}
+.next ol{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+summary{cursor:pointer;font:600 14px var(--f-b)}
+.stats{display:grid;grid-template-columns:auto 1fr 1fr;gap:3px 16px;font-size:13px;margin-top:10px}
+.stats div{font-variant-numeric:tabular-nums}
+.stats .h{font:500 11px var(--f-m);text-transform:uppercase;color:var(--muted)}
+footer{font:400 12px/1.6 var(--f-m);color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+</style>
+
+<div class="wrap">
+  <div class="warn" role="note"><b>DADOS SIMULADOS</b>Protótipo do dashboard de uplift. Nenhum número é resultado real — a medição começa com o desfecho de consumo disponível.</div>
+
+  <div class="top">
+    <span class="eyebrow" id="eyebrow">Captação · onda 1</span>
+    <div class="ctrls">
+      <div class="seg" id="seg-janela" aria-label="Janela de observação">
+        <button data-v="30">30 dias</button><button data-v="90" aria-pressed="true">90 dias</button><button data-v="180">180 dias</button></div>
+      <div class="seg" id="seg-linha" aria-label="Linha de cuidado">
+        <button data-v="onda" aria-pressed="true">Onda 1</button><button data-v="reumato">Reumatologia</button><button data-v="tireoide">Tireoide</button></div>
+    </div>
+  </div>
+
+  <!-- ATO 1 — a resposta -->
+  <section class="hero">
+    <h1 id="headline"></h1>
+    <p class="dek" id="dek"></p>
+    <div class="big3" id="big3"></div>
+  </section>
+
+  <!-- ATO 2 — por que confiar -->
+  <section class="act">
+    <div class="act-h"><span class="act-n">1 · Confiança</span><h2 id="t-conf"></h2></div>
+    <p class="lead">Os dois grupos foram formados por sorteio do CPF, antes de qualquer contato. Se antes do sorteio eles já eram parecidos, a diferença depois só pode vir da navegação.</p>
+    <div class="card"><h3>Antes do sorteio, os grupos eram parecidos</h3><div id="balance"></div>
+      <p class="cap">Média de cada característica nos dois grupos. Pontos próximos = grupos comparáveis.</p></div>
+  </section>
+
+  <!-- ATO 3 — de onde vem o ganho -->
+  <section class="act">
+    <div class="act-h"><span class="act-n">2 · Causa</span><h2 id="t-causa"></h2></div>
+    <div class="row">
+      <div class="card"><h3 id="t-km"></h3><div id="km"></div>
+        <p class="cap">% do grupo que já teve algum consumo na Rede, por dia após o sorteio. A área verde é a conversão a mais.</p></div>
+      <div class="card"><h3 id="t-box"></h3><div id="box"></div>
+        <p class="cap">Entre quem consumiu: a caixa vai do 1º ao 3º quartil, a linha é a mediana, o losango é a média.</p></div>
+    </div>
+    <div class="card"><h3 id="t-dens"></h3><div id="dens"></div>
+      <p class="cap">Quanto cada paciente consumiu, em escala logarítmica. Linhas tracejadas = médias.</p></div>
+  </section>
+
+  <!-- ATO 4 — quando -->
+  <section class="act">
+    <div class="act-h"><span class="act-n">3 · Tempo</span><h2 id="t-tl"></h2></div>
+    <div class="card"><div id="tl"></div>
+      <p class="cap">Consumo acumulado por paciente sorteado, contando zero para quem não consumiu. A área verde é o uplift.</p></div>
+  </section>
+
+  <!-- ATO 5 — onde -->
+  <section class="act">
+    <div class="act-h"><span class="act-n">4 · Onde</span><h2 id="t-forest"></h2></div>
+    <p class="lead">A conclusão é pela onda. Cada linha sozinha tem poucos pacientes de controle, e o intervalo fica largo — cruzar o zero não quer dizer que não há efeito, quer dizer que ainda não dá para ver.</p>
+    <div class="card"><div id="forest"></div></div>
+  </section>
+
+  <!-- ATO 6 — o que fazer -->
+  <section class="act">
+    <div class="act-h"><span class="act-n">5 · Próximo passo</span><h2>O que esta leitura pede</h2></div>
+    <div class="next" id="next"></div>
+  </section>
+
+  <details><summary>Detalhes estatísticos</summary><div class="stats" id="stats"></div></details>
+
+  <footer>Protótipo · simulação com semente fixa seguindo a hipótese de que o controle consome menos · tamanhos equivalentes a ~12 meses da onda 1 com 10% de controle (com 5% e 6 meses, o mesmo efeito não seria detectável) · estrutura em docs/randomizacao/relatorios/esboco-relatorio-uplift-v1.html.</footer>
+</div>
+
+<script>
+(function () {
+  // ------------------------------------------------------------ simulação (semente fixa)
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function normal(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+  var LINHAS = {
+    reumato:  { nome: "Reumatologia", nNav: 2500, nCtrl: 280,  taxa: 0.0045, mediana: 1100, efTaxa: 1.32, efValor: 1.12, idade: 52, fem: .78 },
+    tireoide: { nome: "Tireoide",     nNav: 9200, nCtrl: 1020, taxa: 0.0060, mediana: 780,  efTaxa: 1.25, efValor: 1.10, idade: 49, fem: .83 }
+  };
+  var DADOS = {};
+  Object.keys(LINHAS).forEach(function (k, i) {
+    var p = LINHAS[k], r = rng(20261016 + i * 97), rc = rng(55501 + i * 31);   // rc: características antes do sorteio
+    function paciente(nav) {
+      return { t: -Math.log(1 - r()) / (p.taxa * (nav ? p.efTaxa : 1)),
+               base: p.mediana * (nav ? p.efValor : 1) * Math.exp(normal(r)),
+               ritmo: 0.35 + 0.65 * r(),
+               pre: rc() < 0.6 ? p.mediana * 0.8 * Math.exp(normal(rc)) : 0,   // consumo nos 180 dias antes (mesmo para os dois grupos)
+               idade: p.idade + 13 * normal(rc), fem: rc() < p.fem ? 1 : 0 };
+    }
+    var nav = [], ctrl = [];
+    for (var a = 0; a < p.nNav; a++) nav.push(paciente(true));
+    for (var b = 0; b < p.nCtrl; b++) ctrl.push(paciente(false));
+    DADOS[k] = { nav: nav, ctrl: ctrl };
+  });
+  function valorAte(pac, dia) { if (pac.t > dia) return 0; return pac.base * Math.min(1, (dia - pac.t) / 90 * pac.ritmo + 0.35); }
+  function grupo(linha) {
+    if (linha === "onda") return { nav: DADOS.reumato.nav.concat(DADOS.tireoide.nav), ctrl: DADOS.reumato.ctrl.concat(DADOS.tireoide.ctrl) };
+    return DADOS[linha];
+  }
+
+  // ------------------------------------------------------------ estatística
+  function quant(a, q) { var i = (a.length - 1) * q, lo = Math.floor(i), hi = Math.ceil(i); return a[lo] + (a[hi] - a[lo]) * (i - lo); }
+  function media(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return a.length ? s / a.length : 0; }
+  function vari(a) { var m = media(a), s = 0; for (var i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return a.length > 1 ? s / (a.length - 1) : 0; }
+  function phi(z) { var t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; }
+  function resumo(lista, dia) {
+    var tudo = lista.map(function (p) { return valorAte(p, dia); });
+    var cons = tudo.filter(function (v) { return v > 0; }).sort(function (x, y) { return x - y; });
+    var q1 = quant(cons, .25), q3 = quant(cons, .75), iqr = q3 - q1;
+    var loW = cons.find(function (v) { return v >= q1 - 1.5 * iqr; }), hiW = cons.slice().reverse().find(function (v) { return v <= q3 + 1.5 * iqr; });
+    return { cons: cons, n: lista.length, conv: cons.length / lista.length, perCap: media(tudo), varCap: vari(tudo),
+      media: media(cons), mediana: quant(cons, .5), q1: q1, q3: q3, loW: loW, hiW: hiW, min: cons[0], max: cons[cons.length - 1],
+      dp: Math.sqrt(vari(cons)), out: cons.filter(function (v) { return v > hiW || v < loW; }).length };
+  }
+  function uplift(g, dia) {
+    var a = resumo(g.nav, dia), b = resumo(g.ctrl, dia), d = a.perCap - b.perCap, se = Math.sqrt(a.varCap / a.n + b.varCap / b.n);
+    return { a: a, b: b, d: d, lo: d - 1.96 * se, hi: d + 1.96 * se, p: 2 * (1 - phi(Math.abs(d / se))), prob: phi(d / se), pct: d / b.perCap };
+  }
+
+  // ------------------------------------------------------------ formato
+  function brl(v, c) { return (v < 0 ? "−R$ " : "R$ ") + Math.abs(v).toLocaleString("pt-BR", { maximumFractionDigits: c || 0, minimumFractionDigits: c || 0 }); }
+  function num(v, c) { return v.toLocaleString("pt-BR", { maximumFractionDigits: c || 0, minimumFractionDigits: c || 0 }); }
+  function pct(v, c) { c = c === undefined ? 1 : c; return (100 * v).toLocaleString("pt-BR", { maximumFractionDigits: c, minimumFractionDigits: c }) + "%"; }
+  function sinal(v) { return v >= 0 ? "+" : ""; }
+  function prob(v) { return v > 0.99 ? "mais de 99%" : v < 0.01 ? "menos de 1%" : pct(v, 0); }
+  var TX = 'font-family="IBM Plex Mono, monospace" font-size="11" style="fill:var(--muted)"';
+  var TF = 'font-family="IBM Plex Sans, sans-serif" font-size="13" style="fill:var(--fg)"';
+  function svg(w, h, corpo, rot) { return '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + rot + '">' + corpo + '</svg>'; }
+  function eixoY(L, W, Y, topo, n, f) { var s = ""; for (var i = 0; i <= n; i++) { var v = topo * i / n, y = Y(v).toFixed(1);
+    s += '<line x1="' + L + '" y1="' + y + '" x2="' + W + '" y2="' + y + '" style="stroke:var(--grid)"/>' +
+         '<text x="' + (L - 6) + '" y="' + (+y + 4) + '" text-anchor="end" ' + TX + '>' + f(v) + '</text>'; } return s; }
+  function topoRedondo(v) { var e = Math.pow(10, Math.floor(Math.log10(v))); return [1, 2, 2.5, 5, 10].find(function (k) { return k * e >= v; }) * e; }
+  function rotulo(x, y, txt, cor, ancora) { return '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" text-anchor="' + (ancora || "start") + '" ' + TF + ' font-weight="600" style="fill:' + cor + '">' + txt + '</text>'; }
+  function el(id) { return document.getElementById(id); }
+
+  // ------------------------------------------------------------ ato 1 — a resposta
+  function ato1(u, dia, nomeLinha) {
+    var claro = u.lo > 0;
+    el("eyebrow").textContent = "Captação · " + nomeLinha + " · janela de " + dia + " dias";
+    el("headline").innerHTML = claro
+      ? 'A navegação gerou <em>' + sinal(u.d) + brl(u.d) + '</em> por paciente em ' + dia + ' dias'
+      : 'Ainda não dá para afirmar ganho da navegação em ' + dia + ' dias';
+    el("dek").textContent = claro
+      ? "Pacientes navegados consumiram " + pct(u.pct, 0) + " a mais que os do grupo controle. A probabilidade de o ganho ser real é de " + prob(u.prob) + "."
+      : "A diferença estimada é de " + sinal(u.d) + brl(u.d) + " por paciente, mas o intervalo ainda inclui zero (" +
+        brl(u.lo) + " a " + brl(u.hi) + "). É preciso acumular mais pacientes de controle.";
+    el("big3").innerHTML =
+      '<div class="big g"><span class="k">Consumo a mais por paciente</span><span class="v">' + sinal(u.d) + brl(u.d) + '</span>' +
+      '<span class="s">intervalo de 95%: ' + brl(u.lo) + ' a ' + brl(u.hi) + '</span></div>' +
+      '<div class="big' + (claro ? ' g' : '') + '"><span class="k">Consumo atribuível à navegação</span><span class="v">' + brl(u.d * u.a.n / 1000) + ' mil</span>' +
+      '<span class="s">' + num(u.a.n) + ' pacientes navegados no período</span></div>' +
+      '<div class="big"><span class="k">Confiança no ganho</span><span class="v">' + (u.prob > 0.99 ? '&gt; 99%' : pct(u.prob, 0)) + '</span>' +
+      '<span class="s">probabilidade de o ganho ser maior que zero · p = ' + (u.p < 0.001 ? "< 0,001" : num(u.p, 3)) + '</span></div>';
+  }
+
+  // ------------------------------------------------------------ ato 2 — confiança (equilíbrio)
+  function ato2(g) {
+    var carac = [
+      ["Consumo nos 180 dias antes", function (p) { return p.pre; }, brl],
+      ["Idade média", function (p) { return p.idade; }, function (v) { return num(v, 0) + " anos"; }],
+      ["% mulheres", function (p) { return p.fem; }, function (v) { return pct(v, 0); }]];
+    var W = 1060, H = 40 + carac.length * 48, L = 250, R = 60, s = "", maxDif = 0;
+    carac.forEach(function (c, i) {
+      var a = media(g.nav.map(c[1])), b = media(g.ctrl.map(c[1])), lo = Math.min(a, b) * 0.6, hi = Math.max(a, b) * 1.25;
+      var sd = Math.sqrt((vari(g.nav.map(c[1])) + vari(g.ctrl.map(c[1]))) / 2), dif = sd ? Math.abs(a - b) / sd : 0;
+      maxDif = Math.max(maxDif, dif);
+      var X = function (v) { return L + (W - L - R) * (v - lo) / (hi - lo); }, y = 30 + i * 48;
+      s += '<text x="0" y="' + (y + 5) + '" ' + TF + '>' + c[0] + '</text>';
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '" style="stroke:var(--grid);stroke-width:6;stroke-linecap:round"/>';
+      s += '<line x1="' + X(a).toFixed(1) + '" y1="' + y + '" x2="' + X(b).toFixed(1) + '" y2="' + y + '" style="stroke:var(--muted);stroke-width:2"/>';
+      s += '<circle cx="' + X(b).toFixed(1) + '" cy="' + y + '" r="8" style="fill:var(--ctrl)"/>';
+      s += '<circle cx="' + X(a).toFixed(1) + '" cy="' + y + '" r="8" style="fill:var(--nav)"/>';
+      s += '<text x="' + X(Math.max(a, b)).toFixed(1) + '" y="' + (y - 13) + '" ' + TX + '>' + c[2](a) + ' · ' + c[2](b) + '</text>';
+    });
+    s += '<circle cx="' + (W - 300) + '" cy="' + (H - 10) + '" r="6" style="fill:var(--nav)"/><text x="' + (W - 290) + '" y="' + (H - 6) + '" ' + TX + '>navegação</text>';
+    s += '<circle cx="' + (W - 190) + '" cy="' + (H - 10) + '" r="6" style="fill:var(--ctrl)"/><text x="' + (W - 180) + '" y="' + (H - 6) + '" ' + TX + '>controle</text>';
+    el("balance").innerHTML = svg(W, H, s, "Características dos grupos antes do sorteio");
+    el("t-conf").textContent = maxDif < 0.1 ? "Os grupos eram iguais antes do sorteio — a diferença é efeito da navegação"
+                                            : "Atenção: os grupos diferem antes do sorteio — o resultado é ajustado por isso";
+  }
+
+  // ------------------------------------------------------------ ato 3 — causa
+  function ato3(g, u, dia) {
+    // curva de conversão
+    var W = 540, H = 270, L = 44, R = 70, T = 16, B = 30, dmax = 180;
+    function curva(lista) { var ts = lista.map(function (p) { return p.t; }).sort(function (a, b) { return a - b; }), out = [], k = 0;
+      for (var d = 0; d <= dmax; d += 2) { while (k < ts.length && ts[k] <= d) k++; out.push([d, k / ts.length]); } return out; }
+    var ca = curva(g.nav), cb = curva(g.ctrl);
+    var topo = Math.min(1, topoRedondo(ca[ca.length - 1][1] * 1.1));
+    var X = function (d) { return L + (W - L - R) * d / dmax; }, Y = function (f) { return T + (H - T - B) * (1 - f / topo); };
+    var s = eixoY(L, W - R, Y, topo, 4, function (v) { return pct(v, 0); });
+    var area = "M" + X(0) + " " + Y(0);
+    ca.forEach(function (p) { area += " L" + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1); });
+    for (var i = cb.length - 1; i >= 0; i--) area += " L" + X(cb[i][0]).toFixed(1) + " " + Y(cb[i][1]).toFixed(1);
+    s += '<path d="' + area + ' Z" style="fill:var(--gain-soft)"/>';
+    [[ca, "var(--nav)", "Navegação"], [cb, "var(--ctrl)", "Controle"]].forEach(function (c) { var d = "";
+      c[0].forEach(function (p, j) { d += (j ? " H" + X(p[0]).toFixed(1) + " V" : "M" + X(p[0]).toFixed(1) + " ") + Y(p[1]).toFixed(1); });
+      s += '<path d="' + d + '" style="fill:none;stroke:' + c[1] + ';stroke-width:2.6"/>';
+      var fim = c[0][c[0].length - 1];
+      s += rotulo(X(fim[0]) + 6, Y(fim[1]) + 4, c[2], c[1]); });
+    var xj = X(dia);
+    s += '<line x1="' + xj.toFixed(1) + '" y1="' + T + '" x2="' + xj.toFixed(1) + '" y2="' + (H - B) + '" style="stroke:var(--muted);stroke-dasharray:3 3"/>';
+    s += '<text x="' + (xj + 4).toFixed(1) + '" y="' + (T + 10) + '" ' + TX + '>' + dia + ' dias</text>';
+    [0, 60, 120, 180].forEach(function (d) { s += '<text x="' + X(d).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" ' + TX + '>' + d + ' d</text>'; });
+    el("km").innerHTML = svg(W, H, s, "Conversão acumulada, navegação e controle");
+    el("t-km").textContent = "Mais pacientes voltam: " + pct(u.a.conv, 0) + " contra " + pct(u.b.conv, 0) +
+      " (" + sinal(u.a.conv - u.b.conv) + num(100 * (u.a.conv - u.b.conv), 1) + " p.p.)";
+
+    // boxplot
+    var W2 = 540, H2 = 270, L2 = 70, R2 = 16, T2 = 16, B2 = 30;
+    var topo2 = topoRedondo(Math.max(u.a.hiW, u.b.hiW) * 1.12);
+    var Y2 = function (v) { return T2 + (H2 - T2 - B2) * (1 - Math.min(v, topo2) / topo2); };
+    var s2 = eixoY(L2, W2 - R2, Y2, topo2, 4, function (v) { return brl(v); }), larg = (W2 - L2 - R2) / 2, rr = rng(7);
+    [["Navegação", u.a, "var(--nav)", "var(--nav-soft)"], ["Controle", u.b, "var(--ctrl)", "var(--ctrl-soft)"]].forEach(function (gg, k) {
+      var st = gg[1], cx = L2 + larg * k + larg / 2, bw = 74;
+      st.cons.filter(function (_, j) { return j % Math.max(1, Math.floor(st.cons.length / 200)) === 0; }).forEach(function (v) {
+        if (v <= topo2) s2 += '<circle cx="' + (cx + (rr() - .5) * 120).toFixed(1) + '" cy="' + Y2(v).toFixed(1) + '" r="2" style="fill:' + gg[2] + ';fill-opacity:.22"/>'; });
+      s2 += '<line x1="' + cx + '" y1="' + Y2(st.loW).toFixed(1) + '" x2="' + cx + '" y2="' + Y2(st.hiW).toFixed(1) + '" style="stroke:' + gg[2] + ';stroke-width:1.5"/>';
+      s2 += '<rect x="' + (cx - bw / 2) + '" y="' + Y2(st.q3).toFixed(1) + '" width="' + bw + '" height="' + (Y2(st.q1) - Y2(st.q3)).toFixed(1) + '" rx="5" style="fill:' + gg[3] + ';stroke:' + gg[2] + ';stroke-width:1.8"/>';
+      s2 += '<line x1="' + (cx - bw / 2) + '" y1="' + Y2(st.mediana).toFixed(1) + '" x2="' + (cx + bw / 2) + '" y2="' + Y2(st.mediana).toFixed(1) + '" style="stroke:' + gg[2] + ';stroke-width:3.5"/>';
+      var my = Y2(st.media);
+      s2 += '<path d="M' + cx + ' ' + (my - 7) + ' L' + (cx + 7) + ' ' + my + ' L' + cx + ' ' + (my + 7) + ' L' + (cx - 7) + ' ' + my + ' Z" style="fill:var(--surface);stroke:' + gg[2] + ';stroke-width:2"/>';
+      s2 += rotulo(cx + bw / 2 + 8, Y2(st.mediana) + 4, brl(st.mediana), gg[2]);
+      s2 += '<text x="' + cx + '" y="' + (H2 - 8) + '" text-anchor="middle" ' + TF + ' font-weight="600">' + gg[0] + '</text>';
+    });
+    el("box").innerHTML = svg(W2, H2, s2, "Boxplot do consumo de quem consumiu");
+    var difMed = u.a.mediana / u.b.mediana - 1, difMedia = u.a.media / u.b.media - 1, difConv = u.a.conv - u.b.conv;
+    el("t-box").textContent = difMed >= 0.05
+      ? "E quem volta consome mais: mediana de " + brl(u.a.mediana) + " contra " + brl(u.b.mediana)
+      : "Entre quem volta, o valor típico é parecido: mediana de " + brl(u.a.mediana) + " contra " + brl(u.b.mediana);
+    var maisConv = difConv >= 0.02, maisValor = difMed >= 0.05;   // mediana: não é puxada pelos poucos casos de altíssimo valor
+    el("t-causa").textContent = maisConv && maisValor ? "O ganho vem de duas coisas: mais pacientes voltam, e quem volta consome mais"
+      : maisConv ? "O ganho vem principalmente de mais pacientes voltando — quem volta consome parecido"
+      : maisValor ? "O ganho vem de quem volta consumir mais — a conversão é parecida"
+      : "Conversão e valor por paciente são parecidos entre os grupos";
+
+    // distribuições sobrepostas
+    var W3 = 1060, H3 = 240, L3 = 16, R3 = 16, T3 = 16, B3 = 30, lo = Math.log(80), hi = Math.log(30000), nb = 60;
+    function kde(vals) { var bw2 = 0.25, out = []; for (var i = 0; i <= nb; i++) { var x = lo + (hi - lo) * i / nb, sm = 0;
+      for (var k = 0; k < vals.length; k += Math.max(1, Math.floor(vals.length / 1500))) { var z = (x - Math.log(vals[k])) / bw2; sm += Math.exp(-z * z / 2); }
+      out.push([x, sm]); } var m = Math.max.apply(null, out.map(function (p) { return p[1]; })); return out.map(function (p) { return [p[0], p[1] / m]; }); }
+    var X3 = function (x) { return L3 + (W3 - L3 - R3) * (x - lo) / (hi - lo); }, Y3 = function (y) { return T3 + (H3 - T3 - B3) * (1 - y * .9); };
+    var s3 = "";
+    [200, 500, 1000, 2000, 5000, 10000, 20000].forEach(function (v) { var x = X3(Math.log(v)).toFixed(1);
+      s3 += '<line x1="' + x + '" y1="' + T3 + '" x2="' + x + '" y2="' + (H3 - B3) + '" style="stroke:var(--grid)"/><text x="' + x + '" y="' + (H3 - 10) + '" text-anchor="middle" ' + TX + '>' + brl(v) + '</text>'; });
+    [["var(--ctrl)", "var(--ctrl-soft)", u.b, "Controle"], ["var(--nav)", "var(--nav-soft)", u.a, "Navegação"]].forEach(function (gg) {
+      var pts = kde(gg[2].cons), d = "M" + X3(lo) + " " + Y3(0), pico = pts.reduce(function (m, p) { return p[1] > m[1] ? p : m; });
+      pts.forEach(function (p) { d += " L" + X3(p[0]).toFixed(1) + " " + Y3(p[1]).toFixed(1); });
+      s3 += '<path d="' + d + ' L' + X3(hi) + ' ' + Y3(0) + ' Z" style="fill:' + gg[1] + ';stroke:' + gg[0] + ';stroke-width:2.2"/>';
+      var mx = X3(Math.log(gg[2].media));
+      s3 += '<line x1="' + mx.toFixed(1) + '" y1="' + T3 + '" x2="' + mx.toFixed(1) + '" y2="' + (H3 - B3) + '" style="stroke:' + gg[0] + ';stroke-width:1.5;stroke-dasharray:5 4"/>';
+      s3 += rotulo(X3(pico[0]) + (gg[3] === "Navegação" ? 10 : -10), Y3(pico[1]) - 6, gg[3], gg[0], gg[3] === "Navegação" ? "start" : "end");
+    });
+    el("dens").innerHTML = svg(W3, H3, s3, "Distribuições sobrepostas do consumo");
+    el("t-dens").textContent = (u.a.mediana / u.b.mediana - 1) >= 0.05
+      ? "A curva da navegação está levemente deslocada para a direita: o valor típico é maior"
+      : "As curvas quase se sobrepõem: quem consome gasta parecido nos dois grupos";
+  }
+
+  // ------------------------------------------------------------ ato 4 — tempo
+  function ato4(g) {
+    var W = 1060, H = 280, L = 70, R = 110, T = 16, B = 30, sem = 26;
+    function serie(lista) { var out = []; for (var w = 0; w <= sem; w++) { var s = 0; for (var i = 0; i < lista.length; i++) s += valorAte(lista[i], w * 7); out.push(s / lista.length); } return out; }
+    var a = serie(g.nav), b = serie(g.ctrl), topo = topoRedondo(Math.max.apply(null, a) * 1.1);
+    var X = function (w) { return L + (W - L - R) * w / sem; }, Y = function (v) { return T + (H - T - B) * (1 - v / topo); };
+    var s = eixoY(L, W - R, Y, topo, 4, function (v) { return brl(v); });
+    var area = "M" + X(0) + " " + Y(a[0]);
+    a.forEach(function (v, w) { area += " L" + X(w).toFixed(1) + " " + Y(v).toFixed(1); });
+    for (var w = sem; w >= 0; w--) area += " L" + X(w).toFixed(1) + " " + Y(b[w]).toFixed(1);
+    s += '<path d="' + area + ' Z" style="fill:var(--gain-soft)"/>';
+    [[a, "var(--nav)", "Navegação"], [b, "var(--ctrl)", "Controle"]].forEach(function (c) {
+      s += '<polyline points="' + c[0].map(function (v, k) { return X(k).toFixed(1) + "," + Y(v).toFixed(1); }).join(" ") + '" style="fill:none;stroke:' + c[1] + ';stroke-width:2.8"/>';
+      s += rotulo(X(sem) + 8, Y(c[0][sem]) + 4, c[2] + " " + brl(c[0][sem]), c[1]); });
+    var abre = 0; for (var k = 1; k <= sem; k++) { if ((a[k] - b[k]) > 0.5 * (a[sem] - b[sem])) { abre = k; break; } }
+    var xa = X(abre);
+    s += '<line x1="' + xa.toFixed(1) + '" y1="' + Y(a[abre]).toFixed(1) + '" x2="' + xa.toFixed(1) + '" y2="' + (T + 24) + '" style="stroke:var(--gain);stroke-width:1.5"/>';
+    s += rotulo(xa + 6, T + 22, "metade do ganho já aparece na semana " + abre, "var(--gain)");
+    [0, 4, 8, 12, 16, 20, 26].forEach(function (k) { s += '<text x="' + X(k).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" ' + TX + '>sem ' + k + '</text>'; });
+    el("tl").innerHTML = svg(W, H, s, "Consumo acumulado por paciente por semana desde o sorteio");
+    el("t-tl").textContent = "A diferença se abre cedo e cresce: em 26 semanas chega a " + sinal(a[sem] - b[sem]) + brl(a[sem] - b[sem]) + " por paciente";
+  }
+
+  // ------------------------------------------------------------ ato 5 — onde
+  function ato5(dia) {
+    var itens = [["Reumatologia", uplift(DADOS.reumato, dia), false], ["Tireoide", uplift(DADOS.tireoide, dia), false], ["Onda 1", uplift(grupo("onda"), dia), true]];
+    var W = 1060, H = 40 + itens.length * 50, L = 150, R = 240;
+    var ext = Math.max.apply(null, itens.map(function (i) { return Math.max(Math.abs(i[1].lo), Math.abs(i[1].hi)); })) * 1.15;
+    var X = function (v) { return L + (W - L - R) * (v + ext) / (2 * ext); }, s = "";
+    s += '<line x1="' + X(0) + '" y1="8" x2="' + X(0) + '" y2="' + (H - 22) + '" style="stroke:var(--muted);stroke-dasharray:4 3"/>';
+    s += '<text x="' + X(0) + '" y="' + (H - 6) + '" text-anchor="middle" ' + TX + '>sem efeito</text>';
+    var claras = [];
+    itens.forEach(function (it, i) {
+      var u = it[1], y = 30 + i * 50, cor = u.lo > 0 ? "var(--gain)" : "var(--ctrl)";
+      if (u.lo > 0 && !it[2]) claras.push(it[0]);
+      if (it[2]) s += '<rect x="0" y="' + (y - 21) + '" width="' + W + '" height="42" rx="8" style="fill:var(--gain-soft)"/>';
+      s += '<text x="12" y="' + (y + 5) + '" ' + TF + (it[2] ? ' font-weight="700"' : '') + '>' + it[0] + '</text>';
+      s += '<line x1="' + X(u.lo).toFixed(1) + '" y1="' + y + '" x2="' + X(u.hi).toFixed(1) + '" y2="' + y + '" style="stroke:' + cor + ';stroke-width:4;stroke-linecap:round"/>';
+      s += '<circle cx="' + X(u.d).toFixed(1) + '" cy="' + y + '" r="8" style="fill:' + cor + '"/>';
+      s += '<text x="' + (W - R + 16) + '" y="' + (y + 5) + '" ' + TF + ' font-weight="600" style="fill:' + cor + '">' + sinal(u.d) + brl(u.d) + '</text>';
+      s += '<text x="' + (W - R + 100) + '" y="' + (y + 5) + '" ' + TX + '>' + brl(u.lo) + ' a ' + brl(u.hi) + '</text>';
+    });
+    el("forest").innerHTML = svg(W, H, s, "Uplift por linha e na onda com intervalo de 95%");
+    var onda = itens[2][1];
+    el("t-forest").textContent = onda.lo > 0
+      ? "Na onda, o ganho é claro" + (claras.length === itens.length - 1 ? ", e cada linha já o mostra sozinha" : claras.length ?"; sozinha, só " + claras.join(" e ") + " já tem volume para mostrá-lo" : "; nenhuma linha sozinha tem volume para mostrá-lo ainda")
+      : "Nem a onda tem volume para mostrar o ganho nesta janela";
+    return { onda: onda, todas: claras.length === itens.length - 1 };
+  }
+
+  // ------------------------------------------------------------ ato 6 — o que fazer
+  function ato6(u, dia, todasLinhas) {
+    var itens = u.lo > 0
+      ? ["Levar o resultado da onda ao negócio: " + sinal(u.d) + brl(u.d) + " por paciente navegado em " + dia + " dias.",
+         todasLinhas ? "Manter o grupo controle para acompanhar se o ganho se sustenta em cada linha."
+                     : "Manter o grupo controle: a leitura por linha ainda depende de mais pacientes.",
+         "Repetir a leitura em 180 dias para confirmar que o ganho se sustenta."]
+      : ["Não comunicar ganho ainda: o intervalo inclui zero.",
+         "Seguir acumulando pacientes; considerar 10% de controle para encurtar o prazo.",
+         "Nova leitura no próximo ciclo mensal."];
+    el("next").innerHTML = "<strong>Recomendação desta leitura</strong><ol>" + itens.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ol>";
+  }
+
+  function detalhes(u) {
+    var linhas = [["Pacientes sorteados", num(u.a.n), num(u.b.n)], ["Pacientes que consumiram", num(u.a.cons.length), num(u.b.cons.length)],
+      ["Consumo por paciente sorteado", brl(u.a.perCap), brl(u.b.perCap)], ["Média (quem consumiu)", brl(u.a.media), brl(u.b.media)],
+      ["Mediana", brl(u.a.mediana), brl(u.b.mediana)], ["Desvio-padrão", brl(u.a.dp), brl(u.b.dp)], ["Mínimo", brl(u.a.min), brl(u.b.min)],
+      ["Máximo", brl(u.a.max), brl(u.b.max)], ["Outliers (fora de 1,5 IQR)", num(u.a.out), num(u.b.out)]];
+    var h = '<div class="h"></div><div class="h" style="color:var(--nav)">Navegação</div><div class="h">Controle</div>';
+    linhas.forEach(function (l) { h += "<div>" + l[0] + "</div><div>" + l[1] + "</div><div>" + l[2] + "</div>"; });
+    el("stats").innerHTML = h;
+  }
+
+  // ------------------------------------------------------------ estado
+  var NOMES = { onda: "onda 1", reumato: "reumatologia", tireoide: "tireoide" };
+  var estado = { janela: 90, linha: "onda" };
+  function render() {
+    var g = grupo(estado.linha), u = uplift(g, estado.janela);
+    ato1(u, estado.janela, NOMES[estado.linha]); ato2(g); ato3(g, u, estado.janela); ato4(g); var r5 = ato5(estado.janela); ato6(u, estado.janela, r5.todas); detalhes(u);
+  }
+  function seg(id, chave, conv) {
+    var box = el(id);
+    box.querySelectorAll("button").forEach(function (x) { if (!x.hasAttribute("aria-pressed")) x.setAttribute("aria-pressed", "false"); });
+    box.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return;
+      box.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      estado[chave] = conv(b.dataset.v); render(); });
+  }
+  seg("seg-janela", "janela", Number); seg("seg-linha", "linha", String);
+  render();
+})();
+</script>

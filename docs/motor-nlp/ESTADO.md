@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-15**.
+> Atualizado em **2026-10-19**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -29,7 +29,7 @@
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
 | 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
-| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) já virou** — prd desde 12/10, relatório de 19/10 sai de PRD (decisão 15/10). Onda 2 (DII, cólon, biliares, neuro, próstata): HML 26/10–06/11, PRD prevista 17/11; jobs ainda **sem** task de randomização. Método em `docs/randomizacao/metodo-avaliacao-por-onda-v0.md`. Uplift só após PRD + de acordo do Targa |
+| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) já virou** — prd desde 12/10, relatório de 19/10 sai de PRD (decisão 15/10). Onda 2 (DII, cólon, biliares, neuro, próstata): HML 26/10–06/11, PRD prevista 17/11; jobs ainda **sem** task de randomização. Método em `docs/randomizacao/metodo-avaliacao-por-onda-v0.md`. Uplift só após PRD + de acordo do Targa · painéis AI/BI em `docs/randomizacao/painel/` — **uplift v2 aprovado por enquanto (16/10)**, rascunho não publicado |
 | 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
 | 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
 | ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
