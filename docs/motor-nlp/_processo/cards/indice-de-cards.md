@@ -13,6 +13,8 @@
 | `283644` | Defect | [NLP Engine] Juiz LLM ligado por contorno nao documentado em hepatologia e transplante_pulmao (producao) | Em Execução | Deivid Lejes Quevedo |
 | `283647` | Task | [NLP Engine] Declarar contrato de entrada e saida entre a lib e a plataforma | Em Execução | Deivid Lejes Quevedo |
 | `283648` | Task | [P0-29] Impedir que o juiz LLM promova sem evidencia de regra | Em Execução | Deivid Lejes Quevedo |
+| `303629` | User Story | [Financeiro] Refinamento Randomização e mensuração de conversão financeira da Captação | Novo | — |
+| `383684` | User Story | [Captação][Randomização] Medir o uplift da navegação: controle × intervenção, Onda 1 | Novo | Deivid Lejes Quevedo |
 | `285305` | Defect | [NLP Engine] TI-RADS entrega TR falso: legenda ACR nao filtrada e medida associada ao nodulo errado | Em Execução | Deivid Lejes Quevedo |
 | `298598` | Feature | [NLP Engine] Plano de bumps do backlog tecnico - 0.11.1 a 0.15.0 | Em Execução | Deivid Lejes Quevedo |
 | `298600` | Defect | [NLP Engine] embedding_model aponta para volume de HML do workspace antigo nos tres ambientes | Em Execução | Deivid Lejes Quevedo |

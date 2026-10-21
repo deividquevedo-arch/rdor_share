@@ -1,0 +1,1415 @@
+{
+ "datasets": [
+  {
+   "name": "pacientes",
+   "displayName": "Pacientes sorteados (paciente × janela) — SIMULADO",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j)\n",
+    "SELECT linha, grupo, janela,\n",
+    "       concat(cast(janela AS STRING), ' dias') AS janela_obs,\n",
+    "       round(valor, 2) AS valor,\n",
+    "       CASE WHEN valor > 0 THEN 1 ELSE 0 END AS consumiu,\n",
+    "       CASE WHEN valor > 0 AND valor < 6000 THEN round(valor, 2) END AS consumo_se_voltou\n",
+    "FROM b\n"
+   ],
+   "columns": [
+    {
+     "displayName": "Pacientes sorteados",
+     "description": "Navegação + controle",
+     "expression": "COUNT(`valor`)"
+    },
+    {
+     "displayName": "Pacientes no controle",
+     "description": "",
+     "expression": "COUNT(CASE WHEN `grupo` = 'Controle' THEN 1 END)"
+    },
+    {
+     "displayName": "Retorno — navegação",
+     "description": "% que voltou a consumir",
+     "expression": "AVG(CASE WHEN `grupo` = 'Navegação' THEN `consumiu` END)"
+    },
+    {
+     "displayName": "Retorno — controle",
+     "description": "% que voltou a consumir",
+     "expression": "AVG(CASE WHEN `grupo` = 'Controle' THEN `consumiu` END)"
+    },
+    {
+     "displayName": "Retorno a mais",
+     "description": "Diferença em pontos percentuais",
+     "expression": "AVG(CASE WHEN `grupo` = 'Navegação' THEN `consumiu` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `consumiu` END)"
+    },
+    {
+     "displayName": "Consumo por paciente — navegação",
+     "description": "Zero para quem não voltou",
+     "expression": "AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END)"
+    },
+    {
+     "displayName": "Consumo por paciente — controle",
+     "description": "Zero para quem não voltou",
+     "expression": "AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)"
+    },
+    {
+     "displayName": "Uplift por paciente",
+     "description": "Navegação − controle, por paciente sorteado",
+     "expression": "(AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END))"
+    },
+    {
+     "displayName": "Ganho sobre o controle",
+     "description": "",
+     "expression": "(AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)) / AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)"
+    },
+    {
+     "displayName": "Uplift — limite inferior (95%)",
+     "description": "",
+     "expression": "(AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)) - 1.96 * SQRT(VAR_SAMP(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) / COUNT(CASE WHEN `grupo` = 'Navegação' THEN 1 END) + VAR_SAMP(CASE WHEN `grupo` = 'Controle' THEN `valor` END) / COUNT(CASE WHEN `grupo` = 'Controle' THEN 1 END))"
+    },
+    {
+     "displayName": "Uplift — limite superior (95%)",
+     "description": "",
+     "expression": "(AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)) + 1.96 * SQRT(VAR_SAMP(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) / COUNT(CASE WHEN `grupo` = 'Navegação' THEN 1 END) + VAR_SAMP(CASE WHEN `grupo` = 'Controle' THEN `valor` END) / COUNT(CASE WHEN `grupo` = 'Controle' THEN 1 END))"
+    },
+    {
+     "displayName": "Uplift total no período",
+     "description": "Uplift por paciente × pacientes navegados",
+     "expression": "(AVG(CASE WHEN `grupo` = 'Navegação' THEN `valor` END) - AVG(CASE WHEN `grupo` = 'Controle' THEN `valor` END)) * COUNT(CASE WHEN `grupo` = 'Navegação' THEN 1 END)"
+    }
+   ]
+  },
+  {
+   "name": "trajetoria",
+   "displayName": "Trajetória semanal (grupo × linha × dia) — SIMULADO",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(sequence(0, 182, 7)) AS janela) j)\n",
+    "SELECT linha, grupo, janela AS dia,\n",
+    "       count(*) AS n_pacientes,\n",
+    "       sum(CASE WHEN valor > 0 THEN 1 ELSE 0 END) AS n_voltaram,\n",
+    "       sum(valor) AS soma_consumo,\n",
+    "       sum(CASE WHEN grupo = 'Navegação' THEN 1 ELSE 0 END) AS n_nav,\n",
+    "       sum(CASE WHEN grupo = 'Navegação' THEN valor ELSE 0 END) AS soma_nav,\n",
+    "       sum(CASE WHEN grupo = 'Controle' THEN 1 ELSE 0 END) AS n_ctrl,\n",
+    "       sum(CASE WHEN grupo = 'Controle' THEN valor ELSE 0 END) AS soma_ctrl\n",
+    "FROM b GROUP BY 1, 2, 3\n"
+   ],
+   "columns": [
+    {
+     "displayName": "% que já voltou",
+     "description": "",
+     "expression": "SUM(`n_voltaram`) / SUM(`n_pacientes`)"
+    },
+    {
+     "displayName": "Consumo acumulado por paciente",
+     "description": "",
+     "expression": "SUM(`soma_consumo`) / SUM(`n_pacientes`)"
+    },
+    {
+     "displayName": "Uplift acumulado por paciente",
+     "description": "",
+     "expression": "SUM(`soma_nav`) / SUM(`n_nav`) - SUM(`soma_ctrl`) / SUM(`n_ctrl`)"
+    }
+   ]
+  },
+  {
+   "name": "distribuicao",
+   "displayName": "Distribuição do consumo, 90 dias (grupo × linha × faixa) — SIMULADO",
+   "queryLines": [
+    "WITH b AS (WITH ids AS (\n",
+    "  SELECT id,\n",
+    "         CASE WHEN id < 2780 THEN 'Reumatologia' ELSE 'Tireoide' END AS linha,\n",
+    "         CASE WHEN (id < 2780 AND id < 280) OR (id >= 2780 AND id - 2780 < 1020) THEN 'Controle' ELSE 'Navegação' END AS grupo\n",
+    "  FROM range(0, 13000, 1, 1)\n",
+    "),\n",
+    "par AS (\n",
+    "  SELECT ids.*,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 0.0045 ELSE 0.0060 END AS taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1100.0 ELSE 780.0 END AS mediana,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.40 ELSE 1.35 END AS ef_taxa,\n",
+    "         CASE linha WHEN 'Reumatologia' THEN 1.15 ELSE 1.12 END AS ef_valor,\n",
+    "         rand(101) AS u1, randn(202) AS z1, rand(303) AS u2\n",
+    "  FROM ids\n",
+    "),\n",
+    "pac AS (\n",
+    "  SELECT id, linha, grupo,\n",
+    "         -ln(1 - u1) / (taxa * CASE WHEN grupo = 'Navegação' THEN ef_taxa ELSE 1 END) AS t,\n",
+    "         mediana * CASE WHEN grupo = 'Navegação' THEN ef_valor ELSE 1 END * exp(z1) AS base,\n",
+    "         0.35 + 0.65 * u2 AS ritmo\n",
+    "  FROM par\n",
+    ")\n",
+    "SELECT id, linha, grupo, j.janela,\n",
+    "       CASE WHEN t > j.janela THEN 0.0\n",
+    "            ELSE base * least(1.0, (j.janela - t) / 90.0 * ritmo + 0.35) END AS valor,\n",
+    "       t AS dias_ate_1o_consumo\n",
+    "FROM pac CROSS JOIN (SELECT explode(array(30, 90, 180)) AS janela) j),\n",
+    "v AS (SELECT linha, grupo, least(floor(valor / 100), 49) AS faixa FROM b WHERE janela = 90 AND valor > 0),\n",
+    "grade AS (SELECT l.linha, l.grupo, f.faixa FROM (SELECT DISTINCT linha, grupo FROM v) l\n",
+    "          CROSS JOIN (SELECT explode(sequence(0, 49)) AS faixa) f),\n",
+    "c AS (SELECT g.linha, g.grupo, g.faixa, count(v.faixa) AS n\n",
+    "      FROM grade g LEFT JOIN v ON v.linha = g.linha AND v.grupo = g.grupo AND v.faixa = g.faixa\n",
+    "      GROUP BY 1, 2, 3),\n",
+    "t AS (SELECT linha, grupo, count(*) AS n_total FROM v GROUP BY 1, 2)\n",
+    "SELECT c.linha, c.grupo, c.faixa * 100 + 50 AS consumo_rs,\n",
+    "       avg(c.n) OVER (PARTITION BY c.linha, c.grupo ORDER BY c.faixa ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING) AS n_suave,\n",
+    "       t.n_total\n",
+    "FROM c JOIN t ON t.linha = c.linha AND t.grupo = c.grupo\n"
+   ],
+   "columns": [
+    {
+     "displayName": "% do grupo",
+     "description": "",
+     "expression": "SUM(`n_suave`) / SUM(`n_total`)"
+    }
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "name": "resultado",
+   "displayName": "Resultado",
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1",
+   "layout": [
+    {
+     "widget": {
+      "name": "aviso1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**⚠️ DADOS SIMULADOS** — demonstração do formato do painel de uplift; nenhum número é resultado real. Onda 1 (Reumatologia + Tireoide) · cenário de ~12 meses com 10% de controle."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 9,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "f_janela1",
+      "queries": [
+       {
+        "name": "f_janela_obs_pacientes",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "janela_obs",
+           "expression": "`janela_obs`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-single-select",
+       "frame": {
+        "showTitle": true,
+        "title": "Janela de observação"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "janela_obs",
+          "displayName": "Janela de observação",
+          "queryName": "f_janela_obs_pacientes"
+         }
+        ]
+       },
+       "selection": {
+        "defaultSelection": {
+         "values": {
+          "dataType": "STRING",
+          "values": [
+           {
+            "value": "90 dias"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 0,
+      "width": 3,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_upl",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "Uplift por paciente",
+           "expression": "MEASURE(`Uplift por paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo a mais por paciente",
+        "showDescription": true,
+        "description": "Navegação − controle, por paciente sorteado"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "Uplift por paciente",
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ret",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "Retorno a mais",
+           "expression": "MEASURE(`Retorno a mais`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Retorno a mais",
+        "showDescription": true,
+        "description": "Diferença no % que voltou a consumir na Rede"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "Retorno a mais",
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "Ganho sobre o controle",
+           "expression": "MEASURE(`Ganho sobre o controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Ganho sobre o controle",
+        "showDescription": true,
+        "description": "Quanto a navegação consome a mais, em %"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "Ganho sobre o controle",
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_tot",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "Uplift total no período",
+           "expression": "MEASURE(`Uplift total no período`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Uplift total no período",
+        "showDescription": true,
+        "description": "Por paciente × pacientes navegados"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "Uplift total no período",
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 1,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_ret",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "y",
+           "expression": "AVG(`consumiu`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Mais pacientes voltam à Rede",
+        "showDescription": true,
+        "description": "% do grupo que voltou a consumir"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "grupo",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 4,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "g_linha",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "Uplift por paciente",
+           "expression": "MEASURE(`Uplift por paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo a mais por paciente, por linha",
+        "showDescription": true,
+        "description": "A decisão é pela onda; por linha é descritivo"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "Uplift por paciente",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 4,
+      "width": 4,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Como ler",
+        "**Consumo a mais por paciente** é a diferença entre os grupos, contando zero para quem não voltou.",
+        "",
+        "**Retorno a mais** é o indicador principal: responde mais rápido e varia menos que o valor em R$.",
+        "",
+        "Os detalhes de intervalo de confiança estão na página **Detalhe**."
+       ]
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 4,
+      "width": 4,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "g_acum",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "trajetoria",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "Consumo acumulado por paciente",
+           "expression": "MEASURE(`Consumo acumulado por paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "O ganho se abre semana a semana",
+        "showDescription": true,
+        "description": "Consumo acumulado por paciente sorteado (zero para quem não voltou)"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Dias desde o sorteio"
+         }
+        },
+        "y": {
+         "fieldName": "Consumo acumulado por paciente",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 10,
+      "width": 6,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "g_volta",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "trajetoria",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "% que já voltou",
+           "expression": "MEASURE(`% que já voltou`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "E voltam antes",
+        "showDescription": true,
+        "description": "% do grupo que já teve algum consumo"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Dias desde o sorteio"
+         }
+        },
+        "y": {
+         "fieldName": "% que já voltou",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 10,
+      "width": 6,
+      "height": 6
+     }
+    }
+   ]
+  },
+  {
+   "name": "distribuicao",
+   "displayName": "Distribuição",
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1",
+   "layout": [
+    {
+     "widget": {
+      "name": "aviso2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**⚠️ DADOS SIMULADOS** — demonstração do formato do painel de uplift; nenhum número é resultado real. Onda 1 (Reumatologia + Tireoide) · cenário de ~12 meses com 10% de controle."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 9,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "f_janela2",
+      "queries": [
+       {
+        "name": "f_janela_obs_pacientes",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "janela_obs",
+           "expression": "`janela_obs`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-single-select",
+       "frame": {
+        "showTitle": true,
+        "title": "Janela de observação"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "janela_obs",
+          "displayName": "Janela de observação",
+          "queryName": "f_janela_obs_pacientes"
+         }
+        ]
+       },
+       "selection": {
+        "defaultSelection": {
+         "values": {
+          "dataType": "STRING",
+          "values": [
+           {
+            "value": "90 dias"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 0,
+      "width": 3,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_box",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          },
+          {
+           "name": "consumo_se_voltou",
+           "expression": "`consumo_se_voltou`"
+          }
+         ],
+         "disaggregated": true
+        }
+       }
+      ],
+      "spec": {
+       "version": 1,
+       "widgetType": "box",
+       "frame": {
+        "showTitle": true,
+        "title": "Consumo de quem voltou — navegação × controle",
+        "showDescription": true,
+        "description": "Caixa = 50% centrais · linha = mediana"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "grupo",
+         "displayName": "Grupo"
+        },
+        "y": {
+         "fieldName": "consumo_se_voltou",
+         "displayName": "Consumo (R$)",
+         "scale": {
+          "type": "quantitative"
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 1,
+      "width": 6,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dens",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao",
+         "fields": [
+          {
+           "name": "consumo_rs",
+           "expression": "`consumo_rs`"
+          },
+          {
+           "name": "% do grupo",
+           "expression": "MEASURE(`% do grupo`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "A navegação desloca a curva para a direita",
+        "showDescription": true,
+        "description": "% de cada grupo por faixa de R$ 100, entre quem voltou em 90 dias (curva suavizada)"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "consumo_rs",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Consumo em 90 dias (R$)"
+         }
+        },
+        "y": {
+         "fieldName": "% do grupo",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 1,
+      "width": 6,
+      "height": 7
+     }
+    },
+    {
+     "widget": {
+      "name": "g_upl_sem",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "trajetoria",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "Uplift acumulado por paciente",
+           "expression": "MEASURE(`Uplift acumulado por paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "line",
+       "frame": {
+        "showTitle": true,
+        "title": "Diferença acumulada entre os grupos",
+        "showDescription": true,
+        "description": "Navegação − controle, por paciente sorteado"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "Dias desde o sorteio"
+         }
+        },
+        "y": {
+         "fieldName": "Uplift acumulado por paciente",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-currency",
+          "currencyCode": "BRL",
+          "abbreviation": "compact",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 0
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 8,
+      "width": 8,
+      "height": 6
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Por que olhar a distribuição",
+        "O consumo tem cauda longa: poucos pacientes concentram valores muito altos.",
+        "",
+        "Por isso a **mediana** (linha da caixa) diz mais que a média, e o **retorno** é o indicador principal."
+       ]
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 8,
+      "width": 4,
+      "height": 6
+     }
+    }
+   ]
+  },
+  {
+   "name": "detalhe",
+   "displayName": "Detalhe",
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1",
+   "layout": [
+    {
+     "widget": {
+      "name": "aviso3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**⚠️ DADOS SIMULADOS** — demonstração do formato do painel de uplift; nenhum número é resultado real. Onda 1 (Reumatologia + Tireoide) · cenário de ~12 meses com 10% de controle.",
+        "",
+        "Ganho **claro** quando o limite inferior é maior que zero. Por linha isolada a leitura é descritiva: a decisão é pela onda somada."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "t_det",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "janela_obs",
+           "expression": "`janela_obs`"
+          },
+          {
+           "name": "Pacientes sorteados",
+           "expression": "MEASURE(`Pacientes sorteados`)"
+          },
+          {
+           "name": "Pacientes no controle",
+           "expression": "MEASURE(`Pacientes no controle`)"
+          },
+          {
+           "name": "Retorno — navegação",
+           "expression": "MEASURE(`Retorno — navegação`)"
+          },
+          {
+           "name": "Retorno — controle",
+           "expression": "MEASURE(`Retorno — controle`)"
+          },
+          {
+           "name": "Consumo por paciente — navegação",
+           "expression": "MEASURE(`Consumo por paciente — navegação`)"
+          },
+          {
+           "name": "Consumo por paciente — controle",
+           "expression": "MEASURE(`Consumo por paciente — controle`)"
+          },
+          {
+           "name": "Uplift por paciente",
+           "expression": "MEASURE(`Uplift por paciente`)"
+          },
+          {
+           "name": "Uplift — limite inferior (95%)",
+           "expression": "MEASURE(`Uplift — limite inferior (95%)`)"
+          },
+          {
+           "name": "Uplift — limite superior (95%)",
+           "expression": "MEASURE(`Uplift — limite superior (95%)`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "table",
+       "frame": {
+        "showTitle": true,
+        "title": "Uplift por linha e janela, com intervalo de 95%"
+       },
+       "encodings": {
+        "columns": [
+         {
+          "fieldName": "linha"
+         },
+         {
+          "fieldName": "janela_obs"
+         },
+         {
+          "fieldName": "Pacientes sorteados"
+         },
+         {
+          "fieldName": "Pacientes no controle"
+         },
+         {
+          "fieldName": "Retorno — navegação"
+         },
+         {
+          "fieldName": "Retorno — controle"
+         },
+         {
+          "fieldName": "Consumo por paciente — navegação"
+         },
+         {
+          "fieldName": "Consumo por paciente — controle"
+         },
+         {
+          "fieldName": "Uplift por paciente"
+         },
+         {
+          "fieldName": "Uplift — limite inferior (95%)"
+         },
+         {
+          "fieldName": "Uplift — limite superior (95%)"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 8
+     }
+    }
+   ]
+  },
+  {
+   "name": "filtros",
+   "displayName": "Filtros",
+   "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+   "layoutVersion": "GRID_V1",
+   "layout": [
+    {
+     "widget": {
+      "name": "f_linha",
+      "queries": [
+       {
+        "name": "f_linha_pacientes",
+        "query": {
+         "datasetName": "pacientes",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "f_linha_trajetoria",
+        "query": {
+         "datasetName": "trajetoria",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          }
+         ],
+         "disaggregated": false
+        }
+       },
+       {
+        "name": "f_linha_distribuicao",
+        "query": {
+         "datasetName": "distribuicao",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "filter-multi-select",
+       "frame": {
+        "showTitle": true,
+        "title": "Linha de cuidado"
+       },
+       "encodings": {
+        "fields": [
+         {
+          "fieldName": "linha",
+          "displayName": "Linha de cuidado",
+          "queryName": "f_linha_pacientes"
+         },
+         {
+          "fieldName": "linha",
+          "displayName": "Linha de cuidado",
+          "queryName": "f_linha_trajetoria"
+         },
+         {
+          "fieldName": "linha",
+          "displayName": "Linha de cuidado",
+          "queryName": "f_linha_distribuicao"
+         }
+        ]
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 4,
+      "height": 1
+     }
+    }
+   ]
+  }
+ ],
+ "uiSettings": {
+  "theme": {
+   "canvasBackgroundColor": {
+    "light": "#F7F8F9",
+    "dark": "#1F272D"
+   },
+   "widgetBackgroundColor": {
+    "light": "#FFFFFF",
+    "dark": "#11171C"
+   },
+   "widgetBorderColor": {
+    "light": "#FFFFFF",
+    "dark": "#11171C"
+   },
+   "fontColor": {
+    "light": "#1D2B36",
+    "dark": "#E8ECF0"
+   },
+   "selectionColor": {
+    "light": "#2272B4",
+    "dark": "#8ACAFF"
+   },
+   "visualizationColors": [
+    "#0B7A80",
+    "#C9811A",
+    "#2A8A50",
+    "#7FB8BB",
+    "#4E5185"
+   ],
+   "widgetHeaderAlignment": "LEFT",
+   "widgetCornerRadius": 10
+  }
+ }
+}

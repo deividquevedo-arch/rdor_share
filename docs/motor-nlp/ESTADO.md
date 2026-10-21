@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-19**.
+> Atualizado em **2026-10-21**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -29,7 +29,7 @@
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
 | 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
-| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) já virou** — prd desde 12/10, relatório de 19/10 sai de PRD (decisão 15/10). Onda 2 (DII, cólon, biliares, neuro, próstata): HML 26/10–06/11, PRD prevista 17/11; jobs ainda **sem** task de randomização. Método em `docs/randomizacao/metodo-avaliacao-por-onda-v0.md`. Uplift só após PRD + de acordo do Targa · painéis AI/BI em `docs/randomizacao/painel/` — **uplift v2 aprovado por enquanto (16/10)**, rascunho não publicado |
+| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) em prd desde 12/10, 5%, ainda sem efeito no envio; sobe para 10% na semana de 26/10.** 346 sorteados / 15 controle até 20/10, zero controle enviado. Onda 2 (DII, cólon, biliares, neuro, próstata): **PR 7652 revisado** — aprovável na `hml`; produção só em 17/11 (config global liga prd na promoção) e, em neuro/cólon, após parar o envio do legado (`360625`); comentário não postado. Relatório ao negócio no Databricks: **v2 editada é a referência**, não publicada. Uplift: painel **v5 — cenário Portfólio +15%** (simulado) e card `383684` — *Medir o uplift da navegação: controle × intervenção, Onda 1* — no backlog |
 | 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
 | 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
 | ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
@@ -1495,7 +1495,13 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
   prefixo `cancer_`.
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
-## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🔴 5% EM DUAS LINHAS, CONTRA 10% EM CINCO
+## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🟡 10% A PARTIR DE 26/10
+
+**21/10:** reumato e TI-RADS em prd com 5%, ainda sem efeito no envio; 10% a partir da semana de 26/10.
+Card `383684` — *[Captação][Randomização] Medir o uplift da navegação: controle × intervenção, Onda 1* — criado
+no backlog (*Related* ao `303629`). Painéis em `docs/randomizacao/painel/` — relatório ao negócio v2 editada
+(referência) e uplift v5 (cenário +15%, simulado); nenhum publicado. Diário: `_processo/diario/2026-10-21.md`.
+
 
 **Medido em 15/10** (`mlops_fabrica_ia.operacao`):
 - base `tb_mov_randomizacao_controle` com **1.000.000.000** de CPFs, **50.001.012 controle (5,0001%)**;
