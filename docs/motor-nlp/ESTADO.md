@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-21**.
+> Atualizado em **2026-10-22**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -29,7 +29,7 @@
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
 | 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
-| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) em prd desde 12/10, 5%, ainda sem efeito no envio; sobe para 10% na semana de 26/10.** 346 sorteados / 15 controle até 20/10, zero controle enviado. Onda 2 (DII, cólon, biliares, neuro, próstata): **PR 7652 revisado** — aprovável na `hml`; produção só em 17/11 (config global liga prd na promoção) e, em neuro/cólon, após parar o envio do legado (`360625`); comentário não postado. Relatório ao negócio no Databricks: **v3 é a candidata a publicar** (v2 editada + volume sem números fixos), não publicada. Uplift: painel **v5 — cenário Portfólio +15%** (simulado) e card `383684` — *Medir o uplift da navegação: controle × intervenção, Onda 1* — no backlog |
+| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) em prd desde 12/10, 5%, ainda sem efeito no envio; sobe para 10% na semana de 26/10.** 346 sorteados / 15 controle até 20/10, zero controle enviado. Onda 2 (DII, cólon, biliares, neuro, próstata): **PRs 7652 (mergeado na `hml`) e 7675 (aprovado)**; produção só em 17/11 (config global liga prd na promoção) e, em neuro/cólon, após parar o envio do legado (`360625`); comentários nos PRs dispensados. Relatório ao negócio no Databricks: **v3** (v2 editada + volume sem números fixos) **aguarda a avaliação do time** antes de publicar. Uplift: painel **v5 — cenário Portfólio +15%** (simulado) e card `383684` — *Medir o uplift da navegação: controle × intervenção, Onda 1* — no backlog |
 | 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
 | 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
 | ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
