@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-22**.
+> Atualizado em **2026-10-26**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -1496,6 +1496,12 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
 ## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🟡 10% A PARTIR DE 26/10
+
+**23/10:** relatório ao negócio **v2 aprovado** pelo time. Cards `386074` (*Relatório da Onda 2*) e `386075`
+(*Relatório da Onda 3*) no backlog. Estudo de poder com dado medido (`docs/randomizacao/poder-estatistico-5-vs-10-v1.md`)
+e de janela/impacto financeiro (`janela-e-impacto-financeiro-v1.md`). 🔴 **Base de consumo parada desde 22/09**
+(`gold_corporativo_ia.corporativo.tb_mov_fato_consumo`, dado útil até 20/09): nenhuma janela de desfecho fecha
+enquanto não voltar — reportado à plataforma em 23/10.
 
 **21/10:** reumato e TI-RADS em prd com 5%, ainda sem efeito no envio; 10% a partir da semana de 26/10.
 Card `383684` — *[Captação][Randomização] Medir o uplift da navegação: controle × intervenção, Onda 1* — criado
