@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-26**.
+> Atualizado em **2026-10-27**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -1496,6 +1496,10 @@ Roda no **legado**: `fabrica-ia-plataforma/apps/databricks/colon/`, no **workspa
 - ⚠️ Volumetria do legado **não medida** — o perfil do workspace antigo está expirado.
 
 ## Randomização — 🟢 EM OPERAÇÃO DESDE 12/10 · 🟡 10% A PARTIR DE 26/10
+
+**26/10:** fração ainda em `0.05` na `main` e na `hml` (decisão 5% × 10% em aberto). Respostas de detalhamento
+postadas nos cards `358082` (contrato lib × plataforma, SPEC 27) e `305875` (`waive`); a branch
+`tirads/feature/waive-paaf` precisa de rebase antes do PR (devolveria o `embedding_model` ao Volume antigo).
 
 **23/10:** relatório ao negócio **v2 aprovado** pelo time. Cards `386074` (*Relatório da Onda 2*) e `386075`
 (*Relatório da Onda 3*) no backlog. Estudo de poder com dado medido (`docs/randomizacao/poder-estatistico-5-vs-10-v1.md`)
