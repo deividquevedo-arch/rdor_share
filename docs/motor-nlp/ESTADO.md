@@ -7,13 +7,29 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-10-27**.
+> Atualizado em **2026-10-30**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
 > do projeto. Este documento é o **retrato**, não o histórico.
 
 ---
+
+## ⏭️ PRÓXIMA SESSÃO (03/11 — 02/11 é feriado)
+
+- 🔴 **Segregação em PRD — conferir.** TI-RADS e reumato devem segregar (envio só da intervenção) a partir de 30/10 — deploy não
+  verificado; conferir no `tb_mov_onedrive_saida` que **nenhum exame do grupo controle saiu** (o `fl_enviado` do log de sorteio é a
+  *decisão*, não o envio real). DII e ateromatose segregam na semana de 03/11: definições já leem a variável; falta
+  `prod.json` e a liberação no gate. **Janela válida do experimento começa no dia da segregação** — registrar no `383684`.
+
+- 🔴 **Reumatologia — filtro de entrada mudou com o Spark 18 (desde 27/10 em PRD).** `\bp[eé]s?\b` passou a casar
+  "pélvica" (4.891 US ginecológicos em 3 rodadas, zero relevante) e perdeu "pé" isolado (exames de pé −70%, ~4% dos
+  relevantes). Só a reumato tem `\b` junto de acento. Corrigir na config com fronteira explícita e medir antes/depois;
+  registrar a data no card `383684` (população do experimento). Memória `spark18-boundary-ascii-em-regex`.
+- Conferir após o run das 04:00: **zero controle no log de envio** de TI-RADS e reumato (segregação ligada).
+- 🟢 **Biópsias (Motion LIS) — definição de envio (30/10):** mesmo padrão das linhas, laudo junto, coluna de achado =
+  categoria do AP, relevante = só `neoplasia maligna primária` (~1.290 pacientes/mês nas unidades navegadas). Sem NLP.
+  Seis pontos a confirmar e proposta de implementação em `biopsias/biopsias-definicao-envio-v1.md`.
 
 ## 🔁 RETORNO 13/10 — retrato medido depois da sprint ausente
 
@@ -29,9 +45,10 @@
 | 🔴 **incidente `371813`** — *[Captação] Todas as linhas indisponíveis* | aberto em 13/10, João. **Nenhum job chama `ntb_ia_api`** desde o deploy de 09/10 (removido em `990cdfd`, 01/10). Rim disponível sem explicação |
 | 🟢 embeddings em prd (`305810`, `298600`) | **resolvido, medido e ENCERRADOS em 14/10** com a evidência comentada: 28.958 laudos 10–13/10, zero `FileNotFoundError` |
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
-| 🎯 **randomização — FOCO desde 15/10** | **onda 1 (reumato + TI-RADS) em prd desde 12/10, 5%, ainda sem efeito no envio; sobe para 10% na semana de 26/10.** 346 sorteados / 15 controle até 20/10, zero controle enviado. Onda 2 (DII, cólon, biliares, neuro, próstata): **PRs 7652 (mergeado na `hml`) e 7675 (aprovado)**; produção só em 17/11 (config global liga prd na promoção) e, em neuro/cólon, após parar o envio do legado (`360625`); comentários nos PRs dispensados. Relatório ao negócio no Databricks: **v3** (v2 editada + volume sem números fixos) **aguarda a avaliação do time** antes de publicar. Uplift: painel **v5 — cenário Portfólio +15%** (simulado) e card `383684` — *Medir o uplift da navegação: controle × intervenção, Onda 1* — no backlog |
-| 🔴 OCR | cards com o Phelipe, **zero código**; premissa de volume não fecha com a medição |
-| 🟡 migração | `303791` atualizado em 14/10 com as 13 linhas · quatro cards de plano para a mesma coisa · os de linha não fecham sem envio à Central |
+| 🎯 **randomização — FOCO desde 15/10** | **Segregação em PRD prevista a partir de 30/10 em TI-RADS e reumato — não verificada** (antes o sorteio rodava mas o envio lia a view completa: o controle de 12–29/10 foi navegado e **não entra** no experimento). DII e ateromatose na semana de 03/11; fração segue **5%** (base de controle PRD de 30/09, 5%). Promoção `hml → main` de 29/10 avaliada com o Diego (já ciente dos pontos: gate TK-03, `randomization_send` fixo, Spark 18 + E16, cota). Painel **consolidado de 5 abas** (Onda 1 · 2 · 3 · Global HML · Global PRD) criado como rascunho `01f1d22d3ec619b78b2f0ab60d8ff940`; ondas 2/3 em hml só têm o lote de teste de 12–13/10. Relatório da Onda 1 aprovado (v2); rótulo "nenhum controle enviado" deve virar "marcado para envio". Uplift: card `383684` |
+| 🟡 OCR | **módulo pronto** (`fabrica-ia-datahub`, PR 7627; 55.052 laudos transcritos no sandbox), writeback ainda não feito. Confronto em `.alt.doc/CDI/confronto-relatorio-impacto-ocr-colono-2026-10-27.md`: volumes batem (±2–4%), mas **recupera só a família "acesse o viewer"**, que a gold já resolve desde 20/07; **~1,5 mil "laudo em pdf"/mês em 6 unidades TASY ficam fora** (sem AN, 0%); 🔴 **writeback grava `laudo_transformado` e o runner lê `laudo_original`** — não chegaria à captação. Mensagem ao Phelipe redigida, não enviada |
+| 🟡 migração | **mama: análise v3** (`mama/analise-migracao-mama-birads-v3.md`) para alinhamento com o Diego — régua por config, faltam 3 peças de plataforma (envio Mule lido do `hive_metastore` antigo, contrato com categoria de todo exame, fonte PACS). **FlowHub resolve a fonte PACS**: `especialistas.gold.vw_pacsdor_informaticamedica_enterprise_repositorio_clinico`, casa com a gold por AN em 82% (`_fundacao/notas/analise-flowhub-pacs-v1.md`). Pendente: v4 única do BI-RADS + `.docx`; nódulo pulmonar não iniciado |
+| 🟢 **biópsias (Motion LIS)** — card `393825` | estudo **fechado** (v2) + relatório preliminar e documento da agenda (v4, com diagrama) + estrutura das tabelas, em `biopsias/` (versões anteriores em `biopsias/versoes/`). Agenda de 30/10 definiu o envio: padrão das linhas, laudo junto, categoria do AP no lugar do achado, relevante = **neoplasia maligna primária** (~1.290 pacientes/mês nas unidades navegadas), **sem NLP**. Seis pontos a confirmar em `biopsias-definicao-envio-v1.md`; refinamento na terça (03/11) |
 | ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
 | ⚪ lib | **zero commits desde 28/09** |
 
