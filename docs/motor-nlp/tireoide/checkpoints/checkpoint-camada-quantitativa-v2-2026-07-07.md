@@ -1,7 +1,7 @@
 # Checkpoint — Camada de Critérios Quantitativos V2 (retomar aqui)
 
 **Data:** 2026-07-07 · **Status:** V2 implementada e validada LOCAL; **falta push + run de validação**.
-**Spec:** `doc-spec-camada-criterios-quantitativos-v0.md` · **Régua/decisões:** memória `[[tireoide-linha-cuidado-story-v1v2]]`, `[[camada-criterios-quantitativos]]`.
+**Spec:** `doc-spec-camada-criterios-quantitativos-v0.md` · **Régua/decisões:** memória ``tireoide-linha-cuidado-story-v1v2` (memória)`, ``camada-criterios-quantitativos` (memória)`.
 
 ---
 

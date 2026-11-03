@@ -14,7 +14,7 @@ tags: [indice, motor-nlp]
 | | |
 |---|---|
 | **Onde cada coisa está agora** | [[ESTADO]] — documento vivo, carregado em toda sessão |
-| **O que aconteceu e por quê** | [[2026-09-25\|diário mais recente]] · pasta `_processo/diario/` |
+| **O que aconteceu e por quê** | [[2026-10-30\|diário mais recente]] · pasta `_processo/diario/` |
 | **Como revisar um PR do time** | [[checklist-revisao-pr-ds]] |
 | **Regras que valem sempre** | `.claude/rules/` na raiz — fonte canônica |
 | **Fatos duráveis e armadilhas** | memória do projeto (`/memory`), índice em `MEMORY.md` |
@@ -39,6 +39,8 @@ na memória. Estado na memória apodrece e passa a enganar.
 | **neuroimunologia** | PR 7428 aprovado | ver [[ESTADO]] |
 | **próstata (PI-RADS)** | 🟡 SPEC escrita, não iniciada | [[spec-migracao-prostata-pirads-v0]] |
 | **doenças biliares** | 🟡 SPEC escrita, não iniciada | [[spec-migracao-doencas-biliares-v0]] · [[migracao-biliares-e-neuro-inventario]] |
+| **biópsias (Motion LIS)** | 🟢 estudo fechado · envio definido em 30/10 (sem NLP) | [[biopsias-definicao-envio-v1]] · [[estudo-motion-lis-biopsias-v2]] · [[motion-lis-complementar-agenda-v4]] · [[motion-lis-estrutura-tabelas-v1]] |
+| **mama (BI-RADS)** | 🟡 no legado · análise de migração para alinhamento | [[analise-migracao-mama-birads-v3]] · [[analise-flowhub-pacs-v1]] |
 
 ---
 
@@ -77,6 +79,12 @@ na memória. Estado na memória apodrece e passa a enganar.
 
 ---
 
+## Mapas por pasta
+
+Cada pasta tem um mapa que lista todas as suas notas: comece por [[mapa-motor-nlp]] (ou, para todo o cofre, [[mapa-docs]]). No grafo, filtre `-path:_arquivo` para esconder o material congelado.
+
+---
+
 ## Estrutura das pastas
 
 > Reorganizada em **27/09/2026**. Antes, `_processo/` tinha 53 arquivos soltos e `_fundacao/` 64.
@@ -103,7 +111,7 @@ na memória. Estado na memória apodrece e passa a enganar.
 | **`_versoes-estaveis/`** | cópias de config fora do repo da plataforma, com [[PONTEIRO-versoes-estaveis]] |
 | `checklists/` | checklists executáveis |
 | `rads/`, `sprints/` | extração ordinal e evidências de sprint |
-| uma pasta por linha | `hepatologia/`, `tireoide/`, `reumatologia/`, `dii/`, `prostata/`, … |
+| uma pasta por linha | `hepatologia/`, `tireoide/`, `reumatologia/`, `dii/`, `prostata/`, `biopsias/`, `mama/`, … — versões superadas em `<linha>/versoes/` |
 
 ⚠️ **`_arquivo/` é congelado.** O que está lá não é mantido nem tem link corrigido — é registro de
 que existiu, não documento vivo.

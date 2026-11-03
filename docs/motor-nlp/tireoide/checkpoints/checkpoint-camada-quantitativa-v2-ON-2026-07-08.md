@@ -1,7 +1,7 @@
 # Checkpoint — Camada Quantitativa V2 LIGADA (run v18) — 2026-07-08
 
 **Status:** V2 ativa (`gate_relevance`) validada no E2E; **1 decisão de negócio pendente** (bócio difuso).
-Sucede `checkpoint-camada-quantitativa-v2-2026-07-07.md`. Ver memória `[[camada-criterios-quantitativos]]`.
+Sucede `checkpoint-camada-quantitativa-v2-2026-07-07.md`. Ver memória ``camada-criterios-quantitativos` (memória)`.
 
 ---
 

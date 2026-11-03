@@ -2,7 +2,7 @@
 
 **Status:** lib `0.3.9` e config `v20` **pushados, PRs abertos**; aguardando publicação da wheel +
 run E2E de validação. Sucede `checkpoint-camada-quantitativa-v2-ON-2026-07-08.md`.
-Ver memória `[[camada-criterios-quantitativos]]`, `[[xxrads-status-e-bancada-ab]]`.
+Ver memória ``camada-criterios-quantitativos` (memória)`, ``xxrads-status-e-bancada-ab` (memória)`.
 
 ---
 
@@ -114,7 +114,7 @@ vazava — corrigido reusando o primitivo da lib. Vale para todo o código: nega
 ## Lib 0.3.10/0.3.11 + Config v21 — regras do médico (2026-07-10)
 
 Médico decidiu (CSV, 40 casos): linfonodomegalia/proeminência/suspeito/aumentado/tireoidite = 1;
-**reacional/reativo = 0 (demotor duro, vence tamanho)**. Ver [[tireoide-linha-cuidado-story-v1v2]].
+**reacional/reativo = 0 (demotor duro, vence tamanho)**. Ver `tireoide-linha-cuidado-story-v1v2` (memória).
 
 - **Lib 0.3.10** `findings_exclusion_terms` (qualificador demove achado; reusa negação; unless=override).
 - **Lib 0.3.11** `findings_skip_organ_gate` (linfonodo cervical isento do gate de tireoide — a causa

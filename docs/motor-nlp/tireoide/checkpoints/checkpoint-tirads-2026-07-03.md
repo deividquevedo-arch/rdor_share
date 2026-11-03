@@ -1,7 +1,7 @@
 # Checkpoint TI-RADS / linha de cuidado Tireoide — 2026-07-03 (retomar segunda 07-07)
 
 Sucede o run E2E v9 D=2026-06-29 e a homologação manual dos 65 relevantes < TR4.
-Ver memórias [[xxrads-status-e-bancada-ab]], [[tireoide-linha-cuidado-story-v1v2]], [[camada-criterios-quantitativos]].
+Ver memórias `xxrads-status-e-bancada-ab` (memória), `tireoide-linha-cuidado-story-v1v2` (memória), `camada-criterios-quantitativos` (memória).
 
 ## Estado dos repos (LOCAL, nada pendente de push além do já dito)
 

@@ -43,7 +43,7 @@ dias; 1.647 relevantes pela definição do monitoramento.
 
 | componente do legado | destino na plataforma | alçada | estado |
 |---|---|---|---|
-| filtro `mam[oaá]` em 4 colunas, IMG/IMA, sem biópsia, sem `RICHET%` | `gold_filter` da config — **lê só `proced_descricao`** | DS | 🟡 medir a perda contra as 4 colunas antes ([[paridade-nao-enxerga-o-filtro]]) |
+| filtro `mam[oaá]` em 4 colunas, IMG/IMA, sem biópsia, sem `RICHET%` | `gold_filter` da config — **lê só `proced_descricao`** | DS | 🟡 medir a perda contra as 4 colunas antes (`paridade-nao-enxerga-o-filtro` (memória)) |
 | 2ª fonte PACS (`ia.vw_enave_df_historico_birads`, `hive_metastore`) | sem equivalente | Plat + Neg | 🔴 medir quanto o PACS acrescenta; se for marginal, **sair de escopo** é a opção barata |
 | janela móvel de 30 dias reprocessada | runner processa D-1 e deduplica por `id_exame` | Neg | 🟡 a janela existe por laudo liberado tarde ou pelo contrato da Mule (`dataInicial`/`dataFinal`)? |
 | régua regex + `replace` de legenda | `ordinal_extraction` · `systems.bi_rads` · `aggregation_legend_filter` | DS | ✅ **config pura, zero lib** — bancada em `rads/notas/Relatorio-homologacao-birads-bancada-v1.md` |

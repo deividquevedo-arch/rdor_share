@@ -167,7 +167,7 @@ dois caminhos:
   genéricos da tabela (seção 3.2) — é isso que resta decidir, não mais "onde gravar".
 - Harness genérico parametrizado por `specialty` (config-in, sem hardcode por especialidade) — na
   forma de um **notebook genérico para runs**, seguindo a diretriz de
-  [[lib-evolucao-global-reusavel]]. "Base ouro" vira view agregada + tag no MLflow Model Registry,
+  `lib-evolucao-global-reusavel` (memória). "Base ouro" vira view agregada + tag no MLflow Model Registry,
   não tabela nova.
 - Histórico de congelamentos rastreável via versionamento do MLflow Model Registry (tag por versão
   de base ouro), permitindo auditoria de qual base ouro validou qual mudança de código.

@@ -1,0 +1,16 @@
+---
+tags: [mapa]
+---
+
+# Mapa — `motor-nlp/biopsias/versoes`
+
+↑ [[mapa-motor-nlp-biopsias]]
+
+> Gerado para ligar cada nota ao grafo. Uma linha por nota, com o título do documento. `_arquivo/` fica de fora (congelado).
+
+## Notas
+
+- [[estudo-motion-lis-biopsias-v1]] — Estudo — dados do Motion LIS no Repositório Clínico (biópsias e anatomopatológicos)
+- [[motion-lis-complementar-agenda-v1]] — Motion LIS — documento complementar para a agenda de entendimento
+- [[motion-lis-complementar-agenda-v2]] — Motion LIS — documento complementar para a agenda de entendimento
+- [[motion-lis-complementar-agenda-v3]] — Motion LIS — documento complementar para a agenda de entendimento

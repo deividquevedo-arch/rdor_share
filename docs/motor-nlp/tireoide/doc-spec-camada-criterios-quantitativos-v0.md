@@ -1,7 +1,7 @@
 # SPEC — Camada de Critérios Quantitativos (medidas/limiares) no `nlp_engine`
 
 **Status:** rascunho v0 (pré-código) · **Piloto:** Tireoide `nódulo > 1 cm` (V2)
-**Relacionado:** [[xxrads-status-e-bancada-ab]], plumbing LLM existente (`llm_router_backend.py`, perfil `llm_http`).
+**Relacionado:** `xxrads-status-e-bancada-ab` (memória), plumbing LLM existente (`llm_router_backend.py`, perfil `llm_http`).
 
 ---
 
