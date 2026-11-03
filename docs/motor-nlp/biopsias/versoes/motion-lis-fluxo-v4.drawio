@@ -1,0 +1,114 @@
+<mxfile host="65bd71144e">
+    <diagram id="motion-lis-fluxo" name="Motion LIS — fluxo">
+        <mxGraphModel dx="1474" dy="1129" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="titulo" value="&lt;b&gt;Motion LIS → captação: como o dado chega&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;anatomopatológico (AP) · v4 · medições de 29–30/10/2026, agregadas&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=18;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="20" width="700" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="lab" value="&lt;b&gt;Laboratório&lt;/b&gt;&lt;br&gt;Motion LIS&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;laudo liberado ~5 dias após a coleta&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F4F4F4;strokeColor=#444444;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="130" width="180" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="motion" value="&lt;b&gt;Tabela do Motion&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;especialistas.gold.&lt;br&gt;tbl_motionlis_motionlis_motion_observation_exame&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;resultado · 1 linha por campo do laudo&lt;br&gt;&lt;b&gt;codificação da doença&lt;/b&gt; · &lt;b&gt;material&lt;/b&gt; · conclusão&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF1FB;strokeColor=#1F4E9A;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="110" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="fhir" value="&lt;b&gt;Tabela de pedidos (FHIR)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;gold_corporativo.observation.&lt;br&gt;tb_gold_mov_observation_exames&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;pedido do hospital (TASY, WPD, MV Soul)&lt;br&gt;&lt;b&gt;unidade&lt;/b&gt; · paciente · datas&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF1FB;strokeColor=#1F4E9A;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="110" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="gold" value="&lt;b&gt;Gold de exames&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;gold_corporativo_ia.corporativo.&lt;br&gt;tb_gold_mov_exame&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;base que a captação já lê&lt;br&gt;&lt;b&gt;unidade&lt;/b&gt; · paciente&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E7F5EA;strokeColor=#1E7B34;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1094" y="110" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" value="integração" style="endArrow=block;html=1;rounded=0;fontSize=10;fontColor=#111111;labelBackgroundColor=#FFFFFF;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;" parent="1" source="lab" target="motion" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="&lt;b&gt;pedido + item&lt;/b&gt;&lt;br&gt;~95% casam" style="endArrow=block;html=1;rounded=0;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#111111;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;" parent="1" source="motion" target="fhir" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="&lt;b&gt;num_pedido_integracao&lt;/b&gt;&lt;br&gt;~90% casam (Motion → gold)" style="endArrow=block;html=1;rounded=0;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#111111;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;" parent="1" source="fhir" target="gold" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="nota_unidade" value="⚠️ &lt;b&gt;Sem unidade na tabela do Motion&lt;/b&gt;&lt;br&gt;a unidade vem do cruzamento com a tabela de pedidos ou com a gold; pedido sem par fica sem unidade" style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFF6D6;strokeColor=#9A6700;fontSize=11;align=left;spacingLeft=6;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="270" width="260" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="nota_bodysite" value="⚠️ &lt;b&gt;bodySite vazio&lt;/b&gt;&lt;br&gt;o campo de local anatômico vem em branco; o órgão sai do texto do &lt;i&gt;material&lt;/i&gt;" style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFF6D6;strokeColor=#9A6700;fontSize=11;align=left;spacingLeft=6;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="270" width="260" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="regra" value="&lt;b&gt;Regra estruturada (opção A)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;codificação da doença = &lt;i&gt;neoplasia maligna primária&lt;/i&gt;, pré-neoplásica, in situ…&lt;br&gt;+ órgão pelo texto do material (lista de termos, 78%)&lt;br&gt;&lt;b&gt;~1,6 mil câncer primário / mês&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3ECF8;strokeColor=#5B2C83;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="460" width="380" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="linhas" value="&lt;b&gt;Linhas de captação&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;próstata · mama · útero/colo · cólon · estômago…&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E7F5EA;strokeColor=#1E7B34;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1104" y="580" width="240" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="tabia" value="&lt;b&gt;Tábia&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;formato de entrega a definir&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F4F4F4;strokeColor=#444444;dashed=1;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1104" y="655" width="240" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="categoria + material" style="endArrow=block;html=1;rounded=0;fontSize=10;dashed=1;labelBackgroundColor=#ffffff;exitX=0.704;exitY=1.008;fontColor=#111111;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;edgeStyle=orthogonalEdgeStyle;curved=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="motion" target="regra" edge="1">
+                    <mxGeometry x="-0.3548" y="-2" relative="1" as="geometry">
+                        <mxPoint x="565" y="452" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="473" y="256"/>
+                            <mxPoint x="586" y="256"/>
+                            <mxPoint x="586" y="335"/>
+                            <mxPoint x="588" y="335"/>
+                            <mxPoint x="588" y="434"/>
+                            <mxPoint x="660" y="434"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e5" value="paciente e unidade" style="endArrow=block;html=1;rounded=0;fontSize=10;dashed=1;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.85;entryY=0;fontColor=#111111;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;edgeStyle=orthogonalEdgeStyle;curved=1;" parent="1" source="gold" target="regra" edge="1">
+                    <mxGeometry x="0.1954" y="-24" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1224" y="268"/>
+                            <mxPoint x="1060" y="268"/>
+                            <mxPoint x="1060" y="429"/>
+                            <mxPoint x="793" y="429"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e6" style="endArrow=block;html=1;rounded=0;fontColor=#111111;labelBackgroundColor=#FFFFFF;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="regra" target="linhas" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1016" y="515"/>
+                            <mxPoint x="1016" y="610"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e7" style="endArrow=block;html=1;rounded=0;dashed=1;fontColor=#111111;labelBackgroundColor=#FFFFFF;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;edgeStyle=orthogonalEdgeStyle;curved=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="regra" target="tabia" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1008" y="542"/>
+                            <mxPoint x="1008" y="682"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="proc" value="&lt;b&gt;Procedimento de origem&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:11px'&gt;colonoscopia · endoscopia · biópsia/punção guiada&lt;br&gt;(outro exame na gold de exames)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E7F5EA;strokeColor=#1E7B34;fontSize=12;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1094" y="365" width="260" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" value="&lt;b&gt;mesmo atendimento&lt;/b&gt;&lt;br&gt;(id_encounter + paciente)&lt;br&gt;~36% dos AP · unidade igual em 100%" style="endArrow=block;html=1;rounded=0;fontSize=10;labelBackgroundColor=#ffffff;fontColor=#111111;strokeColor=#1F4E9A;strokeWidth=2.5;endFill=1;" parent="1" source="gold" target="proc" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="d_lab" value="&lt;b&gt;O que acontece aqui&lt;/b&gt;&lt;br&gt;o patologista analisa o material da biópsia e libera o laudo (AP)." style="shape=note;whiteSpace=wrap;html=1;size=12;fillColor=#FFFFFF;strokeColor=#666666;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="240" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="d_motion" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;cada laudo vira várias linhas — uma por campo (material, conclusão, categoria). A &lt;i&gt;categoria&lt;/i&gt; já diz se é câncer." style="shape=note;whiteSpace=wrap;html=1;size=12;fillColor=#FFFFFF;strokeColor=#666666;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="360" width="260" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="d_fhir" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;é o pedido do exame no sistema do hospital. É daqui que vem a &lt;i&gt;unidade&lt;/i&gt;." style="shape=note;whiteSpace=wrap;html=1;size=12;fillColor=#FFFFFF;strokeColor=#666666;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="360" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="d_proc" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;é o exame em que a amostra foi colhida. Os ~52% sem ligação são, em geral, biópsias de cirurgia ou consultório." style="shape=note;whiteSpace=wrap;html=1;size=12;fillColor=#FFFFFF;strokeColor=#666666;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1094" y="465" width="260" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="glossario" value="&lt;b&gt;Glossário&lt;/b&gt;&lt;br&gt;&lt;b&gt;AP (anatomopatológico):&lt;/b&gt; exame do laboratório que analisa o tecido retirado na biópsia.&lt;br&gt;&lt;b&gt;Pedido + item:&lt;/b&gt; número que identifica o exame pedido; é a 'chave' que liga uma tabela à outra.&lt;br&gt;&lt;b&gt;Atendimento:&lt;/b&gt; a passagem do paciente pelo hospital (consulta, exame ou internação).&lt;br&gt;&lt;b&gt;“~95% casam”:&lt;/b&gt; de cada 100 resultados, cerca de 95 encontram o pedido correspondente na outra tabela.&lt;br&gt;&lt;b&gt;Codificação da doença:&lt;/b&gt; categoria preenchida pelo laboratório (ex.: neoplasia maligna primária, pré-neoplásica).&lt;br&gt;&lt;b&gt;Material:&lt;/b&gt; texto curto que diz de onde veio a amostra (ex.: “biópsia gástrica”) — é dele que sai o órgão.&lt;br&gt;&lt;b&gt;Gold de exames:&lt;/b&gt; base de exames que os algoritmos de captação já usam." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#444444;fontSize=10;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="590" width="620" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="legenda2" value="&lt;b&gt;Legenda&lt;/b&gt;&lt;br&gt;&lt;font color='#1F4E9A'&gt;■&lt;/font&gt; tabela de origem do dado&lt;br&gt;&lt;font color='#1E7B34'&gt;■&lt;/font&gt; base ou exame que a captação já usa&lt;br&gt;&lt;font color='#5B2C83'&gt;■&lt;/font&gt; regra proposta&lt;br&gt;&lt;font color='#9A6700'&gt;■&lt;/font&gt; alerta (limitação do dado)&lt;br&gt;□ explicação da etapa&lt;br&gt;→ seta azul contínua: ligação que existe hoje&lt;br&gt;⇢ seta azul tracejada: proposta ou a definir" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#444444;fontSize=10;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;strokeWidth=2;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="671" y="604" width="300" height="150" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
