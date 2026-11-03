@@ -1,0 +1,4574 @@
+{
+ "datasets": [
+  {
+   "name": "pacientes_o1",
+   "displayName": "Onda 1 — Pacientes sorteados (um por linha)",
+   "queryLines": [
+    "SELECT CASE nm_especialidade WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia'\n",
+    "            ELSE initcap(nm_especialidade) END AS linha,\n",
+    "       sha2(cast(num_cpf AS string), 256) AS id_paciente,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 'Grupo controle' ELSE 'Enviados à navegação' END AS grupo,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 1 ELSE 0 END AS fl_controle,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 0 ELSE 1 END AS fl_navegacao,\n",
+    "       min(to_date(dt_execucao_modelo)) AS dia\n",
+    "FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('tirads', 'reumatologia')\n",
+    "GROUP BY 1, 2\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "garantias_o1",
+   "displayName": "Onda 1 — Garantias do sorteio",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('tirads', 'reumatologia'))\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS trocou_de_grupo,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS diferente_do_sorteio\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "distribuicao_o1",
+   "displayName": "Onda 1 — Distribuição observada por linha",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT CASE nm_especialidade WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia'\n",
+    "              ELSE initcap(nm_especialidade) END AS linha,\n",
+    "         num_cpf, max(CASE WHEN tp_grupo = 'controle' THEN 1 ELSE 0 END) AS c\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('tirads', 'reumatologia') GROUP BY 1, 2\n",
+    ")\n",
+    "SELECT linha, count(*) AS pacientes, sum(c) AS no_controle, sum(c) / count(*) AS pct_controle, 0.05 AS meta\n",
+    "FROM p GROUP BY linha\n",
+    "UNION ALL\n",
+    "SELECT 'Onda 1 (total)', count(*), sum(c), sum(c) / count(*), 0.05 FROM p\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "volume_o1",
+   "displayName": "Onda 1 — Volume mensal nos dois cenários",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT num_cpf, nm_especialidade, min(to_date(dt_execucao_modelo)) AS d\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('tirads', 'reumatologia') GROUP BY 1, 2\n",
+    "),\n",
+    "dias AS (\n",
+    "  SELECT count(DISTINCT to_date(dt_execucao_modelo)) AS n FROM tb_mov_randomizacao_log\n",
+    "  WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('tirads', 'reumatologia') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "),\n",
+    "mes AS (SELECT count(*) / max(dias.n) * 21 AS pacientes_mes FROM p CROSS JOIN dias WHERE p.d >= DATE'2026-10-14'),\n",
+    "c AS (SELECT * FROM VALUES ('Hoje: 5% (validação)', 0.05, 1), ('Com o de acordo: 10%', 0.10, 2) AS t(cenario, fracao, ordem))\n",
+    "SELECT c.cenario, c.ordem, 'Enviados à navegação' AS grupo, round(m.pacientes_mes * (1 - c.fracao)) AS pacientes_mes\n",
+    "FROM c CROSS JOIN mes m\n",
+    "UNION ALL\n",
+    "SELECT c.cenario, c.ordem, 'Grupo controle', round(m.pacientes_mes * c.fracao) FROM c CROSS JOIN mes m\n",
+    "ORDER BY ordem, grupo\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "prazo_o1",
+   "displayName": "Onda 1 — Prazo até o resultado",
+   "queryLines": [
+    "SELECT * FROM VALUES\n",
+    "  ('Com 10% (após o de acordo)', '1. Juntar pacientes no controle', 3.0),\n",
+    "  ('Com 10% (após o de acordo)', '2. Acompanhar cada paciente 90 dias', 3.0),\n",
+    "  ('Com 10% (após o de acordo)', '3. Base de consumo atualizar', 0.5),\n",
+    "  ('Se ficasse em 5%', '1. Juntar pacientes no controle', 6.0),\n",
+    "  ('Se ficasse em 5%', '2. Acompanhar cada paciente 90 dias', 3.0),\n",
+    "  ('Se ficasse em 5%', '3. Base de consumo atualizar', 0.5)\n",
+    "AS t(cenario, etapa, meses)\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "pacientes_o2",
+   "displayName": "Onda 2 — Pacientes sorteados (um por linha)",
+   "queryLines": [
+    "SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, sha2(cast(num_cpf AS string), 256) AS id_paciente,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 'Grupo controle' ELSE 'Enviados à navegação' END AS grupo,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 1 ELSE 0 END AS fl_controle,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 0 ELSE 1 END AS fl_navegacao,\n",
+    "       min(to_date(dt_execucao_modelo)) AS dia,\n",
+    "       date_format(min(to_date(dt_execucao_modelo)), 'yyyy-MM-dd') AS dia_txt\n",
+    "FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('doenca_inflamatoria_intestinal', 'cancer_colon', 'doencas_biliares', 'neuroimunologia', 'pirads')\n",
+    "GROUP BY 1, 2\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "garantias_o2",
+   "displayName": "Onda 2 — Garantias do sorteio",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('doenca_inflamatoria_intestinal', 'cancer_colon', 'doencas_biliares', 'neuroimunologia', 'pirads'))\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS trocou_de_grupo,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS diferente_do_sorteio\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "distribuicao_o2",
+   "displayName": "Onda 2 — Distribuição observada por linha",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, num_cpf, max(CASE WHEN tp_grupo = 'controle' THEN 1 ELSE 0 END) AS c\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('doenca_inflamatoria_intestinal', 'cancer_colon', 'doencas_biliares', 'neuroimunologia', 'pirads') GROUP BY 1, 2\n",
+    ")\n",
+    "SELECT linha, count(*) AS pacientes, sum(c) AS no_controle, sum(c) / count(*) AS pct_controle, 0.05 AS meta FROM p GROUP BY linha\n",
+    "UNION ALL\n",
+    "SELECT 'Onda 2 (total)', count(*), sum(c), sum(c) / count(*), 0.05 FROM p\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "volume_o2",
+   "displayName": "Onda 2 — Volume mensal nos dois cenários",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('doenca_inflamatoria_intestinal', 'cancer_colon', 'doencas_biliares', 'neuroimunologia', 'pirads') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Hoje: 5%', 0.05, 1), ('Com 10%', 0.10, 2) AS t(cenario, fracao, ordem))\n",
+    "SELECT c.cenario, c.ordem, 'Enviados à navegação' AS grupo, round(m.pacientes_mes * (1 - c.fracao)) AS pacientes_mes FROM c CROSS JOIN mes m\n",
+    "UNION ALL\n",
+    "SELECT c.cenario, c.ordem, 'Grupo controle', round(m.pacientes_mes * c.fracao) FROM c CROSS JOIN mes m\n",
+    "ORDER BY ordem, grupo\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "prazo_o2",
+   "displayName": "Onda 2 — Prazo até o resultado",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('doenca_inflamatoria_intestinal', 'cancer_colon', 'doencas_biliares', 'neuroimunologia', 'pirads') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Com 10%', 0.10, 1), ('Se ficasse em 5%', 0.05, 2) AS t(cenario, fracao, ordem)),\n",
+    "acum AS (\n",
+    "  SELECT c.cenario, c.ordem,\n",
+    "         round(7.839999999999999 * 0.58 * (1 - 0.58) * (1 / c.fracao + 1 / (1 - c.fracao)) / (0.08 * 0.08) / nullif(m.pacientes_mes * 0.95, 0), 1) AS meses\n",
+    "  FROM c CROSS JOIN mes m\n",
+    ")\n",
+    "SELECT cenario, ordem, '1. Juntar pacientes no controle' AS etapa, meses FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '2. Acompanhar cada paciente 90 dias', 3.0 FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '3. Base de consumo atualizar', 0.5 FROM acum\n",
+    "ORDER BY ordem, etapa\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "pacientes_o3",
+   "displayName": "Onda 3 — Pacientes sorteados (um por linha)",
+   "queryLines": [
+    "SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, sha2(cast(num_cpf AS string), 256) AS id_paciente,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 'Grupo controle' ELSE 'Enviados à navegação' END AS grupo,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 1 ELSE 0 END AS fl_controle,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 0 ELSE 1 END AS fl_navegacao,\n",
+    "       min(to_date(dt_execucao_modelo)) AS dia,\n",
+    "       date_format(min(to_date(dt_execucao_modelo)), 'yyyy-MM-dd') AS dia_txt\n",
+    "FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('ateromatose_coronariana', 'transplante_pulmao', 'cancer_estomago', 'cancer_rim', 'tumor_osseo')\n",
+    "GROUP BY 1, 2\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "garantias_o3",
+   "displayName": "Onda 3 — Garantias do sorteio",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('ateromatose_coronariana', 'transplante_pulmao', 'cancer_estomago', 'cancer_rim', 'tumor_osseo'))\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS trocou_de_grupo,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS diferente_do_sorteio\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "distribuicao_o3",
+   "displayName": "Onda 3 — Distribuição observada por linha",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, num_cpf, max(CASE WHEN tp_grupo = 'controle' THEN 1 ELSE 0 END) AS c\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN ('ateromatose_coronariana', 'transplante_pulmao', 'cancer_estomago', 'cancer_rim', 'tumor_osseo') GROUP BY 1, 2\n",
+    ")\n",
+    "SELECT linha, count(*) AS pacientes, sum(c) AS no_controle, sum(c) / count(*) AS pct_controle, 0.05 AS meta FROM p GROUP BY linha\n",
+    "UNION ALL\n",
+    "SELECT 'Onda 3 (total)', count(*), sum(c), sum(c) / count(*), 0.05 FROM p\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "volume_o3",
+   "displayName": "Onda 3 — Volume mensal nos dois cenários",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('ateromatose_coronariana', 'transplante_pulmao', 'cancer_estomago', 'cancer_rim', 'tumor_osseo') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Hoje: 5%', 0.05, 1), ('Com 10%', 0.10, 2) AS t(cenario, fracao, ordem))\n",
+    "SELECT c.cenario, c.ordem, 'Enviados à navegação' AS grupo, round(m.pacientes_mes * (1 - c.fracao)) AS pacientes_mes FROM c CROSS JOIN mes m\n",
+    "UNION ALL\n",
+    "SELECT c.cenario, c.ordem, 'Grupo controle', round(m.pacientes_mes * c.fracao) FROM c CROSS JOIN mes m\n",
+    "ORDER BY ordem, grupo\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "prazo_o3",
+   "displayName": "Onda 3 — Prazo até o resultado",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'prd' AND nm_especialidade IN ('ateromatose_coronariana', 'transplante_pulmao', 'cancer_estomago', 'cancer_rim', 'tumor_osseo') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Com 10%', 0.10, 1), ('Se ficasse em 5%', 0.05, 2) AS t(cenario, fracao, ordem)),\n",
+    "acum AS (\n",
+    "  SELECT c.cenario, c.ordem,\n",
+    "         round(7.839999999999999 * 0.58 * (1 - 0.58) * (1 / c.fracao + 1 / (1 - c.fracao)) / (0.08 * 0.08) / nullif(m.pacientes_mes * 0.95, 0), 1) AS meses\n",
+    "  FROM c CROSS JOIN mes m\n",
+    ")\n",
+    "SELECT cenario, ordem, '1. Juntar pacientes no controle' AS etapa, meses FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '2. Acompanhar cada paciente 90 dias', 3.0 FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '3. Base de consumo atualizar', 0.5 FROM acum\n",
+    "ORDER BY ordem, etapa\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "pacientes_gh",
+   "displayName": "Global HML — Pacientes sorteados (um por linha)",
+   "queryLines": [
+    "SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, sha2(cast(num_cpf AS string), 256) AS id_paciente,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 'Grupo controle' ELSE 'Enviados à navegação' END AS grupo,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 1 ELSE 0 END AS fl_controle,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 0 ELSE 1 END AS fl_navegacao,\n",
+    "       min(to_date(dt_execucao_modelo)) AS dia,\n",
+    "       date_format(min(to_date(dt_execucao_modelo)), 'yyyy-MM-dd') AS dia_txt\n",
+    "FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml')\n",
+    "GROUP BY 1, 2\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "garantias_gh",
+   "displayName": "Global HML — Garantias do sorteio",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml'))\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS trocou_de_grupo,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS diferente_do_sorteio\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "distribuicao_gh",
+   "displayName": "Global HML — Distribuição observada por linha",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, num_cpf, max(CASE WHEN tp_grupo = 'controle' THEN 1 ELSE 0 END) AS c\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml') GROUP BY 1, 2\n",
+    ")\n",
+    "SELECT linha, count(*) AS pacientes, sum(c) AS no_controle, sum(c) / count(*) AS pct_controle, 0.05 AS meta FROM p GROUP BY linha\n",
+    "UNION ALL\n",
+    "SELECT 'Global HML (total)', count(*), sum(c), sum(c) / count(*), 0.05 FROM p\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "volume_gh",
+   "displayName": "Global HML — Volume mensal nos dois cenários",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'hml' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Hoje: 5%', 0.05, 1), ('Com 10%', 0.10, 2) AS t(cenario, fracao, ordem))\n",
+    "SELECT c.cenario, c.ordem, 'Enviados à navegação' AS grupo, round(m.pacientes_mes * (1 - c.fracao)) AS pacientes_mes FROM c CROSS JOIN mes m\n",
+    "UNION ALL\n",
+    "SELECT c.cenario, c.ordem, 'Grupo controle', round(m.pacientes_mes * c.fracao) FROM c CROSS JOIN mes m\n",
+    "ORDER BY ordem, grupo\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "prazo_gh",
+   "displayName": "Global HML — Prazo até o resultado",
+   "queryLines": [
+    "WITH r AS (\n",
+    "  SELECT nm_especialidade, to_date(dt_execucao_modelo) AS d, max_by(qt_exportados, dh_registro) AS elegiveis\n",
+    "  FROM tb_mov_randomizacao_relatorio\n",
+    "  WHERE tp_ambiente = 'hml' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'hml') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'\n",
+    "  GROUP BY 1, 2\n",
+    "),\n",
+    "por_linha AS (SELECT nm_especialidade, avg(elegiveis) * 21 AS mes FROM r GROUP BY 1),\n",
+    "mes AS (SELECT coalesce(sum(mes), 0) AS pacientes_mes FROM por_linha),\n",
+    "c AS (SELECT * FROM VALUES ('Com 10%', 0.10, 1), ('Se ficasse em 5%', 0.05, 2) AS t(cenario, fracao, ordem)),\n",
+    "acum AS (\n",
+    "  SELECT c.cenario, c.ordem,\n",
+    "         round(7.839999999999999 * 0.58 * (1 - 0.58) * (1 / c.fracao + 1 / (1 - c.fracao)) / (0.08 * 0.08) / nullif(m.pacientes_mes * 0.95, 0), 1) AS meses\n",
+    "  FROM c CROSS JOIN mes m\n",
+    ")\n",
+    "SELECT cenario, ordem, '1. Juntar pacientes no controle' AS etapa, meses FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '2. Acompanhar cada paciente 90 dias', 3.0 FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '3. Base de consumo atualizar', 0.5 FROM acum\n",
+    "ORDER BY ordem, etapa\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "pacientes_gp",
+   "displayName": "Global PRD — Pacientes sorteados (um por linha)",
+   "queryLines": [
+    "SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, sha2(cast(num_cpf AS string), 256) AS id_paciente,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 'Grupo controle' ELSE 'Enviados à navegação' END AS grupo,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 1 ELSE 0 END AS fl_controle,\n",
+    "       CASE WHEN max(tp_grupo) = 'controle' THEN 0 ELSE 1 END AS fl_navegacao,\n",
+    "       min(to_date(dt_execucao_modelo)) AS dia,\n",
+    "       date_format(min(to_date(dt_execucao_modelo)), 'yyyy-MM-dd') AS dia_txt\n",
+    "FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd')\n",
+    "GROUP BY 1, 2\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "garantias_gp",
+   "displayName": "Global PRD — Garantias do sorteio",
+   "queryLines": [
+    "WITH l AS (SELECT * FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd'))\n",
+    "SELECT\n",
+    "  (SELECT count(*) FROM l WHERE tp_grupo = 'controle' AND fl_enviado) AS controle_enviado,\n",
+    "  (SELECT count(*) FROM (SELECT num_cpf FROM l GROUP BY num_cpf HAVING count(DISTINCT tp_grupo) > 1)) AS trocou_de_grupo,\n",
+    "  (SELECT count(*) FROM l LEFT JOIN tb_mov_randomizacao_controle b\n",
+    "     ON lpad(cast(l.num_cpf AS string), 11, '0') = lpad(cast(b.num_cpf AS string), 11, '0')\n",
+    "   WHERE b.tp_grupo IS NULL OR b.tp_grupo <> l.tp_grupo) AS diferente_do_sorteio\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "distribuicao_gp",
+   "displayName": "Global PRD — Distribuição observada por linha",
+   "queryLines": [
+    "WITH p AS (\n",
+    "  SELECT CASE nm_especialidade WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'cancer_colon' THEN 'Câncer de cólon' WHEN 'doencas_biliares' THEN 'Doenças biliares' WHEN 'neuroimunologia' THEN 'Neuroimunologia' WHEN 'pirads' THEN 'Próstata (PI-RADS)' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' WHEN 'transplante_pulmao' THEN 'Transplante de pulmão' WHEN 'cancer_estomago' THEN 'Câncer de estômago' WHEN 'cancer_rim' THEN 'Câncer de rim' WHEN 'tumor_osseo' THEN 'Tumor ósseo' WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' ELSE initcap(nm_especialidade) END AS linha, num_cpf, max(CASE WHEN tp_grupo = 'controle' THEN 1 ELSE 0 END) AS c\n",
+    "  FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd') GROUP BY 1, 2\n",
+    ")\n",
+    "SELECT linha, count(*) AS pacientes, sum(c) AS no_controle, sum(c) / count(*) AS pct_controle, 0.05 AS meta FROM p GROUP BY linha\n",
+    "UNION ALL\n",
+    "SELECT 'Global PRD (total)', count(*), sum(c), sum(c) / count(*), 0.05 FROM p\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "volume_gp",
+   "displayName": "Global PRD — Volume mensal nos dois cenários",
+   "queryLines": [
+    "WITH p AS (SELECT num_cpf, nm_especialidade, min(to_date(dt_execucao_modelo)) AS d FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd') GROUP BY 1, 2),\n",
+    "dias AS (SELECT count(DISTINCT to_date(dt_execucao_modelo)) AS n FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'),\n",
+    "mes AS (SELECT count(*) / max(dias.n) * 21 AS pacientes_mes FROM p CROSS JOIN dias WHERE p.d >= DATE'2026-10-14'),\n",
+    "c AS (SELECT * FROM VALUES ('Hoje: 5%', 0.05, 1), ('Com 10%', 0.10, 2) AS t(cenario, fracao, ordem))\n",
+    "SELECT c.cenario, c.ordem, 'Enviados à navegação' AS grupo, round(m.pacientes_mes * (1 - c.fracao)) AS pacientes_mes FROM c CROSS JOIN mes m\n",
+    "UNION ALL\n",
+    "SELECT c.cenario, c.ordem, 'Grupo controle', round(m.pacientes_mes * c.fracao) FROM c CROSS JOIN mes m\n",
+    "ORDER BY ordem, grupo\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  },
+  {
+   "name": "prazo_gp",
+   "displayName": "Global PRD — Prazo até o resultado",
+   "queryLines": [
+    "WITH p AS (SELECT num_cpf, nm_especialidade, min(to_date(dt_execucao_modelo)) AS d FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd') GROUP BY 1, 2),\n",
+    "dias AS (SELECT count(DISTINCT to_date(dt_execucao_modelo)) AS n FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd' AND nm_especialidade IN (SELECT DISTINCT nm_especialidade FROM tb_mov_randomizacao_log WHERE tp_ambiente = 'prd') AND to_date(dt_execucao_modelo) >= DATE'2026-10-14'),\n",
+    "mes AS (SELECT count(*) / max(dias.n) * 21 AS pacientes_mes FROM p CROSS JOIN dias WHERE p.d >= DATE'2026-10-14'),\n",
+    "c AS (SELECT * FROM VALUES ('Com 10%', 0.10, 1), ('Se ficasse em 5%', 0.05, 2) AS t(cenario, fracao, ordem)),\n",
+    "acum AS (\n",
+    "  SELECT c.cenario, c.ordem,\n",
+    "         round(7.839999999999999 * 0.58 * (1 - 0.58) * (1 / c.fracao + 1 / (1 - c.fracao)) / (0.08 * 0.08) / nullif(m.pacientes_mes * 0.95, 0), 1) AS meses\n",
+    "  FROM c CROSS JOIN mes m\n",
+    ")\n",
+    "SELECT cenario, ordem, '1. Juntar pacientes no controle' AS etapa, meses FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '2. Acompanhar cada paciente 90 dias', 3.0 FROM acum\n",
+    "UNION ALL SELECT cenario, ordem, '3. Base de consumo atualizar', 0.5 FROM acum\n",
+    "ORDER BY ordem, etapa\n"
+   ],
+   "catalog": "mlops_fabrica_ia",
+   "schema": "operacao"
+  }
+ ],
+ "pages": [
+  {
+   "name": "pg_o1",
+   "displayName": "Onda 1",
+   "layout": [
+    {
+     "widget": {
+      "name": "titulo_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "# Navegação da Captação — grupo controle da Onda 1\n",
+        "\n",
+        "# Reumatologia e Tireoide · PRD desde 12/10/2026 · atualização diária"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "mensagem_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Em uma frase: Hoje, de cada **20 pacientes** com indicação de navegação, **1 é sorteado** para o **grupo controle** e segue só com o atendimento habitual da Rede. Com o de acordo, passa a ser **1 em cada 10**. Comparar os dois grupos mostra **quanto a navegação aumenta o retorno do paciente à Rede**. "
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "s1_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 1. Como está hoje — fase de validação com 5%"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_total_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "COUNT(`id_paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes sorteados",
+        "showDescription": true,
+        "description": "Com achado relevante e elegíveis para a navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 5,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_nav_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Enviados à navegação",
+        "showDescription": true,
+        "description": "Seguem o fluxo normal"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 5,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle",
+        "showDescription": true,
+        "description": "Atendimento habitual, sem navegação ativa"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 5,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct_o1",
+      "spec": {
+       "frame": {
+        "showTitle": true,
+        "showDescription": true,
+        "title": {
+         "value": "Parcela no controle",
+         "fields": []
+        },
+        "description": {
+         "value": "Esperado: 1 em cada 20 (5%)",
+         "fields": []
+        }
+       },
+       "version": 2,
+       "widgetType": "counter",
+       "encodings": {},
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 5,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dia_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o1",
+         "fields": [
+          {
+           "name": "dia",
+           "expression": "`dia`"
+          },
+          {
+           "name": "n",
+           "expression": "COUNT(`id_paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuição dia a dia",
+        "showDescription": true,
+        "description": "Pacientes sorteados por dia — o controle é a fatia laranja"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia",
+         "scale": {
+          "type": "temporal"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 8,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dist_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao_o1",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Parcela no controle, por linha",
+        "showDescription": true,
+        "description": "Esperado: 5%. Com poucos pacientes, varia em torno disso"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 8,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s2_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 2. Por que começamos com 5% e vamos para 10% (**5% foi a validação).** Antes de deixar mais pacientes sem navegação ativa, era necessário provar, em produção, que o sorteio funciona: que o grupo é sorteado ao acaso, que o paciente nunca troca de grupo e que **nenhum paciente do controle é enviado por engano**. Com 5% isso foi verificado mexendo o mínimo na operação. Escalar para **10% tem a finalidade de obter o resultado na metade do tempo.** Com o dobro de pacientes no controle, a comparação fica confiável muito antes. Subir não muda ninguém de lugar: **quem já está no controle continua, quem foi navegado continua** — só entram mais pacientes novos no controle. (Subir é possível a qualquer momento; descer, não.)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 13,
+      "width": 12,
+      "height": 4
+     }
+    },
+    {
+     "widget": {
+      "name": "s3_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 3. O impacto no volume da navegação, por mês"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 17,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_vol_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "volume_o1",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "n",
+           "expression": "SUM(`pacientes_mes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes por mês nos dois cenários",
+        "showDescription": true,
+        "description": "Volume real da Onda 1 desde 14/10 (103 unidades com navegação), projetado para um mês"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes por mês"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 18,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura3_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "A Onda 1 sorteia **cerca de 1.060 pacientes por mês** (≈ 900 da Tireoide e ≈ 160 da Reumatologia).\n",
+        "\n",
+        "**Hoje (5%):** ≈ 1.010 seguem para a navegação e **≈ 50 ficam no controle**.\n",
+        "\n",
+        "**Com 10%:** ≈ 955 seguem para a navegação e **≈ 105 ficam no controle**.Para as navegadoras, a mudança é de **≈ 50 pacientes a menos por mês** na fila — cerca de 2 por dia útil, somando as duas linhas."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 18,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s4_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 4. Quando teremos o primeiro resultado de uplift"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 23,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_prazo_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "prazo_o1",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "m",
+           "expression": "SUM(`meses`)"
+          },
+          {
+           "name": "etapa",
+           "expression": "`etapa`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Meses até o primeiro resultado consistente, a partir do de acordo",
+        "showDescription": true,
+        "description": "Para enxergar um aumento de 8 pontos na taxa de retorno (de 58% para 66%), Onda 1 somada"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "m",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "meses"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "etapa",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "1. Juntar pacientes no controle",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "2. Acompanhar cada paciente 90 dias",
+            "color": "#7FB8BB"
+           },
+           {
+            "value": "3. Base de consumo atualizar",
+            "color": "#C9CED3"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 24,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura4_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**Com 10%: cerca de 6 meses e meio** — primeiro resultado por volta de **maio/2027**. \n",
+        "\n",
+        "Se ficasse em 5%: cerca de 9 meses e meio — por volta de agosto/2027.\n",
+        "\n",
+        "**Por que demora:** além de juntar pacientes no controle, cada paciente precisa idealmente de **90 dias** de acompanhamento para sabermos se voltou à Rede, e também consideramos que a base de consumo chega com \\~2 semanas de atraso.\n",
+        "\n",
+        "**O que será medido:** a **taxa de retorno** — % de pacientes que voltam a consumir na Rede em até 90 dias, medida **do mesmo jeito nos dois grupos**. Não é a \"taxa de captação\" da Central, que só existe para quem foi navegado. O valor em R$ por paciente vem como indicador secundário."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 24,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s5_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 5. Garantias — verificadas todos os dias (o esperado é zero)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 29,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g1_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes do controle enviados por engano"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 30,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g2_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`trocou_de_grupo`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes que trocaram de grupo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 30,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g3_o1",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o1",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`diferente_do_sorteio`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Registros diferentes do sorteio original"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 30,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "s6_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 6. O que precisamos do negócio:\n",
+        "\n",
+        "## 1. **De acordo** com a operação da Onda 1 e com a **subida do grupo controle para 10%**.\n",
+        "\n",
+        "## 2. **Confirmar o indicador principal:** taxa de retorno à Rede em até 90 dias."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 33,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "nota_o1",
+      "multilineTextboxSpec": {
+       "lines": [
+        "*Como ler os números: contamos **pacientes** (um paciente pode ter mais de um exame), **só de produção** e **só das linhas com sorteio**. Outros painéis podem mostrar exames, somar homologação ou incluir todas as linhas — por isso os totais podem ser diferentes. Prazos e datas são estimativas a partir do volume e da variação de consumo medidos até 19/10/2026.*"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 35,
+      "width": 12,
+      "height": 2
+     }
+    }
+   ],
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1"
+  },
+  {
+   "name": "pg_o2",
+   "displayName": "Onda 2",
+   "layout": [
+    {
+     "widget": {
+      "name": "titulo_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "# Navegação da Captação — grupo controle: Onda 2\n",
+        "\n",
+        "# DII, Câncer de cólon, Doenças biliares, Neuroimunologia e Próstata (PI-RADS) · PRD prevista para 17/11/2026"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "aviso_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**🧪 PRÉVIA EM HOMOLOGAÇÃO.** A randomização da Onda 2 entra em produção em 17/11/2026 (data em ajuste). Até lá, as seções **1** e **5** mostram os sorteios de **homologação** — a janela de teste de 12 e 13/10, reprocessada em validação; poucos pacientes, para ver o formato, não para ler resultado. Volume e prazo usam os exames elegíveis de **produção**."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "mensagem_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Em uma frase: Hoje, de cada **20 pacientes** com indicação de navegação, **1 é sorteado** para o **grupo controle** e segue só com o atendimento habitual da Rede. Com o de acordo, passa a ser **1 em cada 10**. Comparar os dois grupos mostra **quanto a navegação aumenta o retorno do paciente à Rede**. "
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "s1_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 1. Como está — prévia em homologação, controle com a fração vigente"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_total_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "COUNT(`id_paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes sorteados",
+        "showDescription": true,
+        "description": "Com achado relevante e elegíveis para a navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_nav_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Enviados à navegação",
+        "showDescription": true,
+        "description": "Seguem o fluxo normal"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle",
+        "showDescription": true,
+        "description": "Atendimento habitual, sem navegação ativa"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct_o2",
+      "spec": {
+       "frame": {
+        "showTitle": true,
+        "showDescription": true,
+        "title": {
+         "value": "Parcela no controle",
+         "fields": []
+        },
+        "description": {
+         "value": "Esperado: 1 em cada 20 (5%)",
+         "fields": []
+        }
+       },
+       "version": 2,
+       "widgetType": "counter",
+       "encodings": {},
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dia_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o2",
+         "fields": [
+          {
+           "name": "dia_txt",
+           "expression": "`dia_txt`"
+          },
+          {
+           "name": "n",
+           "expression": "COUNT(`id_paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuição dia a dia",
+        "showDescription": true,
+        "description": "Pacientes sorteados por dia (HML) — o controle é a fatia laranja"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia_txt",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "Grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 10,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dist_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao_o2",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Parcela no controle, por linha",
+        "showDescription": true,
+        "description": "Esperado: 5%. Com poucos pacientes, varia em torno disso"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 10,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s2_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 2. A fração de controle (**cada onda entra com a fração vigente.**) A validação do sorteio já foi feita na Onda 1, em produção: o grupo é sorteado ao acaso, o paciente nunca troca de grupo e **nenhum paciente do controle é enviado por engano**. Cada onda usa o mesmo sorteio e a mesma base, então o mesmo paciente fica no mesmo grupo em qualquer linha. Escalar para **10% tem a finalidade de obter o resultado na metade do tempo**; subir não muda ninguém de lugar — só entram mais pacientes novos no controle. (Subir é possível a qualquer momento; descer, não.)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 15,
+      "width": 12,
+      "height": 4
+     }
+    },
+    {
+     "widget": {
+      "name": "s3_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 3. O impacto no volume da navegação, por mês"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 19,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_vol_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "volume_o2",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "n",
+           "expression": "SUM(`pacientes_mes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Exames elegíveis por mês nos dois cenários",
+        "showDescription": true,
+        "description": "Exames elegíveis (PRD) desde 14/10, projetados para um mês"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes por mês"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 20,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura3_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "O volume mensal está no gráfico ao lado: **exames elegíveis para a navegação em produção desde 14/10**, projetados para um mês, que se atualiza todo dia.\n",
+        "\n",
+        "**Com 5%:** 1 em cada 20 fica no controle.\n",
+        "\n",
+        "**Com 10%:** 1 em cada 10 fica no controle.\n",
+        "\n",
+        "⚠️ Doenças biliares, Neuroimunologia e Próstata ainda não registram volume no relatório de execução de produção (a etapa entra com a ativação) e ficam fora do volume até lá."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 20,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s4_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 4. Quando teremos o primeiro resultado de uplift"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 25,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_prazo_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "prazo_o2",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "m",
+           "expression": "SUM(`meses`)"
+          },
+          {
+           "name": "etapa",
+           "expression": "`etapa`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Meses até o primeiro resultado consistente, a partir do de acordo",
+        "showDescription": true,
+        "description": "Para enxergar um aumento de 8 pontos na taxa de retorno (de 58% para 66%), Onda 2"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "m",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "meses"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "etapa",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "1. Juntar pacientes no controle",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "2. Acompanhar cada paciente 90 dias",
+            "color": "#7FB8BB"
+           },
+           {
+            "value": "3. Base de consumo atualizar",
+            "color": "#C9CED3"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 26,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura4_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**Os meses do gráfico são calculados com o volume da própria onda**, com a mesma referência da Onda 1 (enxergar a taxa de retorno subir de 58% para 66%).\n",
+        "\n",
+        "Onda com menos volume leva mais tempo: **a leitura de uplift é feita pela soma das ondas**, e cada onda nova encurta o prazo do conjunto.\n",
+        "\n",
+        "**Por que demora:** além de juntar pacientes no controle, cada paciente precisa idealmente de **90 dias** de acompanhamento para sabermos se voltou à Rede, e também consideramos que a base de consumo chega com \\~2 semanas de atraso.\n",
+        "\n",
+        "**O que será medido:** a **taxa de retorno** — % de pacientes que voltam a consumir na Rede em até 90 dias, medida **do mesmo jeito nos dois grupos**. Não é a \"taxa de captação\" da Central, que só existe para quem foi navegado. O valor em R$ por paciente vem como indicador secundário."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 26,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s5_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 5. Garantias — verificadas todos os dias (o esperado é zero)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 31,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g1_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes do controle enviados por engano"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g2_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`trocou_de_grupo`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes que trocaram de grupo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g3_o2",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o2",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`diferente_do_sorteio`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Registros diferentes do sorteio original"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "s6_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 6. O que precisamos do negócio:\n",
+        "\n",
+        "## 1. **De acordo** com a operação da Onda 2.\n",
+        "\n",
+        "## 2. **Confirmar o indicador principal:** taxa de retorno à Rede em até 90 dias."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 35,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "nota_o2",
+      "multilineTextboxSpec": {
+       "lines": [
+        "*Como ler os números: contamos **pacientes** (um paciente pode ter mais de um exame), **só de produção** e **só das linhas com sorteio**. Outros painéis podem mostrar exames, somar homologação ou incluir todas as linhas — por isso os totais podem ser diferentes. Prazos e datas são estimativas a partir do volume e da variação de consumo medidos até 19/10/2026.*"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 37,
+      "width": 12,
+      "height": 2
+     }
+    }
+   ],
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1"
+  },
+  {
+   "name": "pg_o3",
+   "displayName": "Onda 3",
+   "layout": [
+    {
+     "widget": {
+      "name": "titulo_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "# Navegação da Captação — grupo controle: Onda 3\n",
+        "\n",
+        "# Ateromatose, Transplante de pulmão, Câncer de estômago, Câncer de rim e Tumor ósseo · PRD prevista para 24/11/2026"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "aviso_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**🧪 PRÉVIA EM HOMOLOGAÇÃO.** A randomização da Onda 3 entra em produção em 24/11/2026 (data em ajuste). Até lá, as seções **1** e **5** mostram os sorteios de **homologação** — a janela de teste de 12 e 13/10, reprocessada em validação; poucos pacientes, para ver o formato, não para ler resultado. Volume e prazo usam os exames elegíveis de **produção**."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "mensagem_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Em uma frase: Hoje, de cada **20 pacientes** com indicação de navegação, **1 é sorteado** para o **grupo controle** e segue só com o atendimento habitual da Rede. Com o de acordo, passa a ser **1 em cada 10**. Comparar os dois grupos mostra **quanto a navegação aumenta o retorno do paciente à Rede**. "
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "s1_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 1. Como está — prévia em homologação, controle com a fração vigente"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_total_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "COUNT(`id_paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes sorteados",
+        "showDescription": true,
+        "description": "Com achado relevante e elegíveis para a navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_nav_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Enviados à navegação",
+        "showDescription": true,
+        "description": "Seguem o fluxo normal"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle",
+        "showDescription": true,
+        "description": "Atendimento habitual, sem navegação ativa"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct_o3",
+      "spec": {
+       "frame": {
+        "showTitle": true,
+        "showDescription": true,
+        "title": {
+         "value": "Parcela no controle",
+         "fields": []
+        },
+        "description": {
+         "value": "Esperado: 1 em cada 20 (5%)",
+         "fields": []
+        }
+       },
+       "version": 2,
+       "widgetType": "counter",
+       "encodings": {},
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dia_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_o3",
+         "fields": [
+          {
+           "name": "dia_txt",
+           "expression": "`dia_txt`"
+          },
+          {
+           "name": "n",
+           "expression": "COUNT(`id_paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuição dia a dia",
+        "showDescription": true,
+        "description": "Pacientes sorteados por dia (HML) — o controle é a fatia laranja"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia_txt",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "Grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 10,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dist_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao_o3",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Parcela no controle, por linha",
+        "showDescription": true,
+        "description": "Esperado: 5%. Com poucos pacientes, varia em torno disso"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 10,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s2_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 2. A fração de controle (**cada onda entra com a fração vigente.**) A validação do sorteio já foi feita na Onda 1, em produção: o grupo é sorteado ao acaso, o paciente nunca troca de grupo e **nenhum paciente do controle é enviado por engano**. Cada onda usa o mesmo sorteio e a mesma base, então o mesmo paciente fica no mesmo grupo em qualquer linha. Escalar para **10% tem a finalidade de obter o resultado na metade do tempo**; subir não muda ninguém de lugar — só entram mais pacientes novos no controle. (Subir é possível a qualquer momento; descer, não.)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 15,
+      "width": 12,
+      "height": 4
+     }
+    },
+    {
+     "widget": {
+      "name": "s3_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 3. O impacto no volume da navegação, por mês"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 19,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_vol_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "volume_o3",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "n",
+           "expression": "SUM(`pacientes_mes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Exames elegíveis por mês nos dois cenários",
+        "showDescription": true,
+        "description": "Exames elegíveis (PRD) desde 14/10, projetados para um mês"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes por mês"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 20,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura3_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "O volume mensal está no gráfico ao lado: **exames elegíveis para a navegação em produção desde 14/10**, projetados para um mês, que se atualiza todo dia.\n",
+        "\n",
+        "**Com 5%:** 1 em cada 20 fica no controle.\n",
+        "\n",
+        "**Com 10%:** 1 em cada 10 fica no controle.\n",
+        "\n",
+        "⚠️ Câncer de estômago tem volume muito baixo (menos de 1 exame elegível por dia útil) e aparece só como descritivo."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 20,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s4_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 4. Quando teremos o primeiro resultado de uplift"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 25,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_prazo_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "prazo_o3",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "m",
+           "expression": "SUM(`meses`)"
+          },
+          {
+           "name": "etapa",
+           "expression": "`etapa`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Meses até o primeiro resultado consistente, a partir do de acordo",
+        "showDescription": true,
+        "description": "Para enxergar um aumento de 8 pontos na taxa de retorno (de 58% para 66%), Onda 3"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "m",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "meses"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "etapa",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "1. Juntar pacientes no controle",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "2. Acompanhar cada paciente 90 dias",
+            "color": "#7FB8BB"
+           },
+           {
+            "value": "3. Base de consumo atualizar",
+            "color": "#C9CED3"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 26,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura4_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**Os meses do gráfico são calculados com o volume da própria onda**, com a mesma referência da Onda 1 (enxergar a taxa de retorno subir de 58% para 66%).\n",
+        "\n",
+        "Onda com menos volume leva mais tempo: **a leitura de uplift é feita pela soma das ondas**, e cada onda nova encurta o prazo do conjunto.\n",
+        "\n",
+        "**Por que demora:** além de juntar pacientes no controle, cada paciente precisa idealmente de **90 dias** de acompanhamento para sabermos se voltou à Rede, e também consideramos que a base de consumo chega com \\~2 semanas de atraso.\n",
+        "\n",
+        "**O que será medido:** a **taxa de retorno** — % de pacientes que voltam a consumir na Rede em até 90 dias, medida **do mesmo jeito nos dois grupos**. Não é a \"taxa de captação\" da Central, que só existe para quem foi navegado. O valor em R$ por paciente vem como indicador secundário."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 26,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s5_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 5. Garantias — verificadas todos os dias (o esperado é zero)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 31,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g1_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes do controle enviados por engano"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g2_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`trocou_de_grupo`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes que trocaram de grupo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g3_o3",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_o3",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`diferente_do_sorteio`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Registros diferentes do sorteio original"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "s6_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 6. O que precisamos do negócio:\n",
+        "\n",
+        "## 1. **De acordo** com a operação da Onda 3.\n",
+        "\n",
+        "## 2. **Confirmar o indicador principal:** taxa de retorno à Rede em até 90 dias."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 35,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "nota_o3",
+      "multilineTextboxSpec": {
+       "lines": [
+        "*Como ler os números: contamos **pacientes** (um paciente pode ter mais de um exame), **só de produção** e **só das linhas com sorteio**. Outros painéis podem mostrar exames, somar homologação ou incluir todas as linhas — por isso os totais podem ser diferentes. Prazos e datas são estimativas a partir do volume e da variação de consumo medidos até 19/10/2026.*"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 37,
+      "width": 12,
+      "height": 2
+     }
+    }
+   ],
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1"
+  },
+  {
+   "name": "pg_gh",
+   "displayName": "Global HML",
+   "layout": [
+    {
+     "widget": {
+      "name": "titulo_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "# Navegação da Captação — grupo controle: visão global em homologação\n",
+        "\n",
+        "# Todas as linhas com sorteio em homologação · atualização a cada execução"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "aviso_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**🧪 HOMOLOGAÇÃO.** Visão de todas as linhas com sorteio em homologação. Os jobs de homologação rodam sob demanda, em janelas de validação — os números mostram o processo funcionando, não o volume real. Volume e prazo desta aba usam os exames elegíveis de **homologação**."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "mensagem_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Em uma frase: Hoje, de cada **20 pacientes** com indicação de navegação, **1 é sorteado** para o **grupo controle** e segue só com o atendimento habitual da Rede. Com o de acordo, passa a ser **1 em cada 10**. Comparar os dois grupos mostra **quanto a navegação aumenta o retorno do paciente à Rede**. "
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "s1_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 1. Como está — prévia em homologação, controle com a fração vigente"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_total_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "COUNT(`id_paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes sorteados",
+        "showDescription": true,
+        "description": "Com achado relevante e elegíveis para a navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_nav_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Enviados à navegação",
+        "showDescription": true,
+        "description": "Seguem o fluxo normal"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle",
+        "showDescription": true,
+        "description": "Atendimento habitual, sem navegação ativa"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct_gh",
+      "spec": {
+       "frame": {
+        "showTitle": true,
+        "showDescription": true,
+        "title": {
+         "value": "Parcela no controle",
+         "fields": []
+        },
+        "description": {
+         "value": "Esperado: 1 em cada 20 (5%)",
+         "fields": []
+        }
+       },
+       "version": 2,
+       "widgetType": "counter",
+       "encodings": {},
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dia_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gh",
+         "fields": [
+          {
+           "name": "dia_txt",
+           "expression": "`dia_txt`"
+          },
+          {
+           "name": "n",
+           "expression": "COUNT(`id_paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuição dia a dia",
+        "showDescription": true,
+        "description": "Pacientes sorteados por dia (HML) — o controle é a fatia laranja"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia_txt",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "Grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 10,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dist_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao_gh",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Parcela no controle, por linha",
+        "showDescription": true,
+        "description": "Esperado: 5%. Com poucos pacientes, varia em torno disso"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 10,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s2_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 2. A fração de controle (**cada onda entra com a fração vigente.**) A validação do sorteio já foi feita na Onda 1, em produção: o grupo é sorteado ao acaso, o paciente nunca troca de grupo e **nenhum paciente do controle é enviado por engano**. Cada onda usa o mesmo sorteio e a mesma base, então o mesmo paciente fica no mesmo grupo em qualquer linha. Escalar para **10% tem a finalidade de obter o resultado na metade do tempo**; subir não muda ninguém de lugar — só entram mais pacientes novos no controle. (Subir é possível a qualquer momento; descer, não.)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 15,
+      "width": 12,
+      "height": 4
+     }
+    },
+    {
+     "widget": {
+      "name": "s3_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 3. O impacto no volume da navegação, por mês"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 19,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_vol_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "volume_gh",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "n",
+           "expression": "SUM(`pacientes_mes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Exames elegíveis por mês nos dois cenários",
+        "showDescription": true,
+        "description": "Exames elegíveis (HML) desde 14/10, projetados para um mês"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes por mês"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 20,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura3_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "O volume mensal está no gráfico ao lado: **exames elegíveis para a navegação em produção desde 14/10**, projetados para um mês, que se atualiza todo dia.\n",
+        "\n",
+        "**Com 5%:** 1 em cada 20 fica no controle.\n",
+        "\n",
+        "**Com 10%:** 1 em cada 10 fica no controle.\n",
+        "\n",
+        "⚠️ Em homologação o volume depende das janelas que foram rodadas; não serve para projetar o mês de produção."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 20,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s4_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 4. Quando teremos o primeiro resultado de uplift"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 25,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_prazo_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "prazo_gh",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "m",
+           "expression": "SUM(`meses`)"
+          },
+          {
+           "name": "etapa",
+           "expression": "`etapa`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Meses até o primeiro resultado consistente, a partir do de acordo",
+        "showDescription": true,
+        "description": "Para enxergar um aumento de 8 pontos na taxa de retorno (de 58% para 66%), Global HML"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "m",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "meses"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "etapa",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "1. Juntar pacientes no controle",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "2. Acompanhar cada paciente 90 dias",
+            "color": "#7FB8BB"
+           },
+           {
+            "value": "3. Base de consumo atualizar",
+            "color": "#C9CED3"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 26,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura4_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**Os meses do gráfico são calculados com o volume da própria onda**, com a mesma referência da Onda 1 (enxergar a taxa de retorno subir de 58% para 66%).\n",
+        "\n",
+        "Onda com menos volume leva mais tempo: **a leitura de uplift é feita pela soma das ondas**, e cada onda nova encurta o prazo do conjunto.\n",
+        "\n",
+        "**Por que demora:** além de juntar pacientes no controle, cada paciente precisa idealmente de **90 dias** de acompanhamento para sabermos se voltou à Rede, e também consideramos que a base de consumo chega com \\~2 semanas de atraso.\n",
+        "\n",
+        "**O que será medido:** a **taxa de retorno** — % de pacientes que voltam a consumir na Rede em até 90 dias, medida **do mesmo jeito nos dois grupos**. Não é a \"taxa de captação\" da Central, que só existe para quem foi navegado. O valor em R$ por paciente vem como indicador secundário."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 26,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s5_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 5. Garantias — verificadas todos os dias (o esperado é zero)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 31,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g1_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes do controle enviados por engano"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g2_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`trocou_de_grupo`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes que trocaram de grupo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g3_gh",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gh",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`diferente_do_sorteio`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Registros diferentes do sorteio original"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "s6_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 6. O que precisamos do negócio:\n",
+        "\n",
+        "## 1. **De acordo** com a operação da Global HML.\n",
+        "\n",
+        "## 2. **Confirmar o indicador principal:** taxa de retorno à Rede em até 90 dias."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 35,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "nota_gh",
+      "multilineTextboxSpec": {
+       "lines": [
+        "*Como ler os números: contamos **pacientes** (um paciente pode ter mais de um exame), **só de produção** e **só das linhas com sorteio**. Outros painéis podem mostrar exames, somar homologação ou incluir todas as linhas — por isso os totais podem ser diferentes. Prazos e datas são estimativas a partir do volume e da variação de consumo medidos até 19/10/2026.*"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 37,
+      "width": 12,
+      "height": 2
+     }
+    }
+   ],
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1"
+  },
+  {
+   "name": "pg_gp",
+   "displayName": "Global PRD",
+   "layout": [
+    {
+     "widget": {
+      "name": "titulo_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "# Navegação da Captação — grupo controle: visão global em produção\n",
+        "\n",
+        "# Todas as linhas com sorteio em produção · atualização diária"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "aviso_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**🟢 PRODUÇÃO.** Todas as linhas com sorteio ativo em produção. Hoje é a Onda 1 (Reumatologia e Tireoide); a aba cresce sozinha conforme as Ondas 2 e 3 forem ativadas."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "mensagem_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "### Em uma frase: Hoje, de cada **20 pacientes** com indicação de navegação, **1 é sorteado** para o **grupo controle** e segue só com o atendimento habitual da Rede. Com o de acordo, passa a ser **1 em cada 10**. Comparar os dois grupos mostra **quanto a navegação aumenta o retorno do paciente à Rede**. "
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "s1_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 1. Como está — prévia em homologação, controle com a fração vigente"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_total_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "COUNT(`id_paciente`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes sorteados",
+        "showDescription": true,
+        "description": "Com achado relevante e elegíveis para a navegação"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_nav_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_navegacao`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Enviados à navegação",
+        "showDescription": true,
+        "description": "Seguem o fluxo normal"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 3,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_ctrl_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`fl_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Grupo controle",
+        "showDescription": true,
+        "description": "Atendimento habitual, sem navegação ativa"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 6,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_pct_gp",
+      "spec": {
+       "frame": {
+        "showTitle": true,
+        "showDescription": true,
+        "title": {
+         "value": "Parcela no controle",
+         "fields": []
+        },
+        "description": {
+         "value": "Esperado: 1 em cada 20 (5%)",
+         "fields": []
+        }
+       },
+       "version": 2,
+       "widgetType": "counter",
+       "encodings": {},
+       "data": {
+        "queryName": "main_query"
+       }
+      }
+     },
+     "position": {
+      "x": 9,
+      "y": 7,
+      "width": 3,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dia_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "pacientes_gp",
+         "fields": [
+          {
+           "name": "dia_txt",
+           "expression": "`dia_txt`"
+          },
+          {
+           "name": "n",
+           "expression": "COUNT(`id_paciente`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Distribuição dia a dia",
+        "showDescription": true,
+        "description": "Pacientes sorteados por dia (PRD) — o controle é a fatia laranja"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "dia_txt",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes"
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": "Grupo",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 10,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "g_dist_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "distribuicao_gp",
+         "fields": [
+          {
+           "name": "linha",
+           "expression": "`linha`"
+          },
+          {
+           "name": "y",
+           "expression": "SUM(`pct_controle`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Parcela no controle, por linha",
+        "showDescription": true,
+        "description": "Esperado: 5%. Com poucos pacientes, varia em torno disso"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "linha",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "y": {
+         "fieldName": "y",
+         "scale": {
+          "type": "quantitative"
+         },
+         "format": {
+          "type": "number-percent",
+          "decimalPlaces": {
+           "type": "max",
+           "places": 1
+          }
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 10,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s2_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 2. A fração de controle (**cada onda entra com a fração vigente.**) A validação do sorteio já foi feita na Onda 1, em produção: o grupo é sorteado ao acaso, o paciente nunca troca de grupo e **nenhum paciente do controle é enviado por engano**. Cada onda usa o mesmo sorteio e a mesma base, então o mesmo paciente fica no mesmo grupo em qualquer linha. Escalar para **10% tem a finalidade de obter o resultado na metade do tempo**; subir não muda ninguém de lugar — só entram mais pacientes novos no controle. (Subir é possível a qualquer momento; descer, não.)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 15,
+      "width": 12,
+      "height": 4
+     }
+    },
+    {
+     "widget": {
+      "name": "s3_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 3. O impacto no volume da navegação, por mês"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 19,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_vol_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "volume_gp",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "n",
+           "expression": "SUM(`pacientes_mes`)"
+          },
+          {
+           "name": "grupo",
+           "expression": "`grupo`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes por mês nos dois cenários",
+        "showDescription": true,
+        "description": "Pacientes sorteados em produção desde 14/10, projetados para um mês"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "n",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "pacientes por mês"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "grupo",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "Enviados à navegação",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "Grupo controle",
+            "color": "#C9811A"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 20,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura3_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "O volume mensal está no gráfico ao lado: **exames elegíveis para a navegação em produção desde 14/10**, projetados para um mês, que se atualiza todo dia.\n",
+        "\n",
+        "**Com 5%:** 1 em cada 20 fica no controle.\n",
+        "\n",
+        "**Com 10%:** 1 em cada 10 fica no controle.\n",
+        "\n",
+        "⚠️ O volume soma só as linhas com sorteio ativo em produção."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 20,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s4_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 4. Quando teremos o primeiro resultado de uplift"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 25,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "g_prazo_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "prazo_gp",
+         "fields": [
+          {
+           "name": "cenario",
+           "expression": "`cenario`"
+          },
+          {
+           "name": "m",
+           "expression": "SUM(`meses`)"
+          },
+          {
+           "name": "etapa",
+           "expression": "`etapa`"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 3,
+       "widgetType": "bar",
+       "frame": {
+        "showTitle": true,
+        "title": "Meses até o primeiro resultado consistente, a partir do de acordo",
+        "showDescription": true,
+        "description": "Para enxergar um aumento de 8 pontos na taxa de retorno (de 58% para 66%), Global PRD"
+       },
+       "encodings": {
+        "x": {
+         "fieldName": "m",
+         "scale": {
+          "type": "quantitative"
+         },
+         "axis": {
+          "title": "meses"
+         }
+        },
+        "y": {
+         "fieldName": "cenario",
+         "scale": {
+          "type": "categorical"
+         },
+         "axis": {
+          "title": ""
+         }
+        },
+        "color": {
+         "fieldName": "etapa",
+         "displayName": " ",
+         "scale": {
+          "type": "categorical",
+          "mappings": [
+           {
+            "value": "1. Juntar pacientes no controle",
+            "color": "#0B7A80"
+           },
+           {
+            "value": "2. Acompanhar cada paciente 90 dias",
+            "color": "#7FB8BB"
+           },
+           {
+            "value": "3. Base de consumo atualizar",
+            "color": "#C9CED3"
+           }
+          ]
+         }
+        },
+        "label": {
+         "show": true
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 26,
+      "width": 7,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "leitura4_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "**Os meses do gráfico são calculados com o volume da própria onda**, com a mesma referência da Onda 1 (enxergar a taxa de retorno subir de 58% para 66%).\n",
+        "\n",
+        "Onda com menos volume leva mais tempo: **a leitura de uplift é feita pela soma das ondas**, e cada onda nova encurta o prazo do conjunto.\n",
+        "\n",
+        "**Por que demora:** além de juntar pacientes no controle, cada paciente precisa idealmente de **90 dias** de acompanhamento para sabermos se voltou à Rede, e também consideramos que a base de consumo chega com \\~2 semanas de atraso.\n",
+        "\n",
+        "**O que será medido:** a **taxa de retorno** — % de pacientes que voltam a consumir na Rede em até 90 dias, medida **do mesmo jeito nos dois grupos**. Não é a \"taxa de captação\" da Central, que só existe para quem foi navegado. O valor em R$ por paciente vem como indicador secundário."
+       ]
+      }
+     },
+     "position": {
+      "x": 7,
+      "y": 26,
+      "width": 5,
+      "height": 5
+     }
+    },
+    {
+     "widget": {
+      "name": "s5_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 5. Garantias — verificadas todos os dias (o esperado é zero)"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 31,
+      "width": 12,
+      "height": 1
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g1_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`controle_enviado`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes do controle enviados por engano"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g2_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`trocou_de_grupo`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Pacientes que trocaram de grupo"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 4,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "k_g3_gp",
+      "queries": [
+       {
+        "name": "main_query",
+        "query": {
+         "datasetName": "garantias_gp",
+         "fields": [
+          {
+           "name": "v",
+           "expression": "SUM(`diferente_do_sorteio`)"
+          }
+         ],
+         "disaggregated": false
+        }
+       }
+      ],
+      "spec": {
+       "version": 2,
+       "widgetType": "counter",
+       "frame": {
+        "showTitle": true,
+        "title": "Registros diferentes do sorteio original"
+       },
+       "encodings": {
+        "value": {
+         "fieldName": "v",
+         "rowNumber": 0
+        }
+       }
+      }
+     },
+     "position": {
+      "x": 8,
+      "y": 32,
+      "width": 4,
+      "height": 3
+     }
+    },
+    {
+     "widget": {
+      "name": "s6_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "## 6. O que precisamos do negócio:\n",
+        "\n",
+        "## 1. **De acordo** com a operação da Global PRD.\n",
+        "\n",
+        "## 2. **Confirmar o indicador principal:** taxa de retorno à Rede em até 90 dias."
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 35,
+      "width": 12,
+      "height": 2
+     }
+    },
+    {
+     "widget": {
+      "name": "nota_gp",
+      "multilineTextboxSpec": {
+       "lines": [
+        "*Como ler os números: contamos **pacientes** (um paciente pode ter mais de um exame), **só de produção** e **só das linhas com sorteio**. Outros painéis podem mostrar exames, somar homologação ou incluir todas as linhas — por isso os totais podem ser diferentes. Prazos e datas são estimativas a partir do volume e da variação de consumo medidos até 19/10/2026.*"
+       ]
+      }
+     },
+     "position": {
+      "x": 0,
+      "y": 37,
+      "width": 12,
+      "height": 2
+     }
+    }
+   ],
+   "pageType": "PAGE_TYPE_CANVAS",
+   "layoutVersion": "GRID_V1"
+  }
+ ],
+ "uiSettings": {
+  "theme": {
+   "canvasBackgroundColor": {
+    "light": "#F7F8F9",
+    "dark": "#1F272D"
+   },
+   "widgetBackgroundColor": {
+    "light": "#FFFFFF",
+    "dark": "#11171C"
+   },
+   "widgetBorderColor": {
+    "light": "#FFFFFF",
+    "dark": "#11171C"
+   },
+   "fontColor": {
+    "light": "#1D2B36",
+    "dark": "#E8ECF0"
+   },
+   "selectionColor": {
+    "light": "#2272B4",
+    "dark": "#8ACAFF"
+   },
+   "visualizationColors": [
+    "#0B7A80",
+    "#C9811A",
+    "#7FB8BB",
+    "#4E5185",
+    "#C9CED3"
+   ],
+   "widgetHeaderAlignment": "LEFT",
+   "widgetCornerRadius": 10
+  }
+ }
+}
