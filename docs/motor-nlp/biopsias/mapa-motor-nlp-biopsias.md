@@ -15,6 +15,7 @@ tags: [mapa]
 ## Notas
 
 - [[biopsias-definicao-envio-v2]] — Biópsias (Motion LIS) — definição do envio (v2: recorte Ca de Cólon)
+- [[lista-colon-biopsias-como-funciona-v2]] — como a lista de Ca de Cólon para homologação é montada
 - [[biopsias-definicao-envio-v1]] — v1, definição geral de 30/10 (em `versoes/`)
 - [[estudo-motion-lis-biopsias-v2]] — Estudo — dados do Motion LIS no Repositório Clínico (biópsias e anatomopatológicos)
 - [[motion-lis-complementar-agenda-v4]] — Motion LIS — documento complementar para a agenda de entendimento
