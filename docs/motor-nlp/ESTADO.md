@@ -27,9 +27,13 @@
   relevantes). Só a reumato tem `\b` junto de acento. Corrigir na config com fronteira explícita e medir antes/depois;
   registrar a data no card `383684` (população do experimento). Memória `spark18-boundary-ascii-em-regex`.
 - Conferir após o run das 04:00: **zero controle no log de envio** de TI-RADS e reumato (segregação ligada).
-- 🟢 **Biópsias (Motion LIS) — definição de envio (30/10):** mesmo padrão das linhas, laudo junto, coluna de achado =
-  categoria do AP, relevante = só `neoplasia maligna primária` (~1.290 pacientes/mês nas unidades navegadas). Sem NLP.
-  Seis pontos a confirmar e proposta de implementação em `biopsias/biopsias-definicao-envio-v1.md`.
+- 🟢 **Biópsias (Motion LIS) — refinamento de 03/11:** primeiro entregável é **só Ca de Cólon** (biópsia, AP,
+  `neoplasia maligna primária`): **~42 pacientes/mês**, ~55 com reto. Desenvolvimento 09–13/11, homologação e
+  industrialização 16–20/11, Tabia 23–27/11. A decidir antes de 09/11: reto, peça cirúrgica, paciente já navegado.
+  🔴 Motion carrega 1×/dia (~05:30) e está em dia, mas paciente e unidade vêm da gold parada. Usuário de serviço exige
+  chamado. `biopsias/biopsias-definicao-envio-v2.md`.
+- 🟢 **PR 7800** (segregação DII e ateromatose em PRD): revisado, ok para aprovar (2 arquivos, 4 linhas, mesmo padrão
+  do 7768). Segregação começa na 1ª rodada com sucesso após deploy na main — e a gold precisa voltar.
 
 ## 🔁 RETORNO 13/10 — retrato medido depois da sprint ausente
 
@@ -47,7 +51,7 @@
 | 🔴 pin | 12 linhas em `0.12.3`; **`cancer_colon` em `0.15.4` em prd desde 29/09** pelo placeholder |
 | 🎯 **randomização — FOCO desde 15/10** | **Segregação em PRD prevista a partir de 30/10 em TI-RADS e reumato — não verificada** (antes o sorteio rodava mas o envio lia a view completa: o controle de 12–29/10 foi navegado e **não entra** no experimento). DII e ateromatose na semana de 03/11; fração segue **5%** (base de controle PRD de 30/09, 5%). Promoção `hml → main` de 29/10 avaliada com o Diego (já ciente dos pontos: gate TK-03, `randomization_send` fixo, Spark 18 + E16, cota). Painel **consolidado de 5 abas** (Onda 1 · 2 · 3 · Global HML · Global PRD) criado como rascunho `01f1d22d3ec619b78b2f0ab60d8ff940`; ondas 2/3 em hml só têm o lote de teste de 12–13/10. Relatório da Onda 1 aprovado (v2); rótulo "nenhum controle enviado" deve virar "marcado para envio". Uplift: card `383684` |
 | 🟡 OCR | **módulo pronto** (`fabrica-ia-datahub`, PR 7627; 55.052 laudos transcritos no sandbox), writeback ainda não feito. Confronto em `.alt.doc/CDI/confronto-relatorio-impacto-ocr-colono-2026-10-27.md`: volumes batem (±2–4%), mas **recupera só a família "acesse o viewer"**, que a gold já resolve desde 20/07; **~1,5 mil "laudo em pdf"/mês em 6 unidades TASY ficam fora** (sem AN, 0%); 🔴 **writeback grava `laudo_transformado` e o runner lê `laudo_original`** — não chegaria à captação. Mensagem ao Phelipe redigida, não enviada |
-| 🟡 migração | **mama: análise v3** (`mama/analise-migracao-mama-birads-v3.md`) para alinhamento com o Diego — régua por config, faltam 3 peças de plataforma (envio Mule lido do `hive_metastore` antigo, contrato com categoria de todo exame, fonte PACS). **FlowHub resolve a fonte PACS**: `especialistas.gold.vw_pacsdor_informaticamedica_enterprise_repositorio_clinico`, casa com a gold por AN em 82% (`_fundacao/notas/analise-flowhub-pacs-v1.md`). Pendente: v4 única do BI-RADS + `.docx`; nódulo pulmonar não iniciado |
+| 🟡 migração | **mama: estudo fechado (v4, 04/11)** (`mama/analise-migracao-mama-birads-v4.md`) — régua por config; a fonte PACS vira **retroação de 7 dias na seleção do RC** (recupera 165 de 192 BI-RADS ≥ 4/mês; FlowHub só para os 27 que nunca chegam, decisão de negócio). Faltam envio Mule e contrato de saída, mais 4 decisões do negócio. Nódulo pulmonar não iniciado |
 | 🟢 **biópsias (Motion LIS)** — card `393825` | estudo **fechado** (v2) + relatório preliminar e documento da agenda (v4, com diagrama) + estrutura das tabelas, em `biopsias/` (versões anteriores em `biopsias/versoes/`). Agenda de 30/10 definiu o envio: padrão das linhas, laudo junto, categoria do AP no lugar do achado, relevante = **neoplasia maligna primária** (~1.290 pacientes/mês nas unidades navegadas), **sem NLP**. Seis pontos a confirmar em `biopsias-definicao-envio-v1.md`; refinamento na terça (03/11) |
 | ⏸️ legado restante — **segundo plano desde 15/10** | mama, nódulo, nefro e hepato **rodam todo dia** no `bi-hml-02` (14/10) · mapa e resumo em `_fundacao/propostas/` · espera: orquestrador sem acesso e decisão de destino |
 | ⚪ lib | **zero commits desde 28/09** |

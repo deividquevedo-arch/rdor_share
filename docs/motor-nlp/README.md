@@ -39,8 +39,8 @@ na memória. Estado na memória apodrece e passa a enganar.
 | **neuroimunologia** | PR 7428 aprovado | ver [[ESTADO]] |
 | **próstata (PI-RADS)** | 🟡 SPEC escrita, não iniciada | [[spec-migracao-prostata-pirads-v0]] |
 | **doenças biliares** | 🟡 SPEC escrita, não iniciada | [[spec-migracao-doencas-biliares-v0]] · [[migracao-biliares-e-neuro-inventario]] |
-| **biópsias (Motion LIS)** | 🟢 estudo fechado · envio definido em 30/10 (sem NLP) | [[biopsias-definicao-envio-v1]] · [[estudo-motion-lis-biopsias-v2]] · [[motion-lis-complementar-agenda-v4]] · [[motion-lis-estrutura-tabelas-v1]] |
-| **mama (BI-RADS)** | 🟡 no legado · análise de migração para alinhamento | [[analise-migracao-mama-birads-v3]] · [[analise-flowhub-pacs-v1]] |
+| **biópsias (Motion LIS)** | 🟢 estudo fechado · envio definido em 30/10, recorte Ca de Cólon em 03/11 (sem NLP) | [[biopsias-definicao-envio-v2]] · [[estudo-motion-lis-biopsias-v2]] · [[motion-lis-complementar-agenda-v4]] · [[motion-lis-estrutura-tabelas-v1]] |
+| **mama (BI-RADS)** | 🟡 no legado · estudo de migração fechado (v4) | [[analise-migracao-mama-birads-v4]] · [[analise-flowhub-pacs-v1]] |
 
 ---
 
