@@ -12,3 +12,4 @@ tags: [mapa]
 
 - [[analise-migracao-mama-birads-v1]] — Migração da mama (BI-RADS) — análise
 - [[analise-migracao-mama-birads-v2]] — BI-RADS (mama) — migração do legado para a plataforma NLP
+- [[analise-migracao-mama-birads-v3]] — v3, alinhamento de 29/10
