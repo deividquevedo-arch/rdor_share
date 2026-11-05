@@ -15,4 +15,5 @@ tags: [mapa]
 ## Notas
 
 - [[analise-migracao-mama-birads-v4]] — BI-RADS (mama) — migração do legado para a plataforma NLP (v4, estudo fechado)
+- [[spec-migracao-mama-birads-v0]] — SPEC de migração: régua, filtro e paridade (trabalho de DS)
 - [[avaliacao-fonte-pacs-rc-flowhub-v1]] — Mama (BI-RADS) — de onde vêm os exames: RC, PACS ou FlowHub
