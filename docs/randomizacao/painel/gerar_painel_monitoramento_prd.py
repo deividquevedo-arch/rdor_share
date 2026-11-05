@@ -14,8 +14,8 @@ AQUI = Path(__file__).parent
 SEGREGACAO = {  # linha -> data em que o envio passou a sair só com a intervenção (None = ainda não ligada)
     "tirads": "2026-10-30",
     "reumatologia": "2026-10-30",
-    "doenca_inflamatoria_intestinal": None,
-    "ateromatose_coronariana": None,
+    "doenca_inflamatoria_intestinal": "2026-11-05",
+    "ateromatose_coronariana": "2026-11-05",
 }
 ROTULO = {"tirads": "Tireoide", "reumatologia": "Reumatologia", "doenca_inflamatoria_intestinal": "DII",
           "ateromatose_coronariana": "Ateromatose"}

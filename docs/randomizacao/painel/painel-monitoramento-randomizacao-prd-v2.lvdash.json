@@ -4,7 +4,7 @@
    "name": "diario",
    "displayName": "Uma linha por linha de cuidado e dia de execução",
    "queryLines": [
-    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', CAST(NULL AS DATE)), ('ateromatose_coronariana', CAST(NULL AS DATE)) AS t(esp, dt_segregacao)),\n",
+    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', DATE'2026-11-05'), ('ateromatose_coronariana', DATE'2026-11-05') AS t(esp, dt_segregacao)),\n",
     "rel AS (SELECT nm_especialidade AS esp, to_date(dt_execucao_modelo) AS dia, max_by(qt_exportados, dh_registro) AS exportados,\n",
     "          max_by(qt_controle, dh_registro) AS controle, max_by(qt_intervencao, dh_registro) AS intervencao,\n",
     "          max_by(qt_sem_chave, dh_registro) AS sem_chave, max(CASE WHEN st_execucao = 'SUCESSO' THEN 1 ELSE 0 END) AS teve_sucesso,\n",
@@ -39,7 +39,7 @@
    "name": "resumo",
    "displayName": "Situação por linha desde a segregação",
    "queryLines": [
-    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', CAST(NULL AS DATE)), ('ateromatose_coronariana', CAST(NULL AS DATE)) AS t(esp, dt_segregacao)),\n",
+    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', DATE'2026-11-05'), ('ateromatose_coronariana', DATE'2026-11-05') AS t(esp, dt_segregacao)),\n",
     "rel AS (SELECT nm_especialidade AS esp, to_date(dt_execucao_modelo) AS dia, max_by(qt_exportados, dh_registro) AS exportados,\n",
     "          max_by(qt_controle, dh_registro) AS controle, max_by(qt_intervencao, dh_registro) AS intervencao,\n",
     "          max_by(qt_sem_chave, dh_registro) AS sem_chave, max(CASE WHEN st_execucao = 'SUCESSO' THEN 1 ELSE 0 END) AS teve_sucesso,\n",
@@ -83,7 +83,7 @@
    "name": "garantias",
    "displayName": "Garantias do sorteio desde a segregação",
    "queryLines": [
-    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', CAST(NULL AS DATE)), ('ateromatose_coronariana', CAST(NULL AS DATE)) AS t(esp, dt_segregacao)),\n",
+    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', DATE'2026-11-05'), ('ateromatose_coronariana', DATE'2026-11-05') AS t(esp, dt_segregacao)),\n",
     "l AS (SELECT g.* FROM mlops_fabrica_ia.operacao.tb_mov_randomizacao_log g JOIN seg s ON s.esp = g.nm_especialidade\n",
     "      WHERE g.tp_ambiente = 'prd' AND s.dt_segregacao IS NOT NULL AND to_date(g.dt_execucao_modelo) >= s.dt_segregacao)\n",
     "SELECT\n",
@@ -99,7 +99,7 @@
    "name": "pacientes",
    "displayName": "Pacientes sorteados por dia e grupo (desde 26/10)",
    "queryLines": [
-    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', CAST(NULL AS DATE)), ('ateromatose_coronariana', CAST(NULL AS DATE)) AS t(esp, dt_segregacao))\n",
+    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', DATE'2026-11-05'), ('ateromatose_coronariana', DATE'2026-11-05') AS t(esp, dt_segregacao))\n",
     "SELECT CASE g.nm_especialidade WHEN 'tirads' THEN 'Tireoide' WHEN 'reumatologia' THEN 'Reumatologia' WHEN 'doenca_inflamatoria_intestinal' THEN 'DII' WHEN 'ateromatose_coronariana' THEN 'Ateromatose' END AS linha, date_format(to_date(g.dt_execucao_modelo), 'yyyy-MM-dd') AS dia,\n",
     "  CASE WHEN g.tp_grupo = 'controle' THEN 'Grupo controle' ELSE 'Intervenção (navegação)' END AS grupo,\n",
     "  count(DISTINCT g.num_cpf) AS pacientes\n",
@@ -112,7 +112,7 @@
    "name": "camadas",
    "displayName": "Três camadas de garantia por linha",
    "queryLines": [
-    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', CAST(NULL AS DATE)), ('ateromatose_coronariana', CAST(NULL AS DATE)) AS t(esp, dt_segregacao)),\n",
+    "WITH seg AS (SELECT * FROM VALUES ('tirads', DATE'2026-10-30'), ('reumatologia', DATE'2026-10-30'), ('doenca_inflamatoria_intestinal', DATE'2026-11-05'), ('ateromatose_coronariana', DATE'2026-11-05') AS t(esp, dt_segregacao)),\n",
     "rel AS (SELECT nm_especialidade AS esp, to_date(dt_execucao_modelo) AS dia, max_by(qt_exportados, dh_registro) AS exportados,\n",
     "          max_by(qt_controle, dh_registro) AS controle, max_by(qt_intervencao, dh_registro) AS intervencao,\n",
     "          max_by(qt_sem_chave, dh_registro) AS sem_chave, max(CASE WHEN st_execucao = 'SUCESSO' THEN 1 ELSE 0 END) AS teve_sucesso,\n",
