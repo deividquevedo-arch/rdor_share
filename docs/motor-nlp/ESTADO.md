@@ -17,11 +17,11 @@
 
 ## ⏭️ PRÓXIMA SESSÃO (05/11)
 
-- 🔴 **Segregação DII e ateromatose — conferir.** PR 7851 (`hml → main`: PR 7800 + PR 7840) aprovado em 04/11. Depois
-  do deploy, a 1ª rodada com sucesso é o início da segregação: conferir as duas linhas no `tb_mov_randomizacao_log` de
-  PRD e a view `_intervencao`, preencher `SEGREGACAO` no painel v2 e registrar a data no `383684`.
-  ℹ️ O 7840 religa o envio por **API** da reumato (estava desligado desde 19/10); a API envia só a intervenção, mas
-  não há log de API em PRD — a garantia desse canal é a camada 3 do painel (controle com caso na Central).
+- ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
+  (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
+  intervenção**. Painel de monitoramento **v3** (`01f1d915d01510ba92ca5d049602ffa4`) com o fluxo relevantes → enviados ×
+  retidos no topo. Registrar a data de 05/11 no `383684`. O 7840 religou o envio por API da reumato (só intervenção;
+  sem log de API em PRD — a garantia é a camada 3 do painel).
 - 🔴 **Reumatologia — filtro de entrada mudou com o Spark 18 (desde 27/10 em PRD).** `p[eé]s?` passou a casar
   "pélvica" e perdeu "pé" isolado. Corrigir na config com fronteira explícita, medir antes/depois, registrar no
   `383684`. Memória `spark18-boundary-ascii-em-regex`.
@@ -30,6 +30,8 @@
   motivo em lista suspensa, sugestão de peça cirúrgica pelo texto do material; aba dos 11 sem par na gold. Esperando o
   retorno da conferência e as planilhas de controle da navegação (cruzar por CPF). Desenvolvimento 09–13/11. Usuário de
   serviço exige chamado. `biopsias/lista-colon-biopsias-como-funciona-v2.md`.
+  Próximas linhas medidas (05/11): estômago ~52 e próstata ~58 pacientes/mês (formato do cólon), rim ~4 pela biópsia
+  (~40 na nefrectomia), tireoide pela PAAF/Bethesda (~19 V + ~22 VI/mês, regex no SQL). `biopsias/biopsias-outras-linhas-volumetria-v1.md`.
 - 🟡 **Mama (BI-RADS): estudo fechado (v4) e SPEC v0** (`mama/spec-migracao-mama-birads-v0.md`). Próximo de DS: pedir
   schema `birads`, `gold_filter` medido e bancada na `0.12.3`. Plataforma: Mule, contrato de saída, retroação de 7 dias.
 
