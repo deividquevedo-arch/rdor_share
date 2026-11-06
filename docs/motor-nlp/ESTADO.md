@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-04**.
+> Atualizado em **2026-11-06**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -30,10 +30,22 @@
   motivo em lista suspensa, sugestão de peça cirúrgica pelo texto do material; aba dos 11 sem par na gold. Esperando o
   retorno da conferência e as planilhas de controle da navegação (cruzar por CPF). Desenvolvimento 09–13/11. Usuário de
   serviço exige chamado. `biopsias/lista-colon-biopsias-como-funciona-v2.md`.
+  **Decisões de 05/11 (reunião com a navegação): reto entra (~55 pacientes/mês); paciente já em navegação com novo AP
+  maligno é apenas anotado** — exige cruzar com os casos em navegação por CPF.
+  🟡 **Ajustes de regra medidos, aplicar só após a homologação** (decisão de 06/11): incluir `intestino grosso` (2 casos
+  fora em 7 meses) e excluir apêndice só quando for o único órgão (7 casos em 7 meses excluídos com cólon junto, quase
+  todos peça cirúrgica).
   Próximas linhas medidas (05/11): estômago ~52 e próstata ~58 pacientes/mês (formato do cólon), rim ~4 pela biópsia
   (~40 na nefrectomia), tireoide pela PAAF/Bethesda (~19 V + ~22 VI/mês, regex no SQL). `biopsias/biopsias-outras-linhas-volumetria-v1.md`.
 - 🟡 **Mama (BI-RADS): estudo fechado (v4) e SPEC v0** (`mama/spec-migracao-mama-birads-v0.md`). Próximo de DS: pedir
   schema `birads`, `gold_filter` medido e bancada na `0.12.3`. Plataforma: Mule, contrato de saída, retroação de 7 dias.
+  🟡 **Card `304135` (Diego, ADF → e-mail, 4 RADS) confrontado com o estudo v4** — alinhar: motor = `nlp_engine`
+  (já em PRD), fonte = RC + retroação/FlowHub (não ingestão nova via IR), a "linha via RC" do card é a linha Mule, e
+  desligar o ADF só depois de migrar a linha Mule (o complemento PACS dela vem do on-premises).
+- 🟡 **OCR em PRD — PR 7871** (`fabrica-ia-datahub`, `hml → main`): ok como infraestrutura (jobs `PAUSED`, N5 em
+  simulação). Para ligar: destino da N5 não existe em PRD; gravar na `gold_corporativo_ia` exige acordo com a
+  engenharia; campo `laudo_transformado` × `laudo_original` do runner; `run_as` de PRD em `PREENCHER`. Comentário
+  redigido, não postado: `_processo/revisoes-pr/comentario-pr-7871-ocr-datahub.md`.
 
 ## 🔁 RETORNO 13/10 — retrato medido depois da sprint ausente
 
