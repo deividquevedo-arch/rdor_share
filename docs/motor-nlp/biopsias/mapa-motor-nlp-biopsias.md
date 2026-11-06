@@ -16,6 +16,11 @@ tags: [mapa]
 
 - [[biopsias-definicao-envio-v2]] — Biópsias (Motion LIS) — definição do envio (v2: recorte Ca de Cólon)
 - [[lista-colon-biopsias-como-funciona-v2]] — como a lista de Ca de Cólon para homologação é montada
+- [[apresentacao-homologacao-colon-v1]] — apresentação para a navegação: dados, colunas e como homologar
+- [[apresentacao-campos-motion-lis-v1]] — apresentação: campos disponíveis no Motion LIS
+- [[apresentacao-criterios-lista-colon-v2]] — apresentação: critérios da lista de cólon (v2, com as decisões de 05/11)
+- [[apresentacao-provavel-peca-cirurgica-v1]] — apresentação: a coluna "provável peça cirúrgica"
+- [[regras-lista-colon-para-navegacao-v1]] — as regras da lista em linguagem simples, para o time de navegação
 - [[biopsias-outras-linhas-volumetria-v1]] — estômago, próstata, tireoide (PAAF/Bethesda) e rim no Motion
 - [[biopsias-definicao-envio-v1]] — v1, definição geral de 30/10 (em `versoes/`)
 - [[estudo-motion-lis-biopsias-v2]] — Estudo — dados do Motion LIS no Repositório Clínico (biópsias e anatomopatológicos)
