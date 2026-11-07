@@ -19,7 +19,7 @@
 
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
-  intervenção**. Painel de monitoramento **v3** (`01f1d915d01510ba92ca5d049602ffa4`) com o fluxo relevantes → enviados ×
+  intervenção**. Painel de monitoramento **v4** (`01f1d9e728a816deb0e5eb99b04e3f3b`, inclui biliares e neuro aguardando o PR 7874) com o fluxo relevantes → enviados ×
   retidos no topo. Registrar a data de 05/11 no `383684`. O 7840 religou o envio por API da reumato (só intervenção;
   sem log de API em PRD — a garantia é a camada 3 do painel).
 - 🔴 **Reumatologia — filtro de entrada mudou com o Spark 18 (desde 27/10 em PRD).** `p[eé]s?` passou a casar

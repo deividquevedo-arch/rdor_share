@@ -16,9 +16,11 @@ SEGREGACAO = {  # linha -> data em que o envio passou a sair só com a interven�
     "reumatologia": "2026-10-30",
     "doenca_inflamatoria_intestinal": "2026-11-05",
     "ateromatose_coronariana": "2026-11-05",
+    "doencas_biliares": None,
+    "neuroimunologia": None,
 }
 ROTULO = {"tirads": "Tireoide", "reumatologia": "Reumatologia", "doenca_inflamatoria_intestinal": "DII",
-          "ateromatose_coronariana": "Ateromatose"}
+          "ateromatose_coronariana": "Ateromatose", "doencas_biliares": "Doenças biliares", "neuroimunologia": "Neuroimunologia"}
 OP = "mlops_fabrica_ia.operacao"
 CASE = "CASE esp " + " ".join(f"WHEN '{k}' THEN '{v}'" for k, v in ROTULO.items()) + " END"
 SEG = "seg AS (SELECT * FROM VALUES " + ", ".join(
