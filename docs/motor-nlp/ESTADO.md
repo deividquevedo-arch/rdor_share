@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-06**.
+> Atualizado em **2026-11-09**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -15,7 +15,11 @@
 
 ---
 
-## ⏭️ PRÓXIMA SESSÃO (05/11)
+## ⏭️ PRÓXIMA SESSÃO (semana de 09/11)
+
+- 🔴 **Biliares e neuro — segregação em PRD:** conferir a 1ª rodada após o deploy do PR 7874 (log de randomização
+  com as duas linhas, zero controle no envio), preencher `SEGREGACAO` no gerador e atualizar o painel v4 no mesmo link.
+- 🟢 **Biópsias — desenvolvimento 09–13/11** (lista de Ca de Cólon); depende do retorno da homologação para os ajustes.
 
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
