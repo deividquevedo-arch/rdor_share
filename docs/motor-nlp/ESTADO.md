@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-09**.
+> Atualizado em **2026-11-10**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -19,7 +19,14 @@
 
 - 🔴 **Biliares e neuro — segregação em PRD:** conferir a 1ª rodada após o deploy do PR 7874 (log de randomização
   com as duas linhas, zero controle no envio), preencher `SEGREGACAO` no gerador e atualizar o painel v4 no mesmo link.
-- 🟢 **Biópsias — desenvolvimento 09–13/11** (lista de Ca de Cólon); depende do retorno da homologação para os ajustes.
+- ✅ **Biópsias — régua de Ca de Cólon fechada (10/11).** Homologação (118, vereditos de 09/11): v2 com acurácia 97,5%
+  (precisão 97,2%, recall 98,6%). **v3** (`biopsias/consulta-lista-colon-biopsias-v3.sql`): não-regressão 114 de 114,
+  3 correções, zero regressão; regra de envio = provável peça cirúrgica ≠ Sim. 4 pedidos saíram por laudo reemitido →
+  produção precisa deduplicar por pedido.
+  🟢 **A unidade está no próprio Motion** (requisição → hospital-cliente → organização; 100% em 42 mil pedidos). Dos 15
+  casos sem RC, **12 são de unidades navegadas** — perda sistemática (~7% dos pedidos do Motion não chegam ao RC).
+  Próximo: cruzar com a planilha da Larissa (histórico do Dash AP) como gabarito de período longo; avaliar paciente
+  pelo cadastro do Motion (`pes2_paciente`, PII — não lido ainda).
 
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
