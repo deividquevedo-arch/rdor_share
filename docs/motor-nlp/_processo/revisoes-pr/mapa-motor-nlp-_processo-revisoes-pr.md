@@ -19,3 +19,4 @@ tags: [mapa]
 - [[pr2-0.15.3-hml-para-main]] — PR 2 — hml → main (0.15.3)
 - [[prs-0.15.4]] — PRs da 0.15.4
 - [[revisao-pr-7234-nps]] — Revisão do PR 7234 — NPS na esteira da fábrica
+- [[comentario-pr-7871-ocr-datahub]] — Comentário de revisão do PR 7871 — OCR de colonoscopia no datahub

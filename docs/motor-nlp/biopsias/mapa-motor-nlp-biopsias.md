@@ -22,6 +22,8 @@ tags: [mapa]
 - [[apresentacao-provavel-peca-cirurgica-v1]] — apresentação: a coluna "provável peça cirúrgica"
 - [[regras-lista-colon-para-navegacao-v1]] — as regras da lista em linguagem simples, para o time de navegação
 - [[biopsias-outras-linhas-volumetria-v1]] — estômago, próstata, tireoide (PAAF/Bethesda) e rim no Motion
+- [[plano-industrializacao-biopsias-v2]] — arquitetura (desenho) e plano de industrialização; compatibilidade com o envio existente
+- [[proposta-motor-regras-estruturadas-v0]] — proposta de motor genérico de regras estruturadas (AP, citologia)
 - [[biopsias-definicao-envio-v1]] — v1, definição geral de 30/10 (em `versoes/`)
 - [[estudo-motion-lis-biopsias-v2]] — Estudo — dados do Motion LIS no Repositório Clínico (biópsias e anatomopatológicos)
 - [[motion-lis-complementar-agenda-v4]] — Motion LIS — documento complementar para a agenda de entendimento

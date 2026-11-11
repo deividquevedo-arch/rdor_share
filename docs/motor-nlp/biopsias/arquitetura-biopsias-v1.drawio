@@ -1,0 +1,73 @@
+<mxfile host="65bd71144e">
+    <diagram name="arquitetura" id="0">
+        <mxGraphModel dx="3194" dy="1129" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="fonte_motion" value="&lt;b&gt;Motion LIS&lt;/b&gt;&lt;br&gt;resultado do AP / citologia&lt;br&gt;requisição → hospital (unidade)" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#F2F2F2;strokeColor=#666666;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="110" width="250" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="fonte_rc" value="&lt;b&gt;Repositório Clínico (gold)&lt;/b&gt;&lt;br&gt;tb_gold_mov_exame / paciente&lt;br&gt;dados cadastrais do paciente" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#F2F2F2;strokeColor=#666666;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="270" width="250" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="datahub" value="&lt;b&gt;Datahub (motionlis)&lt;/b&gt;&lt;br&gt;bronze/silver · cadeia de camadas&lt;br&gt;a confirmar: ingestão do Motion" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#FFF4DC;strokeColor=#B26A00;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="110" width="250" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="motor" value="&lt;b&gt;Motor de regras estruturadas&lt;/b&gt;&lt;br&gt;2º runner da plataforma (NOVO)&lt;br&gt;1 config por linha + vocabulário&lt;br&gt;selecionar · qualificar · extrair&lt;br&gt;órgão · classificar amostra&lt;br&gt;decidir envio · dedup por pedido&lt;br&gt;funil por etapa · explicação&lt;br&gt;grava diamond_fabrica_ia.&lt;linha&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3EEFA;strokeColor=#1F5FA8;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="630" y="110" width="280" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="view" value="&lt;b&gt;View de exportação&lt;/b&gt;&lt;br&gt;vw_mod_diamond_&lt;linha&gt;_export_v&lt;n&gt;&lt;br&gt;contrato de colunas da plataforma" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3F2E5;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="110" width="270" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="rand" value="&lt;b&gt;Randomização (opcional)&lt;/b&gt;&lt;br&gt;view _intervencao · fail-closed" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3F2E5;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="240" width="270" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl" value="&lt;b&gt;Controle de carga e relatório&lt;/b&gt;&lt;br&gt;controle_carga · relatorio_&lt;linha&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3F2E5;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="360" width="270" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="api" value="&lt;b&gt;Envio API → Central de Captação&lt;/b&gt;&lt;br&gt;/api/ingestao/inferencias&lt;br&gt;idLinhaNavegacao · log de envio" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3F2E5;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1355" y="230" width="270" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="onedrive" value="&lt;b&gt;Envio OneDrive (Excel)&lt;/b&gt;&lt;br&gt;arquivo por unidade · e-mail" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#E3F2E5;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1642" y="87" width="270" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="tabia" value="&lt;b&gt;Tábia / navegação&lt;/b&gt;&lt;br&gt;card do paciente&lt;br&gt;a confirmar: anotar já navegado" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;fillColor=#FFF4DC;strokeColor=#B26A00;strokeWidth=2;fontColor=#1A1A1A;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="1355" y="397" width="270" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="e0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="fonte_motion" target="datahub" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="datahub" target="motor" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="fonte_rc" target="motor" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="motor" target="view" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="view" target="rand" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="view" target="api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="rand" target="api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="view" target="onedrive" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="motor" target="ctrl" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F5FA8;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="api" target="tabia" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="titulo" value="&lt;b&gt;Biópsias — arquitetura proposta&lt;/b&gt;" style="text;html=1;fontSize=20;fontColor=#1A1A1A;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="15" width="900" height="35" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

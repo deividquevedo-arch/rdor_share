@@ -27,6 +27,9 @@
   casos sem RC, **12 são de unidades navegadas** — perda sistemática (~7% dos pedidos do Motion não chegam ao RC).
   Próximo: cruzar com a planilha da Larissa (histórico do Dash AP) como gabarito de período longo; avaliar paciente
   pelo cadastro do Motion (`pes2_paciente`, PII — não lido ainda).
+  🟡 **Industrialização:** [[plano-industrializacao-biopsias-v2]] (arquitetura desenhada, fases 0–7, envio existente avaliado: reaproveitável; lacuna = "já navegado → anotar") e [[proposta-motor-regras-estruturadas-v0]]
+  — motor genérico de regras estruturadas (6 operações, config por linha, 2º runner da plataforma). Próximo: agenda de
+  alinhamento (plataforma, Datahub, negócio) e SPEC v0 do motor com cólon + tireoide.
 
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
