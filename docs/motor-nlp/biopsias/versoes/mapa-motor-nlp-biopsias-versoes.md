@@ -16,3 +16,4 @@ tags: [mapa]
 - [[motion-lis-complementar-agenda-v3]] — Motion LIS — documento complementar para a agenda de entendimento
 - [[apresentacao-criterios-lista-colon-v1]] — Lista de Ca de Cólon — critérios (v1)
 - [[plano-industrializacao-biopsias-v1]] — plano de industrialização (v1, visão macro)
+- [[entrega-ops-motor-regras-estruturadas-v1]] — entrega ao Ops v1 (11/11/2026), substituída pela v2
