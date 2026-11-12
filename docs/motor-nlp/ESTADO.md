@@ -31,7 +31,10 @@
   carga e monitoramento do runner, variável de pausa do job. **Tábia:** origem `biopsia_motion` em
   `origem_identificacao` (hoje `achado_exame` fixo no `envio_tabia`) — time da Central.
   Board: `393825`, `399596`, `402043` encerrados; história `407833` (DoR "Não", a validar) com `407837` em execução e
-  `407838` (segunda linha só por config) esperando schema de dev.
+  `407838` — segunda linha em dev: **próstata (só config) × tireoide/Bethesda (operação nova)**, decisão com o Natan;
+  depois, schema de dev da linha.
+  🧭 **Padrão de código da plataforma:** regra `09-plataforma-padrao-codigo` + skill `validar-padrao-plataforma`
+  (validador calibrado na `hml`: acusa o `` do `gold_filter` da reumato/estômago e o bloco morto de 4 configs).
   Ainda aberto do estudo: cruzar com a planilha da Larissa (Dash AP); paciente pelo cadastro do Motion (~7% fora do RC).
 
 - 🟡 **Ateromatose — PR 7930 (rollback de volume, `0.4.0`) avaliado, aprovável.** Na promoção a PRD: registrar a data no
