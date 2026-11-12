@@ -17,3 +17,4 @@ tags: [mapa]
 - [[apresentacao-criterios-lista-colon-v1]] — Lista de Ca de Cólon — critérios (v1)
 - [[plano-industrializacao-biopsias-v1]] — plano de industrialização (v1, visão macro)
 - [[entrega-ops-motor-regras-estruturadas-v1]] — entrega ao Ops v1 (11/11/2026), substituída pela v2
+- [[entrega-ops-motor-regras-estruturadas-v2]] — entrega ao Ops v2 (12/11/2026), substituída pela v3

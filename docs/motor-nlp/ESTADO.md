@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-10**.
+> Atualizado em **2026-11-12**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -19,18 +19,23 @@
 
 - 🔴 **Biliares e neuro — segregação em PRD:** conferir a 1ª rodada após o deploy do PR 7874 (log de randomização
   com as duas linhas, zero controle no envio), preencher `SEGREGACAO` no gerador e atualizar o painel v4 no mesmo link.
-- ✅ **Biópsias — régua de Ca de Cólon fechada (10/11).** Homologação (118, vereditos de 09/11): v2 com acurácia 97,5%
-  (precisão 97,2%, recall 98,6%). **v3** (`biopsias/consulta-lista-colon-biopsias-v3.sql`): não-regressão 114 de 114,
-  3 correções, zero regressão; regra de envio = provável peça cirúrgica ≠ Sim. 4 pedidos saíram por laudo reemitido →
-  produção precisa deduplicar por pedido.
-  🟢 **A unidade está no próprio Motion** (requisição → hospital-cliente → organização; 100% em 42 mil pedidos). Dos 15
-  casos sem RC, **12 são de unidades navegadas** — perda sistemática (~7% dos pedidos do Motion não chegam ao RC).
-  Próximo: cruzar com a planilha da Larissa (histórico do Dash AP) como gabarito de período longo; avaliar paciente
-  pelo cadastro do Motion (`pes2_paciente`, PII — não lido ainda).
-  🟡 **Industrialização:** [[plano-industrializacao-biopsias-v2]] (arquitetura desenhada, fases 0–7, envio existente avaliado: reaproveitável; lacuna = "já navegado → anotar") e [[proposta-motor-regras-estruturadas-v0]]
-  — motor genérico de regras estruturadas (6 operações, config por linha, 2º runner da plataforma). Próximo: agenda de
-  alinhamento (plataforma, Datahub, negócio) e SPEC v0 do motor com cólon + tireoide.
+- 🟢 **Biópsias — motor de regras estruturadas: protótipo do piloto Ca de Cólon pronto em dev (12/11).** Industrialização
+  **global**; Ca de Cólon é o piloto. Branch `biopsias/feature/motor-regras-estruturadas` do `fabrica-ia-nlp-platform`
+  publicada (`d035cbc`, **sem PR**), guia em `plataform/tools/structured_rules/README.md`. Saída no contrato das linhas
+  NLP; view, randomização e envio reaproveitados. Paridade com a régua v3 homologada: 123/123 e 126/126, zero diferença;
+  64 testes, 13 mutantes mortos. Dev (`diamond_fabrica_ia_dev.biopsia_cancer_colon`): saída gravada, idempotência e view
+  validadas. Escopo da Ciência de Dados: **dev até a tabela de saída e a view**; hml e prd depois do alinhamento com o Ops.
+  📄 [[entrega-ops-motor-regras-estruturadas-v3]] (pasta do SharePoint: `12_…-v3.docx` a subir).
+  🔴 **Alinhamento com o Ops** (sem data): schema hml/prd, grant no Motion, **cadastro de envio** (a view de dev de toda
+  linha sai vazia — o filtro de data lê `tb_cad_pipeline_configuracao_envio_nlp_platform` desde 14/10), controle de
+  carga e monitoramento do runner, variável de pausa do job. **Tábia:** origem `biopsia_motion` em
+  `origem_identificacao` (hoje `achado_exame` fixo no `envio_tabia`) — time da Central.
+  Board: `393825`, `399596`, `402043` encerrados; história `407833` (DoR "Não", a validar) com `407837` em execução e
+  `407838` (segunda linha só por config) esperando schema de dev.
+  Ainda aberto do estudo: cruzar com a planilha da Larissa (Dash AP); paciente pelo cadastro do Motion (~7% fora do RC).
 
+- 🟡 **Ateromatose — PR 7930 (rollback de volume, `0.4.0`) avaliado, aprovável.** Na promoção a PRD: registrar a data no
+  `383684` (a linha está segregada desde 05/11 e o volume sobe ~4,8×) e amostra dos casos sem "difusa" ao negócio.
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
   intervenção**. Painel de monitoramento **v4** (`01f1d9e728a816deb0e5eb99b04e3f3b`, inclui biliares e neuro aguardando o PR 7874) com o fluxo relevantes → enviados ×
@@ -39,23 +44,15 @@
 - 🔴 **Reumatologia — filtro de entrada mudou com o Spark 18 (desde 27/10 em PRD).** `p[eé]s?` passou a casar
   "pélvica" e perdeu "pé" isolado. Corrigir na config com fronteira explícita, medir antes/depois, registrar no
   `383684`. Memória `spark18-boundary-ascii-em-regex`.
-- 🟢 **Biópsias — lista de Ca de Cólon em homologação** (planilha v4/v5 fora do git, pasta SharePoint *Tabia -
-  Biopsias*): 118 pedidos de 05/10–03/11 (cólon/reto, neoplasia maligna primária, unidades navegadas), veredito e
-  motivo em lista suspensa, sugestão de peça cirúrgica pelo texto do material; aba dos 11 sem par na gold. Esperando o
-  retorno da conferência e as planilhas de controle da navegação (cruzar por CPF). Desenvolvimento 09–13/11. Usuário de
-  serviço exige chamado. `biopsias/lista-colon-biopsias-como-funciona-v2.md`.
-  **Decisões de 05/11 (reunião com a navegação): reto entra (~55 pacientes/mês); paciente já em navegação com novo AP
-  maligno é apenas anotado** — exige cruzar com os casos em navegação por CPF.
-  🟡 **Ajustes de regra medidos, aplicar só após a homologação** (decisão de 06/11): incluir `intestino grosso` (2 casos
-  fora em 7 meses) e excluir apêndice só quando for o único órgão (7 casos em 7 meses excluídos com cólon junto, quase
-  todos peça cirúrgica).
-  Próximas linhas medidas (05/11): estômago ~52 e próstata ~58 pacientes/mês (formato do cólon), rim ~4 pela biópsia
-  (~40 na nefrectomia), tireoide pela PAAF/Bethesda (~19 V + ~22 VI/mês, regex no SQL). `biopsias/biopsias-outras-linhas-volumetria-v1.md`.
 - 🟡 **Mama (BI-RADS): estudo fechado (v4) e SPEC v0** (`mama/spec-migracao-mama-birads-v0.md`). Próximo de DS: pedir
   schema `birads`, `gold_filter` medido e bancada na `0.12.3`. Plataforma: Mule, contrato de saída, retroação de 7 dias.
   🟡 **Card `304135` (Diego, ADF → e-mail, 4 RADS) confrontado com o estudo v4** — alinhar: motor = `nlp_engine`
   (já em PRD), fonte = RC + retroação/FlowHub (não ingestão nova via IR), a "linha via RC" do card é a linha Mule, e
   desligar o ADF só depois de migrar a linha Mule (o complemento PACS dela vem do on-premises).
+- 🟡 **OCR (Datahub) — rodar em HML gravando na gold de PRD, por decisão (11/11).** Para ter efeito: N5 gravar também em
+  `laudo_original` (o runner lê esse campo), N1 com janela de 3 dias (hoje pega os 500 menores AN, de 2025), `fonte_exames`
+  apontando para a gold corporativa, grant pelo administrador (SP pelo applicationId). ADR 0001 redigido
+  (`docs/cdi/adr-0001-…`), entregue ao dono do processo.
 - 🟡 **OCR em PRD — PR 7871** (`fabrica-ia-datahub`, `hml → main`): ok como infraestrutura (jobs `PAUSED`, N5 em
   simulação). Para ligar: destino da N5 não existe em PRD; gravar na `gold_corporativo_ia` exige acordo com a
   engenharia; campo `laudo_transformado` × `laudo_original` do runner; `run_as` de PRD em `PREENCHER`. Comentário
