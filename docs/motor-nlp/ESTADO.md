@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-12**.
+> Atualizado em **2026-11-13**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -30,9 +30,11 @@
   linha sai vazia — o filtro de data lê `tb_cad_pipeline_configuracao_envio_nlp_platform` desde 14/10), controle de
   carga e monitoramento do runner, variável de pausa do job. **Tábia:** origem `biopsia_motion` em
   `origem_identificacao` (hoje `achado_exame` fixo no `envio_tabia`) — time da Central.
-  Board: `393825`, `399596`, `402043` encerrados; história `407833` (DoR "Não", a validar) com `407837` em execução e
-  `407838` — segunda linha em dev: **próstata (só config) × tireoide/Bethesda (operação nova)**, decisão com o Natan;
-  depois, schema de dev da linha.
+  **Ordem de prioridade do negócio (13/11):** Ca Cólon → **Ca Estômago** → Ca Próstata → Tireoide → Ca Rim.
+  Board: `393825`, `399596`, `402043` encerrados; `407833` (protótipo, DoR "Não") com `407834`, `407835`, `407837`
+  encerradas e `407838` = **Ca de Estômago em dev, só por config** (falta schema de dev `biopsia_cancer_estomago`).
+  **`408743`** — industrializar o motor a partir do protótipo: avaliação do Ops, provisões hml/prd, PR para a `hml`
+  (responsável DS, direcionamento conforme o negócio).
   🧭 **Padrão de código da plataforma:** regra `09-plataforma-padrao-codigo` + skill `validar-padrao-plataforma`
   (validador calibrado na `hml`: acusa o `` do `gold_filter` da reumato/estômago e o bloco morto de 4 configs).
   Ainda aberto do estudo: cruzar com a planilha da Larissa (Dash AP); paciente pelo cadastro do Motion (~7% fora do RC).
