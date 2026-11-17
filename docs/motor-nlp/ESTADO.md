@@ -25,7 +25,7 @@
   NLP; view, randomização e envio reaproveitados. Paridade com a régua v3 homologada: 123/123 e 126/126, zero diferença;
   64 testes, 13 mutantes mortos. Dev (`diamond_fabrica_ia_dev.biopsia_cancer_colon`): saída gravada, idempotência e view
   validadas. Escopo da Ciência de Dados: **dev até a tabela de saída e a view**; hml e prd depois do alinhamento com o Ops.
-  📄 [[entrega-ops-motor-regras-estruturadas-v3]] (pasta do SharePoint: `12_…-v3.docx` a subir).
+  📄 [[entrega-ops-motor-regras-estruturadas-v4]] — 5 linhas, checklist por linha e roteiro de hml (SharePoint: `12_…-v4.docx` a subir; trocar o anexo da `408743`).
   🔴 **Alinhamento com o Ops** (sem data): schema hml/prd, grant no Motion, **cadastro de envio** (a view de dev de toda
   linha sai vazia — o filtro de data lê `tb_cad_pipeline_configuracao_envio_nlp_platform` desde 14/10), controle de
   carga e monitoramento do runner, variável de pausa do job. **Tábia:** origem `biopsia_motion` em
