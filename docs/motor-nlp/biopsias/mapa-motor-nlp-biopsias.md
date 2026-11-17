@@ -24,7 +24,7 @@ tags: [mapa]
 - [[biopsias-outras-linhas-volumetria-v1]] — estômago, próstata, tireoide (PAAF/Bethesda) e rim no Motion
 - [[plano-industrializacao-biopsias-v2]] — arquitetura (desenho) e plano de industrialização; compatibilidade com o envio existente
 - [[proposta-motor-regras-estruturadas-v0]] — proposta de motor genérico de regras estruturadas (AP, citologia)
-- [[entrega-ops-motor-regras-estruturadas-v4]] — entrega ao Ops: 5 linhas, checklist de provisão por linha com nomes literais, decisões de desenho, roteiro de ativação em hml, fora do escopo do Ops (v3 em `versoes/`)
+- [[entrega-ops-motor-regras-estruturadas-v5]] — entrega ao Ops: 5 linhas, dev fechado, checklist de provisão por linha com nomes literais, decisões de desenho, roteiro de ativação em hml, fora do escopo do Ops (v3 e v4 em `versoes/`)
 - [[biopsias-definicao-envio-v1]] — v1, definição geral de 30/10 (em `versoes/`)
 - [[estudo-motion-lis-biopsias-v2]] — Estudo — dados do Motion LIS no Repositório Clínico (biópsias e anatomopatológicos)
 - [[motion-lis-complementar-agenda-v4]] — Motion LIS — documento complementar para a agenda de entendimento

@@ -2,7 +2,7 @@
 
 Uso: python gerar_painel_monitoramento_prd_v4.py  ->  painel-monitoramento-randomizacao-prd-v4.lvdash.json
 
-Página 1 "Visão geral": a v3, todas as linhas (Doenças biliares e Neuroimunologia entram como 'aguardando').
+Página 1 "Visão geral": a v3, todas as linhas (Doenças biliares e Neuroimunologia segregadas desde 12/11, 1ª rodada após o deploy do PR 7874).
 Página 2 "Por linha de cuidado": filtro de seleção ÚNICA; mostra só a linha escolhida e o acompanhamento diário.
 As linhas e as datas de segregação vivem em SEGREGACAO (gerar_painel_monitoramento_prd.py).
 """
@@ -15,8 +15,8 @@ import gerar_painel_monitoramento_prd_v3 as v3
 AQUI = Path(__file__).parent
 TITULO = ["# Randomização em PRD — monitoramento (v4)\n", "\n",
           "Quantos casos relevantes saíram para a navegação e quantos ficaram **retidos no grupo controle** · Tireoide e "
-          "Reumatologia desde **30/10/2026** · DII e Ateromatose desde **05/11/2026** · Doenças biliares e Neuroimunologia após "
-          "o deploy do PR 7874 · **Página 2: uma linha por vez**"]
+          "Reumatologia desde **30/10/2026** · DII e Ateromatose desde **05/11/2026** · Doenças biliares e Neuroimunologia desde "
+          "**12/11/2026** · **Página 2: uma linha por vez**"]
 
 # Por dia e por linha: antes da segregação todo relevante era enviado (retidos = 0); depois, controle fica retido.
 LINHA_DIA = v1.BASE + f"""

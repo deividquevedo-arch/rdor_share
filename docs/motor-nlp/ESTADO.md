@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-13**.
+> Atualizado em **2026-11-17**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -15,35 +15,37 @@
 
 ---
 
-## ⏭️ PRÓXIMA SESSÃO (semana de 09/11)
+## ⏭️ PRÓXIMA SESSÃO (semana de 16/11)
 
-- 🔴 **Biliares e neuro — segregação em PRD:** conferir a 1ª rodada após o deploy do PR 7874 (log de randomização
-  com as duas linhas, zero controle no envio), preencher `SEGREGACAO` no gerador e atualizar o painel v4 no mesmo link.
-- 🟢 **Biópsias — motor de regras estruturadas: protótipo do piloto Ca de Cólon pronto em dev (12/11).** Industrialização
-  **global**; Ca de Cólon é o piloto. Branch `biopsias/feature/motor-regras-estruturadas` do `fabrica-ia-nlp-platform`
-  publicada (`d035cbc`, **sem PR**), guia em `plataform/tools/structured_rules/README.md`. Saída no contrato das linhas
-  NLP; view, randomização e envio reaproveitados. Paridade com a régua v3 homologada: 123/123 e 126/126, zero diferença;
-  64 testes, 13 mutantes mortos. Dev (`diamond_fabrica_ia_dev.biopsia_cancer_colon`): saída gravada, idempotência e view
-  validadas. Escopo da Ciência de Dados: **dev até a tabela de saída e a view**; hml e prd depois do alinhamento com o Ops.
-  📄 [[entrega-ops-motor-regras-estruturadas-v4]] — 5 linhas, checklist por linha e roteiro de hml (SharePoint: `12_…-v4.docx` a subir; trocar o anexo da `408743`).
-  🔴 **Alinhamento com o Ops** (sem data): schema hml/prd, grant no Motion, **cadastro de envio** (a view de dev de toda
-  linha sai vazia — o filtro de data lê `tb_cad_pipeline_configuracao_envio_nlp_platform` desde 14/10), controle de
-  carga e monitoramento do runner, variável de pausa do job. **Tábia:** origem `biopsia_motion` em
-  `origem_identificacao` (hoje `achado_exame` fixo no `envio_tabia`) — time da Central.
-  **Ordem de prioridade do negócio (13/11):** Ca Cólon → **Ca Estômago** → Ca Próstata → Tireoide → Ca Rim.
-  Board: `393825`, `399596`, `402043` encerrados; `407833` (protótipo, DoR "Não") com `407834`, `407835`, `407837`
-  encerradas e `407838` = **Ca de Estômago em dev, só por config** (falta schema de dev `biopsia_cancer_estomago`).
-  **`408743`** — industrializar o motor a partir do protótipo: avaliação do Ops, provisões hml/prd, PR para a `hml`
-  (responsável DS, direcionamento conforme o negócio).
-  🧭 **Padrão de código da plataforma:** regra `09-plataforma-padrao-codigo` + skill `validar-padrao-plataforma`
-  (validador calibrado na `hml`: acusa o `` do `gold_filter` da reumato/estômago e o bloco morto de 4 configs).
-  Ainda aberto do estudo: cruzar com a planilha da Larissa (Dash AP); paciente pelo cadastro do Motion (~7% fora do RC).
+- 🟢 **Biópsias — motor de regras estruturadas: DEV FECHADO NAS CINCO LINHAS (17/11).** Cólon, estômago, próstata,
+  tireoide e rim com config, job, cluster proposto e navegação dev/hml/prd na branch `biopsias/feature/motor-regras-estruturadas`
+  do `fabrica-ia-nlp-platform` (publicada, **`09c408d`**, sem PR). Dev, referência 16/11, dois runs por linha: estômago
+  15 pedidos/11 relevantes, próstata 38/10, tireoide 7/7, rim 7/0 (7 de 7 peça cirúrgica); idempotência e view
+  validadas nas quatro (view = relevantes de unidades navegadas; CPF decriptado 24/24). 147 testes; validador de padrão
+  sem erro. 📄 [[entrega-ops-motor-regras-estruturadas-v5]] — anexo da `408743` (SharePoint: `12_…-v5.docx` a subir).
+  🔴 **Espera o Ops** (história `408743`): schema hml/prd por linha, `SELECT` no Motion, `job_status_biopsia_<linha>_batch`,
+  cluster, **cadastro de envio**, controle de carga do runner; depois PR para a `hml`. **Tábia:** origem `biopsia_motion`
+  — time da Central. Linhas de biópsia **fora da randomização** até decisão de produto. A confirmar com a Navegação:
+  `id_linha` de próstata (`cap:lin:pirads`) e tireoide (`cap:lin:tirads`), destinatários de hml/prd (hoje os do Ca de Cólon).
+  🟡 **Homologação:** listas de estômago, próstata, tireoide e rim prontas fora do git (`_dados-clinicos-fora-do-git/biopsias/`),
+  a subir e enviar à Rúbia e à Larissa; próstata v2 enxuta (~91 linhas) em decisão. Motor antes de prd: **atribuição por
+  amostra** (21 pedidos EDA + colonoscopia contam nas duas linhas).
+  Board: `407833` (protótipo) com `407838` aberta; `408743` com a v5 anexada. Ordem do negócio: Cólon → Estômago →
+  Próstata → Tireoide → Rim. 🧭 Padrão de código: regra `09-plataforma-padrao-codigo` + skill `validar-padrao-plataforma`.
+- 🟡 **Tireoide — `399880` (novos achados, Leandro):** solução só por config na `0.12.3` (manter `ordinal_only`, achados como
+  critérios `promote`). Guia em `tireoide/orientacao-399880-novos-achados-via-criterios-v1.md`; retorno do Leandro em 17/11
+  aponta interação promote × gate no TR4 — em avaliação.
+- ✅ **Segregação em PRD nas seis linhas:** TI-RADS e reumato desde 30/10, DII e ateromatose desde 05/11, **doenças biliares
+  e neuroimunologia desde 12/11** (1ª rodada após o PR 7874; zero envio fora da intervenção). Painel v4 atualizado no mesmo
+  link (`01f1d9e728a816deb0e5eb99b04e3f3b`, rascunho). 🟡 **Neuro falhou em PRD em 17/11** (último sucesso 16/11).
+  🟡 **Biliares: exportados de ~25–80/dia para 134–304/dia a partir de 12/11**, mesmo dia da segregação — causa não
+  investigada (segregação retém, não acrescenta).
 
 - 🟡 **Ateromatose — PR 7930 (rollback de volume, `0.4.0`) avaliado, aprovável.** Na promoção a PRD: registrar a data no
   `383684` (a linha está segregada desde 05/11 e o volume sobe ~4,8×) e amostra dos casos sem "difusa" ao negócio.
 - ✅ **Segregação nas quatro linhas da onda 1 em PRD.** TI-RADS e reumato desde 30/10; **DII e ateromatose desde 05/11**
   (deploy do PR 7851). Em 05/11: DII 24 relevantes → 21 enviados, 3 retidos; ateromatose 3 → 3; **zero envio fora da
-  intervenção**. Painel de monitoramento **v4** (`01f1d9e728a816deb0e5eb99b04e3f3b`, inclui biliares e neuro aguardando o PR 7874) com o fluxo relevantes → enviados ×
+  intervenção**. Painel de monitoramento **v4** (`01f1d9e728a816deb0e5eb99b04e3f3b`, as seis linhas) com o fluxo relevantes → enviados ×
   retidos no topo. Registrar a data de 05/11 no `383684`. O 7840 religou o envio por API da reumato (só intervenção;
   sem log de API em PRD — a garantia é a camada 3 do painel).
 - 🔴 **Reumatologia — filtro de entrada mudou com o Spark 18 (desde 27/10 em PRD).** `p[eé]s?` passou a casar
