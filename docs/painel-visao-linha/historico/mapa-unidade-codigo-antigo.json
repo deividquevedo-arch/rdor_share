@@ -1,0 +1,236 @@
+{
+ "origem": "gold_corporativo_ia.corporativo.tb_gold_mov_exame: nme_hospital do codigo antigo -> codigo com mesmo nome desde mar/26",
+ "mapa": {
+  "100968": {
+   "novo": "67",
+   "hospital": "HOSPITAL E MATERNIDADE SAO LUIZ ANALIA FRANCO"
+  },
+  "101030": {
+   "novo": "57",
+   "hospital": "HOSPITAL SANTA HELENA"
+  },
+  "200012": {
+   "novo": "146",
+   "hospital": "MEMORIAL SAO JOSE - MEDIAX FILIAL"
+  },
+  "200130": {
+   "novo": "54",
+   "hospital": "HOSPITAL SAO LUIZ OSASCO"
+  },
+  "200020": {
+   "novo": "97",
+   "hospital": "HOSPITAL CENTRAL LESTE"
+  },
+  "100951": {
+   "novo": "132",
+   "hospital": "HOSPITAL ESPERANCA RECIFE"
+  },
+  "200010": {
+   "novo": "31",
+   "hospital": "HOSPITAL MEMORIAL SAO JOSE"
+  },
+  "100972": {
+   "novo": "89",
+   "hospital": "HOSPITAL SANTA LUZIA"
+  },
+  "200134": {
+   "novo": "144",
+   "hospital": "HOSPITAL SAO RAFAEL"
+  },
+  "101031": {
+   "novo": "95",
+   "hospital": "CLINICA SAO VICENTE"
+  },
+  "101000": {
+   "novo": "112",
+   "hospital": "HOSPITAL COPA STAR"
+  },
+  "200017": {
+   "novo": "136",
+   "hospital": "HOSPITAL RIO BARRA"
+  },
+  "200147": {
+   "novo": "37",
+   "hospital": "HOSPITAL SANTA CRUZ"
+  },
+  "200146": {
+   "novo": "135",
+   "hospital": "HOSPITAL ANTONIO AFONSO"
+  },
+  "2": {
+   "novo": "1661",
+   "hospital": "HOSPITAL GLORIA D'OR"
+  },
+  "200014": {
+   "novo": "50",
+   "hospital": "ESPERANCA OLINDA - PRONTIMAGEM"
+  },
+  "200023": {
+   "novo": "257",
+   "hospital": "HOSPITAL SANTA ISABEL"
+  },
+  "101037": {
+   "novo": "126",
+   "hospital": "UDI HOSPITAL"
+  },
+  "200128": {
+   "novo": "373",
+   "hospital": "HOSPITAL E MATERNIDADE SAO LUIZ CAMPINAS"
+  },
+  "101029": {
+   "novo": "75",
+   "hospital": "HOSPITAL SAO MARCOS"
+  },
+  "200019": {
+   "novo": "147",
+   "hospital": "HOSPITAL VIVALLE"
+  },
+  "200002": {
+   "novo": "81",
+   "hospital": "HOSPITAL SAO LUIZ MORUMBI"
+  },
+  "100965": {
+   "novo": "100",
+   "hospital": "HOSPITAL SAO LUIZ JABAQUARA"
+  },
+  "101001": {
+   "novo": "91",
+   "hospital": "HOSPITAL BANGU"
+  },
+  "43": {
+   "novo": "1615",
+   "hospital": "HOSPITAL PEDIATRICO JUTTA BATISTA"
+  },
+  "90": {
+   "novo": "1662",
+   "hospital": "HOSPITAL NORTE D'OR"
+  },
+  "101027": {
+   "novo": "141",
+   "hospital": "HOSPITAL IFOR"
+  },
+  "313": {
+   "novo": "1393",
+   "hospital": "HOSPITAL MEMORIAL ARTHUR RAMOS"
+  },
+  "200129": {
+   "novo": "62",
+   "hospital": "HOSPITAL E MATERNIDADE RIBEIRAO PIRES"
+  },
+  "101043": {
+   "novo": "42",
+   "hospital": "HOSPITAL E MATERNIDADE SAO LUIZ SAO CAETANO"
+  },
+  "100983": {
+   "novo": "143",
+   "hospital": "HOSPITAL DF STAR"
+  },
+  "200145": {
+   "novo": "292",
+   "hospital": "HOSPITAL AEROPORTO"
+  },
+  "101005": {
+   "novo": "116",
+   "hospital": "HOSPITAL CORACAO DO BRASIL"
+  },
+  "200021": {
+   "novo": "134",
+   "hospital": "HOSPITAL BRASIL MAUA"
+  },
+  "100999": {
+   "novo": "5",
+   "hospital": "HOSPITAL BRASIL SANTO ANDRE"
+  },
+  "200016": {
+   "novo": "130",
+   "hospital": "SAO MARCOS - DIAGNO"
+  },
+  "100942": {
+   "novo": "18",
+   "hospital": "HOSPITAL ESPERANCA OLINDA"
+  },
+  "200015": {
+   "novo": "131",
+   "hospital": "MEMORIAL SAO JOSE - MAXIMAGEM MATRIZ"
+  },
+  "101022": {
+   "novo": "118",
+   "hospital": "SAO MARCOS - MAXCLINICAS"
+  },
+  "100943": {
+   "novo": "55",
+   "hospital": "HOSPITAL QUINTA DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "101033": {
+   "novo": "35",
+   "hospital": "HOSPITAL COPA DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "101004": {
+   "novo": "92",
+   "hospital": "HOSPITAL OESTE DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "100994": {
+   "novo": "83",
+   "hospital": "HOSPITAL RIOS DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "100990": {
+   "novo": "107",
+   "hospital": "HOSPITAL NITEROI DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "101002": {
+   "novo": "94",
+   "hospital": "CENTRO DE IMAGEM COPA DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "100981": {
+   "novo": "1662",
+   "hospital": "HOSPITAL NORTE DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "100946": {
+   "novo": "125",
+   "hospital": "HOSPITAL CAXIAS DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "200000": {
+   "novo": "1661",
+   "hospital": "HOSPITAL GLORIA DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "200001": {
+   "novo": "11",
+   "hospital": "HOSPITAL E MATERNIDADE SAO LUIZ UNIDADE ITAIM",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "200022": {
+   "novo": "162",
+   "hospital": "MATERNIDADE SAO LUIZ STAR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  },
+  "101032": {
+   "novo": "41",
+   "hospital": "HOSPITAL BARRA DOR",
+   "pareamento": "nome normalizado (D'OR) ou sucessor com mesmo nome"
+  }
+ },
+ "sem_par": [
+  [
+   "200149",
+   "HOSPITAL JUTTA BATISTA"
+  ],
+  [
+   "100970",
+   "HOSPITAL ASSUNCAO"
+  ],
+  [
+   "200144",
+   "SAO LUCAS"
+  ]
+ ],
+ "nota_sem_par": "SAO LUCAS (200144), HOSPITAL ASSUNCAO (100970) e HOSPITAL JUTTA BATISTA (200149): sucessor nao inequivoco; mantidos com o codigo antigo"
+}

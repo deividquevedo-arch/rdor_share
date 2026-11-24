@@ -1,0 +1,7918 @@
+{
+ "meta": {
+  "regra": "qtd_relevante do monitoramento do job (rim_monitoramento): clearance 0,1-35, idade<=80, sem AMIL, regional preenchida, fora de 43 unidades; aplicada por exame",
+  "fonte": "hive_metastore.ia.tb_diamond_nefrologia_clearance_saida"
+ },
+ "linhas": [
+  {
+   "exames": "4251",
+   "id_unidade": "11",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "152"
+  },
+  {
+   "exames": "1761",
+   "id_unidade": "95",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "69"
+  },
+  {
+   "exames": "388",
+   "id_unidade": "92",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "350",
+   "id_unidade": "16",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "1"
+  },
+  {
+   "exames": "5937",
+   "id_unidade": "874",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "57"
+  },
+  {
+   "exames": "288",
+   "id_unidade": "42",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "5"
+  },
+  {
+   "exames": "55",
+   "id_unidade": "1353",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "142",
+   "id_unidade": "134",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "78",
+   "id_unidade": "2",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "266",
+   "id_unidade": "118",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "103",
+   "id_unidade": "69",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "6"
+  },
+  {
+   "exames": "5318",
+   "id_unidade": "11",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "190"
+  },
+  {
+   "exames": "341",
+   "id_unidade": "118",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "1"
+  },
+  {
+   "exames": "1520",
+   "id_unidade": "1353",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "3"
+  },
+  {
+   "exames": "3293",
+   "id_unidade": "77",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "78"
+  },
+  {
+   "exames": "99",
+   "id_unidade": "86",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "78",
+   "id_unidade": "1661",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "473",
+   "id_unidade": "162",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "6"
+  },
+  {
+   "exames": "278",
+   "id_unidade": "5",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "8"
+  },
+  {
+   "exames": "131",
+   "id_unidade": "134",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "80",
+   "id_unidade": "257",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "94",
+   "id_unidade": "1662",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "4"
+  },
+  {
+   "exames": "8",
+   "id_unidade": "12",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2549",
+   "id_unidade": "69",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "70"
+  },
+  {
+   "exames": "3883",
+   "id_unidade": "1073",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "133"
+  },
+  {
+   "exames": "2116",
+   "id_unidade": "143",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "21"
+  },
+  {
+   "exames": "329",
+   "id_unidade": "118",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "1"
+  },
+  {
+   "exames": "28",
+   "id_unidade": "3",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "131",
+   "id_unidade": "200146",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3436",
+   "id_unidade": "100946",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "103"
+  },
+  {
+   "exames": "2647",
+   "id_unidade": "200020",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "10"
+  },
+  {
+   "exames": "364",
+   "id_unidade": "92",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "204",
+   "id_unidade": "953",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "73",
+   "id_unidade": "118",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "143",
+   "id_unidade": "3",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "74",
+   "id_unidade": "69",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "147",
+   "id_unidade": "953",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "7",
+   "id_unidade": "116",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "7573",
+   "id_unidade": "54",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "65"
+  },
+  {
+   "exames": "1459",
+   "id_unidade": "18",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "41"
+  },
+  {
+   "exames": "551",
+   "id_unidade": "134",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "2"
+  },
+  {
+   "exames": "331",
+   "id_unidade": "132",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "12"
+  },
+  {
+   "exames": "4623",
+   "id_unidade": "125",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "148"
+  },
+  {
+   "exames": "1302",
+   "id_unidade": "292",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "39"
+  },
+  {
+   "exames": "2139",
+   "id_unidade": "37",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "81"
+  },
+  {
+   "exames": "3923",
+   "id_unidade": "107",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "136"
+  },
+  {
+   "exames": "6144",
+   "id_unidade": "103",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "79"
+  },
+  {
+   "exames": "887",
+   "id_unidade": "141",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "16"
+  },
+  {
+   "exames": "234",
+   "id_unidade": "62",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "513",
+   "id_unidade": "67",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "10"
+  },
+  {
+   "exames": "376",
+   "id_unidade": "874",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "106",
+   "id_unidade": "89",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "116",
+   "id_unidade": "257",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "3"
+  },
+  {
+   "exames": "4270",
+   "id_unidade": "373",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "42"
+  },
+  {
+   "exames": "59",
+   "id_unidade": "292",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4574",
+   "id_unidade": "125",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "107"
+  },
+  {
+   "exames": "878",
+   "id_unidade": "116",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "47"
+  },
+  {
+   "exames": "3343",
+   "id_unidade": "77",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "68"
+  },
+  {
+   "exames": "3258",
+   "id_unidade": "35",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "81"
+  },
+  {
+   "exames": "17",
+   "id_unidade": "89",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "396",
+   "id_unidade": "12",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3327",
+   "id_unidade": "134",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "11"
+  },
+  {
+   "exames": "189",
+   "id_unidade": "41",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "460",
+   "id_unidade": "874",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "259",
+   "id_unidade": "97",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "407",
+   "id_unidade": "67",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "979",
+   "id_unidade": "91",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "34"
+  },
+  {
+   "exames": "3416",
+   "id_unidade": "35",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "71"
+  },
+  {
+   "exames": "396",
+   "id_unidade": "12",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "846",
+   "id_unidade": "81",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "918",
+   "id_unidade": "200145",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "19"
+  },
+  {
+   "exames": "71",
+   "id_unidade": "2",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "43",
+   "id_unidade": "162",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5003",
+   "id_unidade": "81",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "48"
+  },
+  {
+   "exames": "310",
+   "id_unidade": "12",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "5"
+  },
+  {
+   "exames": "1176",
+   "id_unidade": "292",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "10"
+  },
+  {
+   "exames": "261",
+   "id_unidade": "1661",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "9802",
+   "id_unidade": "67",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "139"
+  },
+  {
+   "exames": "4028",
+   "id_unidade": "39",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "76"
+  },
+  {
+   "exames": "702",
+   "id_unidade": "116",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "41"
+  },
+  {
+   "exames": "2149",
+   "id_unidade": "37",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "68"
+  },
+  {
+   "exames": "335",
+   "id_unidade": "12",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "112",
+   "id_unidade": "75",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "6"
+  },
+  {
+   "exames": "3713",
+   "id_unidade": "134",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "24"
+  },
+  {
+   "exames": "67",
+   "id_unidade": "151",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2035",
+   "id_unidade": "151",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "84"
+  },
+  {
+   "exames": "2265",
+   "id_unidade": "69",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "37"
+  },
+  {
+   "exames": "71",
+   "id_unidade": "143",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "8588",
+   "id_unidade": "54",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "82"
+  },
+  {
+   "exames": "1742",
+   "id_unidade": "89",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "43"
+  },
+  {
+   "exames": "121",
+   "id_unidade": "122",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "5"
+  },
+  {
+   "exames": "1293",
+   "id_unidade": "91",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "17"
+  },
+  {
+   "exames": "1277",
+   "id_unidade": "1353",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "8"
+  },
+  {
+   "exames": "897",
+   "id_unidade": "141",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "230",
+   "id_unidade": "41",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2536",
+   "id_unidade": "83",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "36"
+  },
+  {
+   "exames": "2119",
+   "id_unidade": "16",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "8"
+  },
+  {
+   "exames": "1923",
+   "id_unidade": "151",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "107"
+  },
+  {
+   "exames": "1865",
+   "id_unidade": "37",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "68"
+  },
+  {
+   "exames": "366",
+   "id_unidade": "54",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "481",
+   "id_unidade": "67",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "6"
+  },
+  {
+   "exames": "61",
+   "id_unidade": "112",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "4"
+  },
+  {
+   "exames": "38",
+   "id_unidade": "136",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "123",
+   "id_unidade": "77",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "4511",
+   "id_unidade": "81",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "68"
+  },
+  {
+   "exames": "2950",
+   "id_unidade": "97",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "14"
+  },
+  {
+   "exames": "49",
+   "id_unidade": "141",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "180",
+   "id_unidade": "2",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1797",
+   "id_unidade": "69",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "59"
+  },
+  {
+   "exames": "1054",
+   "id_unidade": "42",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "329",
+   "id_unidade": "86",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "547",
+   "id_unidade": "62",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "136",
+   "id_unidade": "1073",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "171",
+   "id_unidade": "125",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "7"
+  },
+  {
+   "exames": "421",
+   "id_unidade": "54",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "74",
+   "id_unidade": "257",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2193",
+   "id_unidade": "132",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "56"
+  },
+  {
+   "exames": "1345",
+   "id_unidade": "67",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "10"
+  },
+  {
+   "exames": "506",
+   "id_unidade": "1073",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "603",
+   "id_unidade": "55",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "27"
+  },
+  {
+   "exames": "3333",
+   "id_unidade": "92",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "78"
+  },
+  {
+   "exames": "640",
+   "id_unidade": "75",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "31"
+  },
+  {
+   "exames": "7232",
+   "id_unidade": "42",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "113"
+  },
+  {
+   "exames": "2766",
+   "id_unidade": "122",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "47"
+  },
+  {
+   "exames": "296",
+   "id_unidade": "11",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "7"
+  },
+  {
+   "exames": "37",
+   "id_unidade": "75",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "152",
+   "id_unidade": "143",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "190",
+   "id_unidade": "100",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "132",
+   "id_unidade": "77",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "100",
+   "id_unidade": "16",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1908",
+   "id_unidade": "257",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "28"
+  },
+  {
+   "exames": "244",
+   "id_unidade": "103",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "146",
+   "id_unidade": "39",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "83",
+   "id_unidade": "69",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "1714",
+   "id_unidade": "112",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "19"
+  },
+  {
+   "exames": "1988",
+   "id_unidade": "1661",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "120"
+  },
+  {
+   "exames": "2006",
+   "id_unidade": "37",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "71"
+  },
+  {
+   "exames": "1343",
+   "id_unidade": "135",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "20"
+  },
+  {
+   "exames": "2273",
+   "id_unidade": "69",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "50"
+  },
+  {
+   "exames": "257",
+   "id_unidade": "3",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "228",
+   "id_unidade": "125",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "92",
+   "id_unidade": "143",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "22",
+   "id_unidade": "3",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "52",
+   "id_unidade": "18",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "1576",
+   "id_unidade": "151",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "56"
+  },
+  {
+   "exames": "2745",
+   "id_unidade": "39",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "57"
+  },
+  {
+   "exames": "1323",
+   "id_unidade": "257",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "27"
+  },
+  {
+   "exames": "1395",
+   "id_unidade": "1353",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "15"
+  },
+  {
+   "exames": "818",
+   "id_unidade": "200146",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "9"
+  },
+  {
+   "exames": "712",
+   "id_unidade": "100",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "211",
+   "id_unidade": "18",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "257",
+   "id_unidade": "257",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2015",
+   "id_unidade": "100981",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "63"
+  },
+  {
+   "exames": "639",
+   "id_unidade": "39",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "788",
+   "id_unidade": "873",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "38",
+   "id_unidade": "12",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "123",
+   "id_unidade": "35",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "139",
+   "id_unidade": "107",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "51",
+   "id_unidade": "136",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "694",
+   "id_unidade": "11",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "21"
+  },
+  {
+   "exames": "338",
+   "id_unidade": "1662",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "8"
+  },
+  {
+   "exames": "5535",
+   "id_unidade": "81",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "77"
+  },
+  {
+   "exames": "1254",
+   "id_unidade": "132",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "16"
+  },
+  {
+   "exames": "5246",
+   "id_unidade": "11",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "190"
+  },
+  {
+   "exames": "212",
+   "id_unidade": "41",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3497",
+   "id_unidade": "122",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "95"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "16",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "3"
+  },
+  {
+   "exames": "83",
+   "id_unidade": "57",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "117",
+   "id_unidade": "1894",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "1328",
+   "id_unidade": "135",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "6"
+  },
+  {
+   "exames": "286",
+   "id_unidade": "67",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "5"
+  },
+  {
+   "exames": "1316",
+   "id_unidade": "292",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "39"
+  },
+  {
+   "exames": "3207",
+   "id_unidade": "122",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "59"
+  },
+  {
+   "exames": "4",
+   "id_unidade": "41",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "44",
+   "id_unidade": "135",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1",
+   "id_unidade": "(nulo)",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1921",
+   "id_unidade": "1661",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "78"
+  },
+  {
+   "exames": "1401",
+   "id_unidade": "953",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1420",
+   "id_unidade": "136",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "34"
+  },
+  {
+   "exames": "162",
+   "id_unidade": "134",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "82",
+   "id_unidade": "69",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "339",
+   "id_unidade": "11",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "402",
+   "id_unidade": "81",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "11"
+  },
+  {
+   "exames": "38",
+   "id_unidade": "91",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "4752",
+   "id_unidade": "873",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "35"
+  },
+  {
+   "exames": "332",
+   "id_unidade": "100951",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "56",
+   "id_unidade": "100972",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "348",
+   "id_unidade": "83",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "466",
+   "id_unidade": "97",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "826",
+   "id_unidade": "100",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "171",
+   "id_unidade": "292",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "390",
+   "id_unidade": "100972",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "82",
+   "id_unidade": "132",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "17",
+   "id_unidade": "41",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "31",
+   "id_unidade": "3",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1041",
+   "id_unidade": "1353",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "16"
+  },
+  {
+   "exames": "1932",
+   "id_unidade": "1662",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "59"
+  },
+  {
+   "exames": "1685",
+   "id_unidade": "257",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "33"
+  },
+  {
+   "exames": "451",
+   "id_unidade": "77",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "9"
+  },
+  {
+   "exames": "476",
+   "id_unidade": "107",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "20"
+  },
+  {
+   "exames": "223",
+   "id_unidade": "112",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "1"
+  },
+  {
+   "exames": "2056",
+   "id_unidade": "1661",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "89"
+  },
+  {
+   "exames": "1339",
+   "id_unidade": "18",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "29"
+  },
+  {
+   "exames": "270",
+   "id_unidade": "57",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "5208",
+   "id_unidade": "100",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "88"
+  },
+  {
+   "exames": "82",
+   "id_unidade": "135",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "216",
+   "id_unidade": "134",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "112",
+   "id_unidade": "151",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "9"
+  },
+  {
+   "exames": "13",
+   "id_unidade": "3",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "171",
+   "id_unidade": "55",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "6"
+  },
+  {
+   "exames": "9001",
+   "id_unidade": "5",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "177"
+  },
+  {
+   "exames": "3041",
+   "id_unidade": "62",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "23"
+  },
+  {
+   "exames": "617",
+   "id_unidade": "75",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "19"
+  },
+  {
+   "exames": "1553",
+   "id_unidade": "18",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "31"
+  },
+  {
+   "exames": "3706",
+   "id_unidade": "97",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "20"
+  },
+  {
+   "exames": "247",
+   "id_unidade": "103",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "181",
+   "id_unidade": "77",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "837",
+   "id_unidade": "75",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "30"
+  },
+  {
+   "exames": "10",
+   "id_unidade": "57",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "1"
+  },
+  {
+   "exames": "3081",
+   "id_unidade": "92",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "54"
+  },
+  {
+   "exames": "1769",
+   "id_unidade": "18",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "63"
+  },
+  {
+   "exames": "208",
+   "id_unidade": "100942",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "479",
+   "id_unidade": "373",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "273",
+   "id_unidade": "151",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1685",
+   "id_unidade": "100994",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "17"
+  },
+  {
+   "exames": "201",
+   "id_unidade": "1353",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4789",
+   "id_unidade": "874",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "49"
+  },
+  {
+   "exames": "244",
+   "id_unidade": "135",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3397",
+   "id_unidade": "77",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "95"
+  },
+  {
+   "exames": "5165",
+   "id_unidade": "11",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "163"
+  },
+  {
+   "exames": "4964",
+   "id_unidade": "125",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "126"
+  },
+  {
+   "exames": "41",
+   "id_unidade": "118",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "362",
+   "id_unidade": "54",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "9"
+  },
+  {
+   "exames": "3065",
+   "id_unidade": "122",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "49"
+  },
+  {
+   "exames": "4322",
+   "id_unidade": "873",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "25"
+  },
+  {
+   "exames": "215",
+   "id_unidade": "3",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "57",
+   "id_unidade": "141",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "23",
+   "id_unidade": "118",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5347",
+   "id_unidade": "100",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "99"
+  },
+  {
+   "exames": "2737",
+   "id_unidade": "1662",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "59"
+  },
+  {
+   "exames": "1299",
+   "id_unidade": "57",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "11"
+  },
+  {
+   "exames": "185",
+   "id_unidade": "873",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "138",
+   "id_unidade": "92",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "17",
+   "id_unidade": "75",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1888",
+   "id_unidade": "83",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "28"
+  },
+  {
+   "exames": "1470",
+   "id_unidade": "143",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "15"
+  },
+  {
+   "exames": "18",
+   "id_unidade": "118",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1963",
+   "id_unidade": "257",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "24"
+  },
+  {
+   "exames": "558",
+   "id_unidade": "100965",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "10"
+  },
+  {
+   "exames": "2258",
+   "id_unidade": "200129",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "37"
+  },
+  {
+   "exames": "42",
+   "id_unidade": "101030",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "524",
+   "id_unidade": "55",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "209",
+   "id_unidade": "257",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "259",
+   "id_unidade": "95",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "900",
+   "id_unidade": "874",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "54",
+   "id_unidade": "162",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2371",
+   "id_unidade": "200021",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "12"
+  },
+  {
+   "exames": "1204",
+   "id_unidade": "42",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "21"
+  },
+  {
+   "exames": "179",
+   "id_unidade": "55",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "635",
+   "id_unidade": "97",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1110",
+   "id_unidade": "141",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "10"
+  },
+  {
+   "exames": "1515",
+   "id_unidade": "953",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "184",
+   "id_unidade": "92",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "6"
+  },
+  {
+   "exames": "74",
+   "id_unidade": "37",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "5"
+  },
+  {
+   "exames": "4096",
+   "id_unidade": "97",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "20"
+  },
+  {
+   "exames": "127",
+   "id_unidade": "77",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "5"
+  },
+  {
+   "exames": "104",
+   "id_unidade": "62",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1522",
+   "id_unidade": "953",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1943",
+   "id_unidade": "151",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "95"
+  },
+  {
+   "exames": "3415",
+   "id_unidade": "62",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "17"
+  },
+  {
+   "exames": "1632",
+   "id_unidade": "112",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "23"
+  },
+  {
+   "exames": "1528",
+   "id_unidade": "1353",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "17"
+  },
+  {
+   "exames": "2077",
+   "id_unidade": "69",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "50"
+  },
+  {
+   "exames": "78",
+   "id_unidade": "57",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "76",
+   "id_unidade": "69",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "2384",
+   "id_unidade": "77",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "63"
+  },
+  {
+   "exames": "3095",
+   "id_unidade": "107",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "141"
+  },
+  {
+   "exames": "4937",
+   "id_unidade": "55",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "129"
+  },
+  {
+   "exames": "2658",
+   "id_unidade": "86",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "24"
+  },
+  {
+   "exames": "1250",
+   "id_unidade": "292",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "16"
+  },
+  {
+   "exames": "877",
+   "id_unidade": "75",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "17"
+  },
+  {
+   "exames": "548",
+   "id_unidade": "100946",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "133",
+   "id_unidade": "75",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "331",
+   "id_unidade": "83",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "141",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "26",
+   "id_unidade": "41",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1822",
+   "id_unidade": "143",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "14"
+  },
+  {
+   "exames": "2956",
+   "id_unidade": "92",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "56"
+  },
+  {
+   "exames": "304",
+   "id_unidade": "3",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "9121",
+   "id_unidade": "5",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "188"
+  },
+  {
+   "exames": "3777",
+   "id_unidade": "134",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "24"
+  },
+  {
+   "exames": "1388",
+   "id_unidade": "18",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "36"
+  },
+  {
+   "exames": "2429",
+   "id_unidade": "1662",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "52"
+  },
+  {
+   "exames": "49",
+   "id_unidade": "292",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4358",
+   "id_unidade": "55",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "168"
+  },
+  {
+   "exames": "2378",
+   "id_unidade": "57",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "29"
+  },
+  {
+   "exames": "2578",
+   "id_unidade": "132",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "48"
+  },
+  {
+   "exames": "3884",
+   "id_unidade": "97",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "10"
+  },
+  {
+   "exames": "1725",
+   "id_unidade": "1893",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "40"
+  },
+  {
+   "exames": "1723",
+   "id_unidade": "257",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "53"
+  },
+  {
+   "exames": "158",
+   "id_unidade": "107",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "112",
+   "id_unidade": "112",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "483",
+   "id_unidade": "42",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "106",
+   "id_unidade": "35",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "4"
+  },
+  {
+   "exames": "3579",
+   "id_unidade": "125",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "123"
+  },
+  {
+   "exames": "74",
+   "id_unidade": "116",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "140",
+   "id_unidade": "101029",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "4"
+  },
+  {
+   "exames": "3098",
+   "id_unidade": "100943",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "98"
+  },
+  {
+   "exames": "144",
+   "id_unidade": "135",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "256",
+   "id_unidade": "136",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "543",
+   "id_unidade": "62",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "1466",
+   "id_unidade": "67",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "11"
+  },
+  {
+   "exames": "841",
+   "id_unidade": "125",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "10"
+  },
+  {
+   "exames": "86",
+   "id_unidade": "16",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "33",
+   "id_unidade": "200022",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4161",
+   "id_unidade": "873",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "32"
+  },
+  {
+   "exames": "409",
+   "id_unidade": "162",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "231",
+   "id_unidade": "118",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "228",
+   "id_unidade": "18",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3351",
+   "id_unidade": "1894",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "91"
+  },
+  {
+   "exames": "2514",
+   "id_unidade": "83",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "50"
+  },
+  {
+   "exames": "2193",
+   "id_unidade": "151",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "66"
+  },
+  {
+   "exames": "3788",
+   "id_unidade": "1073",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "92"
+  },
+  {
+   "exames": "463",
+   "id_unidade": "103",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "96",
+   "id_unidade": "1893",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "160",
+   "id_unidade": "39",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "6"
+  },
+  {
+   "exames": "62",
+   "id_unidade": "143",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "147",
+   "id_unidade": "92",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "5920",
+   "id_unidade": "874",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "37"
+  },
+  {
+   "exames": "3196",
+   "id_unidade": "35",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "110"
+  },
+  {
+   "exames": "2237",
+   "id_unidade": "16",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "17"
+  },
+  {
+   "exames": "268",
+   "id_unidade": "42",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "59",
+   "id_unidade": "953",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1952",
+   "id_unidade": "143",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "26"
+  },
+  {
+   "exames": "4190",
+   "id_unidade": "1073",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "114"
+  },
+  {
+   "exames": "1354",
+   "id_unidade": "1353",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "31"
+  },
+  {
+   "exames": "32",
+   "id_unidade": "162",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "26",
+   "id_unidade": "12",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3691",
+   "id_unidade": "134",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "22"
+  },
+  {
+   "exames": "1199",
+   "id_unidade": "292",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "28"
+  },
+  {
+   "exames": "29",
+   "id_unidade": "12",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3287",
+   "id_unidade": "373",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "40"
+  },
+  {
+   "exames": "2550",
+   "id_unidade": "62",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "21"
+  },
+  {
+   "exames": "5253",
+   "id_unidade": "42",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "74"
+  },
+  {
+   "exames": "73",
+   "id_unidade": "16",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "250",
+   "id_unidade": "57",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "168",
+   "id_unidade": "41",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "314",
+   "id_unidade": "100981",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "11"
+  },
+  {
+   "exames": "480",
+   "id_unidade": "100990",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "27"
+  },
+  {
+   "exames": "5919",
+   "id_unidade": "100999",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "129"
+  },
+  {
+   "exames": "517",
+   "id_unidade": "77",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "11"
+  },
+  {
+   "exames": "745",
+   "id_unidade": "55",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "18"
+  },
+  {
+   "exames": "201",
+   "id_unidade": "11",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "7"
+  },
+  {
+   "exames": "86",
+   "id_unidade": "1662",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "291",
+   "id_unidade": "112",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "7"
+  },
+  {
+   "exames": "2313",
+   "id_unidade": "69",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "50"
+  },
+  {
+   "exames": "2404",
+   "id_unidade": "16",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "17"
+  },
+  {
+   "exames": "3498",
+   "id_unidade": "92",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "73"
+  },
+  {
+   "exames": "179",
+   "id_unidade": "41",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "34",
+   "id_unidade": "3",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "40",
+   "id_unidade": "41",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2049",
+   "id_unidade": "95",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "58"
+  },
+  {
+   "exames": "75",
+   "id_unidade": "18",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "208",
+   "id_unidade": "125",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "3"
+  },
+  {
+   "exames": "5435",
+   "id_unidade": "100",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "121"
+  },
+  {
+   "exames": "1403",
+   "id_unidade": "18",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "22"
+  },
+  {
+   "exames": "2220",
+   "id_unidade": "151",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "88"
+  },
+  {
+   "exames": "2322",
+   "id_unidade": "16",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "23"
+  },
+  {
+   "exames": "2304",
+   "id_unidade": "1662",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "54"
+  },
+  {
+   "exames": "158",
+   "id_unidade": "1893",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "378",
+   "id_unidade": "100",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "8"
+  },
+  {
+   "exames": "179",
+   "id_unidade": "81",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "144",
+   "id_unidade": "107",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "6"
+  },
+  {
+   "exames": "3007",
+   "id_unidade": "1073",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "99"
+  },
+  {
+   "exames": "1323",
+   "id_unidade": "91",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "21"
+  },
+  {
+   "exames": "535",
+   "id_unidade": "89",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "10"
+  },
+  {
+   "exames": "490",
+   "id_unidade": "200128",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "10"
+  },
+  {
+   "exames": "2886",
+   "id_unidade": "39",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "74"
+  },
+  {
+   "exames": "435",
+   "id_unidade": "134",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "758",
+   "id_unidade": "874",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "468",
+   "id_unidade": "97",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "787",
+   "id_unidade": "873",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1191",
+   "id_unidade": "200017",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "27"
+  },
+  {
+   "exames": "1314",
+   "id_unidade": "200023",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "35"
+  },
+  {
+   "exames": "367",
+   "id_unidade": "2",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "15"
+  },
+  {
+   "exames": "46",
+   "id_unidade": "91",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "38",
+   "id_unidade": "118",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "199",
+   "id_unidade": "292",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "6"
+  },
+  {
+   "exames": "5990",
+   "id_unidade": "42",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "47"
+  },
+  {
+   "exames": "7955",
+   "id_unidade": "67",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "95"
+  },
+  {
+   "exames": "354",
+   "id_unidade": "86",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "271",
+   "id_unidade": "118",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "247",
+   "id_unidade": "97",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "54",
+   "id_unidade": "136",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "229",
+   "id_unidade": "11",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "222",
+   "id_unidade": "874",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2035",
+   "id_unidade": "95",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "56"
+  },
+  {
+   "exames": "51",
+   "id_unidade": "116",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "3328",
+   "id_unidade": "92",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "51"
+  },
+  {
+   "exames": "4912",
+   "id_unidade": "873",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "33"
+  },
+  {
+   "exames": "1614",
+   "id_unidade": "953",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2191",
+   "id_unidade": "143",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "23"
+  },
+  {
+   "exames": "1375",
+   "id_unidade": "292",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "33"
+  },
+  {
+   "exames": "4330",
+   "id_unidade": "1073",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "135"
+  },
+  {
+   "exames": "742",
+   "id_unidade": "75",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "16"
+  },
+  {
+   "exames": "501",
+   "id_unidade": "89",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "647",
+   "id_unidade": "5",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "38",
+   "id_unidade": "292",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4412",
+   "id_unidade": "103",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "52"
+  },
+  {
+   "exames": "9255",
+   "id_unidade": "67",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "120"
+  },
+  {
+   "exames": "2518",
+   "id_unidade": "90",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "61"
+  },
+  {
+   "exames": "655",
+   "id_unidade": "81",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "180",
+   "id_unidade": "1353",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3684",
+   "id_unidade": "200002",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "48"
+  },
+  {
+   "exames": "271",
+   "id_unidade": "200022",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "1"
+  },
+  {
+   "exames": "924",
+   "id_unidade": "81",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "391",
+   "id_unidade": "83",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "1"
+  },
+  {
+   "exames": "390",
+   "id_unidade": "151",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "13"
+  },
+  {
+   "exames": "29",
+   "id_unidade": "41",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "775",
+   "id_unidade": "873",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "2730",
+   "id_unidade": "1662",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "69"
+  },
+  {
+   "exames": "3879",
+   "id_unidade": "97",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "18"
+  },
+  {
+   "exames": "1012",
+   "id_unidade": "91",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "31"
+  },
+  {
+   "exames": "883",
+   "id_unidade": "1953",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "19"
+  },
+  {
+   "exames": "5750",
+   "id_unidade": "100",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "93"
+  },
+  {
+   "exames": "1450",
+   "id_unidade": "135",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "18"
+  },
+  {
+   "exames": "127",
+   "id_unidade": "83",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "44",
+   "id_unidade": "18",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "8686",
+   "id_unidade": "5",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "122"
+  },
+  {
+   "exames": "122",
+   "id_unidade": "122",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "2438",
+   "id_unidade": "83",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "29"
+  },
+  {
+   "exames": "23",
+   "id_unidade": "75",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "9",
+   "id_unidade": "41",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "303",
+   "id_unidade": "57",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "7"
+  },
+  {
+   "exames": "311",
+   "id_unidade": "12",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3531",
+   "id_unidade": "97",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "7"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "57",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "48",
+   "id_unidade": "18",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "628",
+   "id_unidade": "54",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "8"
+  },
+  {
+   "exames": "1823",
+   "id_unidade": "69",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "59"
+  },
+  {
+   "exames": "4363",
+   "id_unidade": "373",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "60"
+  },
+  {
+   "exames": "3924",
+   "id_unidade": "97",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "18"
+  },
+  {
+   "exames": "238",
+   "id_unidade": "3",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "261",
+   "id_unidade": "100994",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "4"
+  },
+  {
+   "exames": "173",
+   "id_unidade": "200023",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1304",
+   "id_unidade": "54",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "89",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "474",
+   "id_unidade": "1073",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "613",
+   "id_unidade": "373",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5760",
+   "id_unidade": "200130",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "67"
+  },
+  {
+   "exames": "3855",
+   "id_unidade": "100965",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "69"
+  },
+  {
+   "exames": "2959",
+   "id_unidade": "200128",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "42"
+  },
+  {
+   "exames": "545",
+   "id_unidade": "1073",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "3274",
+   "id_unidade": "1073",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "81"
+  },
+  {
+   "exames": "2645",
+   "id_unidade": "92",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "43"
+  },
+  {
+   "exames": "1837",
+   "id_unidade": "151",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "74"
+  },
+  {
+   "exames": "2552",
+   "id_unidade": "35",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "104"
+  },
+  {
+   "exames": "278",
+   "id_unidade": "257",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "9"
+  },
+  {
+   "exames": "8677",
+   "id_unidade": "54",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "99"
+  },
+  {
+   "exames": "4222",
+   "id_unidade": "1073",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "141"
+  },
+  {
+   "exames": "827",
+   "id_unidade": "116",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "44"
+  },
+  {
+   "exames": "3759",
+   "id_unidade": "97",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "14"
+  },
+  {
+   "exames": "2298",
+   "id_unidade": "16",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "7"
+  },
+  {
+   "exames": "8636",
+   "id_unidade": "54",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "54"
+  },
+  {
+   "exames": "255",
+   "id_unidade": "103",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "76",
+   "id_unidade": "151",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2008",
+   "id_unidade": "143",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "24"
+  },
+  {
+   "exames": "8991",
+   "id_unidade": "54",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "78"
+  },
+  {
+   "exames": "123",
+   "id_unidade": "35",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "317",
+   "id_unidade": "5",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "56",
+   "id_unidade": "1353",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "4415",
+   "id_unidade": "55",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "157"
+  },
+  {
+   "exames": "784",
+   "id_unidade": "75",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "30"
+  },
+  {
+   "exames": "5232",
+   "id_unidade": "81",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "67"
+  },
+  {
+   "exames": "3521",
+   "id_unidade": "35",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "167"
+  },
+  {
+   "exames": "3851",
+   "id_unidade": "39",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "63"
+  },
+  {
+   "exames": "1538",
+   "id_unidade": "135",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "15"
+  },
+  {
+   "exames": "232",
+   "id_unidade": "57",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "2"
+  },
+  {
+   "exames": "247",
+   "id_unidade": "92",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "43",
+   "id_unidade": "75",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "33",
+   "id_unidade": "118",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "79",
+   "id_unidade": "151",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "6"
+  },
+  {
+   "exames": "5237",
+   "id_unidade": "11",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "139"
+  },
+  {
+   "exames": "3496",
+   "id_unidade": "62",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "26"
+  },
+  {
+   "exames": "2570",
+   "id_unidade": "101033",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "93"
+  },
+  {
+   "exames": "455",
+   "id_unidade": "107",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "429",
+   "id_unidade": "132",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "15"
+  },
+  {
+   "exames": "111",
+   "id_unidade": "77",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "5"
+  },
+  {
+   "exames": "45",
+   "id_unidade": "57",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "1"
+  },
+  {
+   "exames": "57",
+   "id_unidade": "118",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "1"
+  },
+  {
+   "exames": "3273",
+   "id_unidade": "134",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "15"
+  },
+  {
+   "exames": "5651",
+   "id_unidade": "100",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "69"
+  },
+  {
+   "exames": "3147",
+   "id_unidade": "122",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "61"
+  },
+  {
+   "exames": "2134",
+   "id_unidade": "143",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "32"
+  },
+  {
+   "exames": "1503",
+   "id_unidade": "136",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "20"
+  },
+  {
+   "exames": "6528",
+   "id_unidade": "42",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "76"
+  },
+  {
+   "exames": "1308",
+   "id_unidade": "292",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "50"
+  },
+  {
+   "exames": "37",
+   "id_unidade": "116",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "132",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "3"
+  },
+  {
+   "exames": "248",
+   "id_unidade": "3",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2584",
+   "id_unidade": "132",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "47"
+  },
+  {
+   "exames": "1027",
+   "id_unidade": "141",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "7"
+  },
+  {
+   "exames": "328",
+   "id_unidade": "12",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "258",
+   "id_unidade": "55",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "6"
+  },
+  {
+   "exames": "252",
+   "id_unidade": "107",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "8"
+  },
+  {
+   "exames": "408",
+   "id_unidade": "103",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "6"
+  },
+  {
+   "exames": "242",
+   "id_unidade": "874",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "113",
+   "id_unidade": "92",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "5"
+  },
+  {
+   "exames": "3379",
+   "id_unidade": "55",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "99"
+  },
+  {
+   "exames": "204",
+   "id_unidade": "118",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "625",
+   "id_unidade": "101043",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "11"
+  },
+  {
+   "exames": "429",
+   "id_unidade": "200020",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "6241",
+   "id_unidade": "100968",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "122"
+  },
+  {
+   "exames": "1121",
+   "id_unidade": "67",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "675",
+   "id_unidade": "103",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "231",
+   "id_unidade": "18",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "169",
+   "id_unidade": "75",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "907",
+   "id_unidade": "103",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "357",
+   "id_unidade": "143",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "6"
+  },
+  {
+   "exames": "115",
+   "id_unidade": "86",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "128",
+   "id_unidade": "122",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "51",
+   "id_unidade": "953",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "95",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "893",
+   "id_unidade": "81",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "2"
+  },
+  {
+   "exames": "843",
+   "id_unidade": "100",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "64",
+   "id_unidade": "162",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4325",
+   "id_unidade": "55",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "182"
+  },
+  {
+   "exames": "1788",
+   "id_unidade": "112",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "49"
+  },
+  {
+   "exames": "1757",
+   "id_unidade": "89",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "28"
+  },
+  {
+   "exames": "4477",
+   "id_unidade": "373",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "66"
+  },
+  {
+   "exames": "195",
+   "id_unidade": "41",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "283",
+   "id_unidade": "125",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "5"
+  },
+  {
+   "exames": "186",
+   "id_unidade": "11",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "3"
+  },
+  {
+   "exames": "110",
+   "id_unidade": "86",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "120",
+   "id_unidade": "92",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "4"
+  },
+  {
+   "exames": "4010",
+   "id_unidade": "39",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "58"
+  },
+  {
+   "exames": "3174",
+   "id_unidade": "107",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "120"
+  },
+  {
+   "exames": "462",
+   "id_unidade": "162",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2548",
+   "id_unidade": "86",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "17"
+  },
+  {
+   "exames": "8",
+   "id_unidade": "3",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5305",
+   "id_unidade": "125",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "115"
+  },
+  {
+   "exames": "87",
+   "id_unidade": "151",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "5"
+  },
+  {
+   "exames": "54",
+   "id_unidade": "1353",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "62",
+   "id_unidade": "136",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "208",
+   "id_unidade": "62",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "7012",
+   "id_unidade": "42",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "61"
+  },
+  {
+   "exames": "3863",
+   "id_unidade": "39",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "79"
+  },
+  {
+   "exames": "1452",
+   "id_unidade": "953",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "769",
+   "id_unidade": "42",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "461",
+   "id_unidade": "122",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "39",
+   "id_unidade": "57",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "341",
+   "id_unidade": "2",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "6"
+  },
+  {
+   "exames": "1484",
+   "id_unidade": "54",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "7"
+  },
+  {
+   "exames": "347",
+   "id_unidade": "257",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "6"
+  },
+  {
+   "exames": "411",
+   "id_unidade": "90",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "16",
+   "id_unidade": "118",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "8",
+   "id_unidade": "162",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5176",
+   "id_unidade": "103",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "45"
+  },
+  {
+   "exames": "1283",
+   "id_unidade": "292",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "27"
+  },
+  {
+   "exames": "3254",
+   "id_unidade": "62",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "14"
+  },
+  {
+   "exames": "240",
+   "id_unidade": "373",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "99",
+   "id_unidade": "1661",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "168",
+   "id_unidade": "373",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "3"
+  },
+  {
+   "exames": "3849",
+   "id_unidade": "1073",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "153"
+  },
+  {
+   "exames": "170",
+   "id_unidade": "873",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "209",
+   "id_unidade": "100",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "5"
+  },
+  {
+   "exames": "1967",
+   "id_unidade": "257",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "21"
+  },
+  {
+   "exames": "4189",
+   "id_unidade": "39",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "52"
+  },
+  {
+   "exames": "1443",
+   "id_unidade": "18",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "12"
+  },
+  {
+   "exames": "467",
+   "id_unidade": "162",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "116",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "118",
+   "id_unidade": "132",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "429",
+   "id_unidade": "162",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "2409",
+   "id_unidade": "92",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "46"
+  },
+  {
+   "exames": "1657",
+   "id_unidade": "16",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "12"
+  },
+  {
+   "exames": "402",
+   "id_unidade": "89",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "9045",
+   "id_unidade": "5",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "172"
+  },
+  {
+   "exames": "5274",
+   "id_unidade": "125",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "164"
+  },
+  {
+   "exames": "3142",
+   "id_unidade": "122",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "85"
+  },
+  {
+   "exames": "1449",
+   "id_unidade": "135",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "26"
+  },
+  {
+   "exames": "886",
+   "id_unidade": "200130",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "4"
+  },
+  {
+   "exames": "1002",
+   "id_unidade": "54",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "365",
+   "id_unidade": "69",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "247",
+   "id_unidade": "101022",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "49",
+   "id_unidade": "101005",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "4"
+  },
+  {
+   "exames": "847",
+   "id_unidade": "11",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "23"
+  },
+  {
+   "exames": "182",
+   "id_unidade": "953",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "229",
+   "id_unidade": "103",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "250",
+   "id_unidade": "81",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "2055",
+   "id_unidade": "83",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "25"
+  },
+  {
+   "exames": "3205",
+   "id_unidade": "107",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "101"
+  },
+  {
+   "exames": "278",
+   "id_unidade": "151",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "1012",
+   "id_unidade": "42",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "3"
+  },
+  {
+   "exames": "8381",
+   "id_unidade": "5",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "151"
+  },
+  {
+   "exames": "2617",
+   "id_unidade": "86",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "11"
+  },
+  {
+   "exames": "15",
+   "id_unidade": "116",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "248",
+   "id_unidade": "1073",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "5"
+  },
+  {
+   "exames": "268",
+   "id_unidade": "55",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "9"
+  },
+  {
+   "exames": "78",
+   "id_unidade": "953",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "145",
+   "id_unidade": "97",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4868",
+   "id_unidade": "873",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "70"
+  },
+  {
+   "exames": "1608",
+   "id_unidade": "953",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2199",
+   "id_unidade": "69",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "53"
+  },
+  {
+   "exames": "95",
+   "id_unidade": "132",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "63",
+   "id_unidade": "1893",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "6"
+  },
+  {
+   "exames": "76",
+   "id_unidade": "116",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "49",
+   "id_unidade": "91",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "332",
+   "id_unidade": "12",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "11",
+   "id_unidade": "12",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "9069",
+   "id_unidade": "54",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "75"
+  },
+  {
+   "exames": "1390",
+   "id_unidade": "18",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "34"
+  },
+  {
+   "exames": "344",
+   "id_unidade": "873",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "3"
+  },
+  {
+   "exames": "6755",
+   "id_unidade": "5",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "139"
+  },
+  {
+   "exames": "6842",
+   "id_unidade": "54",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "74"
+  },
+  {
+   "exames": "6567",
+   "id_unidade": "874",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "44"
+  },
+  {
+   "exames": "1837",
+   "id_unidade": "136",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "36"
+  },
+  {
+   "exames": "322",
+   "id_unidade": "200021",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "448",
+   "id_unidade": "1073",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1644",
+   "id_unidade": "101031",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "46"
+  },
+  {
+   "exames": "1339",
+   "id_unidade": "5",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "14"
+  },
+  {
+   "exames": "516",
+   "id_unidade": "122",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "11"
+  },
+  {
+   "exames": "528",
+   "id_unidade": "35",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "12"
+  },
+  {
+   "exames": "232",
+   "id_unidade": "100",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "58",
+   "id_unidade": "89",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "494",
+   "id_unidade": "162",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2087",
+   "id_unidade": "1893",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "62"
+  },
+  {
+   "exames": "8550",
+   "id_unidade": "54",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "81"
+  },
+  {
+   "exames": "1446",
+   "id_unidade": "(nulo)",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "147",
+   "id_unidade": "86",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "189",
+   "id_unidade": "873",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "3"
+  },
+  {
+   "exames": "207",
+   "id_unidade": "55",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "7"
+  },
+  {
+   "exames": "310",
+   "id_unidade": "54",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "7"
+  },
+  {
+   "exames": "5359",
+   "id_unidade": "81",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "40"
+  },
+  {
+   "exames": "9147",
+   "id_unidade": "67",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "140"
+  },
+  {
+   "exames": "5582",
+   "id_unidade": "874",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "23"
+  },
+  {
+   "exames": "4731",
+   "id_unidade": "55",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "252"
+  },
+  {
+   "exames": "3476",
+   "id_unidade": "92",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "77"
+  },
+  {
+   "exames": "167",
+   "id_unidade": "39",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "200",
+   "id_unidade": "118",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "1"
+  },
+  {
+   "exames": "176",
+   "id_unidade": "1662",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "9"
+  },
+  {
+   "exames": "140",
+   "id_unidade": "69",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "68",
+   "id_unidade": "132",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "172",
+   "id_unidade": "11",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "86",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "20",
+   "id_unidade": "75",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4509",
+   "id_unidade": "874",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "38"
+  },
+  {
+   "exames": "2148",
+   "id_unidade": "90",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "42"
+  },
+  {
+   "exames": "140",
+   "id_unidade": "37",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1020",
+   "id_unidade": "141",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "9"
+  },
+  {
+   "exames": "928",
+   "id_unidade": "100968",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "25"
+  },
+  {
+   "exames": "340",
+   "id_unidade": "39",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "1112",
+   "id_unidade": "5",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "351",
+   "id_unidade": "151",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "570",
+   "id_unidade": "134",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "490",
+   "id_unidade": "92",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "37",
+   "id_unidade": "12",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "21",
+   "id_unidade": "89",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3805",
+   "id_unidade": "97",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "4313",
+   "id_unidade": "55",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "100"
+  },
+  {
+   "exames": "5769",
+   "id_unidade": "81",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "67"
+  },
+  {
+   "exames": "1802",
+   "id_unidade": "89",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "46"
+  },
+  {
+   "exames": "214",
+   "id_unidade": "122",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "4"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "1073",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "7"
+  },
+  {
+   "exames": "189",
+   "id_unidade": "125",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "4"
+  },
+  {
+   "exames": "2045",
+   "id_unidade": "2",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "98"
+  },
+  {
+   "exames": "142",
+   "id_unidade": "1073",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "4"
+  },
+  {
+   "exames": "7039",
+   "id_unidade": "42",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "112"
+  },
+  {
+   "exames": "1484",
+   "id_unidade": "136",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "30"
+  },
+  {
+   "exames": "85",
+   "id_unidade": "83",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "238",
+   "id_unidade": "100",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "1662",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "130",
+   "id_unidade": "122",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "24",
+   "id_unidade": "162",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "267",
+   "id_unidade": "39",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "4"
+  },
+  {
+   "exames": "182",
+   "id_unidade": "86",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "98",
+   "id_unidade": "1353",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "734",
+   "id_unidade": "1393",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "14"
+  },
+  {
+   "exames": "14",
+   "id_unidade": "162",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "335",
+   "id_unidade": "162",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "6"
+  },
+  {
+   "exames": "175",
+   "id_unidade": "3",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "44",
+   "id_unidade": "953",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3960",
+   "id_unidade": "107",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "108"
+  },
+  {
+   "exames": "9662",
+   "id_unidade": "54",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "75"
+  },
+  {
+   "exames": "3288",
+   "id_unidade": "77",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "86"
+  },
+  {
+   "exames": "5881",
+   "id_unidade": "81",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "43"
+  },
+  {
+   "exames": "534",
+   "id_unidade": "100943",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "31"
+  },
+  {
+   "exames": "300",
+   "id_unidade": "100983",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "396",
+   "id_unidade": "77",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "145",
+   "id_unidade": "1353",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "705",
+   "id_unidade": "55",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "6"
+  },
+  {
+   "exames": "3830",
+   "id_unidade": "200001",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "159"
+  },
+  {
+   "exames": "341",
+   "id_unidade": "95",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "97",
+   "id_unidade": "92",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "104",
+   "id_unidade": "292",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "19",
+   "id_unidade": "12",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "11",
+   "id_unidade": "116",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "827",
+   "id_unidade": "141",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "170",
+   "id_unidade": "91",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "443",
+   "id_unidade": "35",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "23"
+  },
+  {
+   "exames": "565",
+   "id_unidade": "373",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "3"
+  },
+  {
+   "exames": "197",
+   "id_unidade": "1353",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "60",
+   "id_unidade": "57",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3504",
+   "id_unidade": "35",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "151"
+  },
+  {
+   "exames": "9390",
+   "id_unidade": "5",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "133"
+  },
+  {
+   "exames": "2193",
+   "id_unidade": "151",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "126"
+  },
+  {
+   "exames": "4823",
+   "id_unidade": "873",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "41"
+  },
+  {
+   "exames": "1316",
+   "id_unidade": "2",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "53"
+  },
+  {
+   "exames": "185",
+   "id_unidade": "77",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "9"
+  },
+  {
+   "exames": "17",
+   "id_unidade": "3",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "173",
+   "id_unidade": "373",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "92",
+   "id_unidade": "16",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "3"
+  },
+  {
+   "exames": "998",
+   "id_unidade": "141",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "1664",
+   "id_unidade": "(nulo)",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3806",
+   "id_unidade": "107",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "150"
+  },
+  {
+   "exames": "7",
+   "id_unidade": "57",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1002",
+   "id_unidade": "91",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "36"
+  },
+  {
+   "exames": "117",
+   "id_unidade": "97",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "6",
+   "id_unidade": "41",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "129",
+   "id_unidade": "257",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "161",
+   "id_unidade": "55",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "10"
+  },
+  {
+   "exames": "85",
+   "id_unidade": "95",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "65",
+   "id_unidade": "143",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "123",
+   "id_unidade": "62",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "164",
+   "id_unidade": "873",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "7081",
+   "id_unidade": "67",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "123"
+  },
+  {
+   "exames": "997",
+   "id_unidade": "135",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "14"
+  },
+  {
+   "exames": "1293",
+   "id_unidade": "136",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "22"
+  },
+  {
+   "exames": "2100",
+   "id_unidade": "132",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "45"
+  },
+  {
+   "exames": "5599",
+   "id_unidade": "100",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "85"
+  },
+  {
+   "exames": "134",
+   "id_unidade": "141",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "368",
+   "id_unidade": "62",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "416",
+   "id_unidade": "90",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "39",
+   "id_unidade": "3",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "44",
+   "id_unidade": "12",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "610",
+   "id_unidade": "134",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "4"
+  },
+  {
+   "exames": "72",
+   "id_unidade": "135",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "126",
+   "id_unidade": "97",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "194",
+   "id_unidade": "91",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "9"
+  },
+  {
+   "exames": "13",
+   "id_unidade": "41",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4291",
+   "id_unidade": "125",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "139"
+  },
+  {
+   "exames": "2236",
+   "id_unidade": "86",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "19"
+  },
+  {
+   "exames": "631",
+   "id_unidade": "39",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "2"
+  },
+  {
+   "exames": "340",
+   "id_unidade": "83",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "10"
+  },
+  {
+   "exames": "1830",
+   "id_unidade": "953",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1363",
+   "id_unidade": "1353",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "10"
+  },
+  {
+   "exames": "84",
+   "id_unidade": "136",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "10"
+  },
+  {
+   "exames": "144",
+   "id_unidade": "1662",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "116",
+   "id_unidade": "37",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "45",
+   "id_unidade": "91",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5088",
+   "id_unidade": "11",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "146"
+  },
+  {
+   "exames": "5290",
+   "id_unidade": "100",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "110"
+  },
+  {
+   "exames": "3",
+   "id_unidade": "116",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "94",
+   "id_unidade": "257",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5097",
+   "id_unidade": "11",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "173"
+  },
+  {
+   "exames": "2292",
+   "id_unidade": "83",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "26"
+  },
+  {
+   "exames": "8472",
+   "id_unidade": "67",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "102"
+  },
+  {
+   "exames": "972",
+   "id_unidade": "89",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "20"
+  },
+  {
+   "exames": "45",
+   "id_unidade": "292",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "56",
+   "id_unidade": "91",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "67",
+   "id_unidade": "116",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "82",
+   "id_unidade": "1661",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "5"
+  },
+  {
+   "exames": "1180",
+   "id_unidade": "1353",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "8"
+  },
+  {
+   "exames": "922",
+   "id_unidade": "292",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "9"
+  },
+  {
+   "exames": "1557",
+   "id_unidade": "2",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "57"
+  },
+  {
+   "exames": "85",
+   "id_unidade": "136",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "62",
+   "id_unidade": "91",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2614",
+   "id_unidade": "83",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "36"
+  },
+  {
+   "exames": "459",
+   "id_unidade": "100970",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "3"
+  },
+  {
+   "exames": "460",
+   "id_unidade": "200001",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "19"
+  },
+  {
+   "exames": "956",
+   "id_unidade": "101001",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "32"
+  },
+  {
+   "exames": "554",
+   "id_unidade": "873",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "362",
+   "id_unidade": "90",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "372",
+   "id_unidade": "122",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "584",
+   "id_unidade": "39",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "335",
+   "id_unidade": "16",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "110",
+   "id_unidade": "101032",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "244",
+   "id_unidade": "874",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "16",
+   "id_unidade": "101032",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "241",
+   "id_unidade": "16",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "147",
+   "id_unidade": "141",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "31",
+   "id_unidade": "75",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "89",
+   "id_unidade": "83",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "21",
+   "id_unidade": "12",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "16",
+   "id_unidade": "101022",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1364",
+   "id_unidade": "54",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "12"
+  },
+  {
+   "exames": "3188",
+   "id_unidade": "62",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "15"
+  },
+  {
+   "exames": "398",
+   "id_unidade": "12",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "7"
+  },
+  {
+   "exames": "9011",
+   "id_unidade": "67",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "110"
+  },
+  {
+   "exames": "103",
+   "id_unidade": "1661",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "6"
+  },
+  {
+   "exames": "206",
+   "id_unidade": "81",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "365",
+   "id_unidade": "67",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "151",
+   "id_unidade": "97",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3732",
+   "id_unidade": "39",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "59"
+  },
+  {
+   "exames": "443",
+   "id_unidade": "1894",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "16"
+  },
+  {
+   "exames": "555",
+   "id_unidade": "89",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "8"
+  },
+  {
+   "exames": "9",
+   "id_unidade": "41",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "9",
+   "id_unidade": "118",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "37",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "351",
+   "id_unidade": "5",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "8"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "257",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "34",
+   "id_unidade": "141",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "361",
+   "id_unidade": "125",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "9"
+  },
+  {
+   "exames": "705",
+   "id_unidade": "141",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "259",
+   "id_unidade": "1073",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "9"
+  },
+  {
+   "exames": "2223",
+   "id_unidade": "95",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "45"
+  },
+  {
+   "exames": "2133",
+   "id_unidade": "2",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "105"
+  },
+  {
+   "exames": "245",
+   "id_unidade": "95",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1453",
+   "id_unidade": "100983",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "23"
+  },
+  {
+   "exames": "3760",
+   "id_unidade": "100970",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "33"
+  },
+  {
+   "exames": "409",
+   "id_unidade": "86",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "1"
+  },
+  {
+   "exames": "511",
+   "id_unidade": "107",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "14"
+  },
+  {
+   "exames": "41",
+   "id_unidade": "162",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "287",
+   "id_unidade": "136",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "2887",
+   "id_unidade": "77",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "76"
+  },
+  {
+   "exames": "428",
+   "id_unidade": "89",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "8"
+  },
+  {
+   "exames": "1422",
+   "id_unidade": "135",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "14"
+  },
+  {
+   "exames": "2919",
+   "id_unidade": "77",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "89"
+  },
+  {
+   "exames": "579",
+   "id_unidade": "5",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "9"
+  },
+  {
+   "exames": "246",
+   "id_unidade": "39",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "1"
+  },
+  {
+   "exames": "70",
+   "id_unidade": "136",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "2"
+  },
+  {
+   "exames": "83",
+   "id_unidade": "83",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "5726",
+   "id_unidade": "103",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "39"
+  },
+  {
+   "exames": "87",
+   "id_unidade": "1662",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "6"
+  },
+  {
+   "exames": "2377",
+   "id_unidade": "132",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "54"
+  },
+  {
+   "exames": "2583",
+   "id_unidade": "86",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "10"
+  },
+  {
+   "exames": "425",
+   "id_unidade": "67",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "5"
+  },
+  {
+   "exames": "163",
+   "id_unidade": "1073",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "7"
+  },
+  {
+   "exames": "34",
+   "id_unidade": "116",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "111",
+   "id_unidade": "16",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "18",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "139",
+   "id_unidade": "1661",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "117",
+   "id_unidade": "143",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "159",
+   "id_unidade": "151",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "7"
+  },
+  {
+   "exames": "138",
+   "id_unidade": "39",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "4189",
+   "id_unidade": "100",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "48"
+  },
+  {
+   "exames": "1415",
+   "id_unidade": "18",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "19"
+  },
+  {
+   "exames": "59",
+   "id_unidade": "37",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "289",
+   "id_unidade": "200144",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "11"
+  },
+  {
+   "exames": "618",
+   "id_unidade": "125",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "314",
+   "id_unidade": "143",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "4"
+  },
+  {
+   "exames": "1283",
+   "id_unidade": "5",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "7"
+  },
+  {
+   "exames": "1428",
+   "id_unidade": "200147",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "59"
+  },
+  {
+   "exames": "716",
+   "id_unidade": "373",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "10"
+  },
+  {
+   "exames": "51",
+   "id_unidade": "18",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "75",
+   "id_unidade": "143",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "37",
+   "id_unidade": "292",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4",
+   "id_unidade": "116",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2953",
+   "id_unidade": "62",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "26"
+  },
+  {
+   "exames": "896",
+   "id_unidade": "103",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "6942",
+   "id_unidade": "103",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "48"
+  },
+  {
+   "exames": "2463",
+   "id_unidade": "57",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "28"
+  },
+  {
+   "exames": "241",
+   "id_unidade": "3",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "316",
+   "id_unidade": "873",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "307",
+   "id_unidade": "100",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "167",
+   "id_unidade": "1894",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "338",
+   "id_unidade": "5",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "9"
+  },
+  {
+   "exames": "289",
+   "id_unidade": "118",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1532",
+   "id_unidade": "136",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "11"
+  },
+  {
+   "exames": "146",
+   "id_unidade": "107",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "5"
+  },
+  {
+   "exames": "187",
+   "id_unidade": "81",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "2430",
+   "id_unidade": "1662",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "42"
+  },
+  {
+   "exames": "22",
+   "id_unidade": "116",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "1920",
+   "id_unidade": "112",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "36"
+  },
+  {
+   "exames": "170",
+   "id_unidade": "55",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "6"
+  },
+  {
+   "exames": "155",
+   "id_unidade": "373",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "167",
+   "id_unidade": "132",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "143",
+   "id_unidade": "16",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "114",
+   "id_unidade": "953",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "95",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "5"
+  },
+  {
+   "exames": "149",
+   "id_unidade": "1073",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "76",
+   "id_unidade": "83",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "108",
+   "id_unidade": "41",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2211",
+   "id_unidade": "151",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "91"
+  },
+  {
+   "exames": "174",
+   "id_unidade": "200145",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "440",
+   "id_unidade": "101033",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "11"
+  },
+  {
+   "exames": "786",
+   "id_unidade": "100999",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "21"
+  },
+  {
+   "exames": "64",
+   "id_unidade": "101027",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "230",
+   "id_unidade": "200017",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "14"
+  },
+  {
+   "exames": "219",
+   "id_unidade": "143",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "384",
+   "id_unidade": "77",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "936",
+   "id_unidade": "103",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "220",
+   "id_unidade": "135",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "1241",
+   "id_unidade": "136",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "26"
+  },
+  {
+   "exames": "1215",
+   "id_unidade": "135",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "4"
+  },
+  {
+   "exames": "197",
+   "id_unidade": "136",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "2511",
+   "id_unidade": "132",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "73"
+  },
+  {
+   "exames": "2585",
+   "id_unidade": "86",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "27"
+  },
+  {
+   "exames": "1584",
+   "id_unidade": "136",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "49"
+  },
+  {
+   "exames": "71",
+   "id_unidade": "12",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "87",
+   "id_unidade": "953",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "161",
+   "id_unidade": "57",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "471",
+   "id_unidade": "42",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "125",
+   "id_unidade": "134",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "82",
+   "id_unidade": "95",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4163",
+   "id_unidade": "373",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "68"
+  },
+  {
+   "exames": "1721",
+   "id_unidade": "257",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "31"
+  },
+  {
+   "exames": "114",
+   "id_unidade": "1953",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "3"
+  },
+  {
+   "exames": "4205",
+   "id_unidade": "373",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "63"
+  },
+  {
+   "exames": "2367",
+   "id_unidade": "86",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "21"
+  },
+  {
+   "exames": "2151",
+   "id_unidade": "143",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "25"
+  },
+  {
+   "exames": "260",
+   "id_unidade": "134",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "4"
+  },
+  {
+   "exames": "311",
+   "id_unidade": "373",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "6"
+  },
+  {
+   "exames": "231",
+   "id_unidade": "35",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "9"
+  },
+  {
+   "exames": "40",
+   "id_unidade": "89",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "41",
+   "id_unidade": "1353",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3620",
+   "id_unidade": "873",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "29"
+  },
+  {
+   "exames": "5998",
+   "id_unidade": "103",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "48"
+  },
+  {
+   "exames": "3779",
+   "id_unidade": "134",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "30"
+  },
+  {
+   "exames": "173",
+   "id_unidade": "101001",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "4"
+  },
+  {
+   "exames": "411",
+   "id_unidade": "101004",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2288",
+   "id_unidade": "200144",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "59"
+  },
+  {
+   "exames": "151",
+   "id_unidade": "135",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "348",
+   "id_unidade": "5",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "22"
+  },
+  {
+   "exames": "191",
+   "id_unidade": "3",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "8"
+  },
+  {
+   "exames": "1412",
+   "id_unidade": "5",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "20"
+  },
+  {
+   "exames": "828",
+   "id_unidade": "125",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "19"
+  },
+  {
+   "exames": "137",
+   "id_unidade": "141",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "918",
+   "id_unidade": "874",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "3"
+  },
+  {
+   "exames": "309",
+   "id_unidade": "143",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "3"
+  },
+  {
+   "exames": "2524",
+   "id_unidade": "57",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "18"
+  },
+  {
+   "exames": "249",
+   "id_unidade": "118",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "2046",
+   "id_unidade": "143",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "23"
+  },
+  {
+   "exames": "1926",
+   "id_unidade": "1661",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "69"
+  },
+  {
+   "exames": "529",
+   "id_unidade": "162",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "151",
+   "id_unidade": "69",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "6"
+  },
+  {
+   "exames": "58",
+   "id_unidade": "141",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "69",
+   "id_unidade": "292",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "103",
+   "id_unidade": "1662",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "4"
+  },
+  {
+   "exames": "133",
+   "id_unidade": "35",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "5"
+  },
+  {
+   "exames": "117",
+   "id_unidade": "62",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "71",
+   "id_unidade": "89",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "2"
+  },
+  {
+   "exames": "25",
+   "id_unidade": "141",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "8972",
+   "id_unidade": "5",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "171"
+  },
+  {
+   "exames": "3060",
+   "id_unidade": "62",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "10"
+  },
+  {
+   "exames": "142",
+   "id_unidade": "35",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "4"
+  },
+  {
+   "exames": "75",
+   "id_unidade": "37",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "1"
+  },
+  {
+   "exames": "69",
+   "id_unidade": "135",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "188",
+   "id_unidade": "100",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "7"
+  },
+  {
+   "exames": "2842",
+   "id_unidade": "134",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "39"
+  },
+  {
+   "exames": "1596",
+   "id_unidade": "95",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "37"
+  },
+  {
+   "exames": "447",
+   "id_unidade": "162",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "2907",
+   "id_unidade": "132",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "72"
+  },
+  {
+   "exames": "450",
+   "id_unidade": "92",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "978",
+   "id_unidade": "874",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "9"
+  },
+  {
+   "exames": "73",
+   "id_unidade": "151",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "3"
+  },
+  {
+   "exames": "39",
+   "id_unidade": "57",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "14",
+   "id_unidade": "3",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2698",
+   "id_unidade": "122",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "66"
+  },
+  {
+   "exames": "357",
+   "id_unidade": "69",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "5"
+  },
+  {
+   "exames": "201",
+   "id_unidade": "292",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "93",
+   "id_unidade": "89",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "1"
+  },
+  {
+   "exames": "7446",
+   "id_unidade": "42",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "87"
+  },
+  {
+   "exames": "1724",
+   "id_unidade": "257",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "25"
+  },
+  {
+   "exames": "4191",
+   "id_unidade": "1073",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "110"
+  },
+  {
+   "exames": "70",
+   "id_unidade": "1353",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "2"
+  },
+  {
+   "exames": "2859",
+   "id_unidade": "92",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "57"
+  },
+  {
+   "exames": "27",
+   "id_unidade": "118",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "40",
+   "id_unidade": "135",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2469",
+   "id_unidade": "86",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "22"
+  },
+  {
+   "exames": "91",
+   "id_unidade": "86",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "3419",
+   "id_unidade": "62",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "24"
+  },
+  {
+   "exames": "195",
+   "id_unidade": "41",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "23",
+   "id_unidade": "75",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "1"
+  },
+  {
+   "exames": "6111",
+   "id_unidade": "103",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "65"
+  },
+  {
+   "exames": "1615",
+   "id_unidade": "135",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "12"
+  },
+  {
+   "exames": "5554",
+   "id_unidade": "874",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "70"
+  },
+  {
+   "exames": "4575",
+   "id_unidade": "873",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "40"
+  },
+  {
+   "exames": "84",
+   "id_unidade": "953",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "136",
+   "id_unidade": "62",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "196",
+   "id_unidade": "81",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "193",
+   "id_unidade": "41",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "127",
+   "id_unidade": "125",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "3"
+  },
+  {
+   "exames": "130",
+   "id_unidade": "122",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "4"
+  },
+  {
+   "exames": "10",
+   "id_unidade": "3",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2944",
+   "id_unidade": "100990",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "100"
+  },
+  {
+   "exames": "332",
+   "id_unidade": "18",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "8"
+  },
+  {
+   "exames": "133",
+   "id_unidade": "134",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "1284",
+   "id_unidade": "953",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "7573",
+   "id_unidade": "5",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "131"
+  },
+  {
+   "exames": "3818",
+   "id_unidade": "55",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "144"
+  },
+  {
+   "exames": "2045",
+   "id_unidade": "16",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "11"
+  },
+  {
+   "exames": "8024",
+   "id_unidade": "67",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "92"
+  },
+  {
+   "exames": "3828",
+   "id_unidade": "134",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "30"
+  },
+  {
+   "exames": "4141",
+   "id_unidade": "39",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "69"
+  },
+  {
+   "exames": "3485",
+   "id_unidade": "35",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "163"
+  },
+  {
+   "exames": "663",
+   "id_unidade": "75",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "24"
+  },
+  {
+   "exames": "5145",
+   "id_unidade": "81",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "54"
+  },
+  {
+   "exames": "3668",
+   "id_unidade": "107",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "145"
+  },
+  {
+   "exames": "318",
+   "id_unidade": "81",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "10"
+  },
+  {
+   "exames": "3162",
+   "id_unidade": "77",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "108"
+  },
+  {
+   "exames": "6225",
+   "id_unidade": "103",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "77"
+  },
+  {
+   "exames": "2270",
+   "id_unidade": "1662",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "42"
+  },
+  {
+   "exames": "13",
+   "id_unidade": "162",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "0"
+  },
+  {
+   "exames": "21",
+   "id_unidade": "12",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4015",
+   "id_unidade": "107",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "115"
+  },
+  {
+   "exames": "6009",
+   "id_unidade": "874",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "50"
+  },
+  {
+   "exames": "1138",
+   "id_unidade": "91",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "38"
+  },
+  {
+   "exames": "2231",
+   "id_unidade": "95",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "67"
+  },
+  {
+   "exames": "4195",
+   "id_unidade": "55",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "125"
+  },
+  {
+   "exames": "179",
+   "id_unidade": "57",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "5"
+  },
+  {
+   "exames": "274",
+   "id_unidade": "101031",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "1558",
+   "id_unidade": "200000",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "77"
+  },
+  {
+   "exames": "203",
+   "id_unidade": "136",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "462",
+   "id_unidade": "35",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "5"
+  },
+  {
+   "exames": "658",
+   "id_unidade": "11",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "327",
+   "id_unidade": "132",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "719",
+   "id_unidade": "125",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "4"
+  },
+  {
+   "exames": "628",
+   "id_unidade": "101027",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "3"
+  },
+  {
+   "exames": "4474",
+   "id_unidade": "101043",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "59"
+  },
+  {
+   "exames": "223",
+   "id_unidade": "101030",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "3"
+  },
+  {
+   "exames": "905",
+   "id_unidade": "100",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "6"
+  },
+  {
+   "exames": "504",
+   "id_unidade": "1662",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "6"
+  },
+  {
+   "exames": "164",
+   "id_unidade": "39",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "183",
+   "id_unidade": "873",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "4637",
+   "id_unidade": "100",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "89"
+  },
+  {
+   "exames": "1880",
+   "id_unidade": "69",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "40"
+  },
+  {
+   "exames": "494",
+   "id_unidade": "62",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "4"
+  },
+  {
+   "exames": "462",
+   "id_unidade": "122",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "12"
+  },
+  {
+   "exames": "289",
+   "id_unidade": "95",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "7"
+  },
+  {
+   "exames": "5116",
+   "id_unidade": "873",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "61"
+  },
+  {
+   "exames": "2438",
+   "id_unidade": "69",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "68"
+  },
+  {
+   "exames": "1995",
+   "id_unidade": "95",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "60"
+  },
+  {
+   "exames": "2514",
+   "id_unidade": "132",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "29"
+  },
+  {
+   "exames": "1903",
+   "id_unidade": "257",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "28"
+  },
+  {
+   "exames": "1002",
+   "id_unidade": "141",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "6"
+  },
+  {
+   "exames": "1120",
+   "id_unidade": "91",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "29"
+  },
+  {
+   "exames": "3952",
+   "id_unidade": "373",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "34"
+  },
+  {
+   "exames": "105",
+   "id_unidade": "112",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "3"
+  },
+  {
+   "exames": "216",
+   "id_unidade": "874",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "2"
+  },
+  {
+   "exames": "1460",
+   "id_unidade": "136",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "11"
+  },
+  {
+   "exames": "54",
+   "id_unidade": "91",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "3"
+  },
+  {
+   "exames": "7048",
+   "id_unidade": "42",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "77"
+  },
+  {
+   "exames": "3469",
+   "id_unidade": "122",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "84"
+  },
+  {
+   "exames": "65",
+   "id_unidade": "89",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "213",
+   "id_unidade": "11",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "216",
+   "id_unidade": "3",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "14",
+   "id_unidade": "118",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "177",
+   "id_unidade": "83",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "257",
+   "id_unidade": "42",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "5"
+  },
+  {
+   "exames": "317",
+   "id_unidade": "54",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "53",
+   "id_unidade": "135",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1803",
+   "id_unidade": "86",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "7"
+  },
+  {
+   "exames": "2232",
+   "id_unidade": "16",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "10"
+  },
+  {
+   "exames": "326",
+   "id_unidade": "200147",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "18"
+  },
+  {
+   "exames": "537",
+   "id_unidade": "200002",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "282",
+   "id_unidade": "200129",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "745",
+   "id_unidade": "11",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "263",
+   "id_unidade": "86",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "200",
+   "id_unidade": "91",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "2"
+  },
+  {
+   "exames": "1278",
+   "id_unidade": "100942",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "29"
+  },
+  {
+   "exames": "427",
+   "id_unidade": "69",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "4"
+  },
+  {
+   "exames": "167",
+   "id_unidade": "373",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "4"
+  },
+  {
+   "exames": "133",
+   "id_unidade": "62",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "1"
+  },
+  {
+   "exames": "51",
+   "id_unidade": "1353",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "143",
+   "id_unidade": "91",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3295",
+   "id_unidade": "39",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "39"
+  },
+  {
+   "exames": "3984",
+   "id_unidade": "373",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "64"
+  },
+  {
+   "exames": "1005",
+   "id_unidade": "91",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "16"
+  },
+  {
+   "exames": "671",
+   "id_unidade": "75",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-05",
+   "relevantes": "12"
+  },
+  {
+   "exames": "236",
+   "id_unidade": "953",
+   "mes_exame": "2026-05",
+   "mes_execucao": "2026-06",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4442",
+   "id_unidade": "373",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "54"
+  },
+  {
+   "exames": "2254",
+   "id_unidade": "83",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "27"
+  },
+  {
+   "exames": "3317",
+   "id_unidade": "77",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "96"
+  },
+  {
+   "exames": "2354",
+   "id_unidade": "83",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "31"
+  },
+  {
+   "exames": "2911",
+   "id_unidade": "35",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "98"
+  },
+  {
+   "exames": "177",
+   "id_unidade": "35",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "7"
+  },
+  {
+   "exames": "6641",
+   "id_unidade": "42",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "76"
+  },
+  {
+   "exames": "3584",
+   "id_unidade": "134",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "29"
+  },
+  {
+   "exames": "2307",
+   "id_unidade": "16",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "1074",
+   "id_unidade": "91",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-09",
+   "relevantes": "24"
+  },
+  {
+   "exames": "86",
+   "id_unidade": "83",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "2189",
+   "id_unidade": "37",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-07",
+   "relevantes": "83"
+  },
+  {
+   "exames": "715",
+   "id_unidade": "75",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "20"
+  },
+  {
+   "exames": "5628",
+   "id_unidade": "103",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "49"
+  },
+  {
+   "exames": "234",
+   "id_unidade": "122",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "4"
+  },
+  {
+   "exames": "177",
+   "id_unidade": "103",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "2"
+  },
+  {
+   "exames": "3828",
+   "id_unidade": "11",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "148"
+  },
+  {
+   "exames": "2317",
+   "id_unidade": "122",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "69"
+  },
+  {
+   "exames": "2617",
+   "id_unidade": "35",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "69"
+  },
+  {
+   "exames": "31",
+   "id_unidade": "141",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "220",
+   "id_unidade": "200000",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "6"
+  },
+  {
+   "exames": "168",
+   "id_unidade": "69",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "2"
+  },
+  {
+   "exames": "1950",
+   "id_unidade": "100951",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "36"
+  },
+  {
+   "exames": "755",
+   "id_unidade": "101029",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "25"
+  },
+  {
+   "exames": "1087",
+   "id_unidade": "67",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "145",
+   "id_unidade": "75",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "337",
+   "id_unidade": "16",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "238",
+   "id_unidade": "42",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "2"
+  },
+  {
+   "exames": "332",
+   "id_unidade": "67",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "7"
+  },
+  {
+   "exames": "34",
+   "id_unidade": "141",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "64",
+   "id_unidade": "116",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-03",
+   "relevantes": "3"
+  },
+  {
+   "exames": "114",
+   "id_unidade": "89",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "5"
+  },
+  {
+   "exames": "5858",
+   "id_unidade": "874",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "62"
+  },
+  {
+   "exames": "4786",
+   "id_unidade": "125",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "142"
+  },
+  {
+   "exames": "1466",
+   "id_unidade": "1353",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-10",
+   "relevantes": "10"
+  },
+  {
+   "exames": "1869",
+   "id_unidade": "112",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-08",
+   "relevantes": "71"
+  },
+  {
+   "exames": "1817",
+   "id_unidade": "1661",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "66"
+  },
+  {
+   "exames": "5068",
+   "id_unidade": "11",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-06",
+   "relevantes": "146"
+  },
+  {
+   "exames": "469",
+   "id_unidade": "54",
+   "mes_exame": "2026-10",
+   "mes_execucao": "2026-11",
+   "relevantes": "0"
+  },
+  {
+   "exames": "74",
+   "id_unidade": "112",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "89",
+   "id_unidade": "257",
+   "mes_exame": "2026-09",
+   "mes_execucao": "2026-10",
+   "relevantes": "1"
+  },
+  {
+   "exames": "4806",
+   "id_unidade": "125",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "161"
+  },
+  {
+   "exames": "5675",
+   "id_unidade": "81",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "71"
+  },
+  {
+   "exames": "8930",
+   "id_unidade": "67",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-04",
+   "relevantes": "145"
+  },
+  {
+   "exames": "63",
+   "id_unidade": "18",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "16",
+   "id_unidade": "162",
+   "mes_exame": "2026-04",
+   "mes_execucao": "2026-05",
+   "relevantes": "0"
+  },
+  {
+   "exames": "132",
+   "id_unidade": "77",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "225",
+   "id_unidade": "874",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "3"
+  },
+  {
+   "exames": "65",
+   "id_unidade": "112",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "2"
+  },
+  {
+   "exames": "319",
+   "id_unidade": "42",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "5"
+  },
+  {
+   "exames": "23",
+   "id_unidade": "162",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "72",
+   "id_unidade": "292",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "197",
+   "id_unidade": "97",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "151",
+   "id_unidade": "373",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "1174",
+   "id_unidade": "953",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "282",
+   "id_unidade": "12",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-02",
+   "relevantes": "1"
+  },
+  {
+   "exames": "153",
+   "id_unidade": "135",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "0"
+  },
+  {
+   "exames": "283",
+   "id_unidade": "132",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "378",
+   "id_unidade": "35",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  },
+  {
+   "exames": "496",
+   "id_unidade": "107",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "3"
+  },
+  {
+   "exames": "12",
+   "id_unidade": "116",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-02",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2206",
+   "id_unidade": "101004",
+   "mes_exame": "2026-01",
+   "mes_execucao": "2026-01",
+   "relevantes": "41"
+  },
+  {
+   "exames": "527",
+   "id_unidade": "97",
+   "mes_exame": "2026-02",
+   "mes_execucao": "2026-03",
+   "relevantes": "0"
+  },
+  {
+   "exames": "5",
+   "id_unidade": "41",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "24",
+   "id_unidade": "89",
+   "mes_exame": "2026-06",
+   "mes_execucao": "2026-07",
+   "relevantes": "2"
+  },
+  {
+   "exames": "7",
+   "id_unidade": "41",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "2",
+   "id_unidade": "116",
+   "mes_exame": "2026-07",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "4",
+   "id_unidade": "3",
+   "mes_exame": "2026-08",
+   "mes_execucao": "2026-09",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3",
+   "id_unidade": "57",
+   "mes_exame": "2026-03",
+   "mes_execucao": "2026-04",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1",
+   "id_unidade": "101005",
+   "mes_exame": "2025-12",
+   "mes_execucao": "2026-01",
+   "relevantes": "0"
+  }
+ ]
+}

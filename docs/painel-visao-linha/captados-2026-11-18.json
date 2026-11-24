@@ -1,0 +1,5 @@
+{"fonte": "gold_fabrica_ia_dev.navegacao.tb_pacientes_captados (BI Controle Captação)", "inicio": "2026-10-20", "fim": "2026-11-18",
+ "linhas": [["Pneumo", 139, "2026-11-10"], ["Reumato", 56, "2026-11-05"], ["Dermato", 51, "2026-11-05"], ["Ateromatose", 39, "2026-11-09"],
+  ["DII", 38, "2026-11-09"], ["CA Tireoide", 33, "2026-11-03"], ["Mama", 31, "2026-11-06"], ["Neuro", 25, "2026-11-06"],
+  ["CA Colon", 12, "2026-11-03"], ["Calculo Biliar", 7, "2026-11-05"], ["CA Próstata", 4, "2026-10-28"], ["CA Estômago", 3, "2026-10-24"],
+  ["Colo de útero", 2, "2026-11-02"], ["CA Rim", 1, "2026-10-28"]]}

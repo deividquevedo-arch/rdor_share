@@ -1,0 +1,68 @@
+[
+ {
+  "controle": "8",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "Reumatologia",
+  "pct_controle": "6.9",
+  "segregacao": "✅ desde 30/10",
+  "situacao": "🟢 ok",
+  "sorteados": "116",
+  "ultima_execucao_ok": "19/11"
+ },
+ {
+  "controle": "38",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "Tireoide",
+  "pct_controle": "4.6",
+  "segregacao": "✅ desde 30/10",
+  "situacao": "🟢 ok",
+  "sorteados": "827",
+  "ultima_execucao_ok": "19/11"
+ },
+ {
+  "controle": "13",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "Ateromatose",
+  "pct_controle": "4.1",
+  "segregacao": "✅ desde 05/11",
+  "situacao": "🟢 ok",
+  "sorteados": "318",
+  "ultima_execucao_ok": "19/11"
+ },
+ {
+  "controle": "10",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "DII",
+  "pct_controle": "3.4",
+  "segregacao": "✅ desde 05/11",
+  "situacao": "🟢 ok",
+  "sorteados": "296",
+  "ultima_execucao_ok": "19/11"
+ },
+ {
+  "controle": "52",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "Doenças biliares",
+  "pct_controle": "5.5",
+  "segregacao": "✅ desde 12/11",
+  "situacao": "🟢 ok",
+  "sorteados": "938",
+  "ultima_execucao_ok": "19/11"
+ },
+ {
+  "controle": "7",
+  "enviados_fora_intervencao": "0",
+  "intervencao_nao_enviada": "0",
+  "linha": "Neuroimunologia",
+  "pct_controle": "6.0",
+  "segregacao": "✅ desde 12/11",
+  "situacao": "🟢 ok",
+  "sorteados": "116",
+  "ultima_execucao_ok": "19/11"
+ }
+]

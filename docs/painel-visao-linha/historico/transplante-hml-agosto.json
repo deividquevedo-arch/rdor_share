@@ -1,0 +1,161 @@
+{
+ "fonte": "diamond_fabrica_ia_hml.transplante_pulmao.tb_mod_diamond_transplante_pulmao_saida_v0, execuções de 18 a 30/08/2026 (envio de agosto saiu de HML; PRD enviou a partir de 31/08)",
+ "linhas": [
+  {
+   "exames": "227",
+   "id_unidade": "103",
+   "mes_execucao": "2026-08",
+   "relevantes": "19"
+  },
+  {
+   "exames": "421",
+   "id_unidade": "5",
+   "mes_execucao": "2026-08",
+   "relevantes": "28"
+  },
+  {
+   "exames": "485",
+   "id_unidade": "11",
+   "mes_execucao": "2026-08",
+   "relevantes": "40"
+  },
+  {
+   "exames": "64",
+   "id_unidade": "97",
+   "mes_execucao": "2026-08",
+   "relevantes": "5"
+  },
+  {
+   "exames": "6",
+   "id_unidade": "143",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "200",
+   "id_unidade": "874",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "17",
+   "id_unidade": "16",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "201",
+   "id_unidade": "873",
+   "mes_execucao": "2026-08",
+   "relevantes": "9"
+  },
+  {
+   "exames": "246",
+   "id_unidade": "67",
+   "mes_execucao": "2026-08",
+   "relevantes": "17"
+  },
+  {
+   "exames": "137",
+   "id_unidade": "144",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "115",
+   "id_unidade": "35",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "55",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "192",
+   "id_unidade": "373",
+   "mes_execucao": "2026-08",
+   "relevantes": "29"
+  },
+  {
+   "exames": "77",
+   "id_unidade": "39",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "366",
+   "id_unidade": "151",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "124",
+   "id_unidade": "81",
+   "mes_execucao": "2026-08",
+   "relevantes": "12"
+  },
+  {
+   "exames": "192",
+   "id_unidade": "100",
+   "mes_execucao": "2026-08",
+   "relevantes": "7"
+  },
+  {
+   "exames": "121",
+   "id_unidade": "54",
+   "mes_execucao": "2026-08",
+   "relevantes": "11"
+  },
+  {
+   "exames": "72",
+   "id_unidade": "37",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "3",
+   "id_unidade": "57",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1",
+   "id_unidade": "134",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "62",
+   "id_unidade": "257",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "40",
+   "id_unidade": "95",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "7",
+   "id_unidade": "1661",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  },
+  {
+   "exames": "1",
+   "id_unidade": "69",
+   "mes_execucao": "2026-08",
+   "relevantes": "1"
+  },
+  {
+   "exames": "1",
+   "id_unidade": "3",
+   "mes_execucao": "2026-08",
+   "relevantes": "0"
+  }
+ ]
+}

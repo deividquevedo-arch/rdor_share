@@ -1,0 +1,712 @@
+[
+  {
+    "id_unidade": "Richet/RLB",
+    "n": "42703",
+    "nme_hospital": "RICHET LEBLON"
+  },
+  {
+    "id_unidade": "Richet/RCI",
+    "n": "8478",
+    "nme_hospital": "RICHET ICARAI"
+  },
+  {
+    "id_unidade": "81",
+    "n": "351129",
+    "nme_hospital": "HOSPITAL SAO LUIZ MORUMBI"
+  },
+  {
+    "id_unidade": "91",
+    "n": "81382",
+    "nme_hospital": "HOSPITAL BANGU"
+  },
+  {
+    "id_unidade": "39",
+    "n": "297758",
+    "nme_hospital": "HOSPITAL VILLA LOBOS"
+  },
+  {
+    "id_unidade": "122",
+    "n": "281789",
+    "nme_hospital": "HOSPITAL SAO LUCAS"
+  },
+  {
+    "id_unidade": "574",
+    "n": "5111",
+    "nme_hospital": "HOSPITAL SANTA MARINA"
+  },
+  {
+    "id_unidade": "Richet/ERE",
+    "n": "2921",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/DRM",
+    "n": "11783",
+    "nme_hospital": "POSTO AVANCADO RICHET QUINTA PARK"
+  },
+  {
+    "id_unidade": "69",
+    "n": "249736",
+    "nme_hospital": "VILA NOVA STAR"
+  },
+  {
+    "id_unidade": "67",
+    "n": "733206",
+    "nme_hospital": "HOSPITAL E MATERNIDADE SAO LUIZ ANALIA FRANCO"
+  },
+  {
+    "id_unidade": "116",
+    "n": "136047",
+    "nme_hospital": "HOSPITAL CORACAO DO BRASIL"
+  },
+  {
+    "id_unidade": "89",
+    "n": "191015",
+    "nme_hospital": "HOSPITAL SANTA LUZIA"
+  },
+  {
+    "id_unidade": "92",
+    "n": "227047",
+    "nme_hospital": "HOSPITAL OESTE D'OR"
+  },
+  {
+    "id_unidade": "146",
+    "n": "20929",
+    "nme_hospital": "MEMORIAL SAO JOSE - MEDIAX FILIAL"
+  },
+  {
+    "id_unidade": "47",
+    "n": "675",
+    "nme_hospital": "RIO BARRA AMBULATORIO"
+  },
+  {
+    "id_unidade": "130",
+    "n": "3735",
+    "nme_hospital": "SAO MARCOS - DIAGNO"
+  },
+  {
+    "id_unidade": "Richet/RDR",
+    "n": "18891",
+    "nme_hospital": "POSTO AVANCADO RICHET RIOS D'OR"
+  },
+  {
+    "id_unidade": "112",
+    "n": "106497",
+    "nme_hospital": "HOSPITAL COPA STAR"
+  },
+  {
+    "id_unidade": "Richet/EDH",
+    "n": "4078",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "101",
+    "n": "140285",
+    "nme_hospital": "HOSPITAL BARTIRA"
+  },
+  {
+    "id_unidade": "103",
+    "n": "499483",
+    "nme_hospital": "HOSPITAL SAO LUIZ SAO BERNARDO"
+  },
+  {
+    "id_unidade": "97",
+    "n": "290990",
+    "nme_hospital": "HOSPITAL CENTRAL LESTE"
+  },
+  {
+    "id_unidade": "3",
+    "n": "40012",
+    "nme_hospital": "HOSPITAL DA CRIANCA"
+  },
+  {
+    "id_unidade": "144",
+    "n": "359353",
+    "nme_hospital": "HOSPITAL SAO RAFAEL"
+  },
+  {
+    "id_unidade": "Richet/RPN",
+    "n": "59594",
+    "nme_hospital": "RICHET PENINSULA"
+  },
+  {
+    "id_unidade": "Richet/RCS",
+    "n": "1963",
+    "nme_hospital": "POSTO AVANCADO RICHET COPA STAR"
+  },
+  {
+    "id_unidade": "62",
+    "n": "296103",
+    "nme_hospital": "HOSPITAL E MATERNIDADE RIBEIRAO PIRES"
+  },
+  {
+    "id_unidade": "147",
+    "n": "227254",
+    "nme_hospital": "HOSPITAL VIVALLE"
+  },
+  {
+    "id_unidade": "228",
+    "n": "166217",
+    "nme_hospital": "HOSPITAL NOVO ATIBAIA"
+  },
+  {
+    "id_unidade": "1613",
+    "n": "19924",
+    "nme_hospital": "CENTRO MEDICO REAL D'OR"
+  },
+  {
+    "id_unidade": "95",
+    "n": "17247",
+    "nme_hospital": "CLINICA SAO VICENTE"
+  },
+  {
+    "id_unidade": "Richet/RIP",
+    "n": "59145",
+    "nme_hospital": "RICHET IPANEMA"
+  },
+  {
+    "id_unidade": "Richet/RII",
+    "n": "61204",
+    "nme_hospital": "RICHET ICARAI"
+  },
+  {
+    "id_unidade": "Richet/RTR",
+    "n": "4697",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/RCD",
+    "n": "49",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "1662",
+    "n": "194400",
+    "nme_hospital": "HOSPITAL NORTE D'OR"
+  },
+  {
+    "id_unidade": "Richet/COD",
+    "n": "140390",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "119",
+    "n": "40731",
+    "nme_hospital": "HOSPITAL SAO CARLOS"
+  },
+  {
+    "id_unidade": "25",
+    "n": "55936",
+    "nme_hospital": "HOSPITAL DA CRIANCA - RJ"
+  },
+  {
+    "id_unidade": "5",
+    "n": "762633",
+    "nme_hospital": "HOSPITAL BRASIL SANTO ANDRE"
+  },
+  {
+    "id_unidade": "1773",
+    "n": "168732",
+    "nme_hospital": "UDI HOSPITAL"
+  },
+  {
+    "id_unidade": "83",
+    "n": "131848",
+    "nme_hospital": "HOSPITAL RIOS D'OR"
+  },
+  {
+    "id_unidade": "141",
+    "n": "88515",
+    "nme_hospital": "HOSPITAL IFOR"
+  },
+  {
+    "id_unidade": "29",
+    "n": "9593",
+    "nme_hospital": "HOSPITAL YUTAKA TAKEDA"
+  },
+  {
+    "id_unidade": "179",
+    "n": "141961",
+    "nme_hospital": "LABORATORIOS UNIDOS DE PATOLOGIA DA PARAIBA"
+  },
+  {
+    "id_unidade": "30",
+    "n": "729",
+    "nme_hospital": "COPA D'OR - DAY CLINIC SOROCABA"
+  },
+  {
+    "id_unidade": "Richet/BRE",
+    "n": "8492",
+    "nme_hospital": "POSTO AVANCADO RICHET BNDES"
+  },
+  {
+    "id_unidade": "Richet/RCC",
+    "n": "8439",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/ONS",
+    "n": "1913",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/MRE",
+    "n": "460",
+    "nme_hospital": "UNIDADE MEDRIO"
+  },
+  {
+    "id_unidade": "125",
+    "n": "328137",
+    "nme_hospital": "HOSPITAL CAXIAS D'OR"
+  },
+  {
+    "id_unidade": "1661",
+    "n": "145349",
+    "nme_hospital": "HOSPITAL GLORIA D'OR"
+  },
+  {
+    "id_unidade": "151",
+    "n": "156078",
+    "nme_hospital": "HOSPITAL CARDIO PULMONAR"
+  },
+  {
+    "id_unidade": "162",
+    "n": "69204",
+    "nme_hospital": "MATERNIDADE STAR"
+  },
+  {
+    "id_unidade": "65",
+    "n": "144666",
+    "nme_hospital": "HOSPITAL SAMER"
+  },
+  {
+    "id_unidade": "18",
+    "n": "74373",
+    "nme_hospital": "HOSPITAL ESPERANCA OLINDA"
+  },
+  {
+    "id_unidade": "1073",
+    "n": "669",
+    "nme_hospital": "HOSPITAL BARRA D'OR II - NELSON MUFARREJ"
+  },
+  {
+    "id_unidade": "Richet/RDG",
+    "n": "26069",
+    "nme_hospital": "RICHET GLORIA"
+  },
+  {
+    "id_unidade": "Richet/PDB",
+    "n": "4642",
+    "nme_hospital": "POSTO AVANCADO RICHET PERINATAL BARRA"
+  },
+  {
+    "id_unidade": "Richet/PCR",
+    "n": "2449",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "953",
+    "n": "91198",
+    "nme_hospital": "HOSPITAL MACAE D'OR"
+  },
+  {
+    "id_unidade": "57",
+    "n": "277984",
+    "nme_hospital": "HOSPITAL SANTA HELENA"
+  },
+  {
+    "id_unidade": "132",
+    "n": "103802",
+    "nme_hospital": "HOSPITAL ESPERANCA RECIFE"
+  },
+  {
+    "id_unidade": "135",
+    "n": "75734",
+    "nme_hospital": "HOSPITAL ANTONIO AFONSO"
+  },
+  {
+    "id_unidade": "292",
+    "n": "79822",
+    "nme_hospital": "HOSPITAL AEROPORTO"
+  },
+  {
+    "id_unidade": "Richet/RDC",
+    "n": "47511",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "16",
+    "n": "162201",
+    "nme_hospital": "HOSPITAL CENTRAL DO TATUAPE (AVICCENA)"
+  },
+  {
+    "id_unidade": "134",
+    "n": "324413",
+    "nme_hospital": "HOSPITAL BRASIL MAUA"
+  },
+  {
+    "id_unidade": "35",
+    "n": "264650",
+    "nme_hospital": "HOSPITAL COPA D'OR"
+  },
+  {
+    "id_unidade": "874",
+    "n": "454479",
+    "nme_hospital": "HOSPITAL SAO LUIZ GUARULHOS"
+  },
+  {
+    "id_unidade": "31",
+    "n": "14494",
+    "nme_hospital": "HOSPITAL MEMORIAL SAO JOSE"
+  },
+  {
+    "id_unidade": "55",
+    "n": "344449",
+    "nme_hospital": "HOSPITAL QUINTA D'OR"
+  },
+  {
+    "id_unidade": "136",
+    "n": "88382",
+    "nme_hospital": "HOSPITAL RIO BARRA"
+  },
+  {
+    "id_unidade": "94",
+    "n": "5925",
+    "nme_hospital": "CENTRO DE IMAGEM COPA D'OR"
+  },
+  {
+    "id_unidade": "Richet/RCT",
+    "n": "25225",
+    "nme_hospital": "RICHET CENTRO"
+  },
+  {
+    "id_unidade": "Richet/RUX",
+    "n": "4364",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "52",
+    "n": "8261",
+    "nme_hospital": "HOSPITAL NOSSA SENHORA DAS NEVES"
+  },
+  {
+    "id_unidade": "Richet/RPB",
+    "n": "4823",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "37",
+    "n": "319400",
+    "nme_hospital": "HOSPITAL SANTA CRUZ"
+  },
+  {
+    "id_unidade": "1893",
+    "n": "133146",
+    "nme_hospital": "CLINICA SAO VICENTE"
+  },
+  {
+    "id_unidade": "873",
+    "n": "382067",
+    "nme_hospital": "HOSPITAL SAO LUIZ ALPHAVILLE"
+  },
+  {
+    "id_unidade": "121",
+    "n": "135832",
+    "nme_hospital": "HOSPITAL BIOCOR"
+  },
+  {
+    "id_unidade": "50",
+    "n": "8391",
+    "nme_hospital": "ESPERANCA OLINDA - PRONTIMAGEM"
+  },
+  {
+    "id_unidade": "118",
+    "n": "25808",
+    "nme_hospital": "SAO MARCOS - MAXCLINICAS"
+  },
+  {
+    "id_unidade": "Richet/RBR",
+    "n": "115947",
+    "nme_hospital": "RICHET BARRA SHOPPING"
+  },
+  {
+    "id_unidade": "Richet/TJR",
+    "n": "87474",
+    "nme_hospital": "RICHET TIJUCA"
+  },
+  {
+    "id_unidade": "Richet/RRC",
+    "n": "61415",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "Richet/RSF",
+    "n": "3390",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "Richet/RCE",
+    "n": "9254",
+    "nme_hospital": "POSTO AVANCADO RICHET CEMED TAQUARA"
+  },
+  {
+    "id_unidade": "100",
+    "n": "373194",
+    "nme_hospital": "HOSPITAL SAO LUIZ JABAQUARA"
+  },
+  {
+    "id_unidade": "143",
+    "n": "318150",
+    "nme_hospital": "HOSPITAL DF STAR"
+  },
+  {
+    "id_unidade": "42",
+    "n": "540466",
+    "nme_hospital": "HOSPITAL E MATERNIDADE SAO LUIZ SAO CAETANO"
+  },
+  {
+    "id_unidade": "8",
+    "n": "63759",
+    "nme_hospital": "HOSPITAL PRONCOR"
+  },
+  {
+    "id_unidade": "51",
+    "n": "18502",
+    "nme_hospital": "HOSPITAL SANTA EMILIA"
+  },
+  {
+    "id_unidade": "257",
+    "n": "168281",
+    "nme_hospital": "HOSPITAL SANTA ISABEL"
+  },
+  {
+    "id_unidade": "41",
+    "n": "26760",
+    "nme_hospital": "HOSPITAL BARRA D'OR I AYRTON SENNA"
+  },
+  {
+    "id_unidade": "1073",
+    "n": "261933",
+    "nme_hospital": "HOSPITAL BARRA D'OR II"
+  },
+  {
+    "id_unidade": "Richet/COR",
+    "n": "55045",
+    "nme_hospital": "RICHET COPACABANA"
+  },
+  {
+    "id_unidade": "Richet/RCP",
+    "n": "46798",
+    "nme_hospital": "RICHET BOTAFOGO"
+  },
+  {
+    "id_unidade": "86",
+    "n": "173138",
+    "nme_hospital": "HOSPITAL CENTRAL SUL"
+  },
+  {
+    "id_unidade": "Richet/SEN",
+    "n": "18845",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/HMD",
+    "n": "27877",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/CCA",
+    "n": "555",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "54",
+    "n": "557741",
+    "nme_hospital": "HOSPITAL SAO LUIZ OSASCO"
+  },
+  {
+    "id_unidade": "Richet/RVL",
+    "n": "2187",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/ROB",
+    "n": "2057",
+    "nme_hospital": "POSTO AVANCADO RICHET ONCO BARRA"
+  },
+  {
+    "id_unidade": "12",
+    "n": "54484",
+    "nme_hospital": "PERINATAL BARRA"
+  },
+  {
+    "id_unidade": "107",
+    "n": "97912",
+    "nme_hospital": "HOSPITAL NITEROI D'OR"
+  },
+  {
+    "id_unidade": "75",
+    "n": "31723",
+    "nme_hospital": "HOSPITAL SAO MARCOS"
+  },
+  {
+    "id_unidade": "64",
+    "n": "40289",
+    "nme_hospital": "HOSPITAL BALBINO"
+  },
+  {
+    "id_unidade": "Richet/RTE",
+    "n": "21276",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/RDB",
+    "n": "824",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "1393",
+    "n": "148357",
+    "nme_hospital": "HOSPITAL MEMORIAL ARTHUR RAMOS"
+  },
+  {
+    "id_unidade": "1353",
+    "n": "86520",
+    "nme_hospital": "HOSPITAL CENTRAL OESTE (ALPHAMED)"
+  },
+  {
+    "id_unidade": "373",
+    "n": "313386",
+    "nme_hospital": "HOSPITAL E MATERNIDADE SAO LUIZ CAMPINAS"
+  },
+  {
+    "id_unidade": "11",
+    "n": "432783",
+    "nme_hospital": "HOSPITAL SAO LUIZ ITAIM"
+  },
+  {
+    "id_unidade": "28",
+    "n": "11844",
+    "nme_hospital": "HOSPITAL BADIM"
+  },
+  {
+    "id_unidade": "131",
+    "n": "7491",
+    "nme_hospital": "MEMORIAL SAO JOSE - MAXIMAGEM MATRIZ"
+  },
+  {
+    "id_unidade": "Richet/RDS",
+    "n": "1606",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/REC",
+    "n": "56096",
+    "nme_hospital": "RICHET BARRA DA TIJUCA"
+  },
+  {
+    "id_unidade": "Richet/RGA",
+    "n": "20504",
+    "nme_hospital": "POSTO AVANCADO RICHET GAVEA"
+  },
+  {
+    "id_unidade": "Richet/RDN",
+    "n": "28581",
+    "nme_hospital": "POSTO AVANCADO RICHET NITEROI D'OR"
+  },
+  {
+    "id_unidade": "Richet/ADR",
+    "n": "938",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "1615",
+    "n": "29431",
+    "nme_hospital": "HOSPITAL PEDIATRICO JUTTA BATISTA"
+  },
+  {
+    "id_unidade": "77",
+    "n": "251639",
+    "nme_hospital": "HOSPITAL ALIANCA"
+  },
+  {
+    "id_unidade": "1894",
+    "n": "129890",
+    "nme_hospital": "HOSPITAL NITEROI D'OR"
+  },
+  {
+    "id_unidade": "Richet/MRB",
+    "n": "230",
+    "nme_hospital": "UNIDADE MEDRIO"
+  },
+  {
+    "id_unidade": "Richet/RJT",
+    "n": "424",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "133",
+    "n": "80",
+    "nme_hospital": "CENTRO MEDICO VIVALLE"
+  },
+  {
+    "id_unidade": "126",
+    "n": "32",
+    "nme_hospital": "UDI HOSPITAL"
+  },
+  {
+    "id_unidade": "1953",
+    "n": "46627",
+    "nme_hospital": "HOSPITAL ESPERANCA RECIFE"
+  },
+  {
+    "id_unidade": "Richet/CA",
+    "n": "74",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "2034",
+    "n": "4838",
+    "nme_hospital": "HOSPITAL BARRA D'OR I AYRTON SENNA"
+  },
+  {
+    "id_unidade": "Richet/MAM",
+    "n": "1",
+    "nme_hospital": "RICHET BARRA SHOPPING"
+  },
+  {
+    "id_unidade": "17",
+    "n": "14",
+    "nme_hospital": "CAXIAS D'OR CENTRO MEDICO"
+  },
+  {
+    "id_unidade": "14",
+    "n": "2",
+    "nme_hospital": "HOSPITAL SAO LUCAS MACAE"
+  },
+  {
+    "id_unidade": "Richet/CDC",
+    "n": "1",
+    "nme_hospital": "RICHET RECREIO"
+  },
+  {
+    "id_unidade": "129",
+    "n": "3056",
+    "nme_hospital": "ONCOSTAR"
+  },
+  {
+    "id_unidade": "Richet/RDQ",
+    "n": "1",
+    "nme_hospital": "RICHET MEDICINA \u0026 DIAGNOSTICO"
+  },
+  {
+    "id_unidade": "Richet/UTG",
+    "n": "4",
+    "nme_hospital": "RICHET BARRA SHOPPING"
+  },
+  {
+    "id_unidade": "333",
+    "n": "1",
+    "nme_hospital": "HNSN EPITACIO"
+  }
+]

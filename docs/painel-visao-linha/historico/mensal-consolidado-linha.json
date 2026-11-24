@@ -1,0 +1,1897 @@
+{
+ "meta": {
+  "gerado_em": "2026-11-19",
+  "periodo": [
+   "2026-01-01",
+   "2026-10-31"
+  ]
+ },
+ "linhas": [
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 18314,
+   "relevantes": 1301,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 22153,
+   "relevantes": 1356,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 31785,
+   "relevantes": 2006,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 24029,
+   "relevantes": 1495,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 24608,
+   "relevantes": 1599,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 26134,
+   "relevantes": 1741,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 32220,
+   "relevantes": 1959,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 28501,
+   "relevantes": 1893,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 30241,
+   "relevantes": 2109,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "mama",
+   "linha_rotulo": "Mama (BI-RADS)",
+   "mes": "2026-10",
+   "fonte_escolhida": "legado_motor",
+   "exames": 31623,
+   "relevantes": 1956,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 121143,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 140684,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 185877,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 158305,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 138615,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 171784,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 174029,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 170661,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 166619,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "nefrologia",
+   "linha_rotulo": "Rim (nefrologia/clearance)",
+   "mes": "2026-10",
+   "fonte_escolhida": "legado_motor",
+   "exames": 174032,
+   "relevantes": null,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 101082,
+   "relevantes": 2305,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 96461,
+   "relevantes": 2153,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 142576,
+   "relevantes": 2988,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 140406,
+   "relevantes": 3072,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 133513,
+   "relevantes": 2567,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 146084,
+   "relevantes": 2486,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 154612,
+   "relevantes": 2669,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 149336,
+   "relevantes": 2679,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 146731,
+   "relevantes": 2650,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "hepatologia",
+   "linha_rotulo": "Fígado (hepatologia)",
+   "mes": "2026-10",
+   "fonte_escolhida": "legado_motor",
+   "exames": 150597,
+   "relevantes": 2773,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 28278,
+   "relevantes": 1096,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 27486,
+   "relevantes": 1185,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 44210,
+   "relevantes": 1776,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 37239,
+   "relevantes": 1512,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 31160,
+   "relevantes": 1391,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 38004,
+   "relevantes": 1808,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 38688,
+   "relevantes": 1758,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 36460,
+   "relevantes": 1608,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 36569,
+   "relevantes": 1549,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "linha_rotulo": "Pulmão – Nódulo",
+   "mes": "2026-10",
+   "fonte_escolhida": "legado_motor",
+   "exames": 37258,
+   "relevantes": 1519,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": null
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 27664,
+   "relevantes": 1613,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 28911,
+   "relevantes": 1576,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 72951,
+   "relevantes": 432,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 59844,
+   "relevantes": 329,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 56828,
+   "relevantes": 299,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 56483,
+   "relevantes": 336,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 60771,
+   "relevantes": 364,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 68503,
+   "relevantes": 454,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 61011,
+   "relevantes": 344,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "dii",
+   "linha_rotulo": "DII",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 79890,
+   "relevantes": 906,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_motor",
+   "exames": 18999,
+   "relevantes": 69,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 34219,
+   "relevantes": 122,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 94090,
+   "relevantes": 304,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 134700,
+   "relevantes": 488,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 138928,
+   "relevantes": 490,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 144243,
+   "relevantes": 468,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 125280,
+   "relevantes": 523,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 97473,
+   "relevantes": 492,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 40850,
+   "relevantes": 206,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "reumatologia",
+   "linha_rotulo": "Reumatologia",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 93222,
+   "relevantes": 395,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_motor",
+   "exames": 35199,
+   "relevantes": 80,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_motor",
+   "exames": 104345,
+   "relevantes": 914,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 50239,
+   "relevantes": 832,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 47221,
+   "relevantes": 790,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 46841,
+   "relevantes": 724,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 48752,
+   "relevantes": 931,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 57718,
+   "relevantes": 1304,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 56015,
+   "relevantes": 455,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_colon",
+   "linha_rotulo": "Ca de Cólon",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 10000,
+   "relevantes": 603,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_motor"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-04",
+   "fonte_escolhida": "monitoramento",
+   "exames": 18083,
+   "relevantes": 570,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [
+    "legado_motor_snapshot"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-05",
+   "fonte_escolhida": "monitoramento",
+   "exames": 83586,
+   "relevantes": 2103,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-06",
+   "fonte_escolhida": "monitoramento",
+   "exames": 53471,
+   "relevantes": 1499,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [
+    "legado_motor_snapshot"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-07",
+   "fonte_escolhida": "monitoramento",
+   "exames": 58683,
+   "relevantes": 1628,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-08",
+   "fonte_escolhida": "monitoramento",
+   "exames": 78565,
+   "relevantes": 2093,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-09",
+   "fonte_escolhida": "monitoramento",
+   "exames": 56285,
+   "relevantes": 1604,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [
+    "legado_motor_snapshot"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "doencas_biliares",
+   "linha_rotulo": "Doenças biliares",
+   "mes": "2026-10",
+   "fonte_escolhida": "monitoramento",
+   "exames": 18150,
+   "relevantes": 547,
+   "metrica": "contagem do job (nao deduplicada)",
+   "outras_fontes_no_mes": [
+    "legado_motor_snapshot",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_motor",
+   "exames": 7628,
+   "relevantes": 142,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 8128,
+   "relevantes": 159,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 8127,
+   "relevantes": 172,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 8527,
+   "relevantes": 158,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 8959,
+   "relevantes": 143,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 8235,
+   "relevantes": 163,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "neuroimunologia",
+   "linha_rotulo": "Neuroimunologia",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 14542,
+   "relevantes": 323,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_motor"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 445,
+   "relevantes": 91,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 399,
+   "relevantes": 91,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 487,
+   "relevantes": 114,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 471,
+   "relevantes": 92,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_motor",
+   "exames": 2401,
+   "relevantes": 198,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 2318,
+   "relevantes": 232,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 2377,
+   "relevantes": 220,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 2500,
+   "relevantes": 224,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 2497,
+   "relevantes": 204,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "pirads",
+   "linha_rotulo": "Próstata (PI-RADS)",
+   "mes": "2026-10",
+   "fonte_escolhida": "legado_motor",
+   "exames": 1154,
+   "relevantes": 109,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-11"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-04",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-05",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 9520,
+   "relevantes": 942,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 26083,
+   "relevantes": 895,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 17058,
+   "relevantes": 137,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-09",
+   "fonte_escolhida": "legado_motor",
+   "exames": 1096,
+   "relevantes": 9,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "ateromatose",
+   "linha_rotulo": "Ateromatose coronariana",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 17008,
+   "relevantes": 695,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-01",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 16781,
+   "relevantes": 2430,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-02",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 17344,
+   "relevantes": 2601,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-03",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 20855,
+   "relevantes": 3200,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-04",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 20021,
+   "relevantes": 3095,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-05",
+   "fonte_escolhida": "legado_pacs_enave",
+   "exames": 20966,
+   "relevantes": 3273,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-06",
+   "fonte_escolhida": "legado_motor",
+   "exames": 55460,
+   "relevantes": 3848,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-07",
+   "fonte_escolhida": "legado_motor",
+   "exames": 10041,
+   "relevantes": 739,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-08",
+   "fonte_escolhida": "legado_motor",
+   "exames": 10966,
+   "relevantes": 774,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave",
+    "monitoramento",
+    "plataforma_prd"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-09",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 33987,
+   "relevantes": 1806,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_motor",
+    "legado_pacs_enave"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "tirads",
+   "linha_rotulo": "Tireoide (TI-RADS)",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 37934,
+   "relevantes": 2154,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [
+    "legado_pacs_enave"
+   ],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-04",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-05",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-06",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-07",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-08",
+   "fonte_escolhida": "plataforma_prd (mes parcial)",
+   "exames": 6103,
+   "relevantes": 289,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-09",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 5030,
+   "relevantes": 54,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_estomago",
+   "linha_rotulo": "Ca de Estômago",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 5312,
+   "relevantes": 23,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-04",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-05",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-06",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-07",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-08",
+   "fonte_escolhida": "plataforma_prd (mes parcial)",
+   "exames": 3095,
+   "relevantes": 27,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-09",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 2826,
+   "relevantes": 150,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "linha_rotulo": "Transplante de pulmão",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 2823,
+   "relevantes": 150,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-09"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-04",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-05",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-06",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-07",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-08",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-09",
+   "fonte_escolhida": "plataforma_prd (mes parcial)",
+   "exames": 182130,
+   "relevantes": 636,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "cancer_rim",
+   "linha_rotulo": "Ca de Rim",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 120140,
+   "relevantes": 373,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-01",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-02",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-03",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-04",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-05",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-06",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-07",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-08",
+   "fonte_escolhida": null,
+   "exames": null,
+   "relevantes": null,
+   "metrica": null,
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-09",
+   "fonte_escolhida": "plataforma_prd (mes parcial)",
+   "exames": 54365,
+   "relevantes": 597,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  },
+  {
+   "linha": "tumor_osseo",
+   "linha_rotulo": "Tumor ósseo",
+   "mes": "2026-10",
+   "fonte_escolhida": "plataforma_prd",
+   "exames": 62736,
+   "relevantes": 737,
+   "metrica": "exame distinto (1a aparicao)",
+   "outras_fontes_no_mes": [],
+   "primeiro_mes_completo_plataforma": "2026-10"
+  }
+ ]
+}

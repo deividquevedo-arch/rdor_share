@@ -1,0 +1,2634 @@
+{
+ "inicio": "2026-10-20",
+ "fim": "2026-11-18",
+ "linhas": [
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "19",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "32",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "43",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "14",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "10",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "39",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "3",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "45",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "7",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "7",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "22",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "56",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "86",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "27",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "53",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "13",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "5",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "24",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "55",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "7",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "30",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "8",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "3",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "40",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "18",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "9",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "67",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "77",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "4",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "17",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "23",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "8",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "45",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "7",
+   "unidade": "91"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "45",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "10",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "6",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "21",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "10",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "7",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "65",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "15",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "1",
+   "unidade": "132"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "34",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "23",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "7",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "9",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "12",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "17",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "6",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "17",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "50",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "23",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "16",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "9",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "6",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "10",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "11",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "12",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "34",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "31",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "21",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "4",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "52",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "16",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "21",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "13",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "41",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "9",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "13",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "11",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "41",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "7",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "27",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "8",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "2",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "24",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "15",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "13",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "3",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "23",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "17",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "78",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "13",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "37",
+   "unidade": "146"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "6",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "24",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "9",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "37",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "5",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "24",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "31",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "13",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "15",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "24",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "22",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "8",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "18"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "7",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "9",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "10",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "4",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "27",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "5",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "1",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "16",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "13",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "94",
+   "unidade": "146"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "21",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "35",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "10",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "20",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "19",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "8",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "8",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "21",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "60",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "21",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "11",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "15",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "8",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "25",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "6",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "1",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "17",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "8",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "4",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "22",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "12",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "22",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "13",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "9",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "6",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "3",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "4",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "16",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "47",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "44",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "30",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "26",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "34",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "4",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "9",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "5",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "47",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "23",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "16",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "22",
+   "unidade": "135"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "5",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "18",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "7",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "10",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "25",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "34",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "22",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "4",
+   "unidade": "146"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "4",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "33",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "18",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "11",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "32",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "29",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "9",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "14",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "2",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "7",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "13",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "11",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "12",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "27",
+   "unidade": "1353"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "15",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "5",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "7",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "20",
+   "unidade": "5"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "6",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "4",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "5",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "16",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "6",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "10",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "7",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "1353"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "9",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "15",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "7",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "37",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "8",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "5",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "9",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "8",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "13",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "1",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "3",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "7",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "9",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "7",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "13",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "8",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "31",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "29",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "2",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "13",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "18",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "3",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "15",
+   "unidade": "50"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "13",
+   "unidade": "50"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "19",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "7",
+   "unidade": "50"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "3",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "5",
+   "unidade": "136"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "9",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "5",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "9",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "9",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "6",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "11",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "9",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "4",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "12",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "4",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "8",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "6",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "16",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "16",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "9",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "12",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "3",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "29",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "2",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "18",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "6",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "14",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "18"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "10",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "2",
+   "unidade": "132"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "8",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "13",
+   "unidade": "135"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "7",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "6",
+   "unidade": "1353"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "8",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "4",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "4",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "4",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "9",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "14",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "3",
+   "unidade": "18"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "3",
+   "unidade": "135"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "4",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "1",
+   "unidade": "121"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "4",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "8",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "10",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "6",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "15",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "13",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "6",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "14",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "10",
+   "unidade": "130"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "3",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "12",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "1",
+   "unidade": "1894"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "13",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "12",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "6",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "4",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "8",
+   "unidade": "1893"
+  },
+  {
+   "captados": "1",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "22",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "12",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "3",
+   "unidade": "1353"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "4",
+   "unidade": "130"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "5",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "3",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "4",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "1",
+   "unidade": "135"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "4",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "4",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "75"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "5",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "2",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "37"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "6",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "5",
+   "unidade": "135"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "39"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "8",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "3",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "1",
+   "unidade": "18"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "2",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "1",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "9",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "2",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "3",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "4",
+   "unidade": "1393"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "5",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "2",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "7",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "8",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "9",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "4",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "7",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "1",
+   "unidade": "47"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "2",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "4",
+   "unidade": "131"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "4",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "8",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "373"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "8",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "5",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "9",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "6",
+   "unidade": "42"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "2",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "4",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "4",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "3",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "130"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "874"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "4",
+   "unidade": "81"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "11"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "4",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "77"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "2",
+   "unidade": "953"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "6",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "873"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "5",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "6",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "6",
+   "unidade": "103"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "3",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "4",
+   "unidade": "75"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "9",
+   "unidade": "146"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "2",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "1",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "6",
+   "unidade": "122"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "3",
+   "unidade": "55"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "4",
+   "unidade": "134"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "2",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "9",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "1",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "7",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "3",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "2",
+   "unidade": "1073"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "3",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "3",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "1",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "2",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "50"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "5",
+   "unidade": "94"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_estomago",
+   "pacientes_enviados": "2",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "62"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "5",
+   "unidade": "1661"
+  },
+  {
+   "captados": "0",
+   "linha": "doencas_biliares",
+   "pacientes_enviados": "3",
+   "unidade": "228"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "2",
+   "unidade": "18"
+  },
+  {
+   "captados": "0",
+   "linha": "tirads",
+   "pacientes_enviados": "2",
+   "unidade": "35"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "5",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "257"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "2",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "2",
+   "unidade": "54"
+  },
+  {
+   "captados": "0",
+   "linha": "tumor_osseo",
+   "pacientes_enviados": "1",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "1",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "5",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "3",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "3",
+   "unidade": "1662"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "1",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "2",
+   "unidade": "100"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "1",
+   "unidade": "16"
+  },
+  {
+   "captados": "0",
+   "linha": "transplante_pulmao",
+   "pacientes_enviados": "2",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "3",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "141"
+  },
+  {
+   "captados": "0",
+   "linha": "neuroimunologia",
+   "pacientes_enviados": "2",
+   "unidade": "86"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "4",
+   "unidade": "67"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "2",
+   "unidade": "83"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "2",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "2",
+   "unidade": "101"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "125"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "1353"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "92"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_rim",
+   "pacientes_enviados": "1",
+   "unidade": "41"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "97"
+  },
+  {
+   "captados": "0",
+   "linha": "doenca_inflamatoria_intestinal",
+   "pacientes_enviados": "1",
+   "unidade": "65"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "31"
+  },
+  {
+   "captados": "0",
+   "linha": "cancer_colon",
+   "pacientes_enviados": "1",
+   "unidade": "52"
+  },
+  {
+   "captados": "0",
+   "linha": "reumatologia",
+   "pacientes_enviados": "1",
+   "unidade": "1893"
+  },
+  {
+   "captados": "0",
+   "linha": "pirads",
+   "pacientes_enviados": "1",
+   "unidade": "147"
+  },
+  {
+   "captados": "0",
+   "linha": "ateromatose_coronariana",
+   "pacientes_enviados": "1",
+   "unidade": "132"
+  }
+ ]
+}

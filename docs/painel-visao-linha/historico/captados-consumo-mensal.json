@@ -1,0 +1,1694 @@
+{
+ "fonte_captados": "gold_fabrica_ia_dev.navegacao.tb_pacientes_captados (BI Controle Captação)",
+ "fonte_consumo": "diamond_fabrica_ia_dev.consumo.tb_mov_consumo_captacao_total (BI Controle Captação)",
+ "controle": [
+  {
+   "cap_ate": "2026-11-10",
+   "con_ate": "2026-11-12T08:00:00.000Z"
+  }
+ ],
+ "captados": [
+  {
+   "captados": "310",
+   "linha": "Dermato",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "310"
+  },
+  {
+   "captados": "161",
+   "linha": "Pneumo",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "161"
+  },
+  {
+   "captados": "76",
+   "linha": "Reumato",
+   "mes": "2026-07",
+   "nm_origem": "central_navegacao",
+   "registros": "76"
+  },
+  {
+   "captados": "205",
+   "linha": "Pneumo",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "205"
+  },
+  {
+   "captados": "134",
+   "linha": "Pneumo",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "134"
+  },
+  {
+   "captados": "6",
+   "linha": "Reumato",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "6"
+  },
+  {
+   "captados": "156",
+   "linha": "Pneumo",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "156"
+  },
+  {
+   "captados": "29",
+   "linha": "Reumato",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "29"
+  },
+  {
+   "captados": "99",
+   "linha": "Ateromatose",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "99"
+  },
+  {
+   "captados": "182",
+   "linha": "CA Tireoide",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "182"
+  },
+  {
+   "captados": "136",
+   "linha": "Reumato",
+   "mes": "2026-08",
+   "nm_origem": "central_navegacao",
+   "registros": "136"
+  },
+  {
+   "captados": "51",
+   "linha": "Mama",
+   "mes": "2026-02",
+   "nm_origem": "board_mama",
+   "registros": "51"
+  },
+  {
+   "captados": "268",
+   "linha": "DII",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "268"
+  },
+  {
+   "captados": "42",
+   "linha": "CA Colon",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "42"
+  },
+  {
+   "captados": "8",
+   "linha": "Calculo Biliar",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "8"
+  },
+  {
+   "captados": "34",
+   "linha": "CA Colon",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "34"
+  },
+  {
+   "captados": "4",
+   "linha": "Ateromatose",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "4"
+  },
+  {
+   "captados": "484",
+   "linha": "Dermato",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "484"
+  },
+  {
+   "captados": "40",
+   "linha": "Reumato",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "40"
+  },
+  {
+   "captados": "36",
+   "linha": "Reumato",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "36"
+  },
+  {
+   "captados": "34",
+   "linha": "CA Colon",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "34"
+  },
+  {
+   "captados": "553",
+   "linha": "DII",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "553"
+  },
+  {
+   "captados": "83",
+   "linha": "CA Tireoide",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "83"
+  },
+  {
+   "captados": "116",
+   "linha": "Neuro",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "116"
+  },
+  {
+   "captados": "57",
+   "linha": "Reumato",
+   "mes": "2026-06",
+   "nm_origem": "central_navegacao",
+   "registros": "57"
+  },
+  {
+   "captados": "47",
+   "linha": "Mama",
+   "mes": "2026-10",
+   "nm_origem": "board_mama",
+   "registros": "47"
+  },
+  {
+   "captados": "11",
+   "linha": "CA Estômago",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "11"
+  },
+  {
+   "captados": "48",
+   "linha": "Reumato",
+   "mes": "2026-04",
+   "nm_origem": "central_navegacao",
+   "registros": "48"
+  },
+  {
+   "captados": "69",
+   "linha": "CA Colon",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "69"
+  },
+  {
+   "captados": "37",
+   "linha": "CA Colon",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "37"
+  },
+  {
+   "captados": "30",
+   "linha": "Dermato",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "30"
+  },
+  {
+   "captados": "58",
+   "linha": "Ateromatose",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "58"
+  },
+  {
+   "captados": "171",
+   "linha": "Pneumo",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "171"
+  },
+  {
+   "captados": "50",
+   "linha": "Neuro",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "50"
+  },
+  {
+   "captados": "103",
+   "linha": "DII",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "103"
+  },
+  {
+   "captados": "63",
+   "linha": "Neuro",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "63"
+  },
+  {
+   "captados": "12",
+   "linha": "DII",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "12"
+  },
+  {
+   "captados": "13",
+   "linha": "CA Estômago",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "13"
+  },
+  {
+   "captados": "129",
+   "linha": "DII",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "129"
+  },
+  {
+   "captados": "57",
+   "linha": "CA Colon",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "57"
+  },
+  {
+   "captados": "37",
+   "linha": "Reumato",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "37"
+  },
+  {
+   "captados": "71",
+   "linha": "Ateromatose",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "71"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Próstata",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "106",
+   "linha": "CA Tireoide",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "106"
+  },
+  {
+   "captados": "16",
+   "linha": "Reumato",
+   "mes": "2026-03",
+   "nm_origem": "central_navegacao",
+   "registros": "16"
+  },
+  {
+   "captados": "7",
+   "linha": "CA Estômago",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "7"
+  },
+  {
+   "captados": "18",
+   "linha": "CA Próstata",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "18"
+  },
+  {
+   "captados": "30",
+   "linha": "Reumato",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "30"
+  },
+  {
+   "captados": "62",
+   "linha": "Ateromatose",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "62"
+  },
+  {
+   "captados": "97",
+   "linha": "Dermato",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "97"
+  },
+  {
+   "captados": "176",
+   "linha": "DII",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "176"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Rim",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "207",
+   "linha": "Dermato",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "207"
+  },
+  {
+   "captados": "261",
+   "linha": "Dermato",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "261"
+  },
+  {
+   "captados": "68",
+   "linha": "Ateromatose",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "68"
+  },
+  {
+   "captados": "83",
+   "linha": "Neuro",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "83"
+  },
+  {
+   "captados": "16",
+   "linha": "CA Colon",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "16"
+  },
+  {
+   "captados": "14",
+   "linha": "CA Próstata",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "14"
+  },
+  {
+   "captados": "4",
+   "linha": "CA Próstata",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "4"
+  },
+  {
+   "captados": "174",
+   "linha": "DII",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "174"
+  },
+  {
+   "captados": "25",
+   "linha": "Mama",
+   "mes": "2026-03",
+   "nm_origem": "board_mama",
+   "registros": "25"
+  },
+  {
+   "captados": "77",
+   "linha": "CA Tireoide",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "77"
+  },
+  {
+   "captados": "2",
+   "linha": "Reumato",
+   "mes": "2026-01",
+   "nm_origem": "central_navegacao",
+   "registros": "2"
+  },
+  {
+   "captados": "7",
+   "linha": "Pneumo",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "7"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Próstata",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "18",
+   "linha": "Mama",
+   "mes": "2026-07",
+   "nm_origem": "board_mama",
+   "registros": "18"
+  },
+  {
+   "captados": "14",
+   "linha": "Calculo Biliar",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "14"
+  },
+  {
+   "captados": "71",
+   "linha": "DII",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "71"
+  },
+  {
+   "captados": "10",
+   "linha": "Calculo Biliar",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "10"
+  },
+  {
+   "captados": "20",
+   "linha": "Mama",
+   "mes": "2026-08",
+   "nm_origem": "board_mama",
+   "registros": "20"
+  },
+  {
+   "captados": "26",
+   "linha": "Mama",
+   "mes": "2026-05",
+   "nm_origem": "board_mama",
+   "registros": "26"
+  },
+  {
+   "captados": "19",
+   "linha": "CA Próstata",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "19"
+  },
+  {
+   "captados": "20",
+   "linha": "Mama",
+   "mes": "2026-09",
+   "nm_origem": "board_mama",
+   "registros": "20"
+  },
+  {
+   "captados": "27",
+   "linha": "CA Colon",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "27"
+  },
+  {
+   "captados": "29",
+   "linha": "CA Próstata",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "29"
+  },
+  {
+   "captados": "16",
+   "linha": "CA Estômago",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "16"
+  },
+  {
+   "captados": "7",
+   "linha": "CA Estômago",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "7"
+  },
+  {
+   "captados": "16",
+   "linha": "Reumato",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "16"
+  },
+  {
+   "captados": "38",
+   "linha": "Neuro",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "38"
+  },
+  {
+   "captados": "68",
+   "linha": "Reumato",
+   "mes": "2026-09",
+   "nm_origem": "central_navegacao",
+   "registros": "68"
+  },
+  {
+   "captados": "7",
+   "linha": "Calculo Biliar",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "7"
+  },
+  {
+   "captados": "24",
+   "linha": "Calculo Biliar",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "24"
+  },
+  {
+   "captados": "37",
+   "linha": "Reumato",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "37"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Estômago",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "22",
+   "linha": "Dermato",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "22"
+  },
+  {
+   "captados": "14",
+   "linha": "Reumato",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "14"
+  },
+  {
+   "captados": "17",
+   "linha": "CA Colon",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "17"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Estômago",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Estômago",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "68",
+   "linha": "Reumato",
+   "mes": "2026-05",
+   "nm_origem": "central_navegacao",
+   "registros": "68"
+  },
+  {
+   "captados": "39",
+   "linha": "Mama",
+   "mes": "2026-04",
+   "nm_origem": "board_mama",
+   "registros": "39"
+  },
+  {
+   "captados": "45",
+   "linha": "Neuro",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "45"
+  },
+  {
+   "captados": "43",
+   "linha": "CA Colon",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "43"
+  },
+  {
+   "captados": "18",
+   "linha": "Calculo Biliar",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "18"
+  },
+  {
+   "captados": "64",
+   "linha": "Neuro",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "64"
+  },
+  {
+   "captados": "15",
+   "linha": "CA Rim",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "15"
+  },
+  {
+   "captados": "15",
+   "linha": "Mama",
+   "mes": "2026-06",
+   "nm_origem": "board_mama",
+   "registros": "15"
+  },
+  {
+   "captados": "12",
+   "linha": "DII",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "12"
+  },
+  {
+   "captados": "24",
+   "linha": "Calculo Biliar",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "24"
+  },
+  {
+   "captados": "5",
+   "linha": "Calculo Biliar",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "5"
+  },
+  {
+   "captados": "8",
+   "linha": "Colo de útero",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "8"
+  },
+  {
+   "captados": "2",
+   "linha": "CA Estômago",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "2"
+  },
+  {
+   "captados": "3",
+   "linha": "Ateromatose",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "3"
+  },
+  {
+   "captados": "60",
+   "linha": "Reumato",
+   "mes": "2026-10",
+   "nm_origem": "central_navegacao",
+   "registros": "60"
+  },
+  {
+   "captados": "3",
+   "linha": "CA Rim",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "3"
+  },
+  {
+   "captados": "23",
+   "linha": "DII",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "23"
+  },
+  {
+   "captados": "20",
+   "linha": "Mama",
+   "mes": "2026-01",
+   "nm_origem": "board_mama",
+   "registros": "20"
+  },
+  {
+   "captados": "7",
+   "linha": "Colo de útero",
+   "mes": "2026-10",
+   "nm_origem": "planilha_larissa",
+   "registros": "7"
+  },
+  {
+   "captados": "11",
+   "linha": "Colo de útero",
+   "mes": "2026-08",
+   "nm_origem": "planilha_larissa",
+   "registros": "11"
+  },
+  {
+   "captados": "16",
+   "linha": "Dermato",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "16"
+  },
+  {
+   "captados": "16",
+   "linha": "Calculo Biliar",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "16"
+  },
+  {
+   "captados": "10",
+   "linha": "Calculo Biliar",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "10"
+  },
+  {
+   "captados": "14",
+   "linha": "Neuro",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "14"
+  },
+  {
+   "captados": "6",
+   "linha": "Neuro",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "6"
+  },
+  {
+   "captados": "2",
+   "linha": "Pneumo",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "2"
+  },
+  {
+   "captados": "7",
+   "linha": "Reumato",
+   "mes": "2026-02",
+   "nm_origem": "central_navegacao",
+   "registros": "7"
+  },
+  {
+   "captados": "2",
+   "linha": "CA Estômago",
+   "mes": "2026-09",
+   "nm_origem": "planilha_larissa",
+   "registros": "2"
+  },
+  {
+   "captados": "5",
+   "linha": "Neuro",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "5"
+  },
+  {
+   "captados": "6",
+   "linha": "Colo de útero",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "6"
+  },
+  {
+   "captados": "2",
+   "linha": "Pneumo",
+   "mes": "2026-03",
+   "nm_origem": "planilha_larissa",
+   "registros": "2"
+  },
+  {
+   "captados": "1",
+   "linha": "Ateromatose",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "1"
+  },
+  {
+   "captados": "5",
+   "linha": "Colo de útero",
+   "mes": "2026-07",
+   "nm_origem": "planilha_larissa",
+   "registros": "5"
+  },
+  {
+   "captados": "3",
+   "linha": "Colo de útero",
+   "mes": "2026-05",
+   "nm_origem": "planilha_larissa",
+   "registros": "3"
+  },
+  {
+   "captados": "1",
+   "linha": "Colo de útero",
+   "mes": "2026-04",
+   "nm_origem": "planilha_larissa",
+   "registros": "1"
+  },
+  {
+   "captados": "1",
+   "linha": "Colo de útero",
+   "mes": "2026-06",
+   "nm_origem": "planilha_larissa",
+   "registros": "1"
+  },
+  {
+   "captados": "1",
+   "linha": "Pneumo",
+   "mes": "2026-02",
+   "nm_origem": "planilha_larissa",
+   "registros": "1"
+  },
+  {
+   "captados": "1",
+   "linha": "Pneumo",
+   "mes": "2026-01",
+   "nm_origem": "planilha_larissa",
+   "registros": "1"
+  }
+ ],
+ "consumo": [
+  {
+   "linha": "Mama",
+   "mes": "2026-03",
+   "pacientes": "117",
+   "registros": "3372",
+   "valor": "4034040.73"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-01",
+   "pacientes": "105",
+   "registros": "3340",
+   "valor": "3510718.09"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-07",
+   "pacientes": "93",
+   "registros": "3715",
+   "valor": "1758554.51"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-08",
+   "pacientes": "121",
+   "registros": "4357",
+   "valor": "2032092.28"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-09",
+   "pacientes": "146",
+   "registros": "5231",
+   "valor": "2767494.97"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-09",
+   "pacientes": "170",
+   "registros": "4444",
+   "valor": "5448255.04"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-07",
+   "pacientes": "15",
+   "registros": "3205",
+   "valor": "1144226.63"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-08",
+   "pacientes": "312",
+   "registros": "8338",
+   "valor": "8261944.08"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-01",
+   "pacientes": "39",
+   "registros": "2613",
+   "valor": "1530160.79"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-01",
+   "pacientes": "14",
+   "registros": "674",
+   "valor": "678539.45"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-10",
+   "pacientes": "196",
+   "registros": "5679",
+   "valor": "5686140.92"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-05",
+   "pacientes": "71",
+   "registros": "3016",
+   "valor": "2432368.01"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-06",
+   "pacientes": "45",
+   "registros": "3844",
+   "valor": "2665119.99"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-10",
+   "pacientes": "249",
+   "registros": "3485",
+   "valor": "3513713.76"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-10",
+   "pacientes": "370",
+   "registros": "10458",
+   "valor": "10310474.59"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-10",
+   "pacientes": "184",
+   "registros": "7736",
+   "valor": "3525964.68"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-08",
+   "pacientes": "184",
+   "registros": "2215",
+   "valor": "2692030.86"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-09",
+   "pacientes": "395",
+   "registros": "12313",
+   "valor": "11488588.59"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-08",
+   "pacientes": "47",
+   "registros": "2322",
+   "valor": "2377933.82"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-10",
+   "pacientes": "108",
+   "registros": "7214",
+   "valor": "4161179.52"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-04",
+   "pacientes": "33",
+   "registros": "1352",
+   "valor": "1360841.50"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-08",
+   "pacientes": "112",
+   "registros": "5960",
+   "valor": "4306889.11"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-07",
+   "pacientes": "88",
+   "registros": "1250",
+   "valor": "2222859.68"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-07",
+   "pacientes": "96",
+   "registros": "5575",
+   "valor": "3874238.33"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-07",
+   "pacientes": "120",
+   "registros": "1756",
+   "valor": "2126197.35"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-05",
+   "pacientes": "2",
+   "registros": "201",
+   "valor": "137850.68"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-10",
+   "pacientes": "137",
+   "registros": "2902",
+   "valor": "4192722.57"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-09",
+   "pacientes": "110",
+   "registros": "1430",
+   "valor": "2849161.74"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-06",
+   "pacientes": "155",
+   "registros": "4425",
+   "valor": "5272941.64"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-09",
+   "pacientes": "120",
+   "registros": "8224",
+   "valor": "5266171.22"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-03",
+   "pacientes": "54",
+   "registros": "3044",
+   "valor": "1878617.80"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-05",
+   "pacientes": "144",
+   "registros": "4656",
+   "valor": "4614158.09"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-09",
+   "pacientes": "44",
+   "registros": "4630",
+   "valor": "1969483.96"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-04",
+   "pacientes": "130",
+   "registros": "3903",
+   "valor": "4347070.13"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-09",
+   "pacientes": "122",
+   "registros": "809",
+   "valor": "1926470.03"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-07",
+   "pacientes": "46",
+   "registros": "2402",
+   "valor": "2318993.20"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-05",
+   "pacientes": "42",
+   "registros": "1961",
+   "valor": "1910576.81"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-08",
+   "pacientes": "22",
+   "registros": "2575",
+   "valor": "784098.01"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-06",
+   "pacientes": "226",
+   "registros": "7140",
+   "valor": "6131251.95"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-07",
+   "pacientes": "310",
+   "registros": "6866",
+   "valor": "7818631.38"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-04",
+   "pacientes": "59",
+   "registros": "4467",
+   "valor": "2998947.54"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-02",
+   "pacientes": "111",
+   "registros": "3946",
+   "valor": "3324598.54"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-08",
+   "pacientes": "168",
+   "registros": "5007",
+   "valor": "5373556.11"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-10",
+   "pacientes": "44",
+   "registros": "2415",
+   "valor": "2156043.50"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-06",
+   "pacientes": "75",
+   "registros": "1121",
+   "valor": "1775727.21"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-08",
+   "pacientes": "88",
+   "registros": "1353",
+   "valor": "2067652.88"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-05",
+   "pacientes": "117",
+   "registros": "3886",
+   "valor": "3233813.43"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-05",
+   "pacientes": "40",
+   "registros": "629",
+   "valor": "1004465.54"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-10",
+   "pacientes": "157",
+   "registros": "1516",
+   "valor": "2146682.14"
+  },
+  {
+   "linha": "Mama",
+   "mes": "2026-07",
+   "pacientes": "158",
+   "registros": "4361",
+   "valor": "5183412.84"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-06",
+   "pacientes": "87",
+   "registros": "5373",
+   "valor": "3201227.57"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-08",
+   "pacientes": "117",
+   "registros": "910",
+   "valor": "1900873.02"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-10",
+   "pacientes": "51",
+   "registros": "5496",
+   "valor": "2410840.54"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-06",
+   "pacientes": "67",
+   "registros": "1063",
+   "valor": "2123095.93"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-02",
+   "pacientes": "20",
+   "registros": "1867",
+   "valor": "821554.21"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-02",
+   "pacientes": "23",
+   "registros": "334",
+   "valor": "635500.05"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-03",
+   "pacientes": "36",
+   "registros": "93",
+   "valor": "228823.93"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-03",
+   "pacientes": "34",
+   "registros": "1491",
+   "valor": "1540473.72"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-01",
+   "pacientes": "4",
+   "registros": "348",
+   "valor": "90008.57"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-09",
+   "pacientes": "16",
+   "registros": "272",
+   "valor": "352517.37"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-05",
+   "pacientes": "53",
+   "registros": "736",
+   "valor": "702790.20"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-09",
+   "pacientes": "212",
+   "registros": "2012",
+   "valor": "3030689.32"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-03",
+   "pacientes": "9",
+   "registros": "363",
+   "valor": "350384.61"
+  },
+  {
+   "linha": "CA Estômago",
+   "mes": "2026-09",
+   "pacientes": "46",
+   "registros": "2760",
+   "valor": "2820123.13"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-04",
+   "pacientes": "21",
+   "registros": "254",
+   "valor": "236140.33"
+  },
+  {
+   "linha": "CA Tireoide",
+   "mes": "2026-10",
+   "pacientes": "25",
+   "registros": "379",
+   "valor": "179876.04"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-04",
+   "pacientes": "13",
+   "registros": "91",
+   "valor": "163811.90"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-04",
+   "pacientes": "15",
+   "registros": "99",
+   "valor": "113117.73"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-08",
+   "pacientes": "19",
+   "registros": "426",
+   "valor": "474008.60"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-04",
+   "pacientes": "52",
+   "registros": "760",
+   "valor": "1416080.48"
+  },
+  {
+   "linha": "CA Rim",
+   "mes": "2026-09",
+   "pacientes": "3",
+   "registros": "9",
+   "valor": "53156.84"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-06",
+   "pacientes": "61",
+   "registros": "316",
+   "valor": "947463.97"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-03",
+   "pacientes": "32",
+   "registros": "730",
+   "valor": "916521.73"
+  },
+  {
+   "linha": "CA Colon",
+   "mes": "2026-02",
+   "pacientes": "29",
+   "registros": "1601",
+   "valor": "1162807.40"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-04",
+   "pacientes": "13",
+   "registros": "196",
+   "valor": "276171.30"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-08",
+   "pacientes": "7",
+   "registros": "114",
+   "valor": "94361.40"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-07",
+   "pacientes": "96",
+   "registros": "439",
+   "valor": "1297651.35"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-06",
+   "pacientes": "2",
+   "registros": "353",
+   "valor": "171630.20"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-07",
+   "pacientes": "9",
+   "registros": "100",
+   "valor": "123029.94"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-10",
+   "pacientes": "9",
+   "registros": "365",
+   "valor": "140956.42"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-10",
+   "pacientes": "7",
+   "registros": "272",
+   "valor": "220457.84"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-03",
+   "pacientes": "1",
+   "registros": "17",
+   "valor": "2470.30"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-02",
+   "pacientes": "12",
+   "registros": "75",
+   "valor": "149569.66"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-10",
+   "pacientes": "22",
+   "registros": "156",
+   "valor": "240650.71"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-05",
+   "pacientes": "11",
+   "registros": "109",
+   "valor": "201863.80"
+  },
+  {
+   "linha": "CA Tireoide",
+   "mes": "2026-09",
+   "pacientes": "14",
+   "registros": "118",
+   "valor": "73470.25"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-01",
+   "pacientes": "13",
+   "registros": "74",
+   "valor": "139778.03"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-05",
+   "pacientes": "12",
+   "registros": "68",
+   "valor": "139639.13"
+  },
+  {
+   "linha": "CA Rim",
+   "mes": "2026-10",
+   "pacientes": "12",
+   "registros": "266",
+   "valor": "262539.38"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-09",
+   "pacientes": "5",
+   "registros": "187",
+   "valor": "112986.95"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-03",
+   "pacientes": "13",
+   "registros": "177",
+   "valor": "146319.64"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-03",
+   "pacientes": "12",
+   "registros": "91",
+   "valor": "142592.01"
+  },
+  {
+   "linha": "DII",
+   "mes": "2026-01",
+   "pacientes": "23",
+   "registros": "176",
+   "valor": "597756.43"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-06",
+   "pacientes": "4",
+   "registros": "61",
+   "valor": "72861.05"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-03",
+   "pacientes": "4",
+   "registros": "63",
+   "valor": "15459.47"
+  },
+  {
+   "linha": "Reumato",
+   "mes": "2026-02",
+   "pacientes": "3",
+   "registros": "14",
+   "valor": "2285.24"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-06",
+   "pacientes": "4",
+   "registros": "26",
+   "valor": "65462.89"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-01",
+   "pacientes": "9",
+   "registros": "130",
+   "valor": "120366.26"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-09",
+   "pacientes": "5",
+   "registros": "38",
+   "valor": "69112.14"
+  },
+  {
+   "linha": "Pneumo",
+   "mes": "2026-06",
+   "pacientes": "28",
+   "registros": "202",
+   "valor": "191828.55"
+  },
+  {
+   "linha": "Calculo Biliar",
+   "mes": "2026-02",
+   "pacientes": "6",
+   "registros": "163",
+   "valor": "90748.12"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-05",
+   "pacientes": "50",
+   "registros": "211",
+   "valor": "770950.37"
+  },
+  {
+   "linha": "Dermato",
+   "mes": "2026-04",
+   "pacientes": "56",
+   "registros": "167",
+   "valor": "600325.45"
+  },
+  {
+   "linha": "Neuro",
+   "mes": "2026-02",
+   "pacientes": "11",
+   "registros": "149",
+   "valor": "136489.54"
+  },
+  {
+   "linha": "CA Tireoide",
+   "mes": "2026-08",
+   "pacientes": "9",
+   "registros": "18",
+   "valor": "11600.24"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-08",
+   "pacientes": "3",
+   "registros": "62",
+   "valor": "61825.05"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-07",
+   "pacientes": "9",
+   "registros": "33",
+   "valor": "90631.95"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-06",
+   "pacientes": "2",
+   "registros": "56",
+   "valor": "7419.52"
+  },
+  {
+   "linha": "Ateromatose",
+   "mes": "2026-04",
+   "pacientes": "1",
+   "registros": "19",
+   "valor": "3458.67"
+  },
+  {
+   "linha": "CA Tireoide",
+   "mes": "2026-07",
+   "pacientes": "5",
+   "registros": "5",
+   "valor": "629.49"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-07",
+   "pacientes": "1",
+   "registros": "1",
+   "valor": "140.00"
+  },
+  {
+   "linha": "Colo de útero",
+   "mes": "2026-04",
+   "pacientes": "2",
+   "registros": "12",
+   "valor": "31542.85"
+  },
+  {
+   "linha": "CA Próstata",
+   "mes": "2026-05",
+   "pacientes": "1",
+   "registros": "2",
+   "valor": "280.00"
+  }
+ ]
+}

@@ -1,0 +1,331 @@
+{
+ "meta": {
+  "gerado_em": "2026-11-19",
+  "periodo": [
+   "2026-01-01",
+   "2026-10-31"
+  ]
+ },
+ "linhas": [
+  {
+   "linha": "ateromatose",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.ateromatose_coronariana.tb_mod_diamond_ateromatose_coronariana_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "35",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-29",
+   "linhas": "46531"
+  },
+  {
+   "linha": "cancer_colon",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.cancer_colon.tb_mod_diamond_cancer_colon_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "36",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-29",
+   "linhas": "25045"
+  },
+  {
+   "linha": "cancer_estomago",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.cancer_estomago.tb_mod_diamond_cancer_estomago_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "57",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-08-26",
+   "linhas": "19592"
+  },
+  {
+   "linha": "cancer_rim",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.cancer_rim.tb_mod_diamond_cancer_rim_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "49",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-10",
+   "linhas": "372640"
+  },
+  {
+   "linha": "dii",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.doenca_inflamatoria_intestinal.tb_mod_diamond_doenca_inflamatoria_intestinal_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "35",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-29",
+   "linhas": "200720"
+  },
+  {
+   "linha": "doencas_biliares",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.doencas_biliares.tb_mod_diamond_doencas_biliares_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "27",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-10-12",
+   "linhas": "207567"
+  },
+  {
+   "linha": "hepatologia",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.hepatologia.tb_mod_diamond_hepatologia_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "36",
+   "dt_max": "2026-10-14",
+   "dt_min": "2026-08-21",
+   "linhas": "300503"
+  },
+  {
+   "linha": "neuroimunologia",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.neuroimunologia.tb_mod_diamond_neuroimunologia_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "35",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-29",
+   "linhas": "35338"
+  },
+  {
+   "linha": "pirads",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.pirads.tb_mod_diamond_pirads_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "26",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-10-12",
+   "linhas": "16178"
+  },
+  {
+   "linha": "reumatologia",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.reumatologia.tb_mod_diamond_reumatologia_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "46",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-11",
+   "linhas": "268692"
+  },
+  {
+   "linha": "tirads",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.tirads.tb_mod_diamond_tirads_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "56",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-08-21",
+   "linhas": "137028"
+  },
+  {
+   "linha": "transplante_pulmao",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.transplante_pulmao.tb_mod_diamond_transplante_pulmao_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "56",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-08-26",
+   "linhas": "10352"
+  },
+  {
+   "linha": "tumor_osseo",
+   "fonte": "plataforma_prd",
+   "tabela": "diamond_fabrica_ia.tumor_osseo.tb_mod_diamond_tumor_osseo_saida_v0",
+   "profile": "nlp-platform",
+   "dias": "35",
+   "dt_max": "2026-11-19",
+   "dt_min": "2026-09-29",
+   "linhas": "150309"
+  },
+  {
+   "linha": "cancer_colon",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_colon_saida",
+   "profile": "nlp-platform",
+   "dias": "157",
+   "dt_max": "2026-10-01",
+   "dt_min": "2026-02-20",
+   "linhas": "420019"
+  },
+  {
+   "linha": "cancer_colon",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_colon_colonoscopia_saida",
+   "profile": "nlp-platform",
+   "dias": "126",
+   "dt_max": "2026-10-01",
+   "dt_min": "2026-03-30",
+   "linhas": "28548"
+  },
+  {
+   "linha": "dii",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_dii_saida",
+   "profile": "nlp-platform",
+   "dias": "178",
+   "dt_max": "2026-09-28",
+   "dt_min": "2026-01-09",
+   "linhas": "464767"
+  },
+  {
+   "linha": "dii",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_dii_colonoscopia_saida",
+   "profile": "nlp-platform",
+   "dias": "129",
+   "dt_max": "2026-09-28",
+   "dt_min": "2026-03-17",
+   "linhas": "28199"
+  },
+  {
+   "linha": "reumatologia",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_reumatologia_saida",
+   "profile": "nlp-platform",
+   "dias": "165",
+   "dt_max": "2026-09-16",
+   "dt_min": "2026-01-29",
+   "linhas": "828782"
+  },
+  {
+   "linha": "neuroimunologia",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_neuroimunologia_saida",
+   "profile": "nlp-platform",
+   "dias": "109",
+   "dt_max": "2026-10-01",
+   "dt_min": "2026-04-29",
+   "linhas": "49984"
+  },
+  {
+   "linha": "ateromatose",
+   "fonte": "legado_motor",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_ateromatose_coronariana_saida",
+   "profile": "nlp-platform",
+   "dias": "43",
+   "dt_max": "2026-09-02",
+   "dt_min": "2026-06-24",
+   "linhas": "53757"
+  },
+  {
+   "linha": "doencas_biliares",
+   "fonte": "legado_motor_snapshot",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_doencas_biliares_saida",
+   "profile": "nlp-platform",
+   "dias": "5",
+   "dt_max": "2026-04-09",
+   "dt_min": "2026-04-03",
+   "linhas": "39969"
+  },
+  {
+   "linha": "doencas_biliares",
+   "fonte": "legado_motor_snapshot",
+   "tabela": "diamond_fabrica_ia_hml.legado.tb_diamond_mod_doencas_biliares_saida_v2",
+   "profile": "nlp-platform",
+   "dias": "1",
+   "dt_max": "2026-10-15",
+   "dt_min": "2026-10-15",
+   "linhas": "22149"
+  },
+  {
+   "linha": "doencas_biliares",
+   "fonte": "legado_motor_snapshot",
+   "tabela": "hive_metastore.ia.tb_diamond_mod_doencas_biliares_saida_v2",
+   "profile": "adb-2013197995950192",
+   "dias": "1",
+   "dt_max": "2026-09-02",
+   "dt_min": "2026-09-02",
+   "linhas": "4504"
+  },
+  {
+   "linha": "doencas_biliares",
+   "fonte": "legado_motor_snapshot",
+   "tabela": "hive_metastore.ia.tb_diamond_mod_doencas_biliares_saida_v3",
+   "profile": "adb-2013197995950192",
+   "dias": "1",
+   "dt_max": "2026-06-25",
+   "dt_min": "2026-06-25",
+   "linhas": "2495"
+  },
+  {
+   "linha": "pirads",
+   "fonte": "legado_motor",
+   "tabela": "diamond_pirads.pirads.tb_diamond_mod_pirads_saida",
+   "profile": "adb-2013197995950192",
+   "dias": "97",
+   "dt_max": "2026-10-14",
+   "dt_min": "2026-05-27",
+   "linhas": "13247"
+  },
+  {
+   "linha": "tirads",
+   "fonte": "legado_motor",
+   "tabela": "diamond_tirads.tirads.tb_diamond_mod_tirads_saida",
+   "profile": "adb-2013197995950192",
+   "dias": "57",
+   "dt_max": "2026-09-02",
+   "dt_min": "2026-06-15",
+   "linhas": "77057"
+  },
+  {
+   "linha": "tirads",
+   "fonte": "legado_pacs_enave",
+   "tabela": "hive_metastore.ia.enave_df_historico_tirads",
+   "profile": "adb-2013197995950192",
+   "dias": "1745",
+   "dt_max": "2026-11-12",
+   "dt_min": "2022-01-02",
+   "linhas": "709931"
+  },
+  {
+   "linha": "pirads",
+   "fonte": "legado_pacs_enave",
+   "tabela": "hive_metastore.ia.enave_df_historico_pirads",
+   "profile": "adb-2013197995950192",
+   "dias": "1588",
+   "dt_max": "2026-11-12",
+   "dt_min": "2022-01-05",
+   "linhas": "17066"
+  },
+  {
+   "linha": "mama",
+   "fonte": "legado_motor",
+   "tabela": "diamond_birads.birads.tb_diamond_mod_birads_saida",
+   "profile": "adb-2013197995950192",
+   "dias": "845",
+   "dt_max": "2026-11-18",
+   "dt_min": "2024-01-26",
+   "linhas": "626499"
+  },
+  {
+   "linha": "hepatologia",
+   "fonte": "legado_motor",
+   "tabela": "diamond_hepatologia.hepatologia.tb_diamond_mod_hepatologia_saida",
+   "profile": "adb-2013197995950192",
+   "dias": "962",
+   "dt_max": "2026-11-18",
+   "dt_min": "2024-01-01",
+   "linhas": "3083171"
+  },
+  {
+   "linha": "pulmao_nodulo",
+   "fonte": "legado_motor",
+   "tabela": "hive_metastore.ia.tb_diamond_mod_pulmao",
+   "profile": "adb-2013197995950192",
+   "dias": "249",
+   "dt_max": "2026-11-18",
+   "dt_min": "2026-01-27",
+   "linhas": "379493"
+  },
+  {
+   "linha": "nefrologia",
+   "fonte": "legado_motor",
+   "tabela": "hive_metastore.ia.tb_diamond_nefrologia_clearance_saida",
+   "profile": "adb-2013197995950192",
+   "dias": "374",
+   "dt_max": "2026-11-18",
+   "dt_min": "2025-10-07",
+   "linhas": "3040996"
+  }
+ ]
+}
