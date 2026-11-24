@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-17**.
+> Atualizado em **2026-11-24**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -15,8 +15,31 @@
 
 ---
 
-## ⏭️ PRÓXIMA SESSÃO (semana de 16/11)
+## ⏭️ PRÓXIMA SESSÃO (semana de 23/11)
 
+- ✅ **Relatório do ano (jan–out/2026, 16 linhas) — v17 entregue para a KL de 24/11.** História `418055` — *[Captação]
+  Relatorio do ano para agenda KL 24/11 (Jan a Out 2026)* em Em Execução, com o link da pasta SharePoint
+  `Documentos para revisão/Visão por linha (one page)/Relatório do ano (jan-out 2026)` (só a versão vigente; anteriores
+  em `Old`). Task `418190` — *Relatorio 2026* encerrada (12 h). Geradores e dados agregados em
+  `docs/painel-visao-linha/` (`historico/montar_relatorio_mensal.py` → `gerar_relatorio_anual.py`); notas internas
+  (desvios com fonte e unidades fora das 80) em documento separado, **não vão ao negócio**.
+  Base: mês em que o algoritmo rodou, legado + plataforma somados no mês da troca; enviados oficiais da planilha do
+  portfólio (aba "Envios IAs Captação"); enviado sempre contido em relevante; captados/consumo do painel Lakeview
+  "Controle Captacao" (`01f1a7909e691551945d38519c64902b`), mesmas tabelas, filtro 01/01–31/10.
+  🟡 **v18 gerada e não publicada:** Transplante de agosto passa a somar o job de HML (18–30/08), de onde saiu o envio
+  (205 relevantes × 150 enviados). Subir quando o usuário pedir. Em aberto com o Natan: "Centro Médico Real D'Or" (7.486
+  exames fora das 80) = "Hospital Real D'Or" da planilha? Relevante sem registro na origem: Pulmão (jan), Biliares (mar).
+- ✅ One page "Visão por linha" (30 dias) v18 entregue e aprovado; não reemitir.
+- ⏸️ **Captados e consumo por origem (depois da versão mensal, sem data):** separar algoritmo × biópsia × encaminhamento
+  médico pela planilha de navegação ingerida (`bronze_fabrica_ia_dev.navegacao.planilha_navegacao_paciente`: `material`,
+  `tipo_encaminhamento`, CPF, unidade por nome) e cruzar CPF com envios e com o consumo do BI. Ca de Cólon: biópsia 103
+  captados × colonoscopia 55. Biópsia passa a ser origem do algoritmo quando o motor do Motion entrar.
+- 🔴 **Ca de Cólon TC (régua de imagem) sem processamento desde 02/10** (legado pausado no card `360625`; migração ficou só
+  com colonoscopia, escopo da TC sem decisão registrada). ~48 mil TCs e ~180–200 relevantes/mês. Investigação feita;
+  **em espera** por decisão do usuário (card ao PO). Fora do one page por decisão.
+- 🟡 **Reumato laboratório (card `415406`, Carolina):** volume e positividade de outubro medidos — ~150 pacientes/mês pela
+  camada 1 (ANCA ~70, anti-dsDNA ~40, anti-CCP ~25); camada 2 (combinações) exige feature de agregação por paciente.
+  Falta amostra lida por gatilho e o documento do estudo.
 - 🟢 **Biópsias — motor de regras estruturadas: DEV FECHADO NAS CINCO LINHAS (17/11).** Cólon, estômago, próstata,
   tireoide e rim com config, job, cluster proposto e navegação dev/hml/prd na branch `biopsias/feature/motor-regras-estruturadas`
   do `fabrica-ia-nlp-platform` (publicada, **`09c408d`**, sem PR). Dev, referência 16/11, dois runs por linha: estômago
@@ -33,8 +56,9 @@
   Board: `407833` (protótipo) com `407838` aberta; `408743` com a v5 anexada. Ordem do negócio: Cólon → Estômago →
   Próstata → Tireoide → Rim. 🧭 Padrão de código: regra `09-plataforma-padrao-codigo` + skill `validar-padrao-plataforma`.
 - 🟡 **Tireoide — `399880` (novos achados, Leandro):** solução só por config na `0.12.3` (manter `ordinal_only`, achados como
-  critérios `promote`). Guia em `tireoide/orientacao-399880-novos-achados-via-criterios-v1.md`; retorno do Leandro em 17/11
-  aponta interação promote × gate no TR4 — em avaliação.
+  critérios `promote`). Guia **v2** em `tireoide/orientacao-399880-novos-achados-via-criterios-v2.md`: pares `promote` + `gate_relevance`
+  (o `promote` não segura o TR4 já relevante — achado do Leandro, conferido na `0.12.3`), âncora cobrindo todas as
+  grafias de TI-RADS, massa/tumor só na tireoide.
 - ✅ **Segregação em PRD nas seis linhas:** TI-RADS e reumato desde 30/10, DII e ateromatose desde 05/11, **doenças biliares
   e neuroimunologia desde 12/11** (1ª rodada após o PR 7874; zero envio fora da intervenção). Painel v4 atualizado no mesmo
   link (`01f1d9e728a816deb0e5eb99b04e3f3b`, rascunho). 🟡 **Neuro falhou em PRD em 17/11** (último sucesso 16/11).
