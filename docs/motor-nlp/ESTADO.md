@@ -17,7 +17,7 @@
 
 ## ⏭️ PRÓXIMA SESSÃO (semana de 23/11)
 
-- ✅ **Relatório do ano (jan–out/2026, 16 linhas) — v17 entregue para a KL de 24/11.** História `418055` — *[Captação]
+- ✅ **Relatório do ano (jan–out/2026, 16 linhas) — v18 vigente (v17 apresentada na KL de 24/11).** História `418055` — *[Captação]
   Relatorio do ano para agenda KL 24/11 (Jan a Out 2026)* em Em Execução, com o link da pasta SharePoint
   `Documentos para revisão/Visão por linha (one page)/Relatório do ano (jan-out 2026)` (só a versão vigente; anteriores
   em `Old`). Task `418190` — *Relatorio 2026* encerrada (12 h). Geradores e dados agregados em
@@ -26,8 +26,8 @@
   Base: mês em que o algoritmo rodou, legado + plataforma somados no mês da troca; enviados oficiais da planilha do
   portfólio (aba "Envios IAs Captação"); enviado sempre contido em relevante; captados/consumo do painel Lakeview
   "Controle Captacao" (`01f1a7909e691551945d38519c64902b`), mesmas tabelas, filtro 01/01–31/10.
-  🟡 **v18 gerada e não publicada:** Transplante de agosto passa a somar o job de HML (18–30/08), de onde saiu o envio
-  (205 relevantes × 150 enviados). Subir quando o usuário pedir. Em aberto com o Natan: "Centro Médico Real D'Or" (7.486
+  ✅ **v18 publicada em 24/11 (vigente):** Transplante de agosto soma o job de HML (18–30/08), de onde saiu o envio
+  (205 relevantes × 150 enviados); v17 na `Old`. Em aberto com o Natan: "Centro Médico Real D'Or" (7.486
   exames fora das 80) = "Hospital Real D'Or" da planilha? Relevante sem registro na origem: Pulmão (jan), Biliares (mar).
 - ✅ One page "Visão por linha" (30 dias) v18 entregue e aprovado; não reemitir.
 - ⏸️ **Captados e consumo por origem (depois da versão mensal, sem data):** separar algoritmo × biópsia × encaminhamento
