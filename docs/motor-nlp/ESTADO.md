@@ -50,6 +50,13 @@
   `hml@999bdf39`, célula 16 — fonte a confirmar no job); risco principal: o desempate "órgão mais próximo vence"
   do legado não existe na lib. 7 decisões abertas (nome, projeto, RM, perfil, retroação, randomização, Tábia).
   `.docx` no SharePoint `Documentacao Tecnica/Documentacao NLPEngine/Especificacoes/cancer_colon/`, link da pasta no card.
+  🟡 **Implementação em curso (26/11)** — worktree `_worktrees/cancer-colon-imagem`, branch `cancer_colon_imagem/feature/linha-tc`
+  (da `hml`, **sem commit**): 6 arquivos. Passo 0: o job `ia-colon` rodava a branch `refatoracao@15849354` (régua de TC
+  idêntica à `hml`). Teste sintético 10/10 na lib `0.12.3` + 2 mutantes mortos. **Bancada dev** (run `820231858060223`,
+  exames 01–28/09, 44.080 TC): `left` recall **159/161 (98,8%)**, 274 só plataforma, taxa 1,0%; `both` 157/161, 260, 0,97%.
+  CA2 de recall ✅, de taxa ❌ (alvo 0,3–0,6%): ~45% dos 274 têm outro órgão perto (desempate do legado ausente na lib).
+  Próximo: abrir as 274 divergências pela trilha e propor ajuste de motor. Tabelas `*_v0tcl`/`*_v0tcb` em
+  `diamond_fabrica_ia_dev.cancer_colon` e pasta `bancada-colon-tc-2026-11-26` no workspace — apagar ao fechar.
 - 🟡 **Reumato laboratório (card `415406`, Carolina):** volume e positividade de outubro medidos — ~150 pacientes/mês pela
   camada 1 (ANCA ~70, anti-dsDNA ~40, anti-CCP ~25); camada 2 (combinações) exige feature de agregação por paciente.
   Falta amostra lida por gatilho e o documento do estudo.
