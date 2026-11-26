@@ -7,7 +7,7 @@
 > lição aprendida vão para a memória (`/memory`). Se uma linha aqui não muda há meses, ela é fato —
 > mova para lá. Se uma memória tem data e "estado atual", ela é estado — mova para cá.
 >
-> Atualizado em **2026-11-24**.
+> Atualizado em **2026-11-25**.
 >
 > 🧭 **Mapa de navegação:** [[README|índice do motor-nlp]] — por linha de cuidado, por frente da lib
 > e por tema de plataforma. **História do dia** em `_processo/diario/`; **fato durável** na memória
@@ -34,12 +34,42 @@
   médico pela planilha de navegação ingerida (`bronze_fabrica_ia_dev.navegacao.planilha_navegacao_paciente`: `material`,
   `tipo_encaminhamento`, CPF, unidade por nome) e cruzar CPF com envios e com o consumo do BI. Ca de Cólon: biópsia 103
   captados × colonoscopia 55. Biópsia passa a ser origem do algoritmo quando o motor do Motion entrar.
-- 🔴 **Ca de Cólon TC (régua de imagem) sem processamento desde 02/10** (legado pausado no card `360625`; migração ficou só
-  com colonoscopia, escopo da TC sem decisão registrada). ~48 mil TCs e ~180–200 relevantes/mês. Investigação feita;
-  **em espera** por decisão do usuário (card ao PO). Fora do one page por decisão.
+- 🔴 **Ca de Cólon TC/RM sem envio desde 02/10 — defeito `420309` — *[Ca de Colon] Sem envios de TC e RM*** (Natan, 23/11,
+  Sprint 5, no nome do usuário; descrição de uma linha, sem critério de aceite, diz "novembro"). Remedido 25/11: legado
+  TC/RM (`legado.tb_diamond_mod_colon_saida`) 45–49 mil laudos e 178–221 relevantes/mês até **01/10**, zero depois; a
+  plataforma `cancer_colon` filtra `colonoscop` (TC só por acaso, 1–4/mês). Causa: pausa do legado (card `360625`) +
+  corte de escopo da migração (21/08, `6c458da`, sem registro no board). **Expandir só o filtro não basta sem medir:** a
+  régua `0.4.0` é de colonoscopia (`document_vet` de ressecção, LST, JNET); o legado de TC usava outra régua.
+  ✅ **Medido em dev (run `928025031296291`, 25/11):** só ampliar o filtro **não serve**. Controle: 8.407 colonoscopias
+  idênticas à produção. TC (43.304 pares com o legado): 127 ambos · **1.439 só plataforma** · **34 só legado** — ~10× mais
+  relevantes (3,6% × 0,37%), 1.129 só por "Sinal endoscópico de gravidade" via `infiltra*`; recall de 79% contra o
+  legado. Legado era **só TC abdome/pelve, sem RM**. Caminho: **linha própria de imagem** com a régua do legado.
+  ✅ Comentário **postado** no card (26/11, id `14728425`); bancada **apagada** (6 objetos `*_v0medtc` e a pasta do
+  workspace). 📄 **SPEC v0** em `cancer_colon/spec-correcao-420309-cancer-colon-tc-v0.md`: linha nova
+  `cancer_colon_imagem` (`rule_only`, lib `0.12.3`) portando a régua de TC do legado (`IAAzureDatabricksColon`
+  `hml@999bdf39`, célula 16 — fonte a confirmar no job); risco principal: o desempate "órgão mais próximo vence"
+  do legado não existe na lib. 7 decisões abertas (nome, projeto, RM, perfil, retroação, randomização, Tábia).
+  `.docx` no SharePoint `Documentacao Tecnica/Documentacao NLPEngine/Especificacoes/cancer_colon/`, link da pasta no card.
 - 🟡 **Reumato laboratório (card `415406`, Carolina):** volume e positividade de outubro medidos — ~150 pacientes/mês pela
   camada 1 (ANCA ~70, anti-dsDNA ~40, anti-CCP ~25); camada 2 (combinações) exige feature de agregação por paciente.
   Falta amostra lida por gatilho e o documento do estudo.
+- 🟡 **Biópsias Ca de Cólon × dash AP (planilha da Larissa, 2.152 laudos jan–11/11, 1.289 pacientes) — medido 25/11.**
+  Por paciente, abr–nov (937): **46% o motor enviaria** · 25% só peça cirúrgica e 6% unidade não navegada (regra) ·
+  11% órgão não reconhecido (material "colectomia/hemicolectomia"; 160 de 173 pedidos são cirurgia, 13 biópsias
+  perdidas) · 11% fora do alcance. Pelo "Código de Atendimento Hospitalar" (= `CODIGOHOSPITALAR` do Motion, 100% de
+  casamento): **130 linhas (6%) = 128 pedidos laudados no LIS ausentes da gold do Motion** — carga, não régua; lista em
+  `Desktop/Rede D'Or/_dados-clinicos-fora-do-git/biopsias/pedidos-motion-ausentes-na-gold-colon-2026-11-25.csv` (sem
+  PHI), **a encaminhar a quem cuida da carga do Motion (dono não identificado)**; ~50 pedidos com neoplasia sem exame no
+  RC (regra `exige_rc`). Jan–mar sem `codificação da doença` no Motion. Planilha do dash validada como suficiente:
+  Natan pede à Larissa as **outras linhas no mesmo formato** (manter o código de atendimento) → repetir o cruzamento.
+  A decidir com a régua: `colectomia` no padrão de cólon e paciente/unidade pelo próprio Motion em vez do RC.
+- 🟡 **Tábia não recebe o achado do modelo (verificado 25/11 no código e no monitoramento).** Repo
+  `fabrica-ia-central-captacao-app` (`envio_tabia/schema.py`): dos 22 campos do e-mail de navegação do Ca de Cólon,
+  **não vão** `findings` ("Achados do Modelo"), `findings_match` ("Evidência do Achado"), CRM/UF do solicitante (por
+  desenho) e a data de referência; o resto vai (paciente, hospital, convênio, solicitante, exame, laudo inteiro).
+  **O envio só rodou em dev** (12/10–03/11, Ca de Cólon, 44 inferências): `jobs/ambientes/prod.json` com
+  `projetos_tabia: []`, `dry_run_tabia: true`, chave `PREENCHER`; hml só cólon em `dry_run`; job `PAUSED`. Resposta
+  redigida para o Natan; correção (incluir os dois campos) é do repo da Central, **não alterado**.
 - 🟢 **Biópsias — motor de regras estruturadas: DEV FECHADO NAS CINCO LINHAS (17/11).** Cólon, estômago, próstata,
   tireoide e rim com config, job, cluster proposto e navegação dev/hml/prd na branch `biopsias/feature/motor-regras-estruturadas`
   do `fabrica-ia-nlp-platform` (publicada, **`09c408d`**, sem PR). Dev, referência 16/11, dois runs por linha: estômago
